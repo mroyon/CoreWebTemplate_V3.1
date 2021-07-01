@@ -15,14 +15,14 @@
   - Docker Composer
 
 - Web Front Asp.Net Core 3.1
- -- Bootstrap 4.5
- -- View Component
- -- MongoDB Application LOG
- -- Docker Composer
+  - Bootstrap 4.5
+  - View Component
+  - MongoDB Application LOG
+  - Docker Composer
 
 - Web API Asp.Net Core 3.1
- -- JWT token
- -- Redis Cache
- -- MongoDB Application LOG
- -- Docker Composer
+  - JWT token
+  - Redis Cache
+  - MongoDB Application LOG
+  - Docker Composer
 
