@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<codeSmith xmlns="http://www.codesmithtools.com/schema/csp.xsd">
+  <variables>
+    <add key="ConnectionString1" value="Data Source=.;Initial Catalog=KAF_HR_V1.0;Persist Security Info=True;User ID=sa;Password=Asdf1234" />
+    <add key="ConnectionString2" value="Data Source=192.168.200.202;User ID=sa;Password=Asdf1234;Initial Catalog=KAF_HR_V1.0;" />
+    <add key="ConnectionString3" value="Data Source=192.168.200.202;User ID=sa;Password=Asdf1234;Initial Catalog=KAF_HR_V1.0_R;" />
+    <add key="ConnectionString4" value="Data Source=.;Initial Catalog=KW_TEMPLATE;Persist Security Info=True;User ID=sa;Password=Asdf1234" />
+  </variables>
+  <propertySets>
+    <propertySet name="UIGenerator" template="GEN_COM_SET_TEMPLATE.cst">
+      <property name="ServiceNameSpace">KAF</property>
+      <property name="WebNameSpace">KAFWebAdmin</property>
+      <property name="SourceDatabase">
+        <connectionString>$(ConnectionString4)</connectionString>
+        <providerType>SchemaExplorer.SqlSchemaProvider,SchemaExplorer.SqlSchemaProvider</providerType>
+      </property>
+      <property name="WPOutputDirectory">C:\TEMP\ui</property>
+    </propertySet>
+  </propertySets>
+</codeSmith>

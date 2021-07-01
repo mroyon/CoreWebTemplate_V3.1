@@ -1,0 +1,117 @@
+[
+  {
+    "outputFileName": "wwwroot/css/vendor.min.css",
+    "inputFiles": [
+      "wwwroot/lib/font-awesome/css/all.css",
+      "wwwroot/lib/admin-lte/css/adminlte.css",
+      "wwwroot/lib/overlayscrollbars/css/OverlayScrollbars.css",
+      "wwwroot/lib/animate.css/animate.css",
+      "wwwroot/lib/owl.carousel/dist/assets/owl.carousel.css",
+      "wwwroot/lib/bootstrap-sweetalert/sweetalert.css",
+      "wwwroot/lib/jquery.ui/jquery-ui.css"
+    ],
+    "minify": { "enabled": true }
+  },
+  {
+    "outputFileName": "wwwroot/css/vendor.login.min.css",
+    "inputFiles": [
+      "wwwroot/css/my-login.css",
+      "wwwroot/lib/bootstrap/dist/css/bootstrap.css",
+      "wwwroot/lib/admin-lte/css/adminlte.css"
+    ],
+    "minify": { "enabled": true }
+  },
+  {
+    "outputFileName": "wwwroot/css/vendor.login.rtl.min.css",
+    "inputFiles": [
+      "wwwroot/css/my-login.css",
+      "wwwroot/lib/bootstrap/dist/css/bootstrap.css",
+      "wwwroot/lib/admin-lte/css/adminlte.css"
+    ],
+    "minify": { "enabled": true }
+  },
+  {
+    "outputFileName": "wwwroot/js/vendor.login.min.js",
+    "inputFiles": [
+      "wwwroot/lib/jquery/jquery.js",
+      "wwwroot/lib/popperjs/umd/popper.js",
+      "wwwroot/lib/bootstrap/dist/js/bootstrap.js",
+      "wwwroot/js/my-login.js"
+    ],
+    "minify": { "enabled": true }
+  },
+  {
+    "outputFileName": "wwwroot/css/vendor.rtl.min.css",
+    "inputFiles": [
+      "wwwroot/lib/font-awesome/css/all.css",
+      "wwwroot/lib/admin-lte/css/adminlte.css",
+      "wwwroot/lib/overlayscrollbars/css/OverlayScrollbars.css",
+      "wwwroot/lib/animate.css/animate.css",
+      "wwwroot/lib/owl.carousel/dist/assets/owl.carousel.css",
+      "wwwroot/lib/bootstrap-sweetalert/sweetalert.css",
+      "wwwroot/lib/jquery.ui/jquery-ui.css"
+    ],
+    "minify": { "enabled": true }
+  },
+  {
+    "outputFileName": "wwwroot/js/vendor.min.js",
+    "inputFiles": [
+      "wwwroot/lib/jquery/jquery.js",
+      "wwwroot/lib/font-awesome/js/all.js",
+      "wwwroot/lib/bootstrap/dist/js/bootstrap.js",
+      "wwwroot/lib/admin-lte/js/adminlte.js",
+      "wwwroot/lib/overlayscrollbars/js/OverlayScrollbars.js",
+      "wwwroot/lib/jquery-mousewheel/jquery.mousewheel.js",
+      "wwwroot/lib/raphael/raphael.js",
+      "wwwroot/lib/jquery-mapael/js/jquery.mapael.js",
+      "wwwroot/lib/jquery-mapael/js/maps/usa_states.js",
+      "wwwroot/lib/bootstrap-sweetalert/sweetalert.js",
+      "wwwroot/lib/jquery.ui/jquery-ui.js",
+      "wwwroot/lib/admin-lte/js/demo.js",
+      "wwwroot/lib/admin-lte/js/pages/dashboard2.js"
+    ],
+    "minify": { "enabled": true }
+  },
+  {
+    "outputFileName": "wwwroot/js/vendor.adminlte.min.js",
+    "inputFiles": [
+    ],
+    "minify": { "enabled": true }
+  },
+  // Vendor datatables JS
+  {
+    "outputFileName": "wwwroot/js/vendor-datatables.min.js",
+    "inputFiles": [
+      "wwwroot/lib/datatables/js/jquery.dataTables.js",
+      "wwwroot/lib/datatables.net-bs4/dataTables.bootstrap4.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  // Vendor datatables CSS
+  {
+    "outputFileName": "wwwroot/css/vendor-datatables.min.css",
+    "inputFiles": [
+      "wwwroot/lib/datatables.net-bs4/dataTables.bootstrap4.css"
+    ],
+    "minify": { "enabled": true }
+  },
+  // Vendor jquery validation JS
+  {
+    "outputFileName": "wwwroot/js/vendor-validation.min.js",
+    "inputFiles": [
+      "wwwroot/lib/jquery-validate/jquery.validate.js",
+      "wwwroot/lib/jquery-validate/additional-methods.js",
+      "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js",
+      "wwwroot/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  }
+]

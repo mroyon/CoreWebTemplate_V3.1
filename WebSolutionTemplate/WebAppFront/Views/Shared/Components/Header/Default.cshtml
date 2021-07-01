@@ -1,0 +1,113 @@
+﻿@using Microsoft.AspNetCore.Builder
+@using Microsoft.AspNetCore.Localization
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.Extensions.Options
+
+@using Microsoft.AspNetCore.Antiforgery
+@inject IAntiforgery AntiForgery;
+
+@inject IViewLocalizer Localizer
+@inject IOptions<RequestLocalizationOptions> LocOptions
+@using CLL.Localization
+@inject CLL.Localization.LocalizeService SharedLocalizer
+@{
+    var requestCulture = Context.Features.Get<IRequestCultureFeature>();
+    var cultureItems = LocOptions.Value.SupportedUICultures
+        .Select(c => new SelectListItem { Value = c.Name, Text = c.TextInfo.ToTitleCase(c.NativeName.Contains('(') ? c.NativeName.Substring(0, c.NativeName.IndexOf('(')) : c.NativeName) })
+        .ToList();
+
+    var location = new Uri($"{Context.Request.Scheme}://{Context.Request.Host}{Context.Request.Path}{Context.Request.QueryString}");
+
+    var url = location.AbsoluteUri;
+    var returnUrlForLanguageSwitch = Context.Request.Path;
+
+    if (Context.Request.QueryString.HasValue)
+    {
+        returnUrlForLanguageSwitch = $"{Context.Request.Path}{Context.Request.QueryString.Value}";
+    }
+}
+
+<!-- ======= Top Bar ======= -->
+<div id="topbar" class="d-none d-lg-flex align-items-center fixed-top">
+    <div class="container d-flex align-items-center justify-content-between">
+        <div class="d-flex align-items-center">
+            <i class="icofont-clock-time"></i> <span id="timeshow" class="timeshow topbartext"></span>
+        </div>
+        <div class="d-flex align-items-center">
+            @foreach (var culture in cultureItems)
+            {
+                if (culture.Value != requestCulture.RequestCulture.UICulture.Name)
+                {
+                    <button onclick="updateLanguage('@culture.Value', '/')" id="@(culture.Text)_item" type="button" class="btn btn-link active topbartext">@culture.Text</button>
+                }
+            }
+
+        </div>
+    </div>
+</div>
+
+<!-- ======= Header ======= -->
+<header id="header" class="fixed-top">
+    <div class="container d-flex align-items-center">
+        <div class="row">
+            <div class="col-sm-6 col-md-6 col-lg-6 d-flex align-items-center">
+                <a href="." class="logo mr-auto"><img src="~/img/logo.png" alt=""></a>
+            </div>
+            <div class="col-sm-6 col-md-6 col-lg-6 d-flex align-items-center">
+                <nav class="nav-menu d-none d-lg-block">
+                    <ul>
+                        <li class="active"><a href="#header">Home</a></li>
+                        @*<li><a href="#about">About</a></li>
+                            <li><a href="#services">Services</a></li>
+                            <li><a href="#departments">Departments</a></li>*@
+                        <li><a href="#featured-services">Projects</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                        <li class=" d-lg-none drop-down">
+                            <a href="">Language</a>
+                            <ul>
+                                @foreach (var culture in cultureItems)
+                                {
+                                    if (culture.Value != requestCulture.RequestCulture.UICulture.Name)
+                                    {
+                                        <li><a onclick="updateLanguage('@culture.Value', '/')" href="#">@culture.Text</a></li>                                        
+                                    }
+                                }                                
+                            </ul>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+
+        <!-- Uncomment below if you prefer to use an image logo -->
+        <!-- <h1 class="logo mr-auto"><a href="index.html">Medicio</a></h1> -->
+        <!-- .nav-menu -->
+        @*<a href="#appointment" class="appointment-btn scrollto"><span class="d-none d-md-inline">Make an</span> Appointment</a>*@
+    </div>
+</header><!-- End Header -->
+
+<script type="text/javascript">
+
+    function updateLanguage(_culture, _returnUrl) {
+        $.ajax({
+            type: "POST",
+            //contentType: "application/json",
+            //dataType: 'JSON',
+            url: "/SetLanguage/SetLanguage",
+            data: {"culture": _culture, "returnUrl": _returnUrl },
+            headers: {
+                'RequestVerificationToken': '@AntiForgery.GetAndStoreTokens(Context).RequestToken'
+            },
+            success: function (response) {
+                window.location.reload();
+            },
+            error: function (xhRequest, ErrorText, thrownError) {
+                alert("Failed to process promotion correctly, please try again");
+                console.log('xhRequest: ' + xhRequest + "\n");
+                console.log('ErrorText: ' + ErrorText + "\n");
+                console.log('thrownError: ' + thrownError + "\n");
+            }
+        });
+    }
+
+</script>

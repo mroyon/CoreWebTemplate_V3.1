@@ -1,0 +1,144 @@
+﻿<%@ CodeTemplate Language="C#" TargetLanguage="C#" Description="Generates a ASP UserControl." Debug=true %>
+  
+  <%@ CodeTemplate Src="C:\ClassLibrary1\ClassLibrary1\LinqFunctions.cs" Inherits="LinqFunctions" Language="C#" TargetLanguage="C#"
+  Description="Generates a data context and entities for given tables." %>
+ 
+
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Assembly Name="CodeSmith.BaseTemplates" %>
+<%@ Assembly Name="CodeSmith.CustomProperties" %>
+<%@ Assembly Name="System.Data" %>
+<%@ Assembly Name="System" %>
+<%@ Assembly Name="System.Core" %>
+<%@ Assembly Name="System.Collections" %>
+<%@ Assembly Name="System.Linq" %>
+
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Import Namespace="CodeSmith.CustomProperties" %>
+<%@ Import Namespace="CodeSmith.BaseTemplates" %>
+<%@ Import Namespace="System.Data" %>
+<%@ Import Namespace="System.Collections.Generic" %>
+<%@ Import Namespace="System.Text" %>
+
+<%@ Import Namespace="System.Text.RegularExpressions" %>
+<%@ Property Name="SourceTable" Type="SchemaExplorer.TableSchema" DeepLoad="True" Default="" Optional="False" %>
+<%@ Property Name="NameSpace" Type="System.String" Default="" Optional="False" %>
+<%@ Property Name="WebNameSpace" Type="System.String" Optional="False" %>
+<%
+    List<ColumnSchema> objColumnList = new List<ColumnSchema>();
+
+        string divRowStart = "<div class=\"row \">";
+        string divColumnStart = "<div class=\"col-md-6\">";
+        string divClose = "</div>";
+        string div = string.Empty;
+%>
+using System.Net;
+using Web.Core.Frame.RequestResponse.UseCaseResponses;
+using Web.Core.Frame.Interfaces;
+using Web.Api.Serialization;
+using Web.Api.Infrastructure.Helpers;
+
+namespace Web.Api.Presenters
+{
+    /// <summary>
+    /// <%=GetTableNamesWithoutPrefix(SourceTable) %>Presenter
+    /// </summary>
+    public sealed class <%=GetTableNamesWithoutPrefix(SourceTable) %>Presenter : IOutputPort<<%=GetTableNamesWithoutPrefix(SourceTable) %>Response>, ICRUDRequestHandler<<%=GetTableNamesWithoutPrefix(SourceTable) %>Response>
+    {
+        /// <summary>
+        /// ContentResult
+        /// </summary>
+        public JsonContentResult ContentResult { get; }
+
+        /// <summary>
+        /// Gen_PriorityPresenter
+        /// </summary>
+        public <%=GetTableNamesWithoutPrefix(SourceTable) %>Presenter()
+        {
+            ContentResult = new JsonContentResult();
+        }
+
+        /// <summary>
+        /// Handle
+        /// </summary>
+        /// <param name="response"></param>
+        public void Handle(<%=GetTableNamesWithoutPrefix(SourceTable) %>Response response)
+        {
+            //ContentResult.StatusCode = (int)(response.Success ? HttpStatusCode.OK : HttpStatusCode.Unauthorized);
+            //ContentResult.Content = response.Success ? JsonSerializer.SerializeObject(new Gen_PriorityResponse(response._gen_PriorityList.AccessToken, response.RefreshToken)) : JsonSerializer.SerializeObject(response.Errors);
+        }
+
+        /// <summary>
+        /// GetAll
+        /// </summary>
+        /// <param name="response"></param>
+        public void GetAll(<%=GetTableNamesWithoutPrefix(SourceTable) %>Response response)
+        {
+            ContentResult.StatusCode = (int)(response.Success ? HttpStatusCode.OK : httpStatusCodeParser.SetHttpStatusCode(response.Errors));
+            ContentResult.Content = response.Success ? JsonSerializer.SerializeObject(new <%=GetTableNamesWithoutPrefix(SourceTable) %>Response(response._<%=GetTableNamesasLocalVariable(SourceTable)%>List, response.Success)) : JsonSerializer.SerializeObject(response.Errors);
+        }
+
+        /// <summary>
+        /// GetAllPaged
+        /// </summary>
+        /// <param name="response"></param>
+        public void GetAllPaged(<%=GetTableNamesWithoutPrefix(SourceTable) %>Response response)
+        {
+            ContentResult.StatusCode = (int)(response.Success ? HttpStatusCode.OK : httpStatusCodeParser.SetHttpStatusCode(response.Errors));
+            ContentResult.Content = response.Success ? JsonSerializer.SerializeObject(new <%=GetTableNamesWithoutPrefix(SourceTable) %>Response(response._<%=GetTableNamesasLocalVariable(SourceTable)%>List, response.Success)) : JsonSerializer.SerializeObject(response.Errors);
+        }
+
+        /// <summary>
+        /// GetListView
+        /// </summary>
+        /// <param name="response"></param>
+        public void GetListView(<%=GetTableNamesWithoutPrefix(SourceTable) %>Response response)
+        {
+            ContentResult.StatusCode = (int)(response.Success ? HttpStatusCode.OK : httpStatusCodeParser.SetHttpStatusCode(response.Errors));
+            ContentResult.Content = response.Success ? JsonSerializer.SerializeObject(new <%=GetTableNamesWithoutPrefix(SourceTable) %>Response(response._<%=GetTableNamesasLocalVariable(SourceTable)%>List, response.Success)) : JsonSerializer.SerializeObject(response.Errors);
+        }
+
+        
+
+        /// <summary>
+        /// GetSingle
+        /// </summary>
+        /// <param name="response"></param>
+        public void GetSingle(<%=GetTableNamesWithoutPrefix(SourceTable) %>Response response)
+        {
+            ContentResult.StatusCode = (int)(response.Success ? HttpStatusCode.OK : httpStatusCodeParser.SetHttpStatusCode(response.Errors));
+            ContentResult.Content = response.Success ? JsonSerializer.SerializeObject(new <%=GetTableNamesWithoutPrefix(SourceTable) %>Response(response._<%=GetTableNamesasLocalVariable(SourceTable)%>, response.Success)) : JsonSerializer.SerializeObject(response.Errors);
+        }
+
+        /// <summary>
+        /// Save
+        /// </summary>
+        /// <param name="response"></param>
+        public void Save(<%=GetTableNamesWithoutPrefix(SourceTable) %>Response response)
+        {
+            ContentResult.StatusCode = (int)(response.Success ? HttpStatusCode.OK : httpStatusCodeParser.SetHttpStatusCode(response.Errors));
+            ContentResult.Content = response.Success ? JsonSerializer.SerializeObject(new <%=GetTableNamesWithoutPrefix(SourceTable) %>Response(true, response.Message)) : JsonSerializer.SerializeObject(response.Errors);
+        }
+
+        /// <summary>
+        /// Update
+        /// </summary>
+        /// <param name="response"></param>
+        public void Update(<%=GetTableNamesWithoutPrefix(SourceTable) %>Response response)
+        {
+            ContentResult.StatusCode = (int)(response.Success ? HttpStatusCode.OK : httpStatusCodeParser.SetHttpStatusCode(response.Errors));
+            ContentResult.Content = response.Success ? JsonSerializer.SerializeObject(new <%=GetTableNamesWithoutPrefix(SourceTable) %>Response(true, response.Message)) : JsonSerializer.SerializeObject(response.Errors);
+        }
+
+        /// <summary>
+        /// Delete
+        /// </summary>
+        /// <param name="response"></param>
+        public void Delete(<%=GetTableNamesWithoutPrefix(SourceTable) %>Response response)
+        {
+            ContentResult.StatusCode = (int)(response.Success ? HttpStatusCode.OK : httpStatusCodeParser.SetHttpStatusCode(response.Errors));
+            ContentResult.Content = response.Success ? JsonSerializer.SerializeObject(new <%=GetTableNamesWithoutPrefix(SourceTable) %>Response(true, response.Message)) : JsonSerializer.SerializeObject(response.Errors);
+        }
+
+    }
+}

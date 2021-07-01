@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<codeSmith xmlns="http://www.codesmithtools.com/schema/csp.xsd">
+  <variables>
+    <add key="ConnectionString1" value="Data Source=.;Initial Catalog=KW_TEMPLATE;Persist Security Info=True;User ID=sa;Password=Asdf1234" />
+  </variables>
+  <propertySets>
+    <propertySet name="GEN_COM_SET_TEMPLATE.txt" output="GEN_COM_SET_TEMPLATE.txt" template="GEN_COM_SET_TEMPLATE.cst">
+      <property name="ServiceNameSpace">KAF</property>
+      <property name="WebNameSpace">KAFWebAdmin</property>
+      <property name="SourceDatabase">
+        <connectionString>$(ConnectionString1)</connectionString>
+        <providerType>SchemaExplorer.SqlSchemaProvider,SchemaExplorer.SqlSchemaProvider</providerType>
+      </property>
+      <property name="WPOutputDirectory">C:\TEMP\ui</property>
+    </propertySet>
+  </propertySets>
+</codeSmith>

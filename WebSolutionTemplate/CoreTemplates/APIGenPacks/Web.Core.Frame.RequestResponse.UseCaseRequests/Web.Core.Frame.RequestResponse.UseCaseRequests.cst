@@ -1,0 +1,51 @@
+﻿<%@ CodeTemplate Language="C#" TargetLanguage="C#" Description="Generates a ASP UserControl." Debug=true %>
+  
+  <%@ CodeTemplate Src="C:\ClassLibrary1\ClassLibrary1\LinqFunctions.cs" Inherits="LinqFunctions" Language="C#" TargetLanguage="C#"
+  Description="Generates a data context and entities for given tables." %>
+ 
+
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Assembly Name="CodeSmith.BaseTemplates" %>
+<%@ Assembly Name="CodeSmith.CustomProperties" %>
+<%@ Assembly Name="System.Data" %>
+<%@ Assembly Name="System" %>
+<%@ Assembly Name="System.Core" %>
+<%@ Assembly Name="System.Collections" %>
+<%@ Assembly Name="System.Linq" %>
+
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Import Namespace="CodeSmith.CustomProperties" %>
+<%@ Import Namespace="CodeSmith.BaseTemplates" %>
+<%@ Import Namespace="System.Data" %>
+<%@ Import Namespace="System.Collections.Generic" %>
+<%@ Import Namespace="System.Text" %>
+
+<%@ Import Namespace="System.Text.RegularExpressions" %>
+<%@ Property Name="SourceTable" Type="SchemaExplorer.TableSchema" DeepLoad="True" Default="" Optional="False" %>
+<%@ Property Name="NameSpace" Type="System.String" Default="" Optional="False" %>
+<%@ Property Name="WebNameSpace" Type="System.String" Optional="False" %>
+<%
+    List<ColumnSchema> objColumnList = new List<ColumnSchema>();
+
+        string divRowStart = "<div class=\"row \">";
+        string divColumnStart = "<div class=\"col-md-6\">";
+        string divClose = "</div>";
+        string div = string.Empty;
+%>
+using BDO.DataAccessObjects.CorsCore;
+using Web.Core.Frame.RequestResponse.UseCaseResponses;
+using Web.Core.Frame.Interfaces;
+
+namespace Web.Core.Frame.RequestResponse.UseCaseRequests
+{
+    public class <%=GetTableNamesWithoutPrefix(SourceTable) %>Request : IUseCaseRequest<<%=GetTableNamesWithoutPrefix(SourceTable)%>Response>
+    {
+        public <%=GetClassName(SourceTable)%>Entity Obj<%=GetClassName(SourceTable)%> { get; }
+        public string RemoteIpAddress { get; }
+
+        public <%=GetTableNamesWithoutPrefix(SourceTable) %>Request(<%=GetClassName(SourceTable)%>Entity obj<%=GetClassName(SourceTable)%>)
+        {
+            Obj<%=GetClassName(SourceTable)%> = obj<%=GetClassName(SourceTable)%>;
+        }
+    }
+}

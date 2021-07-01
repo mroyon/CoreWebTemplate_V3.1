@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<codeSmith xmlns="http://www.codesmithtools.com/schema/csp.xsd">
+  <variables>
+    <add key="ConnectionString1" value="Data Source=192.168.200.202;Initial Catalog=KAF_HR_V1.0;Persist Security Info=True;User ID=sa;Password=Asdf1234" />
+  </variables>
+  <propertySets>
+    <propertySet name="UIGenerator" template="GEN_COM_SET_MD_TEMPLATE.cst">
+      <property name="SourceTable">
+        <connectionString>$(ConnectionString2)</connectionString>
+        <providerType>SchemaExplorer.SqlSchemaProvider,SchemaExplorer.SqlSchemaProvider</providerType>
+        <table>
+      <owner>dbo</owner>
+      <name>RPTM_AllReportInfo</name>
+    </table>
+      </property>
+      <property name="SourceTableDetail">
+        <connectionString>$(ConnectionString2)</connectionString>
+        <providerType>SchemaExplorer.SqlSchemaProvider,SchemaExplorer.SqlSchemaProvider</providerType>
+        <table>
+      <owner>dbo</owner>
+      <name>RPTM_ReportDataSource</name>
+    </table>
+      </property>
+      <property name="WPOutputDirectory">C:\temp\MasterDetails</property>
+    </propertySet>
+  </propertySets>
+</codeSmith>

@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<codeSmith xmlns="http://www.codesmithtools.com/schema/csp.xsd">
+  <variables>
+    <add key="ConnectionString1" value="Data Source=10.0.17.35;Initial Catalog=KAFV4.3;User ID=sa;Password=123456" />
+    <add key="ConnectionString2" value="Data Source=.;Initial Catalog=KAF_Exam;Persist Security Info=True;User ID=sa;Password=123456" />
+    <add key="ConnectionString3" value="Data Source=192.168.25.190;Initial Catalog=KAF_RegistrationSystem_V2.0;Persist Security Info=True;User ID=sa;Password=121212@db" />
+    <add key="ConnectionString4" value="Data Source=.;Initial Catalog=KAF_RegistrationSystem_V2.1;Persist Security Info=True;User ID=sa;Password=123456" />
+    <add key="ConnectionString5" value="Data Source=.;Initial Catalog=CSAERT;Persist Security Info=True;User ID=sa;Password=123456" />
+    <add key="ConnectionString6" value="Data Source=192.168.25.107;Initial Catalog=KAF_MAJCSC_V2.0;Persist Security Info=True;User ID=sa;Password=121212" />
+    <add key="ConnectionString7" value="Data Source=192.168.200.202;Initial Catalog=KAF_HR_V1.0;User ID=sa;Password=Asdf1234" />
+  </variables>
+  <propertySets>
+    <propertySet name="ExtensionComposer" template="ExtensionComposer.cst">
+      <property name="NameSpace">KAF</property>
+      <property name="IDaoDir">C:\Projects\KAF_HRSystem_V1.0\KAFMVCSolution.root\KAFMVCSolution\KAFWebAdmin\Templates\BackEndGenerator\New folder\IDAL</property>
+      <property name="DaoDir">C:\Projects\KAF_HRSystem_V1.0\KAFMVCSolution.root\KAFMVCSolution\KAFWebAdmin\Templates\BackEndGenerator\New folder\DAL</property>
+      <property name="DtoDir">C:\Projects\KAF_HRSystem_V1.0\KAFMVCSolution.root\KAFMVCSolution\KAFWebAdmin\Templates\BackEndGenerator\New folder</property>
+      <property name="IBalDir">C:\Projects\KAF_HRSystem_V1.0\KAFMVCSolution.root\KAFMVCSolution\KAFWebAdmin\Templates\BackEndGenerator\New folder\IBAL</property>
+      <property name="BalDir">C:\Projects\KAF_HRSystem_V1.0\KAFMVCSolution.root\KAFMVCSolution\KAFWebAdmin\Templates\BackEndGenerator\New folder\BAL</property>
+      <property name="SourceDatabase">
+        <connectionString>$(ConnectionString7)</connectionString>
+        <providerType>SchemaExplorer.SqlSchemaProvider,SchemaExplorer.SqlSchemaProvider</providerType>
+      </property>
+    </propertySet>
+  </propertySets>
+</codeSmith>

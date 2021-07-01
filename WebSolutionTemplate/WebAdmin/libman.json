@@ -1,0 +1,139 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "provider": "unpkg",
+      "library": "@laylazi/bootstrap-rtl@4.6.0-1",
+      "destination": "wwwroot/lib/bootstrap/",
+      "files": [
+        "dist/css/bootstrap-reboot-rtl.css",
+        "dist/css/bootstrap-reboot-rtl.min.css",
+        "dist/css/bootstrap-reboot.css",
+        "dist/css/bootstrap-reboot.min.css",
+        "dist/css/bootstrap-rtl.css",
+        "dist/css/bootstrap-rtl.min.css",
+        "dist/css/bootstrap.css",
+        "dist/css/bootstrap.min.css",
+        "dist/js/bootstrap.js",
+        "dist/js/bootstrap.min.js"
+      ]
+    },
+    {
+      "library": "jquery@3.6.0",
+      "destination": "wwwroot/lib/jquery/",
+      "files": [
+        "jquery.min.js",
+        "jquery.js"
+      ]
+    },
+    {
+      "library": "jquery-validation-unobtrusive@3.2.12",
+      "destination": "wwwroot/lib/jquery-validation-unobtrusive/",
+      "files": [
+        "jquery.validate.unobtrusive.min.js",
+        "jquery.validate.unobtrusive.js"
+      ]
+    },
+    {
+      "library": "jquery-validate@1.19.3",
+      "destination": "wwwroot/lib/jquery-validate/"
+    },
+    {
+      "library": "datatables@1.10.21",
+      "destination": "wwwroot/lib/datatables/"
+    },
+    {
+      "library": "datatables.net-bs4@3.2.2",
+      "destination": "wwwroot/lib/datatables.net-bs4/",
+      "files": [
+        "dataTables.bootstrap4.min.js",
+        "dataTables.bootstrap4.css",
+        "dataTables.bootstrap4.js",
+        "dataTables.bootstrap4.min.css"
+      ]
+    },
+    {
+      "library": "jquery-ajax-unobtrusive@3.2.6",
+      "destination": "wwwroot/lib/jquery-ajax-unobtrusive/",
+      "files": [
+        "jquery.unobtrusive-ajax.min.js",
+        "jquery.unobtrusive-ajax.js"
+      ]
+    },
+    {
+      "library": "overlayscrollbars@1.13.1",
+      "destination": "wwwroot/lib/overlayscrollbars/",
+      "files": [
+        "js/OverlayScrollbars.min.js",
+        "js/OverlayScrollbars.js",
+        "css/OverlayScrollbars.css",
+        "css/OverlayScrollbars.min.css"
+      ]
+    },
+    {
+      "library": "jquery-mousewheel@3.1.13",
+      "destination": "wwwroot/lib/jquery-mousewheel/",
+      "files": [
+        "jquery.mousewheel.min.js",
+        "jquery.mousewheel.js"
+      ]
+    },
+    {
+      "library": "raphael@2.3.0",
+      "destination": "wwwroot/lib/raphael/",
+      "files": [
+        "raphael.min.js",
+        "raphael.js"
+      ]
+    },
+    {
+      "library": "jquery-mapael@2.2.0",
+      "destination": "wwwroot/lib/jquery-mapael/"
+    },
+    {
+      "library": "Chart.js@3.4.0",
+      "destination": "wwwroot/lib/Chartjs/",
+      "files": [
+        "chart.min.js",
+        "chart.js"
+      ]
+    },
+    {
+      "library": "jqueryui@1.12.1",
+      "destination": "wwwroot/lib/jquery.ui/",
+      "files": [
+        "jquery-ui.min.js",
+        "jquery-ui.css",
+        "jquery-ui.js",
+        "jquery-ui.min.css"
+      ]
+    },
+    {
+      "library": "admin-lte@3.1.0",
+      "destination": "wwwroot/lib/admin-lte/"
+    },
+    {
+      "library": "bootstrap-sweetalert@1.0.1",
+      "destination": "wwwroot/lib/bootstrap-sweetalert/",
+      "files": [
+        "sweetalert.min.js",
+        "sweetalert.css",
+        "sweetalert.js",
+        "sweetalert.min.css"
+      ]
+    },
+    {
+      "library": "font-awesome@5.15.3",
+      "destination": "wwwroot/lib/font-awesome/"
+    },
+    {
+      "library": "popper.js@2.9.2",
+      "destination": "wwwroot/lib/popperjs/",
+      "files": [
+        "umd/popper.min.js",
+        "umd/popper.js"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<codeSmith xmlns="http://www.codesmithtools.com/schema/csp.xsd">
+  <variables>
+    <add key="ConnectionString9" value="Data Source=localhost;Initial Catalog=KAF_RegistrationSystem_V2.0;Persist Security Info=True;User ID=sa;Password=121212@db" />
+    <add key="ConnectionString1" value="Data Source=localhost;Initial Catalog=KAF_RegistrationSystem_V2.0;User ID=sa;Password=121212@db" />
+    <add key="ConnectionString2" value="Data Source=192.168.25.190;Initial Catalog=KAF_RegistrationSystem_V2.0;Persist Security Info=True;User ID=sa;Password=121212@db" />
+    <add key="ConnectionString3" value="Data Source=localhost;Initial Catalog=KAF_RegistrationSystem_V2.0;Persist Security Info=True;User ID=sa;Password=123456" />
+  </variables>
+  <propertySets>
+    <propertySet name="GenerateTableWiseBackEnd" template="GenerateTableWiseBackEnd.cst">
+      <property name="NameSpace">KAF</property>
+      <property name="DtoDir">C:\Projects\RegistrationSystem_V2.0\MOI.Solutions.root\MOI.Solutions\MOI.BusinessDataObjects\BusinessDataObjects</property>
+      <property name="IDaoDir">C:\Projects\RegistrationSystem_V2.0\MOI.Solutions.root\MOI.Solutions\MOI.IDataAccessObjects\IDataAccessObjects</property>
+      <property name="DaoDir">C:\Projects\RegistrationSystem_V2.0\MOI.Solutions.root\MOI.Solutions\MOI.DataAccessObjects\DataAccessObjects</property>
+      <property name="BaseDataAccessOutputDirectory">C:\Projects\KAF\TestGenerated</property>
+      <property name="DataAccessOutputDirectory">C:\Projects\KAF\TestGenerated</property>
+      <property name="IBalDir">C:\Projects\RegistrationSystem_V2.0\MOI.Solutions.root\MOI.Solutions\MOI.IBusinessFacadeObjects\IBusinessFacadeObjects</property>
+      <property name="BalDir">C:\Projects\RegistrationSystem_V2.0\MOI.Solutions.root\MOI.Solutions\MOI.BusinessFacadeObjects\BusinessFacadeObjects</property>
+      <property name="SourceTable">
+        <connectionString>$(ConnectionString3)</connectionString>
+        <providerType>SchemaExplorer.SqlSchemaProvider,SchemaExplorer.SqlSchemaProvider</providerType>
+        <table>
+      <owner>dbo</owner>
+      <name>asec_LastWorkingPage</name>
+    </table>
+      </property>
+      <property name="SourceDatabase">
+        <connectionString>$(ConnectionString3)</connectionString>
+        <providerType>SchemaExplorer.SqlSchemaProvider,SchemaExplorer.SqlSchemaProvider</providerType>
+      </property>
+      <property name="FacadeDir">C:\Projects\RegistrationSystem_V2.0\MOI.Solutions.root\MOI.Solutions\MOI.FacadeCreatorObjects\FacadeCreatorObjects</property>
+    </propertySet>
+  </propertySets>
+</codeSmith>

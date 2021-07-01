@@ -1,0 +1,2654 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>WebApi</name>
+    </assembly>
+    <members>
+        <member name="T:WebApi.Controllers.AuthController">
+            <summary>
+            AuthController
+            </summary>
+        </member>
+        <member name="M:WebApi.Controllers.AuthController.#ctor(Web.Core.Frame.Interfaces.UseCases.ILoginUseCase,WebApi.Presenters.LoginPresenter,Web.Core.Frame.Interfaces.UseCases.IExchangeRefreshTokenUseCase,WebApi.Presenters.ExchangeRefreshTokenPresenter,Microsoft.Extensions.Options.IOptions{BDO.DataAccessObjects.ExtendedEntities.AuthSettings},Web.Core.Frame.CustomIdentityManagers.ApplicationSignInManager{BDO.DataAccessObjects.SecurityModule.owin_userEntity})">
+            <summary>
+            
+            </summary>
+            <param name="loginUseCase"></param>
+            <param name="loginPresenter"></param>
+            <param name="exchangeRefreshTokenUseCase"></param>
+            <param name="exchangeRefreshTokenPresenter"></param>
+            <param name="userSignManager"></param>
+            <param name="authSettings"></param>
+        </member>
+        <member name="M:WebApi.Controllers.AuthController.loginTest(Web.Core.Frame.Dto.UseCaseRequests.LoginRequest)">
+            <summary>
+            
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.AuthController.Login(Web.Core.Frame.Dto.UseCaseRequests.LoginRequest)">
+            <summary>
+            login
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.AuthController.RefreshToken(Web.Core.Frame.Dto.UseCaseRequests.ExchangeRefreshTokenRequest)">
+            <summary>
+            refreshtoken
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="T:WebApi.Controllers.GenDocTypeController">
+            <summary>
+            GenDocTypeController
+            </summary>
+        </member>
+        <member name="P:WebApi.Controllers.GenDocTypeController._configuration">
+            <summary>
+            _configuration
+            </summary>
+        </member>
+        <member name="M:WebApi.Controllers.GenDocTypeController.#ctor(Web.Core.Frame.Interfaces.UseCases.IGen_DocTypeUseCase,WebApi.Presenters.Gen_DocTypePresenter,Microsoft.Extensions.Options.IOptions{BDO.DataAccessObjects.ExtendedEntities.AuthSettings})">
+            <summary>
+            GenDocTypeController
+            </summary>
+            <param name="gen_DocTypeUseCase"></param>
+            <param name="gen_DocTypePresenter"></param>
+            <param name="authSettings"></param>
+        </member>
+        <member name="M:WebApi.Controllers.GenDocTypeController.GetAllGenDocType">
+            <summary>
+            GetAllGenDocType
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.GenDocTypeController.GetAllPagedGenDocType(BDO.DataAccessObjects.Models.gen_doctypeEntity)">
+            <summary>
+            GetAllPagedGenDocType
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.GenDocTypeController.GetListViewGenDocType(BDO.DataAccessObjects.Models.gen_doctypeEntity)">
+            <summary>
+            GetListViewGenDocType
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.GenDocTypeController.GetSingleGenDocType(BDO.DataAccessObjects.Models.gen_doctypeEntity)">
+            <summary>
+            GetSingleGenDocType
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.GenDocTypeController.SaveGenDocType(BDO.DataAccessObjects.Models.gen_doctypeEntity)">
+            <summary>
+            SaveGenDocType
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.GenDocTypeController.UpdateGenDocType(BDO.DataAccessObjects.Models.gen_doctypeEntity)">
+            <summary>
+            UpdateGenDocType
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.GenDocTypeController.DeleteGenDocType(BDO.DataAccessObjects.Models.gen_doctypeEntity)">
+            <summary>
+            DeleteGenDocType
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="T:WebApi.Controllers.GenFAQCategoryController">
+            <summary>
+            GenFAQCategoryController
+            </summary>
+        </member>
+        <member name="P:WebApi.Controllers.GenFAQCategoryController._configuration">
+            <summary>
+            _configuration
+            </summary>
+        </member>
+        <member name="M:WebApi.Controllers.GenFAQCategoryController.#ctor(Web.Core.Frame.Interfaces.UseCases.IGen_FAQCategoryUseCase,WebApi.Presenters.Gen_FAQCategoryPresenter,Microsoft.Extensions.Options.IOptions{BDO.DataAccessObjects.ExtendedEntities.AuthSettings})">
+            <summary>
+            GenFAQCategoryController
+            </summary>
+            <param name="gen_FAQCategoryUseCase"></param>
+            <param name="gen_FAQCategoryPresenter"></param>
+            <param name="authSettings"></param>
+        </member>
+        <member name="M:WebApi.Controllers.GenFAQCategoryController.GetAllGenFAQCategory">
+            <summary>
+            GetAllGenFAQCategory
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.GenFAQCategoryController.GetAllPagedGenFAQCategory(BDO.DataAccessObjects.Models.gen_faqcategoryEntity)">
+            <summary>
+            GetAllPagedGenFAQCategory
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.GenFAQCategoryController.GetListViewGenFAQCategory(BDO.DataAccessObjects.Models.gen_faqcategoryEntity)">
+            <summary>
+            GetListViewGenFAQCategory
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.GenFAQCategoryController.GetSingleGenFAQCategory(BDO.DataAccessObjects.Models.gen_faqcategoryEntity)">
+            <summary>
+            GetSingleGenFAQCategory
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.GenFAQCategoryController.SaveGenFAQCategory(BDO.DataAccessObjects.Models.gen_faqcategoryEntity)">
+            <summary>
+            SaveGenFAQCategory
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.GenFAQCategoryController.UpdateGenFAQCategory(BDO.DataAccessObjects.Models.gen_faqcategoryEntity)">
+            <summary>
+            UpdateGenFAQCategory
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.GenFAQCategoryController.DeleteGenFAQCategory(BDO.DataAccessObjects.Models.gen_faqcategoryEntity)">
+            <summary>
+            DeleteGenFAQCategory
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="T:WebApi.Controllers.GenFAQController">
+            <summary>
+            GenFAQController
+            </summary>
+        </member>
+        <member name="P:WebApi.Controllers.GenFAQController._configuration">
+            <summary>
+            _configuration
+            </summary>
+        </member>
+        <member name="M:WebApi.Controllers.GenFAQController.#ctor(Web.Core.Frame.Interfaces.UseCases.IGen_FAQUseCase,WebApi.Presenters.Gen_FAQPresenter,Microsoft.Extensions.Options.IOptions{BDO.DataAccessObjects.ExtendedEntities.AuthSettings})">
+            <summary>
+            GenFAQController
+            </summary>
+            <param name="gen_FAQUseCase"></param>
+            <param name="gen_FAQPresenter"></param>
+            <param name="authSettings"></param>
+        </member>
+        <member name="M:WebApi.Controllers.GenFAQController.GetAllGenFAQ">
+            <summary>
+            GetAllGenFAQ
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.GenFAQController.GetAllPagedGenFAQ(BDO.DataAccessObjects.Models.gen_faqEntity)">
+            <summary>
+            GetAllPagedGenFAQ
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.GenFAQController.GetListViewGenFAQ(BDO.DataAccessObjects.Models.gen_faqEntity)">
+            <summary>
+            GetListViewGenFAQ
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.GenFAQController.GetSingleGenFAQ(BDO.DataAccessObjects.Models.gen_faqEntity)">
+            <summary>
+            GetSingleGenFAQ
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.GenFAQController.SaveGenFAQ(BDO.DataAccessObjects.Models.gen_faqEntity)">
+            <summary>
+            SaveGenFAQ
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.GenFAQController.UpdateGenFAQ(BDO.DataAccessObjects.Models.gen_faqEntity)">
+            <summary>
+            UpdateGenFAQ
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.GenFAQController.DeleteGenFAQ(BDO.DataAccessObjects.Models.gen_faqEntity)">
+            <summary>
+            DeleteGenFAQ
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="T:WebApi.Controllers.GenImageGallaryCategoryController">
+            <summary>
+            GenImageGallaryCategoryController
+            </summary>
+        </member>
+        <member name="P:WebApi.Controllers.GenImageGallaryCategoryController._configuration">
+            <summary>
+            _configuration
+            </summary>
+        </member>
+        <member name="M:WebApi.Controllers.GenImageGallaryCategoryController.#ctor(Web.Core.Frame.Interfaces.UseCases.IGen_ImageGallaryCategoryUseCase,WebApi.Presenters.Gen_ImageGallaryCategoryPresenter,Microsoft.Extensions.Options.IOptions{BDO.DataAccessObjects.ExtendedEntities.AuthSettings})">
+            <summary>
+            GenImageGallaryCategoryController
+            </summary>
+            <param name="gen_ImageGallaryCategoryUseCase"></param>
+            <param name="gen_ImageGallaryCategoryPresenter"></param>
+            <param name="authSettings"></param>
+        </member>
+        <member name="M:WebApi.Controllers.GenImageGallaryCategoryController.GetAllGenImageGallaryCategory">
+            <summary>
+            GetAllGenImageGallaryCategory
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.GenImageGallaryCategoryController.GetAllPagedGenImageGallaryCategory(BDO.DataAccessObjects.Models.gen_imagegallarycategoryEntity)">
+            <summary>
+            GetAllPagedGenImageGallaryCategory
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.GenImageGallaryCategoryController.GetListViewGenImageGallaryCategory(BDO.DataAccessObjects.Models.gen_imagegallarycategoryEntity)">
+            <summary>
+            GetListViewGenImageGallaryCategory
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.GenImageGallaryCategoryController.GetSingleGenImageGallaryCategory(BDO.DataAccessObjects.Models.gen_imagegallarycategoryEntity)">
+            <summary>
+            GetSingleGenImageGallaryCategory
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.GenImageGallaryCategoryController.SaveGenImageGallaryCategory(BDO.DataAccessObjects.Models.gen_imagegallarycategoryEntity)">
+            <summary>
+            SaveGenImageGallaryCategory
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.GenImageGallaryCategoryController.UpdateGenImageGallaryCategory(BDO.DataAccessObjects.Models.gen_imagegallarycategoryEntity)">
+            <summary>
+            UpdateGenImageGallaryCategory
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.GenImageGallaryCategoryController.DeleteGenImageGallaryCategory(BDO.DataAccessObjects.Models.gen_imagegallarycategoryEntity)">
+            <summary>
+            DeleteGenImageGallaryCategory
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="T:WebApi.Controllers.GenImageGallaryController">
+            <summary>
+            GenImageGallaryController
+            </summary>
+        </member>
+        <member name="P:WebApi.Controllers.GenImageGallaryController._configuration">
+            <summary>
+            _configuration
+            </summary>
+        </member>
+        <member name="M:WebApi.Controllers.GenImageGallaryController.#ctor(Web.Core.Frame.Interfaces.UseCases.IGen_ImageGallaryUseCase,WebApi.Presenters.Gen_ImageGallaryPresenter,Microsoft.Extensions.Options.IOptions{BDO.DataAccessObjects.ExtendedEntities.AuthSettings})">
+            <summary>
+            GenImageGallaryController
+            </summary>
+            <param name="gen_ImageGallaryUseCase"></param>
+            <param name="gen_ImageGallaryPresenter"></param>
+            <param name="authSettings"></param>
+        </member>
+        <member name="M:WebApi.Controllers.GenImageGallaryController.GetAllGenImageGallary">
+            <summary>
+            GetAllGenImageGallary
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.GenImageGallaryController.GetAllPagedGenImageGallary(BDO.DataAccessObjects.Models.gen_imagegallaryEntity)">
+            <summary>
+            GetAllPagedGenImageGallary
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.GenImageGallaryController.GetListViewGenImageGallary(BDO.DataAccessObjects.Models.gen_imagegallaryEntity)">
+            <summary>
+            GetListViewGenImageGallary
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.GenImageGallaryController.GetSingleGenImageGallary(BDO.DataAccessObjects.Models.gen_imagegallaryEntity)">
+            <summary>
+            GetSingleGenImageGallary
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.GenImageGallaryController.SaveGenImageGallary(BDO.DataAccessObjects.Models.gen_imagegallaryEntity)">
+            <summary>
+            SaveGenImageGallary
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.GenImageGallaryController.UpdateGenImageGallary(BDO.DataAccessObjects.Models.gen_imagegallaryEntity)">
+            <summary>
+            UpdateGenImageGallary
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.GenImageGallaryController.DeleteGenImageGallary(BDO.DataAccessObjects.Models.gen_imagegallaryEntity)">
+            <summary>
+            DeleteGenImageGallary
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="T:WebApi.Controllers.GenLinkedServiceController">
+            <summary>
+            GenLinkedServiceController
+            </summary>
+        </member>
+        <member name="P:WebApi.Controllers.GenLinkedServiceController._configuration">
+            <summary>
+            _configuration
+            </summary>
+        </member>
+        <member name="M:WebApi.Controllers.GenLinkedServiceController.#ctor(Web.Core.Frame.Interfaces.UseCases.IGen_LinkedServiceUseCase,WebApi.Presenters.Gen_LinkedServicePresenter,Microsoft.Extensions.Options.IOptions{BDO.DataAccessObjects.ExtendedEntities.AuthSettings})">
+            <summary>
+            GenLinkedServiceController
+            </summary>
+            <param name="gen_LinkedServiceUseCase"></param>
+            <param name="gen_LinkedServicePresenter"></param>
+            <param name="authSettings"></param>
+        </member>
+        <member name="M:WebApi.Controllers.GenLinkedServiceController.GetAllGenLinkedService">
+            <summary>
+            GetAllGenLinkedService
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.GenLinkedServiceController.GetAllPagedGenLinkedService(BDO.DataAccessObjects.Models.gen_linkedserviceEntity)">
+            <summary>
+            GetAllPagedGenLinkedService
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.GenLinkedServiceController.GetListViewGenLinkedService(BDO.DataAccessObjects.Models.gen_linkedserviceEntity)">
+            <summary>
+            GetListViewGenLinkedService
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.GenLinkedServiceController.GetSingleGenLinkedService(BDO.DataAccessObjects.Models.gen_linkedserviceEntity)">
+            <summary>
+            GetSingleGenLinkedService
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.GenLinkedServiceController.SaveGenLinkedService(BDO.DataAccessObjects.Models.gen_linkedserviceEntity)">
+            <summary>
+            SaveGenLinkedService
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.GenLinkedServiceController.UpdateGenLinkedService(BDO.DataAccessObjects.Models.gen_linkedserviceEntity)">
+            <summary>
+            UpdateGenLinkedService
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.GenLinkedServiceController.DeleteGenLinkedService(BDO.DataAccessObjects.Models.gen_linkedserviceEntity)">
+            <summary>
+            DeleteGenLinkedService
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="T:WebApi.Controllers.OwinFormActionController">
+            <summary>
+            OwinFormActionController
+            </summary>
+        </member>
+        <member name="P:WebApi.Controllers.OwinFormActionController._configuration">
+            <summary>
+            _configuration
+            </summary>
+        </member>
+        <member name="M:WebApi.Controllers.OwinFormActionController.#ctor(Web.Core.Frame.Interfaces.UseCases.IOwin_FormActionUseCase,WebApi.Presenters.Owin_FormActionPresenter,Microsoft.Extensions.Options.IOptions{BDO.DataAccessObjects.ExtendedEntities.AuthSettings})">
+            <summary>
+            OwinFormActionController
+            </summary>
+            <param name="owin_FormActionUseCase"></param>
+            <param name="owin_FormActionPresenter"></param>
+            <param name="authSettings"></param>
+        </member>
+        <member name="M:WebApi.Controllers.OwinFormActionController.GetAllOwinFormAction">
+            <summary>
+            GetAllOwinFormAction
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OwinFormActionController.GetAllPagedOwinFormAction(BDO.DataAccessObjects.SecurityModule.owin_formactionEntity)">
+            <summary>
+            GetAllPagedOwinFormAction
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OwinFormActionController.GetListViewOwinFormAction(BDO.DataAccessObjects.SecurityModule.owin_formactionEntity)">
+            <summary>
+            GetListViewOwinFormAction
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OwinFormActionController.GetSingleOwinFormAction(BDO.DataAccessObjects.SecurityModule.owin_formactionEntity)">
+            <summary>
+            GetSingleOwinFormAction
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OwinFormActionController.SaveOwinFormAction(BDO.DataAccessObjects.SecurityModule.owin_formactionEntity)">
+            <summary>
+            SaveOwinFormAction
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OwinFormActionController.UpdateOwinFormAction(BDO.DataAccessObjects.SecurityModule.owin_formactionEntity)">
+            <summary>
+            UpdateOwinFormAction
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OwinFormActionController.DeleteOwinFormAction(BDO.DataAccessObjects.SecurityModule.owin_formactionEntity)">
+            <summary>
+            DeleteOwinFormAction
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="T:WebApi.Controllers.OwinFormInfoController">
+            <summary>
+            OwinFormInfoController
+            </summary>
+        </member>
+        <member name="P:WebApi.Controllers.OwinFormInfoController._configuration">
+            <summary>
+            _configuration
+            </summary>
+        </member>
+        <member name="M:WebApi.Controllers.OwinFormInfoController.#ctor(Web.Core.Frame.Interfaces.UseCases.IOwin_FormInfoUseCase,WebApi.Presenters.Owin_FormInfoPresenter,Microsoft.Extensions.Options.IOptions{BDO.DataAccessObjects.ExtendedEntities.AuthSettings})">
+            <summary>
+            OwinFormInfoController
+            </summary>
+            <param name="owin_FormInfoUseCase"></param>
+            <param name="owin_FormInfoPresenter"></param>
+            <param name="authSettings"></param>
+        </member>
+        <member name="M:WebApi.Controllers.OwinFormInfoController.GetAllOwinFormInfo">
+            <summary>
+            GetAllOwinFormInfo
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OwinFormInfoController.GetAllPagedOwinFormInfo(BDO.DataAccessObjects.SecurityModule.owin_forminfoEntity)">
+            <summary>
+            GetAllPagedOwinFormInfo
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OwinFormInfoController.GetListViewOwinFormInfo(BDO.DataAccessObjects.SecurityModule.owin_forminfoEntity)">
+            <summary>
+            GetListViewOwinFormInfo
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OwinFormInfoController.GetSingleOwinFormInfo(BDO.DataAccessObjects.SecurityModule.owin_forminfoEntity)">
+            <summary>
+            GetSingleOwinFormInfo
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OwinFormInfoController.SaveOwinFormInfo(BDO.DataAccessObjects.SecurityModule.owin_forminfoEntity)">
+            <summary>
+            SaveOwinFormInfo
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OwinFormInfoController.UpdateOwinFormInfo(BDO.DataAccessObjects.SecurityModule.owin_forminfoEntity)">
+            <summary>
+            UpdateOwinFormInfo
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OwinFormInfoController.DeleteOwinFormInfo(BDO.DataAccessObjects.SecurityModule.owin_forminfoEntity)">
+            <summary>
+            DeleteOwinFormInfo
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="T:WebApi.Controllers.OwinLastWorkingPageController">
+            <summary>
+            OwinLastWorkingPageController
+            </summary>
+        </member>
+        <member name="P:WebApi.Controllers.OwinLastWorkingPageController._configuration">
+            <summary>
+            _configuration
+            </summary>
+        </member>
+        <member name="M:WebApi.Controllers.OwinLastWorkingPageController.#ctor(Web.Core.Frame.Interfaces.UseCases.IOwin_LastWorkingPageUseCase,WebApi.Presenters.Owin_LastWorkingPagePresenter,Microsoft.Extensions.Options.IOptions{BDO.DataAccessObjects.ExtendedEntities.AuthSettings})">
+            <summary>
+            OwinLastWorkingPageController
+            </summary>
+            <param name="owin_LastWorkingPageUseCase"></param>
+            <param name="owin_LastWorkingPagePresenter"></param>
+            <param name="authSettings"></param>
+        </member>
+        <member name="M:WebApi.Controllers.OwinLastWorkingPageController.GetAllOwinLastWorkingPage">
+            <summary>
+            GetAllOwinLastWorkingPage
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OwinLastWorkingPageController.GetAllPagedOwinLastWorkingPage(BDO.DataAccessObjects.SecurityModule.owin_lastworkingpageEntity)">
+            <summary>
+            GetAllPagedOwinLastWorkingPage
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OwinLastWorkingPageController.GetListViewOwinLastWorkingPage(BDO.DataAccessObjects.SecurityModule.owin_lastworkingpageEntity)">
+            <summary>
+            GetListViewOwinLastWorkingPage
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OwinLastWorkingPageController.GetSingleOwinLastWorkingPage(BDO.DataAccessObjects.SecurityModule.owin_lastworkingpageEntity)">
+            <summary>
+            GetSingleOwinLastWorkingPage
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OwinLastWorkingPageController.SaveOwinLastWorkingPage(BDO.DataAccessObjects.SecurityModule.owin_lastworkingpageEntity)">
+            <summary>
+            SaveOwinLastWorkingPage
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OwinLastWorkingPageController.UpdateOwinLastWorkingPage(BDO.DataAccessObjects.SecurityModule.owin_lastworkingpageEntity)">
+            <summary>
+            UpdateOwinLastWorkingPage
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OwinLastWorkingPageController.DeleteOwinLastWorkingPage(BDO.DataAccessObjects.SecurityModule.owin_lastworkingpageEntity)">
+            <summary>
+            DeleteOwinLastWorkingPage
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="T:WebApi.Controllers.OwinRoleController">
+            <summary>
+            OwinRoleController
+            </summary>
+        </member>
+        <member name="P:WebApi.Controllers.OwinRoleController._configuration">
+            <summary>
+            _configuration
+            </summary>
+        </member>
+        <member name="M:WebApi.Controllers.OwinRoleController.#ctor(Web.Core.Frame.Interfaces.UseCases.IOwin_RoleUseCase,WebApi.Presenters.Owin_RolePresenter,Microsoft.Extensions.Options.IOptions{BDO.DataAccessObjects.ExtendedEntities.AuthSettings})">
+            <summary>
+            OwinRoleController
+            </summary>
+            <param name="owin_RoleUseCase"></param>
+            <param name="owin_RolePresenter"></param>
+            <param name="authSettings"></param>
+        </member>
+        <member name="M:WebApi.Controllers.OwinRoleController.GetAllOwinRole">
+            <summary>
+            GetAllOwinRole
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OwinRoleController.GetAllPagedOwinRole(BDO.DataAccessObjects.SecurityModule.owin_roleEntity)">
+            <summary>
+            GetAllPagedOwinRole
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OwinRoleController.GetListViewOwinRole(BDO.DataAccessObjects.SecurityModule.owin_roleEntity)">
+            <summary>
+            GetListViewOwinRole
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OwinRoleController.GetSingleOwinRole(BDO.DataAccessObjects.SecurityModule.owin_roleEntity)">
+            <summary>
+            GetSingleOwinRole
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OwinRoleController.SaveOwinRole(BDO.DataAccessObjects.SecurityModule.owin_roleEntity)">
+            <summary>
+            SaveOwinRole
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OwinRoleController.UpdateOwinRole(BDO.DataAccessObjects.SecurityModule.owin_roleEntity)">
+            <summary>
+            UpdateOwinRole
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OwinRoleController.DeleteOwinRole(BDO.DataAccessObjects.SecurityModule.owin_roleEntity)">
+            <summary>
+            DeleteOwinRole
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="T:WebApi.Controllers.OwinRolePermissionController">
+            <summary>
+            OwinRolePermissionController
+            </summary>
+        </member>
+        <member name="P:WebApi.Controllers.OwinRolePermissionController._configuration">
+            <summary>
+            _configuration
+            </summary>
+        </member>
+        <member name="M:WebApi.Controllers.OwinRolePermissionController.#ctor(Web.Core.Frame.Interfaces.UseCases.IOwin_RolePermissionUseCase,WebApi.Presenters.Owin_RolePermissionPresenter,Microsoft.Extensions.Options.IOptions{BDO.DataAccessObjects.ExtendedEntities.AuthSettings})">
+            <summary>
+            OwinRolePermissionController
+            </summary>
+            <param name="owin_RolePermissionUseCase"></param>
+            <param name="owin_RolePermissionPresenter"></param>
+            <param name="authSettings"></param>
+        </member>
+        <member name="M:WebApi.Controllers.OwinRolePermissionController.GetAllOwinRolePermission">
+            <summary>
+            GetAllOwinRolePermission
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OwinRolePermissionController.GetAllPagedOwinRolePermission(BDO.DataAccessObjects.SecurityModule.owin_rolepermissionEntity)">
+            <summary>
+            GetAllPagedOwinRolePermission
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OwinRolePermissionController.GetListViewOwinRolePermission(BDO.DataAccessObjects.SecurityModule.owin_rolepermissionEntity)">
+            <summary>
+            GetListViewOwinRolePermission
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OwinRolePermissionController.GetSingleOwinRolePermission(BDO.DataAccessObjects.SecurityModule.owin_rolepermissionEntity)">
+            <summary>
+            GetSingleOwinRolePermission
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OwinRolePermissionController.SaveOwinRolePermission(BDO.DataAccessObjects.SecurityModule.owin_rolepermissionEntity)">
+            <summary>
+            SaveOwinRolePermission
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OwinRolePermissionController.UpdateOwinRolePermission(BDO.DataAccessObjects.SecurityModule.owin_rolepermissionEntity)">
+            <summary>
+            UpdateOwinRolePermission
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OwinRolePermissionController.DeleteOwinRolePermission(BDO.DataAccessObjects.SecurityModule.owin_rolepermissionEntity)">
+            <summary>
+            DeleteOwinRolePermission
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="T:WebApi.Controllers.OwinUserClaimsController">
+            <summary>
+            OwinUserClaimsController
+            </summary>
+        </member>
+        <member name="P:WebApi.Controllers.OwinUserClaimsController._configuration">
+            <summary>
+            _configuration
+            </summary>
+        </member>
+        <member name="M:WebApi.Controllers.OwinUserClaimsController.#ctor(Web.Core.Frame.Interfaces.UseCases.IOwin_UserClaimsUseCase,WebApi.Presenters.Owin_UserClaimsPresenter,Microsoft.Extensions.Options.IOptions{BDO.DataAccessObjects.ExtendedEntities.AuthSettings})">
+            <summary>
+            OwinUserClaimsController
+            </summary>
+            <param name="owin_UserClaimsUseCase"></param>
+            <param name="owin_UserClaimsPresenter"></param>
+            <param name="authSettings"></param>
+        </member>
+        <member name="M:WebApi.Controllers.OwinUserClaimsController.GetAllOwinUserClaims">
+            <summary>
+            GetAllOwinUserClaims
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OwinUserClaimsController.GetAllPagedOwinUserClaims(BDO.DataAccessObjects.SecurityModule.owin_userclaimsEntity)">
+            <summary>
+            GetAllPagedOwinUserClaims
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OwinUserClaimsController.GetListViewOwinUserClaims(BDO.DataAccessObjects.SecurityModule.owin_userclaimsEntity)">
+            <summary>
+            GetListViewOwinUserClaims
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OwinUserClaimsController.GetSingleOwinUserClaims(BDO.DataAccessObjects.SecurityModule.owin_userclaimsEntity)">
+            <summary>
+            GetSingleOwinUserClaims
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OwinUserClaimsController.SaveOwinUserClaims(BDO.DataAccessObjects.SecurityModule.owin_userclaimsEntity)">
+            <summary>
+            SaveOwinUserClaims
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OwinUserClaimsController.UpdateOwinUserClaims(BDO.DataAccessObjects.SecurityModule.owin_userclaimsEntity)">
+            <summary>
+            UpdateOwinUserClaims
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OwinUserClaimsController.DeleteOwinUserClaims(BDO.DataAccessObjects.SecurityModule.owin_userclaimsEntity)">
+            <summary>
+            DeleteOwinUserClaims
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="T:WebApi.Controllers.OwinUserController">
+            <summary>
+            OwinUserController
+            </summary>
+        </member>
+        <member name="P:WebApi.Controllers.OwinUserController._configuration">
+            <summary>
+            _configuration
+            </summary>
+        </member>
+        <member name="M:WebApi.Controllers.OwinUserController.#ctor(Web.Core.Frame.Interfaces.UseCases.IOwin_UserUseCase,WebApi.Presenters.Owin_UserPresenter,Microsoft.Extensions.Options.IOptions{BDO.DataAccessObjects.ExtendedEntities.AuthSettings})">
+            <summary>
+            OwinUserController
+            </summary>
+            <param name="owin_UserUseCase"></param>
+            <param name="owin_UserPresenter"></param>
+            <param name="authSettings"></param>
+        </member>
+        <member name="M:WebApi.Controllers.OwinUserController.GetAllOwinUser">
+            <summary>
+            GetAllOwinUser
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OwinUserController.GetAllPagedOwinUser(BDO.DataAccessObjects.SecurityModule.owin_userEntity)">
+            <summary>
+            GetAllPagedOwinUser
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OwinUserController.GetListViewOwinUser(BDO.DataAccessObjects.SecurityModule.owin_userEntity)">
+            <summary>
+            GetListViewOwinUser
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OwinUserController.GetSingleOwinUser(BDO.DataAccessObjects.SecurityModule.owin_userEntity)">
+            <summary>
+            GetSingleOwinUser
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OwinUserController.SaveOwinUser(BDO.DataAccessObjects.SecurityModule.owin_userEntity)">
+            <summary>
+            SaveOwinUser
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OwinUserController.UpdateOwinUser(BDO.DataAccessObjects.SecurityModule.owin_userEntity)">
+            <summary>
+            UpdateOwinUser
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OwinUserController.DeleteOwinUser(BDO.DataAccessObjects.SecurityModule.owin_userEntity)">
+            <summary>
+            DeleteOwinUser
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="T:WebApi.Controllers.OwinUserLoginTrailController">
+            <summary>
+            OwinUserLoginTrailController
+            </summary>
+        </member>
+        <member name="P:WebApi.Controllers.OwinUserLoginTrailController._configuration">
+            <summary>
+            _configuration
+            </summary>
+        </member>
+        <member name="M:WebApi.Controllers.OwinUserLoginTrailController.#ctor(Web.Core.Frame.Interfaces.UseCases.IOwin_UserLoginTrailUseCase,WebApi.Presenters.Owin_UserLoginTrailPresenter,Microsoft.Extensions.Options.IOptions{BDO.DataAccessObjects.ExtendedEntities.AuthSettings})">
+            <summary>
+            OwinUserLoginTrailController
+            </summary>
+            <param name="owin_UserLoginTrailUseCase"></param>
+            <param name="owin_UserLoginTrailPresenter"></param>
+            <param name="authSettings"></param>
+        </member>
+        <member name="M:WebApi.Controllers.OwinUserLoginTrailController.GetAllOwinUserLoginTrail">
+            <summary>
+            GetAllOwinUserLoginTrail
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OwinUserLoginTrailController.GetAllPagedOwinUserLoginTrail(BDO.DataAccessObjects.SecurityModule.owin_userlogintrailEntity)">
+            <summary>
+            GetAllPagedOwinUserLoginTrail
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OwinUserLoginTrailController.GetListViewOwinUserLoginTrail(BDO.DataAccessObjects.SecurityModule.owin_userlogintrailEntity)">
+            <summary>
+            GetListViewOwinUserLoginTrail
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OwinUserLoginTrailController.GetSingleOwinUserLoginTrail(BDO.DataAccessObjects.SecurityModule.owin_userlogintrailEntity)">
+            <summary>
+            GetSingleOwinUserLoginTrail
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OwinUserLoginTrailController.SaveOwinUserLoginTrail(BDO.DataAccessObjects.SecurityModule.owin_userlogintrailEntity)">
+            <summary>
+            SaveOwinUserLoginTrail
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OwinUserLoginTrailController.UpdateOwinUserLoginTrail(BDO.DataAccessObjects.SecurityModule.owin_userlogintrailEntity)">
+            <summary>
+            UpdateOwinUserLoginTrail
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OwinUserLoginTrailController.DeleteOwinUserLoginTrail(BDO.DataAccessObjects.SecurityModule.owin_userlogintrailEntity)">
+            <summary>
+            DeleteOwinUserLoginTrail
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="T:WebApi.Controllers.OwinUserPasswordResetInfoController">
+            <summary>
+            OwinUserPasswordResetInfoController
+            </summary>
+        </member>
+        <member name="P:WebApi.Controllers.OwinUserPasswordResetInfoController._configuration">
+            <summary>
+            _configuration
+            </summary>
+        </member>
+        <member name="M:WebApi.Controllers.OwinUserPasswordResetInfoController.#ctor(Web.Core.Frame.Interfaces.UseCases.IOwin_UserPasswordResetInfoUseCase,WebApi.Presenters.Owin_UserPasswordResetInfoPresenter,Microsoft.Extensions.Options.IOptions{BDO.DataAccessObjects.ExtendedEntities.AuthSettings})">
+            <summary>
+            OwinUserPasswordResetInfoController
+            </summary>
+            <param name="owin_UserPasswordResetInfoUseCase"></param>
+            <param name="owin_UserPasswordResetInfoPresenter"></param>
+            <param name="authSettings"></param>
+        </member>
+        <member name="M:WebApi.Controllers.OwinUserPasswordResetInfoController.GetAllOwinUserPasswordResetInfo">
+            <summary>
+            GetAllOwinUserPasswordResetInfo
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OwinUserPasswordResetInfoController.GetAllPagedOwinUserPasswordResetInfo(BDO.DataAccessObjects.SecurityModule.owin_userpasswordresetinfoEntity)">
+            <summary>
+            GetAllPagedOwinUserPasswordResetInfo
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OwinUserPasswordResetInfoController.GetListViewOwinUserPasswordResetInfo(BDO.DataAccessObjects.SecurityModule.owin_userpasswordresetinfoEntity)">
+            <summary>
+            GetListViewOwinUserPasswordResetInfo
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OwinUserPasswordResetInfoController.GetSingleOwinUserPasswordResetInfo(BDO.DataAccessObjects.SecurityModule.owin_userpasswordresetinfoEntity)">
+            <summary>
+            GetSingleOwinUserPasswordResetInfo
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OwinUserPasswordResetInfoController.SaveOwinUserPasswordResetInfo(BDO.DataAccessObjects.SecurityModule.owin_userpasswordresetinfoEntity)">
+            <summary>
+            SaveOwinUserPasswordResetInfo
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OwinUserPasswordResetInfoController.UpdateOwinUserPasswordResetInfo(BDO.DataAccessObjects.SecurityModule.owin_userpasswordresetinfoEntity)">
+            <summary>
+            UpdateOwinUserPasswordResetInfo
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OwinUserPasswordResetInfoController.DeleteOwinUserPasswordResetInfo(BDO.DataAccessObjects.SecurityModule.owin_userpasswordresetinfoEntity)">
+            <summary>
+            DeleteOwinUserPasswordResetInfo
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="T:WebApi.Controllers.OwinUserPrefferencesSettingsController">
+            <summary>
+            OwinUserPrefferencesSettingsController
+            </summary>
+        </member>
+        <member name="P:WebApi.Controllers.OwinUserPrefferencesSettingsController._configuration">
+            <summary>
+            _configuration
+            </summary>
+        </member>
+        <member name="M:WebApi.Controllers.OwinUserPrefferencesSettingsController.#ctor(Web.Core.Frame.Interfaces.UseCases.IOwin_UserPrefferencesSettingsUseCase,WebApi.Presenters.Owin_UserPrefferencesSettingsPresenter,Microsoft.Extensions.Options.IOptions{BDO.DataAccessObjects.ExtendedEntities.AuthSettings})">
+            <summary>
+            OwinUserPrefferencesSettingsController
+            </summary>
+            <param name="owin_UserPrefferencesSettingsUseCase"></param>
+            <param name="owin_UserPrefferencesSettingsPresenter"></param>
+            <param name="authSettings"></param>
+        </member>
+        <member name="M:WebApi.Controllers.OwinUserPrefferencesSettingsController.GetAllOwinUserPrefferencesSettings">
+            <summary>
+            GetAllOwinUserPrefferencesSettings
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OwinUserPrefferencesSettingsController.GetAllPagedOwinUserPrefferencesSettings(BDO.DataAccessObjects.SecurityModule.owin_userprefferencessettingsEntity)">
+            <summary>
+            GetAllPagedOwinUserPrefferencesSettings
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OwinUserPrefferencesSettingsController.GetListViewOwinUserPrefferencesSettings(BDO.DataAccessObjects.SecurityModule.owin_userprefferencessettingsEntity)">
+            <summary>
+            GetListViewOwinUserPrefferencesSettings
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OwinUserPrefferencesSettingsController.GetSingleOwinUserPrefferencesSettings(BDO.DataAccessObjects.SecurityModule.owin_userprefferencessettingsEntity)">
+            <summary>
+            GetSingleOwinUserPrefferencesSettings
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OwinUserPrefferencesSettingsController.SaveOwinUserPrefferencesSettings(BDO.DataAccessObjects.SecurityModule.owin_userprefferencessettingsEntity)">
+            <summary>
+            SaveOwinUserPrefferencesSettings
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OwinUserPrefferencesSettingsController.UpdateOwinUserPrefferencesSettings(BDO.DataAccessObjects.SecurityModule.owin_userprefferencessettingsEntity)">
+            <summary>
+            UpdateOwinUserPrefferencesSettings
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OwinUserPrefferencesSettingsController.DeleteOwinUserPrefferencesSettings(BDO.DataAccessObjects.SecurityModule.owin_userprefferencessettingsEntity)">
+            <summary>
+            DeleteOwinUserPrefferencesSettings
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="T:WebApi.Controllers.OwinUserRoleController">
+            <summary>
+            OwinUserRoleController
+            </summary>
+        </member>
+        <member name="P:WebApi.Controllers.OwinUserRoleController._configuration">
+            <summary>
+            _configuration
+            </summary>
+        </member>
+        <member name="M:WebApi.Controllers.OwinUserRoleController.#ctor(Web.Core.Frame.Interfaces.UseCases.IOwin_UserRoleUseCase,WebApi.Presenters.Owin_UserRolePresenter,Microsoft.Extensions.Options.IOptions{BDO.DataAccessObjects.ExtendedEntities.AuthSettings})">
+            <summary>
+            OwinUserRoleController
+            </summary>
+            <param name="owin_UserRoleUseCase"></param>
+            <param name="owin_UserRolePresenter"></param>
+            <param name="authSettings"></param>
+        </member>
+        <member name="M:WebApi.Controllers.OwinUserRoleController.GetAllOwinUserRole">
+            <summary>
+            GetAllOwinUserRole
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OwinUserRoleController.GetAllPagedOwinUserRole(BDO.DataAccessObjects.SecurityModule.owin_userroleEntity)">
+            <summary>
+            GetAllPagedOwinUserRole
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OwinUserRoleController.GetListViewOwinUserRole(BDO.DataAccessObjects.SecurityModule.owin_userroleEntity)">
+            <summary>
+            GetListViewOwinUserRole
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OwinUserRoleController.GetSingleOwinUserRole(BDO.DataAccessObjects.SecurityModule.owin_userroleEntity)">
+            <summary>
+            GetSingleOwinUserRole
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OwinUserRoleController.SaveOwinUserRole(BDO.DataAccessObjects.SecurityModule.owin_userroleEntity)">
+            <summary>
+            SaveOwinUserRole
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OwinUserRoleController.UpdateOwinUserRole(BDO.DataAccessObjects.SecurityModule.owin_userroleEntity)">
+            <summary>
+            UpdateOwinUserRole
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OwinUserRoleController.DeleteOwinUserRole(BDO.DataAccessObjects.SecurityModule.owin_userroleEntity)">
+            <summary>
+            DeleteOwinUserRole
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="T:WebApi.Controllers.OwinUserRolesController">
+            <summary>
+            OwinUserRolesController
+            </summary>
+        </member>
+        <member name="P:WebApi.Controllers.OwinUserRolesController._configuration">
+            <summary>
+            _configuration
+            </summary>
+        </member>
+        <member name="M:WebApi.Controllers.OwinUserRolesController.#ctor(Web.Core.Frame.Interfaces.UseCases.IOwin_UserRolesUseCase,WebApi.Presenters.Owin_UserRolesPresenter,Microsoft.Extensions.Options.IOptions{BDO.DataAccessObjects.ExtendedEntities.AuthSettings})">
+            <summary>
+            OwinUserRolesController
+            </summary>
+            <param name="owin_UserRolesUseCase"></param>
+            <param name="owin_UserRolesPresenter"></param>
+            <param name="authSettings"></param>
+        </member>
+        <member name="M:WebApi.Controllers.OwinUserRolesController.GetAllOwinUserRoles">
+            <summary>
+            GetAllOwinUserRoles
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OwinUserRolesController.GetAllPagedOwinUserRoles(BDO.DataAccessObjects.SecurityModule.owin_userrolesEntity)">
+            <summary>
+            GetAllPagedOwinUserRoles
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OwinUserRolesController.GetListViewOwinUserRoles(BDO.DataAccessObjects.SecurityModule.owin_userrolesEntity)">
+            <summary>
+            GetListViewOwinUserRoles
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OwinUserRolesController.GetSingleOwinUserRoles(BDO.DataAccessObjects.SecurityModule.owin_userrolesEntity)">
+            <summary>
+            GetSingleOwinUserRoles
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OwinUserRolesController.SaveOwinUserRoles(BDO.DataAccessObjects.SecurityModule.owin_userrolesEntity)">
+            <summary>
+            SaveOwinUserRoles
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OwinUserRolesController.UpdateOwinUserRoles(BDO.DataAccessObjects.SecurityModule.owin_userrolesEntity)">
+            <summary>
+            UpdateOwinUserRoles
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OwinUserRolesController.DeleteOwinUserRoles(BDO.DataAccessObjects.SecurityModule.owin_userrolesEntity)">
+            <summary>
+            DeleteOwinUserRoles
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="T:WebApi.Controllers.OwinUserStatusChangeHistoryController">
+            <summary>
+            OwinUserStatusChangeHistoryController
+            </summary>
+        </member>
+        <member name="P:WebApi.Controllers.OwinUserStatusChangeHistoryController._configuration">
+            <summary>
+            _configuration
+            </summary>
+        </member>
+        <member name="M:WebApi.Controllers.OwinUserStatusChangeHistoryController.#ctor(Web.Core.Frame.Interfaces.UseCases.IOwin_UserStatusChangeHistoryUseCase,WebApi.Presenters.Owin_UserStatusChangeHistoryPresenter,Microsoft.Extensions.Options.IOptions{BDO.DataAccessObjects.ExtendedEntities.AuthSettings})">
+            <summary>
+            OwinUserStatusChangeHistoryController
+            </summary>
+            <param name="owin_UserStatusChangeHistoryUseCase"></param>
+            <param name="owin_UserStatusChangeHistoryPresenter"></param>
+            <param name="authSettings"></param>
+        </member>
+        <member name="M:WebApi.Controllers.OwinUserStatusChangeHistoryController.GetAllOwinUserStatusChangeHistory">
+            <summary>
+            GetAllOwinUserStatusChangeHistory
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OwinUserStatusChangeHistoryController.GetAllPagedOwinUserStatusChangeHistory(BDO.DataAccessObjects.SecurityModule.owin_userstatuschangehistoryEntity)">
+            <summary>
+            GetAllPagedOwinUserStatusChangeHistory
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OwinUserStatusChangeHistoryController.GetListViewOwinUserStatusChangeHistory(BDO.DataAccessObjects.SecurityModule.owin_userstatuschangehistoryEntity)">
+            <summary>
+            GetListViewOwinUserStatusChangeHistory
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OwinUserStatusChangeHistoryController.GetSingleOwinUserStatusChangeHistory(BDO.DataAccessObjects.SecurityModule.owin_userstatuschangehistoryEntity)">
+            <summary>
+            GetSingleOwinUserStatusChangeHistory
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OwinUserStatusChangeHistoryController.SaveOwinUserStatusChangeHistory(BDO.DataAccessObjects.SecurityModule.owin_userstatuschangehistoryEntity)">
+            <summary>
+            SaveOwinUserStatusChangeHistory
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OwinUserStatusChangeHistoryController.UpdateOwinUserStatusChangeHistory(BDO.DataAccessObjects.SecurityModule.owin_userstatuschangehistoryEntity)">
+            <summary>
+            UpdateOwinUserStatusChangeHistory
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OwinUserStatusChangeHistoryController.DeleteOwinUserStatusChangeHistory(BDO.DataAccessObjects.SecurityModule.owin_userstatuschangehistoryEntity)">
+            <summary>
+            DeleteOwinUserStatusChangeHistory
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="T:WebApi.Controllers.TranLoginController">
+            <summary>
+            TranLoginController
+            </summary>
+        </member>
+        <member name="P:WebApi.Controllers.TranLoginController._configuration">
+            <summary>
+            _configuration
+            </summary>
+        </member>
+        <member name="M:WebApi.Controllers.TranLoginController.#ctor(Web.Core.Frame.Interfaces.UseCases.ITran_LoginUseCase,WebApi.Presenters.Tran_LoginPresenter,Microsoft.Extensions.Options.IOptions{BDO.DataAccessObjects.ExtendedEntities.AuthSettings})">
+            <summary>
+            TranLoginController
+            </summary>
+            <param name="tran_LoginUseCase"></param>
+            <param name="tran_LoginPresenter"></param>
+            <param name="authSettings"></param>
+        </member>
+        <member name="M:WebApi.Controllers.TranLoginController.GetAllTranLogin">
+            <summary>
+            GetAllTranLogin
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.TranLoginController.GetAllPagedTranLogin(BDO.DataAccessObjects.SecurityModule.tran_loginEntity)">
+            <summary>
+            GetAllPagedTranLogin
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.TranLoginController.GetListViewTranLogin(BDO.DataAccessObjects.SecurityModule.tran_loginEntity)">
+            <summary>
+            GetListViewTranLogin
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.TranLoginController.GetSingleTranLogin(BDO.DataAccessObjects.SecurityModule.tran_loginEntity)">
+            <summary>
+            GetSingleTranLogin
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.TranLoginController.SaveTranLogin(BDO.DataAccessObjects.SecurityModule.tran_loginEntity)">
+            <summary>
+            SaveTranLogin
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.TranLoginController.UpdateTranLogin(BDO.DataAccessObjects.SecurityModule.tran_loginEntity)">
+            <summary>
+            UpdateTranLogin
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.TranLoginController.DeleteTranLogin(BDO.DataAccessObjects.SecurityModule.tran_loginEntity)">
+            <summary>
+            DeleteTranLogin
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="T:WebApi.Controllers.TestGetController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:WebApi.Controllers.TestGetController.ApiGetValuesGetWParam">
+            <summary>
+            ApiGetValuesGetWParam
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:WebApi.Extensions.ApiSecurityFillerAttribute">
+            <summary>
+            ApiSecurityFillerAttribute
+            </summary>
+        </member>
+        <member name="M:WebApi.Extensions.ApiSecurityFillerAttribute.#ctor(Microsoft.Extensions.Hosting.IHostingEnvironment,Web.Core.Frame.Interfaces.Services.IJwtTokenValidator)">
+            <summary>
+            ApiSecurityFillerAttribute
+            </summary>
+            <param name="jwtTokenHandler"></param>
+            <param name="jwtTokenValidator"></param>
+            <param name="config"></param>
+        </member>
+        <member name="M:WebApi.Extensions.ApiSecurityFillerAttribute.OnActionExecuted(Microsoft.AspNetCore.Mvc.Filters.ActionExecutedContext)">
+            <summary>
+            OnActionExecuted
+            </summary>
+            <param name="context"></param>
+        </member>
+        <member name="M:WebApi.Extensions.ApiSecurityFillerAttribute.OnActionExecuting(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext)">
+            <summary>
+            OnActionExecuting
+            </summary>
+            <param name="context"></param>
+        </member>
+        <member name="T:WebApi.Presenters.Gen_DocTypePresenter">
+            <summary>
+            Gen_DocTypePresenter
+            </summary>
+        </member>
+        <member name="P:WebApi.Presenters.Gen_DocTypePresenter.ContentResult">
+            <summary>
+            ContentResult
+            </summary>
+        </member>
+        <member name="M:WebApi.Presenters.Gen_DocTypePresenter.#ctor">
+            <summary>
+            Gen_PriorityPresenter
+            </summary>
+        </member>
+        <member name="M:WebApi.Presenters.Gen_DocTypePresenter.Handle(Web.Core.Frame.RequestResponse.UseCaseResponses.Gen_DocTypeResponse)">
+            <summary>
+            Handle
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Gen_DocTypePresenter.GetAll(Web.Core.Frame.RequestResponse.UseCaseResponses.Gen_DocTypeResponse)">
+            <summary>
+            GetAll
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Gen_DocTypePresenter.GetAllPaged(Web.Core.Frame.RequestResponse.UseCaseResponses.Gen_DocTypeResponse)">
+            <summary>
+            GetAllPaged
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Gen_DocTypePresenter.GetListView(Web.Core.Frame.RequestResponse.UseCaseResponses.Gen_DocTypeResponse)">
+            <summary>
+            GetListView
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Gen_DocTypePresenter.GetSingle(Web.Core.Frame.RequestResponse.UseCaseResponses.Gen_DocTypeResponse)">
+            <summary>
+            GetSingle
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Gen_DocTypePresenter.Save(Web.Core.Frame.RequestResponse.UseCaseResponses.Gen_DocTypeResponse)">
+            <summary>
+            Save
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Gen_DocTypePresenter.Update(Web.Core.Frame.RequestResponse.UseCaseResponses.Gen_DocTypeResponse)">
+            <summary>
+            Update
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Gen_DocTypePresenter.Delete(Web.Core.Frame.RequestResponse.UseCaseResponses.Gen_DocTypeResponse)">
+            <summary>
+            Delete
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="T:WebApi.Presenters.Gen_FAQCategoryPresenter">
+            <summary>
+            Gen_FAQCategoryPresenter
+            </summary>
+        </member>
+        <member name="P:WebApi.Presenters.Gen_FAQCategoryPresenter.ContentResult">
+            <summary>
+            ContentResult
+            </summary>
+        </member>
+        <member name="M:WebApi.Presenters.Gen_FAQCategoryPresenter.#ctor">
+            <summary>
+            Gen_PriorityPresenter
+            </summary>
+        </member>
+        <member name="M:WebApi.Presenters.Gen_FAQCategoryPresenter.Handle(Web.Core.Frame.RequestResponse.UseCaseResponses.Gen_FAQCategoryResponse)">
+            <summary>
+            Handle
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Gen_FAQCategoryPresenter.GetAll(Web.Core.Frame.RequestResponse.UseCaseResponses.Gen_FAQCategoryResponse)">
+            <summary>
+            GetAll
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Gen_FAQCategoryPresenter.GetAllPaged(Web.Core.Frame.RequestResponse.UseCaseResponses.Gen_FAQCategoryResponse)">
+            <summary>
+            GetAllPaged
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Gen_FAQCategoryPresenter.GetListView(Web.Core.Frame.RequestResponse.UseCaseResponses.Gen_FAQCategoryResponse)">
+            <summary>
+            GetListView
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Gen_FAQCategoryPresenter.GetSingle(Web.Core.Frame.RequestResponse.UseCaseResponses.Gen_FAQCategoryResponse)">
+            <summary>
+            GetSingle
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Gen_FAQCategoryPresenter.Save(Web.Core.Frame.RequestResponse.UseCaseResponses.Gen_FAQCategoryResponse)">
+            <summary>
+            Save
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Gen_FAQCategoryPresenter.Update(Web.Core.Frame.RequestResponse.UseCaseResponses.Gen_FAQCategoryResponse)">
+            <summary>
+            Update
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Gen_FAQCategoryPresenter.Delete(Web.Core.Frame.RequestResponse.UseCaseResponses.Gen_FAQCategoryResponse)">
+            <summary>
+            Delete
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="T:WebApi.Presenters.Gen_FAQPresenter">
+            <summary>
+            Gen_FAQPresenter
+            </summary>
+        </member>
+        <member name="P:WebApi.Presenters.Gen_FAQPresenter.ContentResult">
+            <summary>
+            ContentResult
+            </summary>
+        </member>
+        <member name="M:WebApi.Presenters.Gen_FAQPresenter.#ctor">
+            <summary>
+            Gen_PriorityPresenter
+            </summary>
+        </member>
+        <member name="M:WebApi.Presenters.Gen_FAQPresenter.Handle(Web.Core.Frame.RequestResponse.UseCaseResponses.Gen_FAQResponse)">
+            <summary>
+            Handle
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Gen_FAQPresenter.GetAll(Web.Core.Frame.RequestResponse.UseCaseResponses.Gen_FAQResponse)">
+            <summary>
+            GetAll
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Gen_FAQPresenter.GetAllPaged(Web.Core.Frame.RequestResponse.UseCaseResponses.Gen_FAQResponse)">
+            <summary>
+            GetAllPaged
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Gen_FAQPresenter.GetListView(Web.Core.Frame.RequestResponse.UseCaseResponses.Gen_FAQResponse)">
+            <summary>
+            GetListView
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Gen_FAQPresenter.GetSingle(Web.Core.Frame.RequestResponse.UseCaseResponses.Gen_FAQResponse)">
+            <summary>
+            GetSingle
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Gen_FAQPresenter.Save(Web.Core.Frame.RequestResponse.UseCaseResponses.Gen_FAQResponse)">
+            <summary>
+            Save
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Gen_FAQPresenter.Update(Web.Core.Frame.RequestResponse.UseCaseResponses.Gen_FAQResponse)">
+            <summary>
+            Update
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Gen_FAQPresenter.Delete(Web.Core.Frame.RequestResponse.UseCaseResponses.Gen_FAQResponse)">
+            <summary>
+            Delete
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="T:WebApi.Presenters.Gen_ImageGallaryCategoryPresenter">
+            <summary>
+            Gen_ImageGallaryCategoryPresenter
+            </summary>
+        </member>
+        <member name="P:WebApi.Presenters.Gen_ImageGallaryCategoryPresenter.ContentResult">
+            <summary>
+            ContentResult
+            </summary>
+        </member>
+        <member name="M:WebApi.Presenters.Gen_ImageGallaryCategoryPresenter.#ctor">
+            <summary>
+            Gen_PriorityPresenter
+            </summary>
+        </member>
+        <member name="M:WebApi.Presenters.Gen_ImageGallaryCategoryPresenter.Handle(Web.Core.Frame.RequestResponse.UseCaseResponses.Gen_ImageGallaryCategoryResponse)">
+            <summary>
+            Handle
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Gen_ImageGallaryCategoryPresenter.GetAll(Web.Core.Frame.RequestResponse.UseCaseResponses.Gen_ImageGallaryCategoryResponse)">
+            <summary>
+            GetAll
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Gen_ImageGallaryCategoryPresenter.GetAllPaged(Web.Core.Frame.RequestResponse.UseCaseResponses.Gen_ImageGallaryCategoryResponse)">
+            <summary>
+            GetAllPaged
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Gen_ImageGallaryCategoryPresenter.GetListView(Web.Core.Frame.RequestResponse.UseCaseResponses.Gen_ImageGallaryCategoryResponse)">
+            <summary>
+            GetListView
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Gen_ImageGallaryCategoryPresenter.GetSingle(Web.Core.Frame.RequestResponse.UseCaseResponses.Gen_ImageGallaryCategoryResponse)">
+            <summary>
+            GetSingle
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Gen_ImageGallaryCategoryPresenter.Save(Web.Core.Frame.RequestResponse.UseCaseResponses.Gen_ImageGallaryCategoryResponse)">
+            <summary>
+            Save
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Gen_ImageGallaryCategoryPresenter.Update(Web.Core.Frame.RequestResponse.UseCaseResponses.Gen_ImageGallaryCategoryResponse)">
+            <summary>
+            Update
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Gen_ImageGallaryCategoryPresenter.Delete(Web.Core.Frame.RequestResponse.UseCaseResponses.Gen_ImageGallaryCategoryResponse)">
+            <summary>
+            Delete
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="T:WebApi.Presenters.Gen_ImageGallaryPresenter">
+            <summary>
+            Gen_ImageGallaryPresenter
+            </summary>
+        </member>
+        <member name="P:WebApi.Presenters.Gen_ImageGallaryPresenter.ContentResult">
+            <summary>
+            ContentResult
+            </summary>
+        </member>
+        <member name="M:WebApi.Presenters.Gen_ImageGallaryPresenter.#ctor">
+            <summary>
+            Gen_PriorityPresenter
+            </summary>
+        </member>
+        <member name="M:WebApi.Presenters.Gen_ImageGallaryPresenter.Handle(Web.Core.Frame.RequestResponse.UseCaseResponses.Gen_ImageGallaryResponse)">
+            <summary>
+            Handle
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Gen_ImageGallaryPresenter.GetAll(Web.Core.Frame.RequestResponse.UseCaseResponses.Gen_ImageGallaryResponse)">
+            <summary>
+            GetAll
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Gen_ImageGallaryPresenter.GetAllPaged(Web.Core.Frame.RequestResponse.UseCaseResponses.Gen_ImageGallaryResponse)">
+            <summary>
+            GetAllPaged
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Gen_ImageGallaryPresenter.GetListView(Web.Core.Frame.RequestResponse.UseCaseResponses.Gen_ImageGallaryResponse)">
+            <summary>
+            GetListView
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Gen_ImageGallaryPresenter.GetSingle(Web.Core.Frame.RequestResponse.UseCaseResponses.Gen_ImageGallaryResponse)">
+            <summary>
+            GetSingle
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Gen_ImageGallaryPresenter.Save(Web.Core.Frame.RequestResponse.UseCaseResponses.Gen_ImageGallaryResponse)">
+            <summary>
+            Save
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Gen_ImageGallaryPresenter.Update(Web.Core.Frame.RequestResponse.UseCaseResponses.Gen_ImageGallaryResponse)">
+            <summary>
+            Update
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Gen_ImageGallaryPresenter.Delete(Web.Core.Frame.RequestResponse.UseCaseResponses.Gen_ImageGallaryResponse)">
+            <summary>
+            Delete
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="T:WebApi.Presenters.Gen_LinkedServicePresenter">
+            <summary>
+            Gen_LinkedServicePresenter
+            </summary>
+        </member>
+        <member name="P:WebApi.Presenters.Gen_LinkedServicePresenter.ContentResult">
+            <summary>
+            ContentResult
+            </summary>
+        </member>
+        <member name="M:WebApi.Presenters.Gen_LinkedServicePresenter.#ctor">
+            <summary>
+            Gen_PriorityPresenter
+            </summary>
+        </member>
+        <member name="M:WebApi.Presenters.Gen_LinkedServicePresenter.Handle(Web.Core.Frame.RequestResponse.UseCaseResponses.Gen_LinkedServiceResponse)">
+            <summary>
+            Handle
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Gen_LinkedServicePresenter.GetAll(Web.Core.Frame.RequestResponse.UseCaseResponses.Gen_LinkedServiceResponse)">
+            <summary>
+            GetAll
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Gen_LinkedServicePresenter.GetAllPaged(Web.Core.Frame.RequestResponse.UseCaseResponses.Gen_LinkedServiceResponse)">
+            <summary>
+            GetAllPaged
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Gen_LinkedServicePresenter.GetListView(Web.Core.Frame.RequestResponse.UseCaseResponses.Gen_LinkedServiceResponse)">
+            <summary>
+            GetListView
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Gen_LinkedServicePresenter.GetSingle(Web.Core.Frame.RequestResponse.UseCaseResponses.Gen_LinkedServiceResponse)">
+            <summary>
+            GetSingle
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Gen_LinkedServicePresenter.Save(Web.Core.Frame.RequestResponse.UseCaseResponses.Gen_LinkedServiceResponse)">
+            <summary>
+            Save
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Gen_LinkedServicePresenter.Update(Web.Core.Frame.RequestResponse.UseCaseResponses.Gen_LinkedServiceResponse)">
+            <summary>
+            Update
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Gen_LinkedServicePresenter.Delete(Web.Core.Frame.RequestResponse.UseCaseResponses.Gen_LinkedServiceResponse)">
+            <summary>
+            Delete
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="T:WebApi.Presenters.LoginPresenter">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:WebApi.Presenters.Owin_FormActionPresenter">
+            <summary>
+            Owin_FormActionPresenter
+            </summary>
+        </member>
+        <member name="P:WebApi.Presenters.Owin_FormActionPresenter.ContentResult">
+            <summary>
+            ContentResult
+            </summary>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_FormActionPresenter.#ctor">
+            <summary>
+            Gen_PriorityPresenter
+            </summary>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_FormActionPresenter.Handle(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_FormActionResponse)">
+            <summary>
+            Handle
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_FormActionPresenter.GetAll(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_FormActionResponse)">
+            <summary>
+            GetAll
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_FormActionPresenter.GetAllPaged(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_FormActionResponse)">
+            <summary>
+            GetAllPaged
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_FormActionPresenter.GetListView(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_FormActionResponse)">
+            <summary>
+            GetListView
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_FormActionPresenter.GetSingle(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_FormActionResponse)">
+            <summary>
+            GetSingle
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_FormActionPresenter.Save(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_FormActionResponse)">
+            <summary>
+            Save
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_FormActionPresenter.Update(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_FormActionResponse)">
+            <summary>
+            Update
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_FormActionPresenter.Delete(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_FormActionResponse)">
+            <summary>
+            Delete
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="T:WebApi.Presenters.Owin_FormInfoPresenter">
+            <summary>
+            Owin_FormInfoPresenter
+            </summary>
+        </member>
+        <member name="P:WebApi.Presenters.Owin_FormInfoPresenter.ContentResult">
+            <summary>
+            ContentResult
+            </summary>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_FormInfoPresenter.#ctor">
+            <summary>
+            Gen_PriorityPresenter
+            </summary>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_FormInfoPresenter.Handle(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_FormInfoResponse)">
+            <summary>
+            Handle
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_FormInfoPresenter.GetAll(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_FormInfoResponse)">
+            <summary>
+            GetAll
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_FormInfoPresenter.GetAllPaged(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_FormInfoResponse)">
+            <summary>
+            GetAllPaged
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_FormInfoPresenter.GetListView(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_FormInfoResponse)">
+            <summary>
+            GetListView
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_FormInfoPresenter.GetSingle(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_FormInfoResponse)">
+            <summary>
+            GetSingle
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_FormInfoPresenter.Save(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_FormInfoResponse)">
+            <summary>
+            Save
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_FormInfoPresenter.Update(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_FormInfoResponse)">
+            <summary>
+            Update
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_FormInfoPresenter.Delete(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_FormInfoResponse)">
+            <summary>
+            Delete
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="T:WebApi.Presenters.Owin_LastWorkingPagePresenter">
+            <summary>
+            Owin_LastWorkingPagePresenter
+            </summary>
+        </member>
+        <member name="P:WebApi.Presenters.Owin_LastWorkingPagePresenter.ContentResult">
+            <summary>
+            ContentResult
+            </summary>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_LastWorkingPagePresenter.#ctor">
+            <summary>
+            Gen_PriorityPresenter
+            </summary>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_LastWorkingPagePresenter.Handle(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_LastWorkingPageResponse)">
+            <summary>
+            Handle
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_LastWorkingPagePresenter.GetAll(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_LastWorkingPageResponse)">
+            <summary>
+            GetAll
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_LastWorkingPagePresenter.GetAllPaged(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_LastWorkingPageResponse)">
+            <summary>
+            GetAllPaged
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_LastWorkingPagePresenter.GetListView(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_LastWorkingPageResponse)">
+            <summary>
+            GetListView
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_LastWorkingPagePresenter.GetSingle(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_LastWorkingPageResponse)">
+            <summary>
+            GetSingle
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_LastWorkingPagePresenter.Save(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_LastWorkingPageResponse)">
+            <summary>
+            Save
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_LastWorkingPagePresenter.Update(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_LastWorkingPageResponse)">
+            <summary>
+            Update
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_LastWorkingPagePresenter.Delete(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_LastWorkingPageResponse)">
+            <summary>
+            Delete
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="T:WebApi.Presenters.Owin_RolePermissionPresenter">
+            <summary>
+            Owin_RolePermissionPresenter
+            </summary>
+        </member>
+        <member name="P:WebApi.Presenters.Owin_RolePermissionPresenter.ContentResult">
+            <summary>
+            ContentResult
+            </summary>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_RolePermissionPresenter.#ctor">
+            <summary>
+            Gen_PriorityPresenter
+            </summary>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_RolePermissionPresenter.Handle(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_RolePermissionResponse)">
+            <summary>
+            Handle
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_RolePermissionPresenter.GetAll(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_RolePermissionResponse)">
+            <summary>
+            GetAll
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_RolePermissionPresenter.GetAllPaged(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_RolePermissionResponse)">
+            <summary>
+            GetAllPaged
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_RolePermissionPresenter.GetListView(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_RolePermissionResponse)">
+            <summary>
+            GetListView
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_RolePermissionPresenter.GetSingle(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_RolePermissionResponse)">
+            <summary>
+            GetSingle
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_RolePermissionPresenter.Save(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_RolePermissionResponse)">
+            <summary>
+            Save
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_RolePermissionPresenter.Update(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_RolePermissionResponse)">
+            <summary>
+            Update
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_RolePermissionPresenter.Delete(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_RolePermissionResponse)">
+            <summary>
+            Delete
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="T:WebApi.Presenters.Owin_RolePresenter">
+            <summary>
+            Owin_RolePresenter
+            </summary>
+        </member>
+        <member name="P:WebApi.Presenters.Owin_RolePresenter.ContentResult">
+            <summary>
+            ContentResult
+            </summary>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_RolePresenter.#ctor">
+            <summary>
+            Gen_PriorityPresenter
+            </summary>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_RolePresenter.Handle(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_RoleResponse)">
+            <summary>
+            Handle
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_RolePresenter.GetAll(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_RoleResponse)">
+            <summary>
+            GetAll
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_RolePresenter.GetAllPaged(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_RoleResponse)">
+            <summary>
+            GetAllPaged
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_RolePresenter.GetListView(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_RoleResponse)">
+            <summary>
+            GetListView
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_RolePresenter.GetSingle(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_RoleResponse)">
+            <summary>
+            GetSingle
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_RolePresenter.Save(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_RoleResponse)">
+            <summary>
+            Save
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_RolePresenter.Update(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_RoleResponse)">
+            <summary>
+            Update
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_RolePresenter.Delete(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_RoleResponse)">
+            <summary>
+            Delete
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="T:WebApi.Presenters.Owin_UserClaimsPresenter">
+            <summary>
+            Owin_UserClaimsPresenter
+            </summary>
+        </member>
+        <member name="P:WebApi.Presenters.Owin_UserClaimsPresenter.ContentResult">
+            <summary>
+            ContentResult
+            </summary>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_UserClaimsPresenter.#ctor">
+            <summary>
+            Gen_PriorityPresenter
+            </summary>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_UserClaimsPresenter.Handle(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_UserClaimsResponse)">
+            <summary>
+            Handle
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_UserClaimsPresenter.GetAll(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_UserClaimsResponse)">
+            <summary>
+            GetAll
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_UserClaimsPresenter.GetAllPaged(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_UserClaimsResponse)">
+            <summary>
+            GetAllPaged
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_UserClaimsPresenter.GetListView(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_UserClaimsResponse)">
+            <summary>
+            GetListView
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_UserClaimsPresenter.GetSingle(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_UserClaimsResponse)">
+            <summary>
+            GetSingle
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_UserClaimsPresenter.Save(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_UserClaimsResponse)">
+            <summary>
+            Save
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_UserClaimsPresenter.Update(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_UserClaimsResponse)">
+            <summary>
+            Update
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_UserClaimsPresenter.Delete(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_UserClaimsResponse)">
+            <summary>
+            Delete
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="T:WebApi.Presenters.Owin_UserLoginTrailPresenter">
+            <summary>
+            Owin_UserLoginTrailPresenter
+            </summary>
+        </member>
+        <member name="P:WebApi.Presenters.Owin_UserLoginTrailPresenter.ContentResult">
+            <summary>
+            ContentResult
+            </summary>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_UserLoginTrailPresenter.#ctor">
+            <summary>
+            Gen_PriorityPresenter
+            </summary>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_UserLoginTrailPresenter.Handle(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_UserLoginTrailResponse)">
+            <summary>
+            Handle
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_UserLoginTrailPresenter.GetAll(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_UserLoginTrailResponse)">
+            <summary>
+            GetAll
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_UserLoginTrailPresenter.GetAllPaged(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_UserLoginTrailResponse)">
+            <summary>
+            GetAllPaged
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_UserLoginTrailPresenter.GetListView(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_UserLoginTrailResponse)">
+            <summary>
+            GetListView
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_UserLoginTrailPresenter.GetSingle(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_UserLoginTrailResponse)">
+            <summary>
+            GetSingle
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_UserLoginTrailPresenter.Save(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_UserLoginTrailResponse)">
+            <summary>
+            Save
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_UserLoginTrailPresenter.Update(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_UserLoginTrailResponse)">
+            <summary>
+            Update
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_UserLoginTrailPresenter.Delete(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_UserLoginTrailResponse)">
+            <summary>
+            Delete
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="T:WebApi.Presenters.Owin_UserPasswordResetInfoPresenter">
+            <summary>
+            Owin_UserPasswordResetInfoPresenter
+            </summary>
+        </member>
+        <member name="P:WebApi.Presenters.Owin_UserPasswordResetInfoPresenter.ContentResult">
+            <summary>
+            ContentResult
+            </summary>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_UserPasswordResetInfoPresenter.#ctor">
+            <summary>
+            Gen_PriorityPresenter
+            </summary>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_UserPasswordResetInfoPresenter.Handle(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_UserPasswordResetInfoResponse)">
+            <summary>
+            Handle
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_UserPasswordResetInfoPresenter.GetAll(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_UserPasswordResetInfoResponse)">
+            <summary>
+            GetAll
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_UserPasswordResetInfoPresenter.GetAllPaged(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_UserPasswordResetInfoResponse)">
+            <summary>
+            GetAllPaged
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_UserPasswordResetInfoPresenter.GetListView(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_UserPasswordResetInfoResponse)">
+            <summary>
+            GetListView
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_UserPasswordResetInfoPresenter.GetSingle(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_UserPasswordResetInfoResponse)">
+            <summary>
+            GetSingle
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_UserPasswordResetInfoPresenter.Save(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_UserPasswordResetInfoResponse)">
+            <summary>
+            Save
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_UserPasswordResetInfoPresenter.Update(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_UserPasswordResetInfoResponse)">
+            <summary>
+            Update
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_UserPasswordResetInfoPresenter.Delete(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_UserPasswordResetInfoResponse)">
+            <summary>
+            Delete
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="T:WebApi.Presenters.Owin_UserPrefferencesSettingsPresenter">
+            <summary>
+            Owin_UserPrefferencesSettingsPresenter
+            </summary>
+        </member>
+        <member name="P:WebApi.Presenters.Owin_UserPrefferencesSettingsPresenter.ContentResult">
+            <summary>
+            ContentResult
+            </summary>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_UserPrefferencesSettingsPresenter.#ctor">
+            <summary>
+            Gen_PriorityPresenter
+            </summary>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_UserPrefferencesSettingsPresenter.Handle(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_UserPrefferencesSettingsResponse)">
+            <summary>
+            Handle
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_UserPrefferencesSettingsPresenter.GetAll(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_UserPrefferencesSettingsResponse)">
+            <summary>
+            GetAll
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_UserPrefferencesSettingsPresenter.GetAllPaged(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_UserPrefferencesSettingsResponse)">
+            <summary>
+            GetAllPaged
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_UserPrefferencesSettingsPresenter.GetListView(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_UserPrefferencesSettingsResponse)">
+            <summary>
+            GetListView
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_UserPrefferencesSettingsPresenter.GetSingle(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_UserPrefferencesSettingsResponse)">
+            <summary>
+            GetSingle
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_UserPrefferencesSettingsPresenter.Save(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_UserPrefferencesSettingsResponse)">
+            <summary>
+            Save
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_UserPrefferencesSettingsPresenter.Update(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_UserPrefferencesSettingsResponse)">
+            <summary>
+            Update
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_UserPrefferencesSettingsPresenter.Delete(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_UserPrefferencesSettingsResponse)">
+            <summary>
+            Delete
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="T:WebApi.Presenters.Owin_UserPresenter">
+            <summary>
+            Owin_UserPresenter
+            </summary>
+        </member>
+        <member name="P:WebApi.Presenters.Owin_UserPresenter.ContentResult">
+            <summary>
+            ContentResult
+            </summary>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_UserPresenter.#ctor">
+            <summary>
+            Gen_PriorityPresenter
+            </summary>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_UserPresenter.Handle(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_UserResponse)">
+            <summary>
+            Handle
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_UserPresenter.GetAll(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_UserResponse)">
+            <summary>
+            GetAll
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_UserPresenter.GetAllPaged(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_UserResponse)">
+            <summary>
+            GetAllPaged
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_UserPresenter.GetListView(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_UserResponse)">
+            <summary>
+            GetListView
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_UserPresenter.GetSingle(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_UserResponse)">
+            <summary>
+            GetSingle
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_UserPresenter.Save(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_UserResponse)">
+            <summary>
+            Save
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_UserPresenter.Update(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_UserResponse)">
+            <summary>
+            Update
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_UserPresenter.Delete(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_UserResponse)">
+            <summary>
+            Delete
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="T:WebApi.Presenters.Owin_UserRolePresenter">
+            <summary>
+            Owin_UserRolePresenter
+            </summary>
+        </member>
+        <member name="P:WebApi.Presenters.Owin_UserRolePresenter.ContentResult">
+            <summary>
+            ContentResult
+            </summary>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_UserRolePresenter.#ctor">
+            <summary>
+            Gen_PriorityPresenter
+            </summary>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_UserRolePresenter.Handle(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_UserRoleResponse)">
+            <summary>
+            Handle
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_UserRolePresenter.GetAll(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_UserRoleResponse)">
+            <summary>
+            GetAll
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_UserRolePresenter.GetAllPaged(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_UserRoleResponse)">
+            <summary>
+            GetAllPaged
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_UserRolePresenter.GetListView(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_UserRoleResponse)">
+            <summary>
+            GetListView
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_UserRolePresenter.GetSingle(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_UserRoleResponse)">
+            <summary>
+            GetSingle
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_UserRolePresenter.Save(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_UserRoleResponse)">
+            <summary>
+            Save
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_UserRolePresenter.Update(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_UserRoleResponse)">
+            <summary>
+            Update
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_UserRolePresenter.Delete(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_UserRoleResponse)">
+            <summary>
+            Delete
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="T:WebApi.Presenters.Owin_UserRolesPresenter">
+            <summary>
+            Owin_UserRolesPresenter
+            </summary>
+        </member>
+        <member name="P:WebApi.Presenters.Owin_UserRolesPresenter.ContentResult">
+            <summary>
+            ContentResult
+            </summary>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_UserRolesPresenter.#ctor">
+            <summary>
+            Gen_PriorityPresenter
+            </summary>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_UserRolesPresenter.Handle(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_UserRolesResponse)">
+            <summary>
+            Handle
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_UserRolesPresenter.GetAll(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_UserRolesResponse)">
+            <summary>
+            GetAll
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_UserRolesPresenter.GetAllPaged(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_UserRolesResponse)">
+            <summary>
+            GetAllPaged
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_UserRolesPresenter.GetListView(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_UserRolesResponse)">
+            <summary>
+            GetListView
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_UserRolesPresenter.GetSingle(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_UserRolesResponse)">
+            <summary>
+            GetSingle
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_UserRolesPresenter.Save(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_UserRolesResponse)">
+            <summary>
+            Save
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_UserRolesPresenter.Update(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_UserRolesResponse)">
+            <summary>
+            Update
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_UserRolesPresenter.Delete(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_UserRolesResponse)">
+            <summary>
+            Delete
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="T:WebApi.Presenters.Owin_UserStatusChangeHistoryPresenter">
+            <summary>
+            Owin_UserStatusChangeHistoryPresenter
+            </summary>
+        </member>
+        <member name="P:WebApi.Presenters.Owin_UserStatusChangeHistoryPresenter.ContentResult">
+            <summary>
+            ContentResult
+            </summary>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_UserStatusChangeHistoryPresenter.#ctor">
+            <summary>
+            Gen_PriorityPresenter
+            </summary>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_UserStatusChangeHistoryPresenter.Handle(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_UserStatusChangeHistoryResponse)">
+            <summary>
+            Handle
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_UserStatusChangeHistoryPresenter.GetAll(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_UserStatusChangeHistoryResponse)">
+            <summary>
+            GetAll
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_UserStatusChangeHistoryPresenter.GetAllPaged(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_UserStatusChangeHistoryResponse)">
+            <summary>
+            GetAllPaged
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_UserStatusChangeHistoryPresenter.GetListView(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_UserStatusChangeHistoryResponse)">
+            <summary>
+            GetListView
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_UserStatusChangeHistoryPresenter.GetSingle(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_UserStatusChangeHistoryResponse)">
+            <summary>
+            GetSingle
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_UserStatusChangeHistoryPresenter.Save(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_UserStatusChangeHistoryResponse)">
+            <summary>
+            Save
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_UserStatusChangeHistoryPresenter.Update(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_UserStatusChangeHistoryResponse)">
+            <summary>
+            Update
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Owin_UserStatusChangeHistoryPresenter.Delete(Web.Core.Frame.RequestResponse.UseCaseResponses.Owin_UserStatusChangeHistoryResponse)">
+            <summary>
+            Delete
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="T:WebApi.Presenters.Tran_LoginPresenter">
+            <summary>
+            Tran_LoginPresenter
+            </summary>
+        </member>
+        <member name="P:WebApi.Presenters.Tran_LoginPresenter.ContentResult">
+            <summary>
+            ContentResult
+            </summary>
+        </member>
+        <member name="M:WebApi.Presenters.Tran_LoginPresenter.#ctor">
+            <summary>
+            Gen_PriorityPresenter
+            </summary>
+        </member>
+        <member name="M:WebApi.Presenters.Tran_LoginPresenter.Handle(Web.Core.Frame.RequestResponse.UseCaseResponses.Tran_LoginResponse)">
+            <summary>
+            Handle
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Tran_LoginPresenter.GetAll(Web.Core.Frame.RequestResponse.UseCaseResponses.Tran_LoginResponse)">
+            <summary>
+            GetAll
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Tran_LoginPresenter.GetAllPaged(Web.Core.Frame.RequestResponse.UseCaseResponses.Tran_LoginResponse)">
+            <summary>
+            GetAllPaged
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Tran_LoginPresenter.GetListView(Web.Core.Frame.RequestResponse.UseCaseResponses.Tran_LoginResponse)">
+            <summary>
+            GetListView
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Tran_LoginPresenter.GetSingle(Web.Core.Frame.RequestResponse.UseCaseResponses.Tran_LoginResponse)">
+            <summary>
+            GetSingle
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Tran_LoginPresenter.Save(Web.Core.Frame.RequestResponse.UseCaseResponses.Tran_LoginResponse)">
+            <summary>
+            Save
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Tran_LoginPresenter.Update(Web.Core.Frame.RequestResponse.UseCaseResponses.Tran_LoginResponse)">
+            <summary>
+            Update
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:WebApi.Presenters.Tran_LoginPresenter.Delete(Web.Core.Frame.RequestResponse.UseCaseResponses.Tran_LoginResponse)">
+            <summary>
+            Delete
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="T:WebApi.Services.IInstaller">
+            <summary>
+            IInstaller
+            </summary>
+        </member>
+        <member name="M:WebApi.Services.IInstaller.InstallServices(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            InstallServices
+            </summary>
+            <param name="services"></param>
+            <param name="configuration"></param>
+        </member>
+        <member name="T:WebApi.Services.MvcInstaller">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:WebApi.Services.MvcInstaller.InstallServices(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            
+            </summary>
+            <param name="services"></param>
+            <param name="_configuration"></param>
+        </member>
+        <member name="T:WebApi.Services.RedisCacheInstaller">
+            <summary>
+            RedisCacheInstaller
+            </summary>
+        </member>
+        <member name="M:WebApi.Services.RedisCacheInstaller.InstallServices(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            InstallServices
+            </summary>
+            <param name="services"></param>
+            <param name="configuration"></param>
+        </member>
+        <member name="T:WebApi.Services.SwaggerInstaller">
+            <summary>
+            SwaggerInstaller
+            </summary>
+        </member>
+        <member name="M:WebApi.Services.SwaggerInstaller.InstallServices(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            InstallServices
+            </summary>
+            <param name="services"></param>
+            <param name="configuration"></param>
+        </member>
+    </members>
+</doc>

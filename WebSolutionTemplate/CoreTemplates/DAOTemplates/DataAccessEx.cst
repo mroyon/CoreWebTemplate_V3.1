@@ -1,0 +1,900 @@
+﻿<%@ CodeTemplate Language="C#" TargetLanguage="Text" Description="This template demonstrates using properties defined in external assemblies." %>
+
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Assembly Name="CodeSmith.BaseTemplates" %>
+<%@ Assembly Name="CodeSmith.CustomProperties" %>
+<%@ Assembly Name="System.Data" %>
+
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Import Namespace="CodeSmith.CustomProperties" %>
+<%@ Import Namespace="CodeSmith.BaseTemplates" %>
+<%@ Import Namespace="System.Data" %>
+<%@ Import Namespace="System.Text.RegularExpressions" %>
+
+<%@ Property Name="SourceTable" Type="SchemaExplorer.TableSchema" Category="Context" Description="Table that the object is based on." %>
+<%@ Property Name="NameSpace" Type="System.String" %>
+
+<%-- 
+This template demonstrates using properties defined in external assemblies.
+
+CodeSmith is 100% extensible.  A property can be any .NET type that has designer support.
+This includes all of the standard .NET data types and most other standard .NET types as well.
+
+You can also create your own custom property types or you can use one any of the custom types
+included in CodeSmith.  This template uses the included SchemaExplorer.TableSchema type and is
+defined in the SchemaExplorer assembly.  This type provides access to nearly all possible schema
+information about a particular database table.
+
+--%>
+<%
+string tableName = this.SourceTable.Name;
+string localVar = tableName.Substring( 0 , 1 ).ToLower() + tableName.Substring( 1, tableName.Length - 1);
+string ClassName = tableName.Substring( 0 , 1 ).ToLower() + tableName.Substring( 1, tableName.Length - 1).ToLower();
+string collectionClassName= ClassName+"List";
+ColumnSchema primaryKeyColumn = SourceTable.PrimaryKey.MemberColumns[0];
+string primaryKeyColumnNameCamelCase = this.GetCamelCaseName(primaryKeyColumn.Name);
+string primaryKeyColumnName = primaryKeyColumn.Name;
+//string MasterTableName = GetDetailTableName(this.SourceTable);
+%>
+using System;
+using System.Data;
+using System.Data.Common;
+using System.Collections;
+using System.Collections.Generic;
+using Microsoft.Practices.EnterpriseLibrary.Data;
+using <%=this.NameSpace%>.BusinessDataObjects;
+using <%=this.NameSpace%>.IDataAccessObjects;
+using <%=this.NameSpace%>.AppConfiguration.Configuration;
+using <%=this.NameSpace%>.BusinessDataObjects.BusinessDataObjectsPartials;
+
+
+
+namespace <%=this.NameSpace%>.DataAccessObjects
+{
+	/// <summary>
+    /// Un touched: From Generator
+    /// KAF Information Center
+    /// </summary>
+	
+	internal sealed partial class <%=ClassName%>DataAccessObjects 
+	{
+        IList<KAFGenericComboEntity> I<%= ClassName %>DataAccessObjects.Add_WithFiles(<%= ClassName %>Entity <%= ClassName %>)
+        {
+            List<KAFGenericComboEntity> returnArray = new List<KAFGenericComboEntity>();
+
+            long retCode = -99;
+            long folderid = -99;
+
+            const string MasterSPInsert = "<%= ClassName %>_Ins";
+
+            DbConnection connection = Database.CreateConnection();
+            connection.Open();
+            DbTransaction transaction = connection.BeginTransaction();
+
+
+            try
+            {
+                using (DbCommand cmd = Database.GetStoredProcCommand(MasterSPInsert))
+                {
+                    FillParameters(<%= ClassName %>, cmd, Database);
+                    FillSequrityParameters(<%= ClassName %>.BaseSecurityParam, cmd, Database);
+                    AddOutputParameter(cmd);
+                    retCode = Database.ExecuteNonQuery(cmd, transaction);
+                    retCode = (Int64)(cmd.Parameters["@RETURN_KEY"].Value);
+                    cmd.Dispose();
+                }
+
+                if (retCode <= 0)
+                    throw new Exception("ERROR: @Military Service Save");
+                else
+                {
+                    returnArray.Add(new KAFGenericComboEntity()
+                    {
+                        comText = "<%= GetPrimaryColumnName(SourceTable) %>",
+                        comText2 = retCode.ToString(),
+                        comText3 = "<%= SourceTable.Name %>"
+                    });
+
+
+                    List<cor_foldercontentsEntity> objFileList = new List<cor_foldercontentsEntity>();
+                    objFileList = <%= ClassName %>.cor_foldercontentsList;
+
+                    if (objFileList != null && objFileList.Count > 0)
+                    {
+                        cor_foldercontentsDataAccessObjects cor_foldercontentsDataAccessObjects = new cor_foldercontentsDataAccessObjects(this.Context);
+                        foreach (cor_foldercontentsEntity objFile in objFileList)
+                        {
+                            objFile.BaseSecurityParam = new BusinessDataObjects.BusinessDataObjectsBase.SecurityCapsule();
+                            objFile.BaseSecurityParam = <%= ClassName %>.BaseSecurityParam;
+
+                            objFile.foldercontentid = -99;
+                            objFile.folderid = long.Parse(<%= ClassName %>.strValue5);
+                            objFile.columnpkid = long.Parse(returnArray.Where(p => p.comText3 == objFile.tablename).FirstOrDefault().comText2);
+                            objFile.filepath = <%= ClassName %>.strValue6 + "/Upload/";
+                        }
+
+                        retCode = cor_foldercontentsDataAccessObjects.SaveList(Database, transaction, objFileList, new List<cor_foldercontentsEntity>(), new List<cor_foldercontentsEntity>());
+                        if (retCode <= 0)
+                            throw new Exception("ERROR: @FOLDER STRUCTURE Save");
+                        else
+                            returnArray.Add(new KAFGenericComboEntity()
+                            {
+                                comText = "foldercontentid",
+                                comText2 = retCode.ToString(),
+                                comText3 = "COR_FolderContents"
+                            });
+                    }
+                }
+                transaction.Commit();
+            }
+            catch (Exception ex)
+            {
+                transaction.Rollback();
+                throw GetDataAccessException(ex, SourceOfException("I<%= ClassName %>DataAccess.Add_WithFiles"));
+            }
+            finally
+            {
+                transaction.Dispose();
+                connection.Close();
+                connection = null;
+            }
+            return returnArray;
+        }
+        
+        
+        IList<KAFGenericComboEntity> I<%= ClassName %>DataAccessObjects.Update_WithFiles(<%= ClassName %>Entity <%= ClassName %>)
+        {
+            List<KAFGenericComboEntity> returnArray = new List<KAFGenericComboEntity>();
+
+            long retCode = -99;
+            long folderid = -99;
+
+            const string MasterSPUpdate = "<%= ClassName %>_Upd";
+
+
+            DbConnection connection = Database.CreateConnection();
+            connection.Open();
+            DbTransaction transaction = connection.BeginTransaction();
+
+            try
+            {
+                using (DbCommand cmd = Database.GetStoredProcCommand(MasterSPUpdate))
+                {
+                    FillParameters(<%= ClassName %>, cmd, Database);
+                    FillSequrityParameters(<%= ClassName %>.BaseSecurityParam, cmd, Database);
+                    AddOutputParameter(cmd);
+                    retCode = Database.ExecuteNonQuery(cmd, transaction);
+                    retCode = (Int64)(cmd.Parameters["@RETURN_KEY"].Value);
+                    cmd.Dispose();
+                }
+
+                if (retCode <= 0)
+                    throw new Exception("ERROR: @Military Service Save");
+                else
+                {
+                    returnArray.Add(new KAFGenericComboEntity()
+                    {
+                        comText = "<%= GetPrimaryColumnName(SourceTable) %>",
+                        comText2 = retCode.ToString(),
+                        comText3 = "<%= SourceTable.Name %>"
+                    });
+
+                    cor_foldercontentsDataAccessObjects cor_foldercontentsDataAccessObjects = new cor_foldercontentsDataAccessObjects(this.Context);
+                    List<cor_foldercontentsEntity> objFileDeleteList = new List<cor_foldercontentsEntity>();
+                    List<cor_foldercontentsEntity> objFileAddList = new List<cor_foldercontentsEntity>();
+
+                    objFileDeleteList = <%= ClassName %>.cor_foldercontentsList.Where(p => p.strValue1 == "deleted").ToList();
+                    objFileAddList = <%= ClassName %>.cor_foldercontentsList.Where(p => p.strValue1 == "added").ToList();
+
+
+                    foreach (cor_foldercontentsEntity obj in objFileDeleteList)
+                    {
+                        cor_foldercontentsEntity objSingleFile = new cor_foldercontentsEntity();
+                        obj.BaseSecurityParam = new BusinessDataObjects.BusinessDataObjectsBase.SecurityCapsule();
+                        obj.BaseSecurityParam = <%= ClassName %>.BaseSecurityParam;
+                        obj.CurrentState = BusinessDataObjects.BusinessDataObjectsBase.BaseEntity.EntityState.Deleted;
+                    }
+
+                    foreach (cor_foldercontentsEntity obj in objFileAddList)
+                    {
+                        cor_foldercontentsEntity objSingleFile = new cor_foldercontentsEntity();
+                        obj.BaseSecurityParam = new BusinessDataObjects.BusinessDataObjectsBase.SecurityCapsule();
+                        obj.BaseSecurityParam = <%= ClassName %>.BaseSecurityParam;
+                        obj.folderid = long.Parse(<%= ClassName %>.strValue5);
+                        obj.columnpkid = long.Parse(returnArray.Where(p => p.comText3 == obj.tablename).FirstOrDefault().comText2);
+                        obj.filepath = <%= ClassName %>.strValue6 + "/Upload/";
+                        obj.CurrentState = BusinessDataObjects.BusinessDataObjectsBase.BaseEntity.EntityState.Added;
+                    }
+
+                    retCode = cor_foldercontentsDataAccessObjects.SaveList(Database, transaction, objFileAddList, new List<cor_foldercontentsEntity>(), objFileDeleteList);
+                    if (retCode <= 0)
+                        throw new Exception("ERROR: @FOLDER STRUCTURE UPDATE");
+                    else
+                        returnArray.Add(new KAFGenericComboEntity()
+                        {
+                            comText = "foldercontentid",
+                            comText2 = retCode.ToString(),
+                            comText3 = "COR_FolderContents"
+                        });
+
+                }
+                transaction.Commit();
+            }
+            catch (Exception ex)
+            {
+                transaction.Rollback();
+                throw GetDataAccessException(ex, SourceOfException("I<%= ClassName %>DataAccess.Update_WithFiles"));
+            }
+            finally
+            {
+                transaction.Dispose();
+                connection.Close();
+                connection = null;
+            }
+            return returnArray;
+        }
+        
+        
+        IList<KAFGenericComboEntity> I<%= ClassName %>DataAccessObjects.Delete_WithFiles(<%= ClassName %>Entity <%= ClassName %>)
+        {
+            List<KAFGenericComboEntity> returnArray = new List<KAFGenericComboEntity>();
+
+            long retCode = -99;
+            long folderid = -99;
+
+            const string MasterSPDelete = "<%= ClassName %>_Del";
+
+
+            DbConnection connection = Database.CreateConnection();
+            connection.Open();
+            DbTransaction transaction = connection.BeginTransaction();
+
+            try
+            {
+                if (<%= ClassName %>.cor_foldercontentsList != null && <%= ClassName %>.cor_foldercontentsList.Count > 0)
+                {
+                    cor_foldercontentsDataAccessObjects cor_foldercontentsDataAccessObjects = new cor_foldercontentsDataAccessObjects(this.Context);
+                    List<cor_foldercontentsEntity> objFileDeleteList = new List<cor_foldercontentsEntity>();
+                    objFileDeleteList = <%= ClassName %>.cor_foldercontentsList;
+
+                    foreach (cor_foldercontentsEntity obj in objFileDeleteList)
+                    {
+                        cor_foldercontentsEntity objSingleFile = new cor_foldercontentsEntity();
+                        obj.BaseSecurityParam = new BusinessDataObjects.BusinessDataObjectsBase.SecurityCapsule();
+                        obj.BaseSecurityParam = <%= ClassName %>.BaseSecurityParam;
+                        obj.CurrentState = BusinessDataObjects.BusinessDataObjectsBase.BaseEntity.EntityState.Deleted;
+                    }
+                    retCode = cor_foldercontentsDataAccessObjects.SaveList(Database, transaction, new List<cor_foldercontentsEntity>(), new List<cor_foldercontentsEntity>(), objFileDeleteList);
+                    if (retCode <= 0)
+                        throw new Exception("ERROR: @FOLDER STRUCTURE Save");
+                    else
+                        returnArray.Add(new KAFGenericComboEntity()
+                        {
+                            comText = "foldercontentid",
+                            comText2 = retCode.ToString(),
+                            comText3 = "COR_FolderContents"
+                        });
+                }
+
+                <%= ClassName %>.CurrentState = BusinessDataObjects.BusinessDataObjectsBase.BaseEntity.EntityState.Deleted;
+                using (DbCommand cmd = Database.GetStoredProcCommand(MasterSPDelete))
+                {
+                    FillParameters(<%= ClassName %>, cmd, Database);
+                    FillSequrityParameters(<%= ClassName %>.BaseSecurityParam, cmd, Database);
+                    AddOutputParameter(cmd);
+                    retCode = Database.ExecuteNonQuery(cmd, transaction);
+                    retCode = (Int64)(cmd.Parameters["@RETURN_KEY"].Value);
+                    cmd.Dispose();
+                }
+
+                if (retCode <= 0)
+                    throw new Exception("ERROR: @Military Service DELETE");
+                else
+                {
+                    returnArray.Add(new KAFGenericComboEntity()
+                    {
+                         comText = "<%= GetPrimaryColumnName(SourceTable) %>",
+                        comText2 = retCode.ToString(),
+                        comText3 = "<%= SourceTable.Name %>"
+                    });
+
+                }
+                transaction.Commit();
+            }
+            catch (Exception ex)
+            {
+                transaction.Rollback();
+                throw GetDataAccessException(ex, SourceOfException("I<%= ClassName %>DataAccess.Delete_WithFiles"));
+            }
+            finally
+            {
+                transaction.Dispose();
+                connection.Close();
+                connection = null;
+            }
+            return returnArray;
+        }
+        
+        
+         IList<<%= ClassName %>Entity> I<%= ClassName %>DataAccessObjects.ViewSingle_WithFiles(<%= ClassName %>Entity <%= ClassName %>)
+        {
+            List<<%= ClassName %>Entity> returnArray = new List<<%= ClassName %>Entity>();
+
+            long retCode = -99;
+
+            return returnArray;
+        }
+        
+	}
+}
+<script runat="template">
+
+    
+public string GetPrimaryColumnName(TableSchema table)
+{
+    string RefColumnName  = "";
+
+            foreach(ColumnSchema col in table.Columns)
+            {
+                if(col.IsPrimaryKeyMember)
+                    RefColumnName = col.Name.ToLower();
+            }
+            return RefColumnName;
+    }
+
+public string GetRefColumnName(TableKeySchema tableKey)
+{
+    string RefColumnName  = "";
+            TableSchema DetTable = tableKey.ForeignKeyTable;
+            foreach(TableKeySchema cc in DetTable.ForeignKeys)
+            {
+             if(cc.PrimaryKeyTable.Name.ToString() == this.SourceTable.Name.ToString())
+                    {
+
+                        RefColumnName = cc.ForeignKeyMemberColumns[0].Name.ToString();        
+                    }   
+            }
+            return RefColumnName;
+    }
+
+
+
+public string AssignNullIfNotSent(ColumnSchema column, string objName)
+{
+	string syntaxG = "";
+	
+	if(column.IsPrimaryKeyMember)
+	{
+		syntaxG = "if (("+objName+column.Name.ToString().ToLower()+".ToString() != "+ Convert.ToChar(34)+"0"+Convert.ToChar(34)+"))";
+	}
+	else
+	{
+		if(column.NativeType.ToString() == "varchar" || column.NativeType.ToString() == "nvarchar" || column.NativeType.ToString() == "text" || column.NativeType.ToString() == "ntext") //string
+		{
+			syntaxG = "if (("+objName+column.Name.ToString().ToLower()+" != null))";
+		}
+		else if((column.NativeType.ToString() == "bigint") ) //Long && (column.Scale <= 0)
+		{
+			syntaxG = "if (("+objName+column.Name.ToString().ToLower()+".ToString() != "+ Convert.ToChar(34)+"0"+Convert.ToChar(34)+"))";
+		}
+        else if((column.NativeType.ToString() == "int") ) //int && (column.Scale <= 0)
+		{
+			syntaxG = "if (("+objName+column.Name.ToString().ToLower()+".ToString() != "+ Convert.ToChar(34)+"0"+Convert.ToChar(34)+"))";
+		}
+		else if((column.NativeType.ToString() == "numeric") && (column.Scale > 1)) //Decimal
+		{
+			syntaxG = "if (("+objName+column.Name.ToString().ToLower()+" != null))";
+		}
+		else if((column.NativeType.ToString() == "decimal") && (column.Scale > 1)) //Decimal
+		{
+			syntaxG = "if (("+objName+column.Name.ToString().ToLower()+" !=null) && ("+objName+column.Name.ToString().ToLower()+".ToString() != "+ Convert.ToChar(34)+"0"+Convert.ToChar(34)+"))";
+		}
+		else if((column.NativeType.ToString() == "char")) //CHAR
+		{
+			syntaxG = "if (("+objName+column.Name.ToString().ToLower()+" != null))";
+		}
+		else if((column.NativeType.ToString() == "datetime")) //DATE
+		{
+			syntaxG = "if (("+objName+column.Name.ToString().ToLower()+".HasValue))";
+		}
+		else if((column.NativeType.ToString() == "Image")) //BLOB
+		{
+			syntaxG = "if (("+objName+column.ToString().ToLower()+" != null))";
+		}
+		else if((column.NativeType.ToString() == "bit") ) //bit 
+		{
+			syntaxG = "if (("+objName+column.Name.ToString().ToLower()+" != null))";
+		}
+	}
+	return syntaxG;
+}
+
+public string GenClassName(TableSchema table,  ColumnSchema column)
+{
+	string param = "";
+	string tableName="";	
+	foreach(TableKeySchema fk in table.ForeignKeys) 
+	{
+		foreach( ColumnSchema c in fk.PrimaryKeyTable.Columns) 
+		{
+			if(column.Name == c.Name)
+			{
+				tableName = fk.PrimaryKeyTable.Name;
+				param =tableName.Substring( 0 , 1 ).ToLower() + tableName.Substring( 1, tableName.Length - 1).ToLower();
+			}
+		}
+	}
+		return param;
+}
+
+public string GetMasterPrimaryKeyName ( TableSchema table,  ColumnSchema column) {
+
+string param = "";
+
+	foreach(TableKeySchema fk in table.ForeignKeys) 
+	{
+		foreach( ColumnSchema c in fk.PrimaryKeyTable.Columns) 
+		{
+			if(column.Name == c.Name)
+			{
+				foreach( ColumnSchema cfg in fk.PrimaryKeyTable.Columns) 
+				{	
+					if(cfg.IsPrimaryKeyMember)
+					{
+						param = cfg.Name.ToString();
+					}
+				}
+			}	
+		}
+		
+		//foreach( ColumnSchema c in fk.PrimaryKeyTable.Columns) 
+		//{
+		//	param += "					cmd.Parameters.Add(p_"+ c.Name +", OracleType."+ GetOraVariableTypeForCSharp(c)+").Value = objMasEntity."+ c.Name.ToLower()+";";
+		//	param += "\n";
+		//}
+			//foreach( ColumnSchema c in fk.PrimaryKeyTable.Columns) {
+	//Response.Write("member column=" + c.Name + " in table=" + c.Table.Name + "\n");
+	//}
+	//param += "\n";
+	}
+		return param;
+}
+
+public string GetMasterSPSelection ( TableSchema table,  ColumnSchema column, string MasterClassName) {
+
+string param = "";
+
+	foreach(TableKeySchema fk in table.ForeignKeys) 
+	{
+		foreach( ColumnSchema c in fk.PrimaryKeyTable.Columns) 
+		{
+			if(column.Name == c.Name)
+			{
+				foreach( ColumnSchema cfg in fk.PrimaryKeyTable.Columns) 
+				{	
+					if(cfg.IsPrimaryKeyMember)
+					{
+						param += "						if(objMasEntity."+ cfg.Name.ToLower() +" < 0 )";
+						param += "\n";
+						param += "							SPMaster = "+ MasterClassName +"Package.Insert"+  MasterClassName + ";";
+						param += "\n";
+						param += "						if(objMasEntity."+ cfg.Name.ToLower() +"< 0 )";
+						param += "\n";
+						param += "							SPMaster = "+ MasterClassName +"Package.Update"+  MasterClassName +";";
+						param += "\n";
+					}	
+				}
+			}	
+		}
+		
+		//foreach( ColumnSchema c in fk.PrimaryKeyTable.Columns) 
+		//{
+		//	param += "					cmd.Parameters.Add(p_"+ c.Name +", OracleType."+ GetOraVariableTypeForCSharp(c)+").Value = objMasEntity."+ c.Name.ToLower()+";";
+		//	param += "\n";
+		//}
+			//foreach( ColumnSchema c in fk.PrimaryKeyTable.Columns) {
+	//Response.Write("member column=" + c.Name + " in table=" + c.Table.Name + "\n");
+	//}
+	//param += "\n";
+	}
+		return param;
+}
+
+public string getMasterCmdArranged ( TableSchema table,  ColumnSchema column) {
+
+string param = "";
+
+	foreach(TableKeySchema fk in table.ForeignKeys) 
+	{
+		foreach( ColumnSchema c in fk.PrimaryKeyTable.Columns) 
+		{
+			if(column.Name == c.Name)
+			{
+				foreach( ColumnSchema cfg in fk.PrimaryKeyTable.Columns) 
+				{	
+					if(cfg.IsPrimaryKeyMember)
+					{
+						param += "						if(objMasEntity."+ cfg.Name.ToLower() +" > 0 )";
+						param += "\n";
+						param += "							cmd.Parameters.Add(p_"+ cfg.Name +", OracleType."+ GetOraVariableTypeForCSharp(cfg)+").Value = objMasEntity."+ cfg.Name.ToLower()+";";
+						param += "\n";
+						param += "						if(objMasEntity."+ cfg.Name.ToLower() +"< 0 )";
+						param += "\n";
+						param += "							cmd.Parameters.Add(p_"+ cfg.Name +", OracleType."+ GetOraVariableTypeForCSharp(cfg)+").Value = 0 ;";
+						param += "\n";
+					}
+					else
+					{
+						param += "						cmd.Parameters.Add(p_"+ cfg.Name +", OracleType."+ GetOraVariableTypeForCSharp(cfg)+").Value = objMasEntity."+ cfg.Name.ToLower()+";";
+						param += "\n";
+					}	
+				}
+			}	
+		}
+		
+		//foreach( ColumnSchema c in fk.PrimaryKeyTable.Columns) 
+		//{
+		//	param += "					cmd.Parameters.Add(p_"+ c.Name +", OracleType."+ GetOraVariableTypeForCSharp(c)+").Value = objMasEntity."+ c.Name.ToLower()+";";
+		//	param += "\n";
+		//}
+			//foreach( ColumnSchema c in fk.PrimaryKeyTable.Columns) {
+	//Response.Write("member column=" + c.Name + " in table=" + c.Table.Name + "\n");
+	//}
+	//param += "\n";
+	}
+		return param;
+}
+
+
+public string getMasterTableName ( TableSchema table,  ColumnSchema column) {
+
+string param = "";
+	
+	foreach( TableKeySchema fk in table.ForeignKeys) 
+	{
+		foreach( ColumnSchema c in fk.PrimaryKeyTable.Columns) 
+		{
+			if(c.IsPrimaryKeyMember)
+				if(column.Name == c.Name)
+					param = fk.PrimaryKeyTable.Name.Substring( 0 , 1 ).ToLower() +  fk.PrimaryKeyTable.Name.Substring( 1,  fk.PrimaryKeyTable.Name.Length - 1).ToLower();	
+
+		}
+			//foreach( ColumnSchema c in fk.PrimaryKeyTable.Columns) {
+	//Response.Write("member column=" + c.Name + " in table=" + c.Table.Name + "\n");
+	//}
+	//param += "\n";
+	}
+		return param;
+}
+
+public string GetMemberVariableDeclarationStatement(ColumnSchema column)
+{
+	return GetMemberVariableDeclarationStatement("private", column);
+}
+
+public string GetMemberVariableDeclarationStatement(string protectionLevel, ColumnSchema column)
+{
+	string statement = protectionLevel + " ";
+	statement += GetCSharpVariableType(column) + " " + GetMemberVariableName(column);
+	
+	string defaultValue = GetMemberVariableDefaultValue(column);
+	if (defaultValue != "")
+	{
+		statement += " = " + defaultValue;
+	}
+	
+	statement += ";";
+	
+	return statement;
+}
+
+public string GetReaderAssignmentStatement(ColumnSchema column, int index)
+{
+	string statement = "if (!reader.IsDBNull(" + index.ToString() + ")) ";
+	statement += GetMemberVariableName(column) + " = ";
+	
+	//if (column.Name.EndsWith("TypeCode")) statement += "(" + column.Name + ")";
+	
+	statement += "reader." + GetReaderMethod(column) + "(" + index.ToString() + ");";
+	
+	return statement;
+}
+
+public string GetCamelCaseName(string value)
+{
+	return value.Substring(0, 1).ToLower() + value.Substring(1);
+}
+
+public string GetMemberVariableName(ColumnSchema column)
+{
+	string propertyName = GetPropertyName(column);
+	string memberVariableName = "_" + GetCamelCaseName(propertyName);
+	
+	return memberVariableName;
+}
+
+public string GetPropertyName(ColumnSchema column)
+{
+	string propertyName = column.Name;
+	
+	//if (propertyName == column.Table.Name + "Name") return "Name";
+	//if (propertyName == column.Table.Name + "Description") return "Description";
+	//
+	//if (propertyName.EndsWith("TypeCode")) propertyName = propertyName.Substring(0, propertyName.Length - 4);
+	
+	return propertyName;
+}
+
+public string GetMemberVariableDefaultValue(ColumnSchema column)
+{
+	switch (column.DataType)
+	{
+		case DbType.Guid:
+		{
+			return "Guid.Empty";
+		}
+		case DbType.DateTime:
+		{
+			return "DateTime.MinValue";
+		}
+		case DbType.Boolean:
+		{
+			return "false";
+		}
+		case DbType.AnsiString:
+		case DbType.AnsiStringFixedLength:
+		case DbType.String:
+		case DbType.StringFixedLength:
+		{
+			return "string.Empty";
+		}
+		default:
+		{
+			return "0";
+		}
+	}
+}
+
+public string GetOraVariableTypeForCSharp(ColumnSchema column){
+	
+	switch (column.NativeType)
+	{
+		case "NUMBER": 
+		if (column.Scale<1){
+					return "Number";
+				}else {
+					return  "Double";
+				}
+		case "Int16": return "Int16";
+		case "VARCHAR": return "VarChar";
+		case "CHAR": return "Char";
+		case "Int32": return "Int32";
+		case "decimal": return "Decimal";
+		case "Varchar": return "VarChar";
+		case "VARCHAR2": return "VarChar";
+		case "int": return "Int";
+		case "money": return "Money";
+		case "nchar": return "NChar";
+		case "ntext": return "NText";
+		case "numeric": return "Decimal";
+		case "nvarchar": return "NVarChar";
+		case "real": return "Real";
+		case "smalldatetime": return "SmallDateTime";
+		case "smallint": return "SmallInt";
+		case "DATATIME": return "DateTime";
+		case "DateTime": return "DateTime";
+		case "Datetime": return "DateTime";
+		case "text": return "Text";
+		case "timestamp": return "Timestamp";
+		case "tinyint": return "TinyInt";
+		case "uniqueidentifier": return "UniqueIdentifier";
+		case "varbinary": return "VarBinary";
+		case "varchar": return "VarChar";
+		case "DATE": return "DateTime";
+		default: return "__UNKNOWN__" + column.NativeType;
+	}
+}
+
+public string GetCSharpVariableTypeForOra(ColumnSchema column){
+	string strResult = "__UNKNOWN__" + column.NativeType;
+	//note: not all oracle data types are supported yet
+	switch (column.NativeType.Trim().ToLower())
+		{
+			case "number":
+			if (column.Scale<1){
+					strResult= "long";
+				}else if (column.Scale>1){
+					strResult= "decimal";
+				}
+			 	break;
+			case "binary": strResult= "Byte"; break;
+			case "char": strResult= "string"; break;
+			case "date": strResult= "DateTime"; break;
+			case "long": strResult= "Int64"; break;
+			case "blob": strResult= "byte"; break;
+			case "nvarchar2": strResult= "string"; break;
+			case "raw": strResult= "byte"; break;
+			case "rowid": strResult= "string"; break;
+			case "clob": strResult= "byte"; break;
+			case "nclob": strResult= "byte"; break;
+			case "bfile": strResult= "byte"; break;
+			case "float": strResult= "single"; break;
+			case "varchar2": strResult= "string"; break;
+			case "varchar": strResult= "string"; break;
+			case "integer": strResult= "int32"; break;
+		}
+	
+	return strResult;
+}
+
+public string GetCSharpVariableType(ColumnSchema column)
+{
+	//if (column.Name.EndsWith("TypeCode")) return column.Name;
+	
+	switch (column.DataType)
+	{
+		case DbType.AnsiString: return "String";
+		case DbType.AnsiStringFixedLength: return "String";
+		case DbType.Binary: return "Binary";
+		case DbType.Boolean: return "Boolean";
+		case DbType.Byte: return "Byte";
+		case DbType.Currency: return "decimal";
+		case DbType.Date: return "DateTime";
+		case DbType.DateTime: return "DateTime";
+		case DbType.Decimal: return "Decimal";
+		case DbType.Double: return "Double";
+		case DbType.Guid: return "Guid";
+		case DbType.Int16: return "Int16";
+		case DbType.Int32: return "Int32";
+		case DbType.Int64: return "Int64";
+		case DbType.Object: return "object";
+		case DbType.SByte: return "SByte";
+		case DbType.Single: return "float";
+		case DbType.String: return "String";
+		case DbType.StringFixedLength: return "String";
+		case DbType.Time: return "TimeSpan";
+		case DbType.UInt16: return "short";
+		case DbType.UInt32: return "int";
+		case DbType.UInt64: return "long";
+		case DbType.Xml: return "Xml";
+		case DbType.VarNumeric: return "Decimal";
+		
+		default:
+		{
+			return "__UNKNOWN__" + column.NativeType;
+		}
+	}
+}
+
+public string GetReaderMethod(ColumnSchema column)
+{
+	switch (column.DataType)
+	{
+		case DbType.Byte:
+		{
+			return "GetByte";
+		}
+		case DbType.Int16:
+		{
+			return "GetInt16";
+		}
+		case DbType.Int32:
+		{
+			return "GetInt32";
+		}
+		case DbType.Int64:
+		{
+			return "Lon";
+		}
+		case DbType.AnsiStringFixedLength:
+		case DbType.AnsiString:
+		case DbType.String:
+		case DbType.StringFixedLength:
+		{
+			return "GetString";
+		}
+		case DbType.Boolean:
+		{
+			return "GetBoolean";
+		}
+		case DbType.Guid:
+		{
+			return "GetGuid";
+		}
+		case DbType.Currency:
+		case DbType.Decimal:
+		{
+			return "GetDecimal";
+		}
+		case DbType.DateTime:
+		case DbType.Date:
+		{
+			return "GetDateTime";
+		}
+		case DbType.Binary:
+		{
+			return "GetBytes";
+		}
+		default:
+		{
+			return "__SQL__" + column.DataType;
+		}
+	}
+}
+
+public string GetClassName(TableSchema table)
+{
+	if (table.Name.EndsWith("s"))
+	{
+		return table.Name.Substring(0, table.Name.Length - 1);
+	}
+	else
+	{
+		return table.Name;
+	}
+}
+
+public string GetSqlDbType(ColumnSchema column)
+{
+	switch (column.NativeType)
+	{
+		case "bigint": return "BigInt";
+		case "binary": return "Binary";
+		case "bit": return "Bit";
+		case "char": return "Char";
+		case "datetime": return "DateTime";
+		case "decimal": return "Decimal";
+		case "float": return "Float";
+		case "image": return "Image";
+		case "int": return "Int";
+		case "money": return "Money";
+		case "nchar": return "NChar";
+		case "ntext": return "NText";
+		case "numeric": return "Decimal";
+		case "nvarchar": return "NVarChar";
+		case "real": return "Real";
+		case "smalldatetime": return "SmallDateTime";
+		case "smallint": return "SmallInt";
+		case "smallmoney": return "SmallMoney";
+		case "sql_variant": return "Variant";
+		case "sysname": return "NChar";
+		case "text": return "Text";
+		case "timestamp": return "Timestamp";
+		case "tinyint": return "TinyInt";
+		case "uniqueidentifier": return "UniqueIdentifier";
+		case "varbinary": return "VarBinary";
+		case "varchar": return "VarChar";
+		default: return "__UNKNOWN__" + column.NativeType;
+	}
+}
+
+public string GetPrimaryKeyType(TableSchema table)
+{
+	if (table.PrimaryKey != null)
+	{
+		if (table.PrimaryKey.MemberColumns.Count == 1)
+		{
+			return GetCSharpVariableType(table.PrimaryKey.MemberColumns[0]);
+		}
+		else
+		{
+			throw new ApplicationException("This template will not work on primary keys with more than one member column.");
+		}
+	}
+	else
+	{
+		throw new ApplicationException("This template will only work on tables with a primary key.");
+	}
+}
+
+public override string GetFileName()
+{
+	return this.GetClassName(this.SourceTable) + "DataAccessObjects.cs";
+}
+
+public ColumnSchema GetPrimaryKeyColumn()
+{
+     return SourceTable.PrimaryKey.MemberColumns[0];
+}
+
+</script>

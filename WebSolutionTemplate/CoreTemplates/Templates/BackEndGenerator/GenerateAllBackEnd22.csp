@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<codeSmith xmlns="http://www.codesmithtools.com/schema/csp.xsd">
+  <variables>
+    <add key="ConnectionString3" value="Data Source=.;Initial Catalog=OwinTemplate;Persist Security Info=True;User ID=sa;Password=Asdf1234" />
+    <add key="ConnectionString1" value="Data Source=10.255.222.80;Initial Catalog=KAF_Correspondence;User ID=devlead_rn;Password=Asdf@1234" />
+    <add key="ConnectionString2" value="Data Source=10.255.222.80;Initial Catalog=KAF_Correspondence;Persist Security Info=True;User ID=KAF_CorrespondenceUser;Password=Asdf1234" />
+    <add key="ConnectionString4" value="Data Source=localhost,1434;Initial Catalog=KAFBlackPortal;User ID=sa;Password=Asdf@1234" />
+  </variables>
+  <propertySets>
+    <propertySet name="DTOGenerator" template="..\..\BDOTemplates\DTOGenerator.cst">
+      <property name="NameSpace">KAF</property>
+      <property name="OutputDirectory">C:\temp\DTO</property>
+      <property name="SourceDatabase">
+        <connectionString>$(ConnectionString4)</connectionString>
+        <providerType>SchemaExplorer.SqlSchemaProvider,SchemaExplorer.SqlSchemaProvider</providerType>
+      </property>
+    </propertySet>
+    <propertySet name="IDaoGenerator" template="..\..\IDOTemplates\IDaoGenerator.cst">
+      <property name="NameSpace">KAF</property>
+      <property name="IDaoOutputDirectory">C:\temp\IDAO</property>
+      <property name="SourceDatabase">
+        <connectionString>$(ConnectionString4)</connectionString>
+        <providerType>SchemaExplorer.SqlSchemaProvider,SchemaExplorer.SqlSchemaProvider</providerType>
+      </property>
+    </propertySet>
+    <propertySet name="DaoGenerator" template="..\..\DAOTemplates\DaoGenerator.cst">
+      <property name="NameSpace">KAF</property>
+      <property name="DaoOutputDirectory">C:\temp\DAO</property>
+      <property name="BaseDataAccessOutputDirectory">C:\temp\BDAO</property>
+      <property name="DataAccessOutputDirectory">C:\temp\DA</property>
+      <property name="SourceDatabase">
+        <connectionString>$(ConnectionString4)</connectionString>
+        <providerType>SchemaExplorer.SqlSchemaProvider,SchemaExplorer.SqlSchemaProvider</providerType>
+      </property>
+    </propertySet>
+    <propertySet name="IFacadeGenerator" template="..\..\IBOTemplates\IFacadeGenerator.cst">
+      <property name="NameSpace">KAF</property>
+      <property name="OutputDirectory">C:\temp\IFCO</property>
+      <property name="SourceDatabase">
+        <connectionString>$(ConnectionString4)</connectionString>
+        <providerType>SchemaExplorer.SqlSchemaProvider,SchemaExplorer.SqlSchemaProvider</providerType>
+      </property>
+    </propertySet>
+    <propertySet name="FacadeGenerator" template="..\..\BFOTemplates\FacadeGenerator.cst">
+      <property name="NameSpace">KAF</property>
+      <property name="SourceDatabase">
+        <connectionString>$(ConnectionString4)</connectionString>
+        <providerType>SchemaExplorer.SqlSchemaProvider,SchemaExplorer.SqlSchemaProvider</providerType>
+      </property>
+      <property name="OutputDirectory">C:\temp\FCO</property>
+    </propertySet>
+    <propertySet name="FacadeCreatorGenerator" template="..\..\FCOTemplates\FacadeCreatorGenerator.cst">
+      <property name="NameSpace">KAF</property>
+      <property name="SourceDatabase">
+        <connectionString>$(ConnectionString4)</connectionString>
+        <providerType>SchemaExplorer.SqlSchemaProvider,SchemaExplorer.SqlSchemaProvider</providerType>
+      </property>
+      <property name="OutputDirectory">C:\temp\FC</property>
+    </propertySet>
+  </propertySets>
+</codeSmith>

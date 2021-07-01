@@ -1,0 +1,144 @@
+﻿<%@ CodeTemplate OutputType="None" Language="C#" TargetLanguage="Text" Src="" Inherits="" CompilerVersion="v3.5" Debug="False" Description="Template description here." %>
+
+<%-- Assembly References --%>
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Assembly Name="CodeSmith.BaseTemplates" %>
+<%@ Assembly Name="CodeSmith.CustomProperties" %>
+<%@ Assembly Name="System.Data" %>
+
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Import Namespace="CodeSmith.CustomProperties" %>
+<%@ Import Namespace="CodeSmith.BaseTemplates" %>
+<%@ Import Namespace="System.Data" %>
+<%@ Import Namespace="System.Text.RegularExpressions" %>
+<%@ Import Namespace="System.Text" %>
+<%@ Import NameSpace="System.IO" %>
+
+<%@ Property Name="SourceTable" Type="SchemaExplorer.TableSchema" DeepLoad="True" Default="" Optional="False"  %>
+<%@ Property Name="SourceTableDetail" Type="SchemaExplorer.TableSchema" DeepLoad="True" Default="" Optional="False" %>
+
+<%@ Property Name="WPOutputDirectory" Type="System.String" Optional="False" Editor="System.Windows.Forms.Design.FolderNameEditor, System.Design, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" %>
+
+<%@ Register Name="GENController" Template="GEN_MD_Controller.cst"  %>
+<%@ Register Name="GENLanding" Template="GEN_MD_LandingView.cst"  %>
+<%@ Register Name="GENCreateView" Template="GEN_MD_CreateViewDet.cst"  %>
+<%@ Register Name="GENUpdateView" Template="GEN_MD_UpdateViewDet.cst"  %>
+
+<%@ Register Name="GENLandingJS" Template="GEN_MD_LandingView_JS.cst"  %>
+<%@ Register Name="GENCreateViewJS" Template="GEN_MD_CreateViewDet_JS.cst"  %>
+<%@ Register Name="GENUpdateViewJS" Template="GEN_MD_UpdateViewDet_JS.cst"  %>
+
+
+<script runat="template">
+
+public override void Render(TextWriter writer)
+{
+    string ControllerOutputDirectory=String.Format("{0}/{1}", this.WPOutputDirectory,"Controller");
+    string BaseJSOutputDirectory=String.Format("{0}/{1}", this.WPOutputDirectory,"JS");
+    string BaseViewOutputDirectory=String.Format("{0}/{1}", this.WPOutputDirectory,"View");
+
+    if (!System.IO.Directory.Exists(this.WPOutputDirectory))
+    			{
+    				System.IO.Directory.CreateDirectory(this.WPOutputDirectory);
+    			}
+
+                
+    //Controller Write
+    GENController gencontroller = this.Create<GENController>();
+    gencontroller.SourceTable = SourceTable;
+    gencontroller.SourceTableDetail = SourceTableDetail;
+    gencontroller.WebNameSpace = "WebAdmin";
+    gencontroller.NameSpace = "KAF";
+    
+    string gencontrollerfileName = String.Format("{0}/{1}.cs", ControllerOutputDirectory, GetTableNamesWithPrefix(SourceTable)+"Controller");	
+	OutputFile controlleroutputFile = new OutputFile(gencontrollerfileName);
+	gencontroller.RenderToFile(controlleroutputFile, true);
+    
+   Response.Write(controlleroutputFile);
+    
+                
+    // Landing View
+    GENLanding genlanding = this.Create<GENLanding>();
+    genlanding.SourceTable = SourceTable;
+    genlanding.SourceTableDetail = SourceTableDetail;
+    
+    string genlandingfileName = String.Format("{0}/{1}.cshtml", BaseViewOutputDirectory, GetTableNamesWithPrefix(SourceTable)+"Landing");	
+	OutputFile genlandingoutputFile = new OutputFile(genlandingfileName);
+	genlanding.RenderToFile(genlandingoutputFile, true);
+    
+    Response.Write(genlandingoutputFile);
+                
+    // Landing Create View
+    GENCreateView gencreateview = this.Create<GENCreateView>();
+    gencreateview.SourceTable = SourceTable;
+    gencreateview.SourceTableDetail = SourceTableDetail;
+    
+    string gencreateviewfileName = String.Format("{0}/{1}.cshtml", BaseViewOutputDirectory, GetTableNamesWithPrefix(SourceTableDetail)+"New");	
+	OutputFile gencreateviewoutputFile = new OutputFile(gencreateviewfileName);
+	gencreateview.RenderToFile(gencreateviewoutputFile, true);
+    
+    Response.Write(gencreateviewoutputFile);
+                
+    // Landing Update View
+    GENUpdateView genupdateview = this.Create<GENUpdateView>();
+    genupdateview.SourceTable = SourceTable;
+    genupdateview.SourceTableDetail = SourceTableDetail;
+    
+    string genupdateviewfileName = String.Format("{0}/{1}.cshtml", BaseViewOutputDirectory, GetTableNamesWithPrefix(SourceTableDetail)+"Edit");	
+	OutputFile genupdateviewoutputFile = new OutputFile(genupdateviewfileName);
+	genupdateview.RenderToFile(genupdateviewoutputFile, true);
+    
+    Response.Write(genupdateviewoutputFile);
+                
+    // Landing Landing JS
+    GENLandingJS genlandingjs = this.Create<GENLandingJS>();
+    genlandingjs.SourceTable = SourceTable;
+    genlandingjs.SourceTableDetail = SourceTableDetail;
+    
+    string genlandingjsfileName = String.Format("{0}/{1}.js", BaseJSOutputDirectory, GetTableNamesWithPrefix(SourceTable)+"Landing");	
+	OutputFile genlandingjsoutputFile = new OutputFile(genlandingjsfileName);
+	genlandingjs.RenderToFile(genlandingjsoutputFile, true);
+    
+    Response.Write(genlandingjsoutputFile);
+                
+    // Landing New JS
+    GENCreateViewJS gencreateviewjs = this.Create<GENCreateViewJS>();
+    gencreateviewjs.SourceTable = SourceTable;
+    gencreateviewjs.SourceTableDetail = SourceTableDetail;
+    
+    string gencreateviewjsfileName = String.Format("{0}/{1}.js", BaseJSOutputDirectory, GetTableNamesWithPrefix(SourceTableDetail)+"New");	
+	OutputFile gencreateviewjsoutputFile = new OutputFile(gencreateviewjsfileName);
+	gencreateviewjs.RenderToFile(gencreateviewjsoutputFile, true);
+    
+    Response.Write(gencreateviewjsoutputFile);
+                
+                
+    // Landing Edit JS
+    GENUpdateViewJS genupdateviewjs = this.Create<GENUpdateViewJS>();
+    genupdateviewjs.SourceTable = SourceTable;
+    genupdateviewjs.SourceTableDetail = SourceTableDetail;
+    
+    string genupdateviewjsfileName = String.Format("{0}/{1}.js", BaseJSOutputDirectory, GetTableNamesWithPrefix(SourceTableDetail)+"Edit");	
+	OutputFile genupdateviewjsoutputFile = new OutputFile(genupdateviewjsfileName);
+	genupdateviewjs.RenderToFile(genupdateviewjsoutputFile, true);
+    
+    Response.Write(genupdateviewjsoutputFile);
+                
+    
+}
+
+
+
+public string GetTableNamesWithPrefix(TableSchema table)
+{	
+      string result = "";
+        foreach (char c in table.Name)
+        {
+            if ('_'==c)
+                continue;
+            else
+                result += c;
+        }
+        return result;
+}
+</script>

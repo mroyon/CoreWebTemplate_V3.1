@@ -1,0 +1,1729 @@
+﻿
+<%@ CodeTemplate Debug="True" Language="C#" Inherits="CodeSmith.BaseTemplates.SqlCodeTemplate" TargetLanguage="T-SQL" Description="Generates standard CRUD procedures based on a database table schema." %>
+	
+	
+<%-- Context --%>
+<%@ Property Name="SourceTable" Type="SchemaExplorer.TableSchema" Category="1. Context" Description="Table that the stored procedures should be based on." %>
+<%@ Property Name="SourceDatabase" Type="SchemaExplorer.DatabaseSchema" DeepLoad="True" Optional="False" Category="01. Getting Started - Required" Description="Database that the tables views, and stored procedures should be based on. IMPORTANT!!! If SourceTables and SourceViews are left blank, the Entire Database will then be generated." %>
+
+<%-- Options --%>
+<%@ Property Name="IncludeDropStatements" Type="System.Boolean" Default="True" Category="2. Options" Description="If true drop statements will be generated to drop existing stored procedures." %>
+<%@ Property Name="ProcedurePrefix" Type="System.String" Default="usp_" Category="2. Options" Description="Prefix to use for all generated procedure names." %>
+<%@ Property Name="TablePrefix" Type="System.String" Default="tbl_" Category="2. Options" Description="If this prefix is found at the start of a table name, it will be stripped off." %>
+<%@ Property Name="AutoExecuteScript" Type="System.Boolean" Default="False" Category="2. Options" Description="Whether or not to immediately execute the script on the target database." %>
+<%@ Property Name="OrderByExpression" Type="System.String" Default="" Optional="True" Category="2. Options" Description="If supplied, this expression will be used to apply an order to the results on SELECT statements." %>
+<%@ Property Name="ExcludedColumns" Type="StringCollection" Default="" Optional="True" Category="2. Options" Description="If supplied, any columns in this list will be excluded from all stored procedures unless the column is part of the primary key. (* is treated as a wildcard)" %>
+<%@ Property Name="ReadOnlyColumns" Type="StringCollection" Default="" Optional="True" Category="2. Options" Description="If supplied, any columns in this list will be treated as read only. (* is treated as a wildcard)" %>
+
+<%-- Procedure Types --%>
+<%@ Property Name="IncludeInsert" Type="System.Boolean" Default="True" Category="3. Procedure Types" Description="If true an INSERT procedure will be generated." %>
+<%@ Property Name="IncludeUpdate" Type="System.Boolean" Default="True" Category="3. Procedure Types" Description="If true an UPDATE procedure will be generated." %>
+<%@ Property Name="IncludeInsertUpdate" Type="System.Boolean" Default="True" Category="3. Procedure Types" Description="If true an INSERT/UPDATE procedure will be generated." %>
+<%@ Property Name="IncludeDelete" Type="System.Boolean" Default="True" Category="3. Procedure Types" Description="If true a DELETE procedure will be generated." %>
+<%@ Property Name="IncludeSelect" Type="System.Boolean" Default="True" Category="3. Procedure Types" Description="If true a SELECT procedure will be generated." %>
+<%@ Property Name="IncludeSelectAll" Type="System.Boolean" Default="True" Category="3. Procedure Types" Description="If true a SELECT all procedure will be generated." %>
+<%@ Property Name="IncludeSelectPaged" Type="System.Boolean" Default="True" Category="3. Procedure Types" Description="If true a SELECT procedure will be generated that allows for server side paging." %>
+<%@ Property Name="IncludeSelectByForeignKey" Type="System.Boolean" Default="True" Category="3. Procedure Types" Description="If true a SELECT procedure will be generated for each foreign key." %>
+<%@ Property Name="IncludeSelectByIndex" Type="System.Boolean" Default="True" Category="3. Procedure Types" Description="If true a SELECT procedure will be generated for each table index." %>
+<%@ Property Name="IncludeSelectDynamic" Type="System.Boolean" Default="True" Category="3. Procedure Types" Description="If true a SELECT procedure will be generated that allows a dynamic WHERE condition to be used." %>
+<%@ Property Name="IncludeDeleteByForeignKey" Type="System.Boolean" Default="True" Category="3. Procedure Types" Description="If true a DELETE procedure will be generated for each foreign key." %>
+<%@ Property Name="IncludeDeleteByIndex" Type="System.Boolean" Default="True" Category="3. Procedure Types" Description="If true a DELETE procedure will be generated for each table index." %>
+<%@ Property Name="IncludeDeleteDynamic" Type="System.Boolean" Default="True" Category="3. Procedure Types" Description="If true a DELETE procedure will be generated that allows a dynamic WHERE condition to be used." %>
+
+<%-- Assembly References --%>
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Assembly Name="CodeSmith.BaseTemplates" %>
+<%@ Assembly Name="CodeSmith.CustomProperties" %>
+<%@ Assembly Name="System.Data" %>
+
+<%-- Namespace Imports --%>
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Import Namespace="CodeSmith.CustomProperties" %>
+<%@ Import Namespace="CodeSmith.BaseTemplates" %>
+<%@ Import Namespace="System.Data" %>
+<%@ Import Namespace="System.Text.RegularExpressions" %>
+<%@ Import Namespace="System.Text" %>
+/*
+KAF Information Center
+*/
+<%
+		ColumnSchema primaryKeyColumn = null;
+		try{
+			primaryKeyColumn = SourceTable.PrimaryKey.MemberColumns[0];
+		}
+			catch(Exception ex)
+		{}
+%>
+ <%
+foreach(TableSchema table in SourceDatabase.Tables)
+	{ 
+		SourceTable = table;
+        
+        if(table.Name.ToString().StartsWith("Mem_VdoLibrary"))
+            
+        {
+            
+            %>
+            
+            
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO	
+/*
+Creator : KAF
+*/
+--GET ALL
+Create PROCEDURE <%= SourceTable.Name.ToLower() %>_GAPgListView 
+   <%--
+	 GenerateParameters(FilterReadOnlyAndExcludedColumns(SourceTable.Columns, "Get"), 1); 
+    */ --%>
+    <% GenerateParameters(FilterReadOnlyAndExcludedColumns(SourceTable.Columns, "Parameter"), 2); %>        
+		
+        @CommonSerachParam nvarchar(256)= NULL,
+        
+        @TotalRecord bigint = null output,
+        @SortExpression VARCHAR(MAX)  = NULL,
+        @PageSize BIGINT = NULL,
+        @CurrentPage BIGINT  = NULL,
+        @CreatedByUserName nvarchar(256)= NULL,
+        @UpdatedByUserName nvarchar(256)= NULL,
+        @CreatedDate DATETIME= NULL,
+        @UpdatedDate DATETIME= NULL,
+        @IPAddress varchar(100)= NULL,
+        @TransID nvarchar(250) = NULL,
+        @TS varchar(100)= NULL
+    
+	AS
+	BEGIN
+		DECLARE @UpperBand int, @LowerBand int
+		
+		<%-- <% SetDateTimeTypeParamToNullIfNoValueFromFrontEnds(SourceTable.Columns, 2); %> --%>
+		
+		
+		SET @TotalRecord = 
+			(
+				SELECT 
+					COUNT(*)
+				FROM 
+					<%= SourceTable.Name.ToLower() %>
+				WHERE 
+						<% GenerateConditionsCASE(SourceTable.Columns, 5); %>
+			)
+		SET @LowerBand  = (@CurrentPage - 1) * @PageSize
+		SET @UpperBand  = (@CurrentPage * @PageSize) + 1
+		
+		
+		BEGIN
+			WITH tempPaged<%= SourceTable.Name.ToLower() %> AS
+			(
+				  SELECT 
+			<% GenerateColumnsForGetSPSelectedColumn(SourceTable.Columns, 3); %> 
+			,ROW_NUMBER() OVER
+				(
+					ORDER BY
+						<% GenerateColumnsForGetSPForOrderByClauseSelectedColumn(SourceTable.Columns, 3); %> 
+				) as RowNumber
+		FROM <%= SourceTable.Name %> 
+		where
+			<% GenerateConditionsCASE(SourceTable.Columns, 3); %>
+			)
+			SELECT * 
+			FROM  tempPaged<%= SourceTable.Name.ToLower() %>
+			WHERE RowNumber > @LowerBand AND RowNumber < @UpperBand
+			end
+
+	END  
+GO
+            
+            <%
+            
+            foreach(ColumnSchema column in table.Columns)
+        	{
+                if(column.Size >= 250)
+                {}
+                else
+                {
+                    
+                }
+            }
+                %>
+            
+            
+            
+            
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO	
+/*
+Creator : KAF
+*/
+--GET ALL
+Create PROCEDURE <%= SourceTable.Name.ToLower() %>_GS
+	<% GenerateParameters(FilterReadOnlyAndExcludedColumns(SourceTable.Columns, "Parameter"), 2); %>
+    
+        @SortExpression VARCHAR(MAX)  = NULL,
+        @CreatedByUserName nvarchar(256)= NULL,
+        @CreatedDate DATETIME = NULL,
+        @UpdatedByUserName nvarchar(256)= NULL,
+        @UpdatedDate DATETIME = NULL,
+        @IPAddress varchar(100) = NULL,
+        @TransID nvarchar(250) = NULL,
+        @Ts bigint = NULL
+        
+	AS
+	BEGIN
+		<%-- <% SetDateTimeTypeParamToNullIfNoValueFromFrontEnds(SourceTable.Columns, 2); %> --%>
+		SELECT 
+			<% GenerateColumnsForGetSP(SourceTable.Columns, 3); %> 
+		FROM <%= SourceTable.Name %> 
+		where
+			<% GenerateConditions(SourceTable.PrimaryKey.MemberColumns, 3); %>
+	END  
+GO	
+
+            
+            
+            <%
+            
+            foreach(ColumnSchema column in table.Columns)
+        	{
+        		if(column.Name.ToLower() == "isreviewed")
+        		   
+                {
+                 %>
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO	
+/*
+Creator : KAF
+*/
+/*
+Creator : KAF
+*/
+                    
+                <%}
+        	}
+            
+%> 
+
+
+        <%--SET ANSI_NULLS ON
+        GO
+        SET QUOTED_IDENTIFIER ON
+        GO	--%>
+
+ <%
+	}
+}
+%>  
+<script runat="template">
+public string GetPrimaryKeyName(ColumnSchemaCollection columns)
+{
+	
+	foreach(ColumnSchema column in columns)
+	{
+		if(column.IsPrimaryKeyMember)
+		return column.Name.ToString();
+	}
+	return "";
+}
+
+public string GetReGeneratedTableName(string TableName)
+{
+	
+	return TableName;
+}
+
+public void GenerateParametersForNull(ColumnSchemaCollection columns, int indentLevel)
+{
+	GenerateParametersForNull(columns, indentLevel, false);
+}
+
+
+public void GenerateParametersForNull(ColumnSchemaCollection columns, int indentLevel, bool includeTrailingComma)
+{
+	ColumnSchemaCollection filteredColumns = FilterExcludedColumns(columns);
+	for (int i = 0; i < filteredColumns.Count; i++)
+	{
+		GenerateParameterForNull(filteredColumns[i], indentLevel, i == 0, i == filteredColumns.Count - 1 && !includeTrailingComma);
+	}
+}
+public void GenerateParameterForNull(ColumnSchema column, int indentLevel, bool isFirst, bool isLast)
+{
+	GenerateParameterForNull(column, indentLevel, isFirst, isLast, false);
+}
+
+public void GenerateParameterForNull(ColumnSchema column, int indentLevel, bool isFirst, bool isLast, bool isOutput)
+{
+	
+	//GenerateIndent(indentLevel);
+	if((!column.NativeType.ToString().Equals("varchar")) || (!column.NativeType.ToString().Equals("bit")) || (!column.NativeType.ToString().Equals("image")))
+	{
+ if((column.NativeType.ToString() =="bigint") || (column.NativeType.ToString() =="int") || (column.NativeType.ToString() =="decimal") || (column.NativeType.ToString() =="float")|| (column.NativeType.ToString() =="tinyint") || (column.NativeType.ToString() =="bit"))
+		{
+			GenerateIndent(1);
+			Response.Write("if @"+column.Name + " = 0" );
+			Response.WriteLine("");
+			GenerateIndent(indentLevel+1);
+			Response.Write("Set @"+column.Name + " = null" );
+			Response.WriteLine("");
+		}
+	}
+}
+////////////////////////////////////////
+
+
+public void GenerateParameteNameOnlys(ColumnSchema column, int indentLevel, bool isFirst, bool isLast)
+{
+	GenerateParameterNameOnly(column, indentLevel, isFirst, isLast, false);
+}
+
+public void GenerateParameteNameOnlys(ColumnSchemaCollection columns, int indentLevel)
+{
+	GenerateParameteNameOnlys(columns, indentLevel, false);
+}
+
+
+public void GenerateParameteNameOnlys(ColumnSchemaCollection columns, int indentLevel, bool includeTrailingComma)
+{
+	ColumnSchemaCollection filteredColumns = FilterExcludedColumns(columns);
+	for (int i = 0; i < filteredColumns.Count; i++)
+	{
+		GenerateParameteNameOnlys(filteredColumns[i], indentLevel, i == 0, i == filteredColumns.Count - 1 && !includeTrailingComma);
+	}
+}
+public void GenerateParameterNameOnly(ColumnSchema column, int indentLevel, bool isFirst, bool isLast, bool isOutput)
+{
+	GenerateIndent(indentLevel);
+	Response.Write(column.Name);
+}
+
+
+
+
+
+public void GenerateOrderByClause()
+{
+	if (OrderByExpression != null && OrderByExpression.Trim().Length > 0)
+	{
+		Response.WriteLine("ORDER BY");
+		GenerateIndent(1);
+		Response.WriteLine(OrderByExpression);
+	}
+}
+
+public void GenerateUpdateRev(ColumnSchema column, int indentLevel, bool isFirst, bool isLast)
+{
+	if(column.NativeType.ToString() != "timestamp" )
+	{
+        if((column.Name  == "CreatedBy") || (column.Name == "CreatedDate") || (column.Name == "CreatedByUserName"))
+           Response.Write("");
+        else
+        {
+           
+    		GenerateIndent(indentLevel);
+    		Response.Write("");
+    		Response.Write(column.Name);
+            
+            if(!column.AllowDBNull)
+            {
+    			//Response.Write(" = Case when (@");
+                Response.Write(" = @"+column.Name);
+    			//Response.Write(column.Name + " is not null) then @" + column.Name + " else "  + column.Name + " end");
+    	
+            }else
+            {
+                switch(column.NativeType.ToString().ToLower())
+                {
+                    case "int":
+                    case "bigint":
+                        Response.Write(" = @"+column.Name);
+                        break;
+                    case "date":
+                    case "datetime":
+                     Response.Write(" = @"+column.Name);
+                        //Response.Write(" = Case when (@"+column.Name+" ='1/1/1754' ) then NULL  else Case when (@"+column.Name+" is not null) then @"+column.Name+" else "+column.Name+" end end");
+                        break;    
+                    default:
+                     Response.Write(" = @"+column.Name);
+                    //Response.Write(" = Case when (@");
+    			    //Response.Write(column.Name + " is not null) then @" + column.Name + " else "  + column.Name + " end");
+    	
+                    break;
+                }
+            }
+    		if (!isLast) 
+                {
+                    if(column.Name.ToString() != "FormID")
+                        Response.Write(",");
+                }    
+    		if (indentLevel >= 0)
+    		{
+    			Response.WriteLine("");
+    		}
+        }
+		//else if (!isLast)
+		//{
+		//	Response.Write(" ");
+		//}
+	}
+}
+
+public void GenerateUpdatesRev(ColumnSchemaCollection columns, int indentLevel)
+{
+	ColumnSchemaCollection filteredColumns = FilterReadOnlyAndExcludedColumns(columns, "Update");
+	for (int i = 0; i < filteredColumns.Count; i++)
+	{
+		GenerateUpdateRev(filteredColumns[i], indentLevel, i == 0, i == filteredColumns.Count - 1);
+	}
+}
+
+public void GenerateVariables(ColumnSchemaCollection columns, int indentLevel)
+{
+	ColumnSchemaCollection filteredColumns = FilterExcludedColumns(columns);
+	for (int i = 0; i < filteredColumns.Count; i++)
+	{
+		GenerateVariable(filteredColumns[i], indentLevel, i == 0, i == filteredColumns.Count - 1);
+	}
+}
+
+
+public void GenerateVariable(ColumnSchema column, int indentLevel, bool isFirst, bool isLast)
+{
+        if((column.Name == "UpdatedBy") || (column.Name == "UpdatedDate")|| (column.Name == "UpdatedByUserName"))
+        Response.Write("");
+        else
+        {
+		GenerateIndent(indentLevel);
+		if(column.NativeType.ToString() !="timestamp")
+		{
+			Response.Write("@");
+			Response.Write(column.Name);
+			if (!isLast) 
+            {
+                if(column.Name.ToString() != "FormID")
+                    Response.Write(",");
+            }    
+			if (indentLevel >= 0)
+			{
+				Response.WriteLine("");
+			}
+		}
+//<%-- 		if(column.Name.ToString() == "EntryDate")
+//		{
+//			Response.Write("Getdate()");
+//			if (!isLast) Response.Write(",");
+//			if (indentLevel >= 0)
+//			{				
+//				Response.Write(" ");
+//			}
+//		} --%>
+        }
+}
+
+public void GeneratePrimaryName(ColumnSchema column, int indentLevel, bool isFirst, bool isLast)
+{
+	Response.Write(column.Name);	
+}
+
+public void GeneratePrimaryNames(ColumnSchemaCollection columns, int indentLevel)
+{
+	ColumnSchemaCollection filteredColumns = FilterExcludedColumns(columns);
+	for (int i = 0; i < filteredColumns.Count; i++)
+	{
+		if(i == 1)
+			GeneratePrimaryName(filteredColumns[i], indentLevel, i == 0, i == filteredColumns.Count - 1);
+	}
+}
+
+public void GenerateConditionsPrimaryForAnyKey(ColumnSchema column, int indentLevel, bool isFirst, bool isLast)
+{
+	Response.Write(column.Name);	
+}
+
+public void GenerateConditionsPrimaryForAnyKeys(ColumnSchemaCollection columns, int indentLevel)
+{
+	ColumnSchemaCollection filteredColumns = FilterExcludedColumns(columns);
+	for (int i = 0; i < filteredColumns.Count; i++)
+	{
+		GenerateConditionsPrimaryForAnyKey(filteredColumns[i], indentLevel, i == 0, i == filteredColumns.Count - 1);
+		break;
+	}
+}
+
+
+public void GeneratePrimaryKey(ColumnSchema column, int indentLevel, bool isFirst, bool isLast)
+{
+	Response.Write(column.Name);	
+}
+public void GenerateConditionsPrimary(ColumnSchemaCollection columns, int indentLevel)
+{
+	ColumnSchemaCollection filteredColumns = FilterExcludedColumns(columns);
+	for (int i = 0; i < filteredColumns.Count; i++)
+	{
+		GeneratePrimaryKey(filteredColumns[i], indentLevel, i == 0, i == filteredColumns.Count - 1);
+	}
+}
+//STR
+
+public void GenerateConditionsCASESTR(ColumnSchemaCollection columns, int indentLevel)
+{
+	ColumnSchemaCollection filteredColumns = FilterExcludedColumns(columns);
+	for (int i = 0; i < filteredColumns.Count; i++)
+	{
+		GenerateConditionCASESTR(filteredColumns[i], indentLevel, i == 0, i == filteredColumns.Count - 1);
+	}
+}
+
+public void GenerateConditionCASESTR(ColumnSchema column, int indentLevel, bool isFirst, bool isLast)
+{
+	if(column.DataType.ToString() == "Object")
+	{}
+	else
+	{
+	GenerateIndent(indentLevel);	
+	if(column.DataType.ToString() == "DateTime")
+	{
+		
+		//Response.Write("(("+column.Name + ">= @FromDate or @FromDate is null)");
+		//Response.Write(" AND ("+column.Name + " <= @ToDate or @ToDate is null))" );
+	}
+	else if (column.NativeType.ToString() == "varchar")
+	{
+		if (!isFirst) Response.Write("AND ");
+		Response.Write(("(CASE WHEN @T"+column.Name + " = ''0'' THEN 1 WHEN "+column.Name+" = @T"+column.Name+" THEN 1 ELSE 0 END = 1)" ));
+	}
+	else if(column.NativeType.ToString() == "bit")
+	{
+		if (!isFirst) Response.Write("AND ");
+		Response.Write(("(CASE WHEN @T"+column.Name + " = ''1'' THEN 1 WHEN "+column.Name+" = @T"+column.Name+" THEN 1 ELSE 0 END = 1)" ));
+	}
+	else 
+	{
+		if (!isFirst) Response.Write("AND ");
+		Response.Write(("(CASE WHEN @T"+column.Name + " = 0 THEN 1 WHEN "+column.Name+" = @T"+column.Name+" THEN 1 ELSE 0 END = 1)" ));
+	}
+	if (indentLevel >= 0)
+	{
+		Response.WriteLine("");
+	}
+	else if (!isLast)
+	{
+		Response.Write(" ");
+	}
+	}
+}
+
+//ORI
+public void GenerateConditionsCASE(ColumnSchemaCollection columns, int indentLevel)
+{
+	
+	ColumnSchemaCollection filteredColumns = FilterExcludedColumns(columns);
+    Response.Write("(CASE WHEN @CommonSerachParam is NULL THEN 1 WHEN ");
+	for (int i = 0; i < filteredColumns.Count; i++)
+	{
+		GenerateConditionCASE(filteredColumns[i], indentLevel, i == 0, i == filteredColumns.Count - 1);
+	}
+    
+     Response.Write(" THEN 1 ELSE 0 END = 1)" );
+}
+
+public void GenerateConditionCASE(ColumnSchema column, int indentLevel, bool isFirst, bool isLast)
+{
+	GenerateIndent(indentLevel);	
+	if(column.DataType.ToString() == "Object")
+	{}
+	else
+	{	
+	if(column.DataType.ToString() == "Object")
+	{}
+	else if(column.DataType.ToString() == "Binary")
+	{}
+	else if( column.NativeType.ToString() == "text")
+	{
+	}
+	else if( column.NativeType.ToString() == "xml")
+	{
+	}
+	else if( column.NativeType.ToString() == "ntext")
+	{
+	}
+
+	//
+	else
+	{
+		
+          if( 
+            column.Name != "EntryUserKey" 
+            && column.Name != "EntryDate" 
+            && column.Name != "FormID" 
+            && column.Name != "LastUpdateUserKey" 
+            && column.Name != "LastUpdateDate"
+            && column.Name != "CreatedDate" 
+            && column.Name != "CreatedBy" 
+            && column.Name != "UpdatedDate" 
+            && column.Name != "UpdatedBy" 
+            && column.Name != "TransID" 
+            && column.Name != "UserOrganizationKey" 
+            && column.Name != "IPAddress" 
+            && column.Name != "UserEntityKey" 
+            && column.Name != "CreatedByUserName" 
+            && column.Name != "UpdatedByUserName" 
+			&& column.Name != "Ex_Date1" 
+			&& column.Name != "Ex_Date2" 
+			&& column.Name != "Ex_Nvarchar1" 
+			&& column.Name != "Ex_Nvarchar2" 
+			&& column.Name != "Ex_Bigint1" 
+			&& column.Name != "Ex_Bigint2" 
+			&& column.Name != "Ex_Decimal1" 
+			&& column.Name != "Ex_Decimal2"             
+            )
+            { 
+            
+		if (!isFirst) Response.Write(" OR ");
+		    //Response.Write(("(CASE WHEN @"+column.Name + " is NULL THEN 1 WHEN "+ column.Table.ToString().Substring(4) + "." + column.Name+"  = @"+column.Name+" THEN 1 ELSE 0 END = 1)" ));
+            Response.Write(column.Table.ToString().Substring(4) + "." + column.Name+"  like @CommonSerachParam");
+         } 
+		
+	}
+	if (indentLevel >= 0)
+	{
+		Response.WriteLine("");
+	}
+	else if (!isLast)
+	{
+		Response.Write(" ");
+	}
+	}
+}
+
+
+public void GenerateCondition(ColumnSchema column, int indentLevel, bool isFirst, bool isLast)
+{
+	GenerateIndent(indentLevel);
+	if (!isFirst) Response.Write("AND ");
+	Response.Write("");
+	Response.Write(column.Name);
+	Response.Write(" = @");
+	Response.Write(column.Name);
+	if (indentLevel >= 0)
+	{
+		Response.WriteLine("");
+	}
+	else if (!isLast)
+	{
+		Response.Write(" ");
+	}
+}
+
+public void GenerateConditions(ColumnSchemaCollection columns, int indentLevel)
+{
+	ColumnSchemaCollection filteredColumns = FilterExcludedColumns(columns);
+	for (int i = 0; i < filteredColumns.Count; i++)
+	{
+		GenerateCondition(filteredColumns[i], indentLevel, i == 0, i == filteredColumns.Count - 1);
+	}
+}
+
+public bool ColumnIsExcludedOrReadOnly(ColumnSchema column)
+{
+	return ColumnIsExcluded(column) || ColumnIsReadOnly(column);
+}
+
+
+public ColumnSchemaCollection FilterReadOnlyAndExcludedColumns(ColumnSchemaCollection columns)
+{
+	ColumnSchemaCollection filteredColumns = new ColumnSchemaCollection();
+	
+	for (int i = 0; i < columns.Count; i++)
+	{
+		if (!ColumnIsExcludedOrReadOnly(columns[i])) filteredColumns.Add(columns[i]);
+	}
+	
+	return filteredColumns;
+}
+
+public ColumnSchemaCollection FilterExcludedColumns(ColumnSchemaCollection columns)
+{
+	ColumnSchemaCollection filteredColumns = new ColumnSchemaCollection();
+	
+	for (int i = 0; i < columns.Count; i++)
+	{
+		if (!ColumnIsExcluded(columns[i])) filteredColumns.Add(columns[i]);
+	}
+	
+	return filteredColumns;
+}
+
+public ColumnSchemaCollection FilterReadOnlyAndExcludedColumns(ColumnSchemaCollection columns, string mode)
+{
+	ColumnSchemaCollection filteredColumns = new ColumnSchemaCollection();
+	
+	for (int i = 0; i < columns.Count; i++)
+	{
+		if(mode == "Add")
+		{
+		   if(columns[i].Name != "UpdateDate"           
+            && columns[i].Name != "UpdatorId" 
+            && columns[i].Name != "LastUpdateUserKey" 
+            && columns[i].Name != "LastUpdateDate")
+		   {
+			   if (!ColumnIsExcludedOrReadOnly(columns[i])) filteredColumns.Add(columns[i]);
+		   }
+		}
+		else if(mode == "Update")
+		{
+			if(columns[i].Name != "CreateDate"           
+            && columns[i].Name != "UpdatorId" 
+            && columns[i].Name != "EntryUserKey" 
+            && columns[i].Name != "EntryDate" 
+            )
+			{
+				if (!ColumnIsExcludedOrReadOnly(columns[i])) filteredColumns.Add(columns[i]);
+			}
+		 }
+        		else if(mode == "Parameter")
+		{
+            //Response.WriteLine("sss");
+			if(columns[i].Name != "CreateDate"           
+            && columns[i].Name != "UpdatorId" 
+            && columns[i].Name != "EntryUserKey" 
+            //&& columns[i].Name != "EntryDate" 
+            && columns[i].Name != "LastUpdateUserKey" 
+            && columns[i].Name != "LastUpdateDate"
+            && columns[i].Name != "CreatedBy"
+            && columns[i].Name != "UpdatedBy"
+            && columns[i].Name != "CreatedByUserName"
+            && columns[i].Name != "UpdatedByUserName"
+            && columns[i].Name != "CreatedDate"            
+            && columns[i].Name != "UpdatedDate"
+            && columns[i].Name != "FormID"
+            && columns[i].Name != "TransID"
+            && columns[i].Name != "IPAddress"
+            && columns[i].Name != "UserOrganizationKey"
+            && columns[i].Name != "UserEntityKey"
+            )
+			{
+				if (!ColumnIsExcludedOrReadOnly(columns[i])) filteredColumns.Add(columns[i]);
+			}}
+            else if(mode == "Get")
+		{
+			if(columns[i].Name != "CreateDate"           
+            && columns[i].Name != "UpdatorId" 
+            )
+			{
+				if (!ColumnIsExcludedOrReadOnly(columns[i])) filteredColumns.Add(columns[i]);
+			}
+		 }
+	}
+	
+	return filteredColumns;
+}
+
+
+
+public bool ColumnIsExcluded(ColumnSchema column)
+{
+	if (column.IsPrimaryKeyMember) return false;
+	
+	if (excludedColumnRegex == null)
+	{
+		if (ExcludedColumns != null && ExcludedColumns.Count > 0)
+		{
+			string excluded = String.Empty;
+			for (int i = 0; i < ExcludedColumns.Count; i++)
+			{
+				if (ExcludedColumns[i].Trim().Length > 0)
+				{
+					excluded += "(" + Regex.Escape(ExcludedColumns[i]).Replace("\\*", ".*?") + ")|";
+				}
+			}
+			
+			if (excluded.Length > 0)
+			{
+				excluded = excluded.Substring(0, excluded.Length - 1);
+				excludedColumnRegex = new Regex(excluded, RegexOptions.IgnoreCase);
+			}
+		}
+	}
+	
+	if (excludedColumnRegex != null && excludedColumnRegex.IsMatch(column.Name)) return true;
+	
+	return false;
+}
+
+public bool ColumnIsReadOnly(ColumnSchema column)
+{
+	if (column.IsPrimaryKeyMember) return false;
+	
+	if (readOnlyColumnRegex == null)
+	{
+		if (ReadOnlyColumns != null && ReadOnlyColumns.Count > 0)
+		{
+			string readOnly = String.Empty;
+			for (int i = 0; i < ReadOnlyColumns.Count; i++)
+			{
+				if (ReadOnlyColumns[i].Trim().Length > 0)
+				{
+					readOnly += "(" + Regex.Escape(ReadOnlyColumns[i]).Replace("\\*", ".*?") + ")|";
+				}
+			}
+			
+			if (readOnly.Length > 0)
+			{
+				readOnly = readOnly.Substring(0, readOnly.Length - 1);
+				readOnlyColumnRegex = new Regex(readOnly, RegexOptions.IgnoreCase);
+			}
+		}
+	}
+	
+	if (readOnlyColumnRegex != null && readOnlyColumnRegex.IsMatch(column.Name)) return true;
+	
+	return false;
+}
+
+private Regex excludedColumnRegex = null;
+
+private Regex readOnlyColumnRegex = null;
+
+public void GenerateParameter(ColumnSchema column, int indentLevel, bool isFirst, bool isLast)
+{
+    
+	    GenerateParameter(column, indentLevel, isFirst, isLast, false);
+}
+
+public void GenerateParameterForStr(ColumnSchema column, int indentLevel, bool isFirst, bool isLast)
+{
+	GenerateParameterForStr(column, indentLevel, isFirst, isLast, false);
+}
+
+public void GenerateParameterForStrSet(ColumnSchema column, int indentLevel, bool isFirst, bool isLast)
+{
+	GenerateParameterForStrSet(column, indentLevel, isFirst, isLast, false);
+}
+
+public void GenerateParameterForStrSets(ColumnSchemaCollection columns, int indentLevel)
+{
+	GenerateParameterForStrSets(columns, indentLevel, false);
+}
+
+public void GenerateParameterForStrs(ColumnSchemaCollection columns, int indentLevel)
+{
+	GenerateParameterForStrs(columns, indentLevel, false);
+}
+
+public void GenerateParameters(ColumnSchemaCollection columns, int indentLevel)
+{
+	GenerateParameters(columns, indentLevel, false);
+}
+
+
+public void GenerateParameterForStrSets(ColumnSchemaCollection columns, int indentLevel, bool includeTrailingComma)
+{
+	bool hasDateColumn = false;
+	
+	foreach(ColumnSchema column in columns)
+	{
+		 if((column.NativeType.ToString() == "datetime") || (column.NativeType.ToString() == "DateTime"))
+			hasDateColumn = true;
+	}
+	if(hasDateColumn)
+	{
+		//Response.WriteLine("		@DateFrom DATETIME = '1/1/1754'," );
+		//Response.WriteLine("		@DateTo DATETIME = '1/1/1754'," );
+	}
+	
+	ColumnSchemaCollection filteredColumns = FilterExcludedColumns(columns);
+	for (int i = 0; i < filteredColumns.Count; i++)
+	{
+		GenerateParameterForStrSet(filteredColumns[i], indentLevel, i == 0, i == filteredColumns.Count - 1 && !includeTrailingComma);
+	}
+}
+public void GenerateParameterForStrs(ColumnSchemaCollection columns, int indentLevel, bool includeTrailingComma)
+{
+	bool hasDateColumn = false;
+	
+	foreach(ColumnSchema column in columns)
+	{
+		 if((column.NativeType.ToString() == "datetime") || (column.NativeType.ToString() == "DateTime"))
+			hasDateColumn = true;
+	}
+	if(hasDateColumn)
+	{
+		//Response.WriteLine("		@DateFrom DATETIME = '1/1/1754'," );
+		//Response.WriteLine("		@DateTo DATETIME = '1/1/1754'," );
+	}
+	
+	ColumnSchemaCollection filteredColumns = FilterExcludedColumns(columns);
+	for (int i = 0; i < filteredColumns.Count; i++)
+	{
+		GenerateParameterForStr(filteredColumns[i], indentLevel, i == 0, i == filteredColumns.Count - 1 && !includeTrailingComma);
+	}
+}
+
+public void GenerateParameters(ColumnSchemaCollection columns, int indentLevel, bool includeTrailingComma)
+{
+	bool hasDateColumn = false;
+	
+	foreach(ColumnSchema column in columns)
+	{
+		 if((column.NativeType.ToString() == "datetime") || (column.NativeType.ToString() == "DateTime"))
+			hasDateColumn = true;
+	}
+	if(hasDateColumn)
+	{
+		//Response.WriteLine("		@TempDateFrom DATETIME = '1/1/1754'," );
+		//Response.WriteLine("		@TempDateTo DATETIME = '1/1/1754'," );
+	}
+	
+	ColumnSchemaCollection filteredColumns = FilterExcludedColumns(columns);
+	for (int i = 0; i < filteredColumns.Count; i++)
+	{
+        //Response.WriteLine("RONTY");
+		GenerateParameter(filteredColumns[i], indentLevel, i == 0, i == filteredColumns.Count - 1 && !includeTrailingComma);
+	}
+	
+	
+	
+}
+
+public string GetSQLparamText(ColumnSchema column)
+{
+	string strResult = "__UNKNOWN__" + column.NativeType;
+	//note: not all oracle data types are supported yet
+	switch (column.NativeType.Trim().ToLower())
+		{
+			case "number":
+			if (column.Scale<1){
+					strResult= "long";
+				}else if (column.Scale>1){
+					strResult= "decimal";
+				}
+				break;
+			case "binary": strResult= "Byte"; break;
+			case "char": strResult= "string"; break;
+			case "date": strResult= "DateTime"; break;
+			case "long": strResult= "Int64"; break;
+			case "blob": strResult= "byte"; break;
+			case "nvarchar2": strResult= "string"; break;
+			case "raw": strResult= "byte"; break;
+			case "rowid": strResult= "string"; break;
+			case "clob": strResult= "byte"; break;
+			case "nclob": strResult= "byte"; break;
+			case "bfile": strResult= "byte"; break;
+			case "float": strResult= "single"; break;
+			case "varchar2": strResult= "string"; break;
+			case "varchar": strResult= "string"; break;
+			case "integer": strResult= "int32"; break;
+		}
+	
+	return strResult;
+}
+
+
+public string GetSqlParameterStatement1(ColumnSchema column, bool isOutput)
+		{
+			
+                
+			StringBuilder param = new StringBuilder();
+			param.AppendFormat("@{0} {1} ", column.Name.ToString(), column.NativeType);
+			//RONTY
+			// user defined data types do not need size components
+			if ( ! IsUserDefinedType(column) )
+			{
+			switch (column.DataType)
+			{
+				case DbType.Decimal:
+				{
+					if (column.NativeType != "real")
+						param.AppendFormat("({0}, {1}) = NULL", column.Precision, column.Scale);
+					break;
+				}
+				// [ab 022205] now handles xxxbinary data type
+				case DbType.Binary:
+				 {
+					if(column.NativeType.ToString() == "image")
+						param.AppendFormat(" = NULL");
+					break;
+				}
+                case DbType.Date:
+				 {
+					if(column.NativeType.ToString() == "date")
+						param.AppendFormat(" = NULL");
+					break;
+				}
+                case DbType.DateTime:
+				 {
+					if(column.NativeType.ToString() == "datetime")
+						param.AppendFormat(" = NULL");
+					break;
+				}
+				case DbType.AnsiString:
+				{
+					if(column.NativeType.ToString() == "varchar")
+					{
+						if(column.Size.ToString()== "-1")
+							param.AppendFormat("({0}) = NULL", "MAX");
+						else
+							param.AppendFormat("({0}) = NULL", column.Size);
+					}
+                    
+					if((column.NativeType.ToString() == "text") || (column.NativeType.ToString() == "ntext"))
+						param.AppendFormat(" = NULL");
+					break;
+				}
+				case DbType.AnsiStringFixedLength:
+				case DbType.Double:
+				{
+					param.AppendFormat(" = NULL");
+					break;
+				}
+				case DbType.Boolean:
+				{
+					if (column.NativeType.ToString() == "bit")
+						param.AppendFormat(" = NULL");
+					break;
+				}
+				case DbType.Guid:
+				{
+					param.AppendFormat(" = NULL");
+					break;
+				}
+				case DbType.Xml:
+				{
+					param.AppendFormat(" = NULL");
+					break;
+				}
+				case DbType.Int64:
+				{
+					if (column.NativeType != "biginy")
+						param.AppendFormat(" = NULL");
+					break;
+				}
+				case DbType.Int32:
+				{
+					if (column.NativeType == "int")
+						param.AppendFormat(" = NULL");
+					break;
+				}
+				case DbType.String:
+                { 
+                    if(column.NativeType.ToString() == "ntext"){
+                        param.AppendFormat(" = NULL");
+                    }
+                    if(column.NativeType.ToString() == "nvarchar")
+					{
+						if(column.Size.ToString()== "-1")
+							param.AppendFormat("({0}) = NULL", "MAX");
+						else
+							param.AppendFormat("({0}) = NULL", column.Size);
+					}
+                    break;
+                    }
+				case DbType.StringFixedLength:
+				{
+					if (column.NativeType != "text" && 
+						column.NativeType != "ntext" && 
+						column.NativeType != "timestamp" &&
+						column.NativeType != "image"
+						)
+
+					{
+						if (column.Size > 0)
+						{
+							param.AppendFormat("({0}) = NULL", column.Size);
+						}
+					}
+					break;
+				}
+                
+			}
+			}
+			if (isOutput)
+			{
+				param.Append(" OUTPUT");
+			}
+			
+			return param.ToString();
+		}
+		
+
+public string GetSqlParameterStatement2(ColumnSchema column, bool isOutput)
+		{
+			
+			StringBuilder param = new StringBuilder();
+			param.AppendFormat("{0} {1} ", "DECLARE @T"+GetPropertyName(column), column.NativeType);
+			
+			// user defined data types do not need size components
+			if ( ! IsUserDefinedType(column) )
+			{
+			switch (column.DataType)
+			{
+				case DbType.Decimal:
+				{
+					if (column.NativeType != "real")
+						param.AppendFormat("({0}, {1}) ", column.Precision, column.Scale);
+					break;
+				}
+				// [ab 022205] now handles xxxbinary data type
+				case DbType.Binary:
+				 {
+					if(column.NativeType.ToString() == "image")
+						param.AppendFormat("");
+					break;
+				}
+				case DbType.AnsiString:
+				{
+					if(column.NativeType.ToString() == "varchar" || column.NativeType.ToString() == "nvarchar")
+					{
+						if(column.Size.ToString()== "-1")
+							param.AppendFormat("({0}) = NULL", "MAX");
+						else
+							param.AppendFormat("({0}) = NULL", column.Size);
+					}
+					if(column.NativeType.ToString() == "text")
+						param.AppendFormat(" ");
+					break;
+				}
+				case DbType.String:
+				{
+					if(column.NativeType.ToString() == "varchar" || column.NativeType.ToString() == "nvarchar")
+					{
+						if(column.Size.ToString()== "-1")
+							param.AppendFormat("({0}) = NULL", "MAX");
+						else
+							param.AppendFormat("({0}) = NULL", column.Size);
+					}
+					if(column.NativeType.ToString() == "text")
+						param.AppendFormat(" ");
+					break;
+				}
+				case DbType.AnsiStringFixedLength:
+				case DbType.Double:
+				{
+					param.AppendFormat(" ");
+					break;
+				}
+				case DbType.Boolean:
+				{
+					if (column.NativeType.ToString() == "bit")
+						param.AppendFormat("");
+					break;
+				}
+				case DbType.Guid:
+				{
+					param.AppendFormat(" ");
+					break;
+				}
+				case DbType.Xml:
+				{
+					param.AppendFormat(" ");
+					break;
+				}
+				case DbType.Int64:
+				{
+					if (column.NativeType != "biginy")
+						param.AppendFormat(" ");
+					break;
+				}
+				case DbType.Int32:
+				{
+					if (column.NativeType == "int")
+						param.AppendFormat(" ");
+					break;
+				}
+				case DbType.StringFixedLength:
+				{
+					if (column.NativeType != "text" && 
+						column.NativeType != "ntext" && 
+						column.NativeType != "timestamp" &&
+						column.NativeType != "image"
+						)
+
+					{
+						if (column.Size > 0)
+						{
+							param.AppendFormat("({0}) ", column.Size);
+						}
+					}
+					break;
+				}
+			}
+			}
+			if (isOutput)
+			{
+				param.Append(" ");
+			}
+			
+			return param.ToString();
+		}
+		
+
+public string GetSqlParameterStatement3(ColumnSchema column, bool isOutput)
+		{
+			string st = "";
+			
+			if((column.NativeType.ToString() =="bigint") || (column.NativeType.ToString() =="decimal"))
+				st = "= '+ convert(varchar, isnull(@"+column.Name.ToString()+",'0') ) +'";
+			else if	(column.NativeType.ToString() =="varchar")
+				st = "= '''+ convert(varchar, isnull(@"+column.Name.ToString()+",'0') ) +'''";
+			else if	(column.NativeType.ToString() =="bit")
+				st = "= '+ convert(varchar, isnull(@"+column.Name.ToString()+",'1') ) +'";	
+			else if	(column.NativeType.ToString() =="datetime")
+				st = "= '+ convert(varchar, isnull(@"+column.Name.ToString()+",'1') ) +'";		
+			
+			
+			StringBuilder param = new StringBuilder();
+			param.AppendFormat("{0} {1} ", "Set @T"+GetPropertyName(column)+st, "");
+			
+			// user defined data types do not need size components
+			if ( ! IsUserDefinedType(column) )
+			{
+			switch (column.DataType)
+			{
+				case DbType.Decimal:
+				{
+					//if (column.NativeType != "real")
+						//param.AppendFormat("({0}, {1}) ", column.Precision, column.Scale);
+					break;
+				}
+				// [ab 022205] now handles xxxbinary data type
+				case DbType.Binary:
+				 {
+					if(column.NativeType.ToString() == "image")
+						param.AppendFormat("");
+					break;
+				}
+				case DbType.Byte:
+				{
+					if(column.NativeType.ToString() == "bit")
+						param.AppendFormat(" ","");					
+					break;
+				}
+				case DbType.DateTime:
+				{
+					if(column.NativeType.ToString() == "datetime")
+						if(column.Name.ToString()!= "EntryDate")
+							param.AppendFormat(" ","");					
+					break;
+				}
+				case DbType.AnsiString:
+				{
+					if(column.NativeType.ToString() == "varchar" || column.NativeType.ToString() == "nvarchar" )
+					{
+						if(column.Size.ToString()== "-1")
+							param.AppendFormat("({0}) = NULL", "MAX");
+						else
+							param.AppendFormat("({0}) = NULL", column.Size);
+					}
+					if(column.NativeType.ToString() == "text")
+						param.AppendFormat(" ");
+					break;
+				}
+				case DbType.AnsiStringFixedLength:
+				case DbType.Double:
+				{
+					param.AppendFormat(" ");
+					break;
+				}
+				case DbType.Boolean:
+				{
+					if (column.NativeType.ToString() == "bit")
+						param.AppendFormat("");
+					break;
+				}
+				case DbType.Guid:
+				{
+					param.AppendFormat(" ");
+					break;
+				}
+				case DbType.Xml:
+				{
+					param.AppendFormat(" ");
+					break;
+				}
+				case DbType.Int64:
+				{
+					if (column.NativeType != "bigint")
+						param.AppendFormat(" ");
+					break;
+				}
+				case DbType.Int32:
+				{
+					if (column.NativeType == "int")
+						param.AppendFormat(" ");
+					break;
+				}
+				case DbType.String:
+				{
+					if(column.NativeType.ToString() == "varchar" || column.NativeType.ToString() == "nvarchar" )
+					{
+						if(column.Size.ToString()== "-1")
+							param.AppendFormat("({0}) = NULL", "MAX");
+						else
+							param.AppendFormat("({0}) = NULL", column.Size);
+					}
+					if(column.NativeType.ToString() == "text")
+						param.AppendFormat(" ");
+					break;
+				}
+				case DbType.StringFixedLength:
+				{
+					if (column.NativeType != "text" && 
+						column.NativeType != "ntext" && 
+						column.NativeType != "timestamp" &&
+						column.NativeType != "image"
+						)
+
+					{
+						if (column.Size > 0)
+						{
+							param.AppendFormat("({0}) ", "");
+						}
+					}
+					break;
+				}
+			}
+			}
+			if (isOutput)
+			{
+				param.Append(" ");
+			}
+			
+			return param.ToString();
+		}
+		
+
+
+
+public void GenerateParameterForStrSet(ColumnSchema column, int indentLevel, bool isFirst, bool isLast, bool isOutput)
+{
+	
+	GenerateIndent(indentLevel);
+	if(column.NativeType.ToString() == "timestamp")
+	{	
+		Response.Write("@"+column.Name + "  BIGINT " );
+		if (!isLast) Response.Write("");
+		if (indentLevel >= 0)
+		{
+			Response.WriteLine("");
+		}
+		else if (!isLast)
+		{
+			Response.Write(" ");
+		}
+	}
+	else if(((column.NativeType.ToString() == "datetime") || (column.NativeType.ToString() == "DateTime")) )
+	{	
+		Response.Write("@"+column.Name + " DATETIME " );
+		if (!isLast) Response.Write("");
+		if (indentLevel >= 0)
+		{
+			Response.WriteLine("");
+		}
+		else if (!isLast)
+		{
+			Response.Write(" ");
+		}
+	}
+	
+	else
+	{
+//<%-- 		if(column.Name.ToString() != "EntryDate")
+//		{
+//			Response.Write(GetSqlParameterStatement3(column, isOutput) + "" );
+//			if (!isLast) Response.Write("");
+//			if (indentLevel >= 0)
+//			{
+//				Response.WriteLine("");
+//			}
+//			else if (!isLast)
+//			{
+//				Response.Write(" ");
+//			}
+//		} --%>
+	}
+	
+}
+
+public void GenerateParameterForStr(ColumnSchema column, int indentLevel, bool isFirst, bool isLast, bool isOutput)
+{
+	
+	GenerateIndent(indentLevel);
+	if(column.NativeType.ToString() == "timestamp")
+	{	
+		Response.Write("@"+column.Name + "  BIGINT " );
+		if (!isLast) Response.Write("");
+		if (indentLevel >= 0)
+		{
+			Response.WriteLine("");
+		}
+		else if (!isLast)
+		{
+			Response.Write(" ");
+		}
+	}
+	else if(((column.NativeType.ToString() == "datetime") || (column.NativeType.ToString() == "DateTime")))
+	{	
+		Response.Write("@"+column.Name + " DATETIME " );
+		if (!isLast) Response.Write("");
+		if (indentLevel >= 0)
+		{
+			Response.WriteLine("");
+		}
+		else if (!isLast)
+		{
+			Response.Write(" ");
+		}
+	}
+	
+//<%-- 	else
+//	{
+//		if(column.Name.ToString() !="EntryDate")
+//		{
+//			Response.Write(GetSqlParameterStatement2(column, isOutput) + "" );
+//			if (!isLast) Response.Write("");
+//			if (indentLevel >= 0)
+//			{
+//				Response.WriteLine("");
+//			}
+//			else if (!isLast)
+//			{
+//				Response.Write(" ");
+//			}
+//		}	
+//	} --%>
+	
+}
+
+
+
+
+
+public void GenerateParameter(ColumnSchema column, int indentLevel, bool isFirst, bool isLast, bool isOutput)
+{
+    
+    //RONTY HERE
+	GenerateIndent(indentLevel);
+	if(column.NativeType.ToString() == "timestamp")
+	{	/*
+		Response.Write("@"+column.Name + "  BIGINT " );
+		if (!isLast) Response.Write(",");
+		if (indentLevel >= 0)
+		{
+			Response.WriteLine("");
+		}
+		else if (!isLast)
+		{
+			Response.Write(" ");
+		}
+        */
+	}
+	else
+	{
+	    //Response.WriteLine("asdfasdfasdf");
+		Response.Write(GetSqlParameterStatement1(column, isOutput) + "" );
+		string lastcomma = "";
+        
+        if (!isLast) 
+        {
+            Response.Write(",");
+            //Response.Write(column.Name.ToString());
+            lastcomma = ",";
+        }
+       
+        
+		if (indentLevel >= 0)
+		{
+			Response.WriteLine("");
+		}
+		else if (!isLast)
+		{
+            //Response.WriteLine("asdfasdfasdf");
+			Response.Write(" ");
+            
+		}
+	}
+	
+	
+}
+
+public void GenerateIndent(int indentLevel)
+{
+	for (int i = 0; i < indentLevel; i++)
+	{
+		Response.Write('\t');
+	}
+}
+public void GenerateColumnsForGetSPForOrderByClauseSelectedColumn(ColumnSchemaCollection columns, int indentLevel)
+{
+	ColumnSchemaCollection filteredColumns = FilterExcludedColumns(columns);
+    
+	for (int i = 0; i < filteredColumns.Count; i++)
+	{
+		GenerateColumnsForGetSPForOrderByClauseSelectedColumn(filteredColumns[i], indentLevel, i == 0, i == filteredColumns.Count - 1);
+	}
+}
+
+
+public void GenerateColumnsForGetSPForOrderByClause(ColumnSchemaCollection columns, int indentLevel)
+{
+	ColumnSchemaCollection filteredColumns = FilterExcludedColumns(columns);
+    
+	for (int i = 0; i < filteredColumns.Count; i++)
+	{
+		GenerateColumnsForGetSPForOrderByClause(filteredColumns[i], indentLevel, i == 0, i == filteredColumns.Count - 1);
+	}
+}
+
+public void GenerateColumnsForGetSPSelectedColumn(ColumnSchemaCollection columns, int indentLevel)
+{
+	ColumnSchemaCollection filteredColumns = FilterExcludedColumns(columns);
+	for (int i = 0; i < filteredColumns.Count; i++)
+	{
+		GenerateColumnForGetSPSelectedColumn(filteredColumns[i], indentLevel, i == 0, i == filteredColumns.Count - 1);
+	}
+}
+
+public void GenerateColumnsForGetSP(ColumnSchemaCollection columns, int indentLevel)
+{
+	ColumnSchemaCollection filteredColumns = FilterExcludedColumns(columns);
+	for (int i = 0; i < filteredColumns.Count; i++)
+	{
+		GenerateColumnForGetSP(filteredColumns[i], indentLevel, i == 0, i == filteredColumns.Count - 1);
+	}
+}
+
+
+public void GenerateColumnsForGetSPForOrderByClauseSelectedColumn(ColumnSchema column, int indentLevel, bool isFirst, bool isLast)
+{
+  if(column.DataType.ToString() == "Object")
+	{}
+	
+	else if(column.DataType.ToString() == "Binary")
+	{}
+	else if( column.NativeType.ToString() == "text")
+	{
+	}
+	else if( column.NativeType.ToString() == "xml")
+	{
+	}
+	else if( column.NativeType.ToString() == "ntext")
+	{
+	}
+    
+	else
+	{
+		if( column.Name.ToLower().Contains( "ex_") )
+    	{
+    	}		
+		else
+		{        
+            GenerateIndent(indentLevel);GenerateIndent(indentLevel);
+            Response.WriteLine("CASE WHEN @SortExpression ='"+ column.Name + " ASC' THEN "+ column.Table.ToString().Substring(4) + "." +  column.Name +" END ASC,");
+            GenerateIndent(indentLevel);GenerateIndent(indentLevel);
+            Response.Write("CASE WHEN @SortExpression ='"+ column.Name + " DESC' THEN "+ column.Table.ToString().Substring(4) + "." + column.Name +" END DESC");
+            if (!isLast) 
+            {
+                if(column.Name.ToString() != "FormID")
+                    Response.Write(",");
+            }    
+            if (indentLevel >= 0)
+            {
+                Response.WriteLine("");
+            }
+            else if (!isLast)
+            {
+                Response.Write(" ");
+            }    
+    }
+        
+        
+	}
+
+}
+
+public void GenerateColumnsForGetSPForOrderByClause(ColumnSchema column, int indentLevel, bool isFirst, bool isLast)
+{
+  if(column.DataType.ToString() == "Object")
+	{}
+	
+	else if(column.DataType.ToString() == "Binary")
+	{}
+	else if( column.NativeType.ToString() == "text")
+	{
+	}
+	else if( column.NativeType.ToString() == "xml")
+	{
+	}
+	else if( column.NativeType.ToString() == "ntext")
+	{
+	}
+	else
+	{
+		
+		if( column.NativeType.ToString() == "nvarchar" && column.Size> 150)
+		{
+			}
+			else
+			{
+            
+                GenerateIndent(indentLevel);GenerateIndent(indentLevel);
+                Response.WriteLine("CASE WHEN @SortExpression ='"+ column.Name + " ASC' THEN "+ column.Table.ToString().Substring(4) + "." +  column.Name +" END ASC,");
+                GenerateIndent(indentLevel);GenerateIndent(indentLevel);
+                Response.Write("CASE WHEN @SortExpression ='"+ column.Name + " DESC' THEN "+ column.Table.ToString().Substring(4) + "." + column.Name +" END DESC");
+                if (!isLast) 
+                {
+                    if(column.Name.ToString() != "FormID")
+                        Response.Write(",");
+                }    
+                if (indentLevel >= 0)
+                {
+                    Response.WriteLine("");
+                }
+                else if (!isLast)
+                {
+                    Response.Write(" ");
+                }
+        
+        }
+        
+        
+	}
+
+}
+
+
+public void GenerateColumnForGetSPSelectedColumn(ColumnSchema column, int indentLevel, bool isFirst, bool isLast)
+{
+	if(column.NativeType.ToString() == "timestamp")
+	{
+		GenerateIndent(indentLevel);
+		Response.Write("CONVERT(bigint, "+column.Name+") as " + column.Name);
+		if (!isLast) Response.Write(",");
+		if (indentLevel >= 0)
+		{
+			Response.WriteLine("");
+		}
+		else if (!isLast)
+		{
+			Response.Write(" ");
+		}
+	}
+	else
+	{
+        
+		GenerateIndent(indentLevel);
+		Response.Write( column.Table.ToString().Substring(4) + "." + column.Name);
+		if (!isLast) Response.Write(",");
+		if (indentLevel >= 0)
+		{
+			Response.WriteLine("");
+		}
+		else if (!isLast)
+		{
+			Response.Write(" ");
+		}
+        
+	}
+
+}
+
+public void GenerateColumnForGetSP(ColumnSchema column, int indentLevel, bool isFirst, bool isLast)
+{
+	if(column.NativeType.ToString() == "timestamp")
+	{
+		GenerateIndent(indentLevel);
+		Response.Write("CONVERT(bigint, "+column.Name+") as " + column.Name);
+		if (!isLast) Response.Write(",");
+		if (indentLevel >= 0)
+		{
+			Response.WriteLine("");
+		}
+		else if (!isLast)
+		{
+			Response.Write(" ");
+		}
+	}
+	else
+	{
+		GenerateIndent(indentLevel);
+		Response.Write( column.Table.ToString().Substring(4) + "." + column.Name);
+		if (!isLast) Response.Write(",");
+		if (indentLevel >= 0)
+		{
+			Response.WriteLine("");
+		}
+		else if (!isLast)
+		{
+			Response.Write(" ");
+		}
+	}
+
+}
+
+
+public void GenerateColumns(ColumnSchemaCollection columns, int indentLevel)
+{
+	ColumnSchemaCollection filteredColumns = FilterExcludedColumns(columns);
+	for (int i = 0; i < filteredColumns.Count; i++)
+	{
+		GenerateColumn(filteredColumns[i], indentLevel, i == 0, i == filteredColumns.Count - 1);
+	}
+}
+
+public void GenerateColumn(ColumnSchema column, int indentLevel, bool isFirst, bool isLast)
+{
+	if( column.NativeType.ToString() != "timestamp")
+	{
+        if(( column.Name == "UpdatedBy") || ( column.Name == "UpdatedDate"))
+            Response.Write(" ");
+        else
+	    {
+		GenerateIndent(indentLevel);
+		
+        Response.Write(column.Name);
+        
+		if (!isLast) 
+        {
+            if(column.Name.ToString() != "FormID")
+                Response.Write(",");
+        }
+		if (indentLevel >= 0)
+		{
+			Response.WriteLine("");
+		}
+		else if (!isLast)
+		{
+			Response.Write(" ");
+		}
+        }
+	}	
+}
+
+
+public void SetDateTimeTypeParamToNullIfNoValueFromFrontEnds(ColumnSchemaCollection columns, int indentLevel)
+{
+	ColumnSchemaCollection filteredColumns = FilterExcludedColumns(columns);
+	for (int i = 0; i < filteredColumns.Count; i++)
+	{
+		SetDateTimeTypeParamToNullIfNoValueFromFrontEnd(filteredColumns[i], indentLevel, i == 0, i == filteredColumns.Count - 1);
+	}
+}
+
+
+public void SetDateTimeTypeParamToNullIfNoValueFromFrontEnd(ColumnSchema column, int indentLevel, bool isFirst, bool isLast)
+{
+	if((column.NativeType.ToString() == "datetime") )
+	{
+		GenerateIndent(indentLevel);
+		Response.WriteLine("if @" + column.Name + " =  '1/1/1754'");
+		GenerateIndent(indentLevel + 1);
+		Response.WriteLine("Set @" + column.Name + " =  NULL");
+		Response.WriteLine();
+	}	
+}
+</script>

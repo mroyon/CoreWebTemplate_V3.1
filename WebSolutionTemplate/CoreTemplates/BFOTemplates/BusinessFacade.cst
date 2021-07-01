@@ -1,0 +1,732 @@
+﻿<%@ CodeTemplate Language="C#" TargetLanguage="Text" Description="This template demonstrates using properties defined in external assemblies." %>
+
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Assembly Name="CodeSmith.BaseTemplates" %>
+<%@ Assembly Name="CodeSmith.CustomProperties" %>
+<%@ Assembly Name="System.Data" %>
+<%@ Assembly Name="System.Core" %>
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Import Namespace="CodeSmith.CustomProperties" %>
+<%@ Import Namespace="CodeSmith.BaseTemplates" %>
+<%@ Import Namespace="System.Data" %>
+<%@ Import Namespace="System.Collections.Generic" %>
+<%@ Import Namespace="System.Text.RegularExpressions" %>
+
+<%@ Property Name="SourceTable" Type="SchemaExplorer.TableSchema" Category="Context" Description="Table that the object is based on." %>
+<%@ Property Name="NameSpace" Type="System.String" %>
+
+<%-- 
+This template demonstrates using properties defined in external assemblies.
+
+CodeSmith is 100% extensible.  A property can be any .NET type that has designer support.
+This includes all of the standard .NET data types and most other standard .NET types as well.
+
+You can also create your own custom property types or you can use one any of the custom types
+included in CodeSmith.  This template uses the included SchemaExplorer.TableSchema type and is
+defined in the SchemaExplorer assembly.  This type provides access to nearly all possible schema
+information about a particular database table.
+
+--%>
+
+<%
+string tableName = this.SourceTable.Name;
+string localVar = tableName.Substring( 0 , 1 ).ToLower() + tableName.Substring( 1, tableName.Length - 1);
+string ClassName = tableName.Substring( 0 , 1 ).ToLower() + tableName.Substring( 1, tableName.Length - 1).ToLower();
+string collectionClassName= ClassName+"List";
+ColumnSchema primaryKeyColumn = SourceTable.PrimaryKey.MemberColumns[0];
+string primaryKeyColumnNameCamelCase = this.GetCamelCaseName(primaryKeyColumn.Name);
+string primaryKeyColumnName = primaryKeyColumn.Name;
+%>
+
+using AppConfig.ConfigDAAC;
+using BDO.Base;
+using BDO.DataAccessObjects.SecurityModule;
+using BFO.Base;
+using DAC.Core.CoreFactory;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Diagnostics;
+using System.Threading;
+using System.Threading.Tasks;
+using IBFO.IBusinessFacadeObjects.Security;
+
+namespace BFO.BusinessFacadeObjects.Security
+{
+    public sealed partial class <%= ClassName %>FacadeObjects : BaseFacade, I<%= ClassName %>FacadeObjects
+    {
+	
+		#region Instance Variables
+		private string ClassName = "<%= ClassName %>FacadeObjects";
+        private bool _isDisposed;
+        private Context _currentContext;
+
+        private BaseDataAccessFactory _dataAccessFactory;
+
+        #endregion
+
+        #region Private Properties
+
+        private Context CurrentContext
+        {
+            [DebuggerStepThrough()]
+            get
+            {
+                if (_currentContext == null)
+                {
+                    _currentContext = new Context();
+                }
+
+                return _currentContext;
+            }
+        }
+
+        private BaseDataAccessFactory DataAccessFactory
+        {
+            [DebuggerStepThrough()]
+            get
+            {
+                if (_dataAccessFactory == null)
+                {
+                    _dataAccessFactory = BaseDataAccessFactory.Create(CurrentContext);
+                }
+
+                return _dataAccessFactory;
+            }
+        }
+
+        #endregion
+
+        #region Constructer & Destructor
+
+        public <%= ClassName %>FacadeObjects()
+            : base()
+        {
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        private void Dispose(bool disposing)
+        {
+            if (!_isDisposed)
+            {
+                if (disposing)
+                {
+                    if (_currentContext != null)
+                    {
+                        _currentContext.Dispose();
+                    }
+                }
+            }
+
+            _isDisposed = true;
+        }
+
+        ~<%= ClassName %>FacadeObjects()
+        {
+            Dispose(false);
+        }
+		
+		private string SourceOfException(string methodName)
+        {
+            return "Class name: " + ClassName + " and Method name: " + methodName;
+        }
+        #endregion
+		
+		#region Business Facade
+		
+		#region Save Update Delete List	
+		
+		async Task<long> I<%= ClassName %>FacadeObjects.Delete(<%=  ClassName  %>Entity <%= ClassName %>, CancellationToken cancellationToken)
+		{
+			try
+            {
+				return await DataAccessFactory.Create<%= ClassName %>DataAccess().Delete(<%= ClassName %>, cancellationToken);
+			}
+            
+            catch (Exception ex)
+            {
+                throw GetFacadeException(ex, SourceOfException("I<%= ClassName %>Facade.Delete<%= ClassName %>"));
+            }
+        }
+		
+		async Task<long> I<%= ClassName %>FacadeObjects.Update(<%=  ClassName  %>Entity <%= ClassName %> , CancellationToken cancellationToken)
+		{
+			try
+			{
+				return await DataAccessFactory.Create<%= ClassName %>DataAccess().Update(<%= ClassName %>,cancellationToken);
+			}
+           
+            catch (Exception ex)
+            {
+               throw GetFacadeException(ex, SourceOfException("I<%= ClassName %>Facade.Update<%= ClassName %>"));
+            }
+		}
+		
+		async Task<long> I<%= ClassName %>FacadeObjects.Add(<%=  ClassName  %>Entity <%= ClassName %>, CancellationToken cancellationToken)
+		{
+			try
+			{
+				return await DataAccessFactory.Create<%= ClassName %>DataAccess().Add(<%= ClassName %>, cancellationToken);
+			}
+           
+            catch (Exception ex)
+            {
+                throw GetFacadeException(ex, SourceOfException("I<%= ClassName %>Facade.Add<%= ClassName %>"));
+            }
+		}
+		
+        async Task<long> I<%= ClassName %>FacadeObjects.SaveList(List<<%= ClassName %>Entity> list, CancellationToken cancellationToken)
+        {
+            try
+            {
+                IList<<%= ClassName %>Entity> listAdded = list.FindAll(Item => Item.CurrentState == BaseEntity.EntityState.Added);
+                IList<<%= ClassName %>Entity> listUpdated = list.FindAll(Item => Item.CurrentState == BaseEntity.EntityState.Changed);
+                IList<<%= ClassName %>Entity> listDeleted = list.FindAll(Item => Item.CurrentState == BaseEntity.EntityState.Deleted);
+               
+                return await DataAccessFactory.Create<%= ClassName %>DataAccess().SaveList(listAdded, listUpdated, listDeleted, cancellationToken);
+            }
+           
+            catch (Exception ex)
+            {
+               throw GetFacadeException(ex, SourceOfException("Imer_poFacade.Save_<%= ClassName %>"));
+            }
+        }
+        
+		#endregion Save Update Delete List	
+		
+		#region GetAll
+		
+		async Task<IList<<%= ClassName %>Entity>> I<%= ClassName %>FacadeObjects.GetAll(<%=  ClassName +"Entity"%> <%= ClassName %>, CancellationToken cancellationToken)
+		{
+			try
+			{
+				return await DataAccessFactory.Create<%= ClassName %>DataAccess().GetAll(<%= ClassName %>, cancellationToken);
+			}
+           
+            catch (Exception ex)
+            {
+                throw GetFacadeException(ex, SourceOfException("IList<<%= ClassName %>Entity> I<%= ClassName %>Facade.GetAll<%= ClassName %>"));
+            }
+		}
+		
+		async Task<IList<<%= ClassName %>Entity>> I<%= ClassName %>FacadeObjects.GetAllByPages(<%=  ClassName +"Entity"%> <%= ClassName %>, CancellationToken cancellationToken)
+		{
+			try
+			{
+				return await DataAccessFactory.Create<%= ClassName %>DataAccess().GetAllByPages(<%= ClassName %>,cancellationToken);
+			}
+           
+            catch (Exception ex)
+            {
+                throw GetFacadeException(ex, SourceOfException("IList<<%= ClassName %>Entity> I<%= ClassName %>Facade.GetAllByPages<%= ClassName %>"));
+            }
+		}
+		
+		#endregion GetAll
+        
+        #region FOR Master Details SAVE	
+         <%
+        List<string> PrimaryKeyList = new List<string>();
+            
+        foreach(TableKeySchema tableKey in SourceTable.PrimaryKeys)
+        {
+     
+             bool t = true;
+             foreach(string s in  PrimaryKeyList)
+             {
+                if(s==tableKey.ForeignKeyTable.Name)
+                {
+                    t=false;
+                   break;
+                }
+             }
+            if(t)
+            {
+               PrimaryKeyList.Add(tableKey.ForeignKeyTable.Name);
+            
+            TableSchema DetTable = tableKey.ForeignKeyTable;
+            string DetTableName = tableKey.ForeignKeyTable.Name.ToLower();
+            string DetClassName = DetTableName.Substring( 0 , 1 ).ToLower() + DetTableName.Substring( 1, DetTableName.Length - 1).ToLower();
+            string collectionClassDetName= DetClassName + "List";
+            string PrimaryKeyName = primaryKeyColumn.Name.ToString();
+            string ForeignKeyName ="";
+            string RefColumnName =GetRefColumnName(tableKey);
+            
+            Response.WriteLine("        ");
+            Response.WriteLine("        async Task<long> I"+ClassName+"FacadeObjects.SaveMasterDet"+DetClassName+"("+ClassName+"Entity Master, List<"+DetClassName+"Entity> DetailList, CancellationToken cancellationToken)");
+            Response.WriteLine("        {");
+            Response.WriteLine("            try");
+            Response.WriteLine("               {");
+			Response.WriteLine("                    DetailList.ForEach(P => P.BaseSecurityParam = new SecurityCapsule());");
+			Response.WriteLine("                    DetailList.ForEach(P => P.BaseSecurityParam = Master.BaseSecurityParam);");
+			Response.WriteLine("                    if (Master.CurrentState == BaseEntity.EntityState.Deleted)");
+			Response.WriteLine("						DetailList.ForEach(p => p.CurrentState = BaseEntity.EntityState.Deleted);");
+            Response.WriteLine("                    IList<"+DetClassName+"Entity> listAdded = DetailList.FindAll(Item => Item.CurrentState == BaseEntity.EntityState.Added);");
+            Response.WriteLine("                    IList<"+DetClassName+"Entity> listUpdated = DetailList.FindAll(Item => Item.CurrentState == BaseEntity.EntityState.Changed);");
+            Response.WriteLine("                    IList<"+DetClassName+"Entity> listDeleted = DetailList.FindAll(Item => Item.CurrentState == BaseEntity.EntityState.Deleted);");
+            
+            Response.WriteLine("                    return await DataAccessFactory.Create"+ClassName+"DataAccess().SaveMasterDet"+DetClassName+"(Master, listAdded, listUpdated, listDeleted, cancellationToken);");
+            Response.WriteLine("               }");
+            
+            Response.WriteLine("               catch (Exception ex)");
+            Response.WriteLine("               {");
+            Response.WriteLine("                    throw GetFacadeException(ex, SourceOfException(\"Imer_poFacade.SaveMasterDet"+DetClassName+"\"));");
+            Response.WriteLine("               }");
+            Response.WriteLine("        }");
+            Response.WriteLine("        ");
+            }
+            }
+            %>
+        
+        #endregion	
+	
+        
+        #region Simple load Single Row
+        async  Task<<%= ClassName %>Entity>  I<%= ClassName %>FacadeObjects.GetSingle(<%=  ClassName +"Entity"%> <%= ClassName %>, CancellationToken cancellationToken)
+		{
+			try
+			{
+				return await DataAccessFactory.Create<%= ClassName %>DataAccess().GetSingle(<%= ClassName %>,cancellationToken);
+			}
+           
+            catch (Exception ex)
+            {
+                throw GetFacadeException(ex, SourceOfException("<%= ClassName %>Entity I<%= ClassName %>Facade.GetSingle<%= ClassName %>"));
+            }
+		}
+        #endregion 
+         
+        #region ForListView Paged Method
+        async Task<IList<<%= ClassName %>Entity>> I<%= ClassName %>FacadeObjects.GAPgListView(<%=  ClassName +"Entity"%> <%= ClassName %>, CancellationToken cancellationToken)
+		{
+			try
+			{
+				return await DataAccessFactory.Create<%= ClassName %>DataAccess().GAPgListView(<%= ClassName %>,cancellationToken);
+			}
+           
+            catch (Exception ex)
+            {
+                throw GetFacadeException(ex, SourceOfException("IList<<%= ClassName %>Entity> I<%= ClassName %>Facade.GAPgListView<%= ClassName %>"));
+            }
+		}
+        #endregion
+        
+        #region Extras Reviewed, Published, Archived
+        <%
+				foreach ( ColumnSchema column in this.SourceTable.Columns)
+				{
+                    if((column.Name.ToLower() == "isreviewed"))
+                    {%>
+        async Task<long> I<%= ClassName %>FacadeObjects.UpdateReviewed(<%=  ClassName  %>Entity <%= ClassName %>, CancellationToken cancellationToken )
+		{
+			try
+			{
+				return await DataAccessFactory.Create<%= ClassName %>DataAccess().UpdateReviewed(<%= ClassName %>,cancellationToken);
+			}
+           
+            catch (Exception ex)
+            {
+               throw GetFacadeException(ex, SourceOfException("I<%= ClassName %>Facade.UpdateReviewed<%= ClassName %>"));
+            }
+		}
+                     <%} //end if%>
+                    <%if((column.Name.ToLower() == "ispublished"))
+                    {%>
+        async Task<long> I<%= ClassName %>FacadeObjects.UpdatePublished(<%=  ClassName  %>Entity <%= ClassName %>, CancellationToken cancellationToken )
+		{
+			try
+			{
+				return await DataAccessFactory.Create<%= ClassName %>DataAccess().UpdatePublished(<%= ClassName %>,cancellationToken);
+			}
+           
+            catch (Exception ex)
+            {
+               throw GetFacadeException(ex, SourceOfException("I<%= ClassName %>Facade.UpdatePublished<%= ClassName %>"));
+            }
+		}
+                     <%} //end if%>
+                    <%if((column.Name.ToLower() == "isarchived"))
+                    {%> 
+        async Task<long> I<%= ClassName %>FacadeObjects.UpdateArchived(<%=  ClassName  %>Entity <%= ClassName %>, CancellationToken cancellationToken )
+		{
+			try
+			{
+				return await DataAccessFactory.Create<%= ClassName %>DataAccess().UpdateArchived(<%= ClassName %>,cancellationToken);
+			}
+           
+            catch (Exception ex)
+            {
+               throw GetFacadeException(ex, SourceOfException("I<%= ClassName %>Facade.UpdateArchived<%= ClassName %>"));
+            }
+		}
+                    <%} //end if%>
+                <%} //end foreach%>
+        #endregion 
+    
+        #endregion
+	}
+}
+<script runat="template">
+
+
+public string GetRefColumnName(TableKeySchema tableKey)
+{
+    string RefColumnName  = "";
+            TableSchema DetTable = tableKey.ForeignKeyTable;
+            foreach(TableKeySchema cc in DetTable.ForeignKeys)
+            {
+             if(cc.PrimaryKeyTable.Name.ToString() == this.SourceTable.Name.ToString())
+                    {
+
+                        RefColumnName = cc.ForeignKeyMemberColumns[0].Name.ToString();        
+                    }   
+            }
+            return RefColumnName;
+    }
+
+public string getMasterTableName ( TableSchema table,  ColumnSchema column) {
+
+string param = "";
+	
+	foreach( TableKeySchema fk in table.ForeignKeys) 
+	{
+		foreach( ColumnSchema c in fk.PrimaryKeyTable.Columns) 
+		{
+			if(c.IsPrimaryKeyMember)
+				if(column.Name == c.Name)
+					param = fk.PrimaryKeyTable.Name.Substring( 0 , 1 ).ToLower() +  fk.PrimaryKeyTable.Name.Substring( 1,  fk.PrimaryKeyTable.Name.Length - 1).ToLower();	
+
+		}
+			//foreach( ColumnSchema c in fk.PrimaryKeyTable.Columns) {
+	//Response.Write("member column=" + c.Name + " in table=" + c.Table.Name + "\n");
+	//}
+	//param += "\n";
+	}
+		return param;
+}
+public string GetCSharpVariableTypeForPrimaryColumn(ColumnSchema column){
+	string strResult = "__UNKNOWN__" + column.NativeType;
+	//note: not all oracle data types are supported yet
+	
+	if (column.Name.EndsWith("TypeCode")) return column.Name;
+	
+	switch (column.DataType)
+	{
+		case DbType.AnsiString: return "string";
+		case DbType.AnsiStringFixedLength: return "string";
+		case DbType.Binary: return "byte[]";
+		case DbType.Boolean: return "bool";
+		case DbType.Byte: return "byte";
+		case DbType.Currency: return "decimal";
+		case DbType.Date: return "DateTime";
+		case DbType.DateTime: return "DateTime";
+		case DbType.Decimal: return "decimal";
+		case DbType.Double: return "double";
+		case DbType.Guid: return "Guid";
+		case DbType.Int16: return "short";
+		case DbType.Int32: return "int";
+		case DbType.Int64: return "long";
+		case DbType.Object: return "object";
+		case DbType.SByte: return "sbyte";
+		case DbType.Single: return "float";
+		case DbType.String: return "string";
+		case DbType.StringFixedLength: return "string";
+		case DbType.Time: return "TimeSpan";
+		case DbType.UInt16: return "ushort";
+		case DbType.UInt32: return "uint";
+		case DbType.UInt64: return "ulong";
+		case DbType.VarNumeric: return "decimal";
+		default:
+		{
+			return "__UNKNOWN__" + column.NativeType;
+		}
+	}
+	/*
+	switch (column.NativeType.Trim().ToLower())
+		{
+			case "number":
+			if (column.Scale<1){
+					strResult= "long";
+				}else if (column.Scale>1){
+					strResult= "decimal";
+				}
+			 	break;
+			case "binary": strResult= "Byte"; break;
+			case "char": strResult= "string"; break;
+			case "date": strResult= "DateTime"; break;
+			case "long": strResult= "Int64"; break;
+			case "blob": strResult= "byte"; break;
+			case "nvarchar2": strResult= "string"; break;
+			case "raw": strResult= "byte"; break;
+			case "rowid": strResult= "string"; break;
+			case "clob": strResult= "byte"; break;
+			case "nclob": strResult= "byte"; break;
+			case "bfile": strResult= "byte"; break;
+			case "float": strResult= "single"; break;
+			case "varchar2": strResult= "string"; break;
+			case "varchar": strResult= "string"; break;
+			case "integer": strResult= "int32"; break;
+		}
+	
+	return strResult;
+	*/
+	
+}	
+
+
+public string GetMemberVariableDeclarationStatement(ColumnSchema column)
+{
+	return GetMemberVariableDeclarationStatement("private", column);
+}
+
+public string GetMemberVariableDeclarationStatement(string protectionLevel, ColumnSchema column)
+{
+	string statement = protectionLevel + " ";
+	statement += GetCSharpVariableType(column) + " " + GetMemberVariableName(column);
+	
+	string defaultValue = GetMemberVariableDefaultValue(column);
+	if (defaultValue != "")
+	{
+		statement += " = " + defaultValue;
+	}
+	
+	statement += ";";
+	
+	return statement;
+}
+
+public string GetReaderAssignmentStatement(ColumnSchema column, int index)
+{
+	string statement = "if (!reader.IsDBNull(" + index.ToString() + ")) ";
+	statement += GetMemberVariableName(column) + " = ";
+	
+	if (column.Name.EndsWith("TypeCode")) statement += "(" + column.Name + ")";
+	
+	statement += "reader." + GetReaderMethod(column) + "(" + index.ToString() + ");";
+	
+	return statement;
+}
+
+public string GetCamelCaseName(string value)
+{
+	return value.Substring(0, 1).ToLower() + value.Substring(1);
+}
+
+public string GetMemberVariableName(ColumnSchema column)
+{
+	string propertyName = GetPropertyName(column);
+	string memberVariableName = "_" + GetCamelCaseName(propertyName);
+	
+	return memberVariableName;
+}
+
+public string GetPropertyName(ColumnSchema column)
+{
+	string propertyName = column.Name;
+	
+	//if (propertyName == column.Table.Name + "Name") return "Name";
+	//if (propertyName == column.Table.Name + "Description") return "Description";
+	
+	//if (propertyName.EndsWith("TypeCode")) propertyName = propertyName.Substring(0, propertyName.Length - 4);
+	
+	return propertyName;
+}
+
+public string GetMemberVariableDefaultValue(ColumnSchema column)
+{
+	switch (column.DataType)
+	{
+		case DbType.Guid:
+		{
+			return "Guid.Empty";
+		}
+		case DbType.DateTime:
+		{
+			return "DateTime.MinValue";
+		}
+		case DbType.Boolean:
+		{
+			return "false";
+		}
+		case DbType.AnsiString:
+		case DbType.AnsiStringFixedLength:
+		case DbType.String:
+		case DbType.StringFixedLength:
+		{
+			return "string.Empty";
+		}
+		default:
+		{
+			return "0";
+		}
+	}
+}
+
+public string GetCSharpVariableType(ColumnSchema column)
+{
+	if (column.Name.EndsWith("TypeCode")) return column.Name;
+	
+	switch (column.DataType)
+	{
+		case DbType.AnsiString: return "string";
+		case DbType.AnsiStringFixedLength: return "string";
+		case DbType.Binary: return "byte[]";
+		case DbType.Boolean: return "bool";
+		case DbType.Byte: return "byte";
+		case DbType.Currency: return "decimal";
+		case DbType.Date: return "DateTime";
+		case DbType.DateTime: return "DateTime";
+		case DbType.Decimal: return "decimal";
+		case DbType.Double: return "double";
+		case DbType.Guid: return "Guid";
+		case DbType.Int16: return "short";
+		case DbType.Int32: return "int";
+		case DbType.Int64: return "long";
+		case DbType.Object: return "object";
+		case DbType.SByte: return "sbyte";
+		case DbType.Single: return "float";
+		case DbType.String: return "string";
+		case DbType.StringFixedLength: return "string";
+		case DbType.Time: return "TimeSpan";
+		case DbType.UInt16: return "ushort";
+		case DbType.UInt32: return "uint";
+		case DbType.UInt64: return "ulong";
+		case DbType.VarNumeric: return "decimal";
+		default:
+		{
+			return "__UNKNOWN__" + column.NativeType;
+		}
+	}
+}
+
+public string GetReaderMethod(ColumnSchema column)
+{
+	switch (column.DataType)
+	{
+		case DbType.Byte:
+		{
+			return "GetByte";
+		}
+		case DbType.Int16:
+		{
+			return "GetInt16";
+		}
+		case DbType.Int32:
+		{
+			return "GetInt32";
+		}
+		case DbType.Int64:
+		{
+			return "GetInt64";
+		}
+		case DbType.AnsiStringFixedLength:
+		case DbType.AnsiString:
+		case DbType.String:
+		case DbType.StringFixedLength:
+		{
+			return "GetString";
+		}
+		case DbType.Boolean:
+		{
+			return "GetBoolean";
+		}
+		case DbType.Guid:
+		{
+			return "GetGuid";
+		}
+		case DbType.Currency:
+		case DbType.Decimal:
+		{
+			return "GetDecimal";
+		}
+		case DbType.DateTime:
+		case DbType.Date:
+		{
+			return "GetDateTime";
+		}
+		case DbType.Binary:
+		{
+			return "GetBytes";
+		}
+		default:
+		{
+			return "__SQL__" + column.DataType;
+		}
+	}
+}
+
+public string GetClassName(TableSchema table)
+{
+	if (table.Name.EndsWith("s"))
+	{
+		return table.Name.Substring(0, table.Name.Length - 1);
+	}
+	else
+	{
+		return table.Name;
+	}
+}
+
+public string GetSqlDbType(ColumnSchema column)
+{
+	switch (column.NativeType)
+	{
+		case "bigint": return "BigInt";
+		case "binary": return "Binary";
+		case "bit": return "Bit";
+		case "char": return "Char";
+		case "datetime": return "DateTime";
+		case "decimal": return "Decimal";
+		case "float": return "Float";
+		case "image": return "Image";
+		case "int": return "Int";
+		case "money": return "Money";
+		case "nchar": return "NChar";
+		case "ntext": return "NText";
+		case "numeric": return "Decimal";
+		case "nvarchar": return "NVarChar";
+		case "real": return "Real";
+		case "smalldatetime": return "SmallDateTime";
+		case "smallint": return "SmallInt";
+		case "smallmoney": return "SmallMoney";
+		case "sql_variant": return "Variant";
+		case "sysname": return "NChar";
+		case "text": return "Text";
+		case "timestamp": return "Timestamp";
+		case "tinyint": return "TinyInt";
+		case "uniqueidentifier": return "UniqueIdentifier";
+		case "varbinary": return "VarBinary";
+		case "varchar": return "VarChar";
+		default: return "__UNKNOWN__" + column.NativeType;
+	}
+}
+
+public string GetPrimaryKeyType(TableSchema table)
+{
+	if (table.PrimaryKey != null)
+	{
+		if (table.PrimaryKey.MemberColumns.Count == 1)
+		{
+			return GetCSharpVariableType(table.PrimaryKey.MemberColumns[0]);
+		}
+		else
+		{
+			throw new ApplicationException("This template will not work on primary keys with more than one member column.");
+		}
+	}
+	else
+	{
+		throw new ApplicationException("This template will only work on tables with a primary key.");
+	}
+}
+
+public override string GetFileName()
+{
+	return this.GetClassName(this.SourceTable) +"Facade" + ".cs";
+}
+</script>

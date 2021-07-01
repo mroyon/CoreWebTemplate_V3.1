@@ -1,0 +1,105 @@
+﻿<%@ CodeTemplate Language="C#" TargetLanguage="Text" Src="" Inherits="" Debug="False" CompilerVersion="v3.5" Description="Template description here." %>
+
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Assembly Name="CodeSmith.BaseTemplates" %>
+<%@ Assembly Name="CodeSmith.CustomProperties" %>
+<%@ Assembly Name="System.Data" %>
+
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Import Namespace="CodeSmith.CustomProperties" %>
+<%@ Import Namespace="CodeSmith.BaseTemplates" %>
+<%@ Import Namespace="System.Data" %>
+<%@ Import Namespace="System.Text.RegularExpressions" %>
+<%@ Import Namespace="System.Text" %>
+<%@ Import NameSpace="System.IO" %>
+
+
+
+<%@ Register Name="IDataAccess" Template="..\..\..\KAF.IDataAccessObjects\IDOTemplates\IDataAccessEx.cst"  %>
+<%@ Register Name="DataAccess" Template="..\..\..\KAF.DataAccessObjects\DAOTemplates\DataAccessEx.cst"  %>
+
+<%@ Register Name="IBusinessFacade" Template="..\..\..\KAF.IBusinessFacadeObjects\IBOTemplates\IBusinessFacadeEx.cst"  %>
+<%@ Register Name="BusinessFacade" Template="..\..\..\KAF.BusinessFacadeObjects\BFOTemplates\BusinessFacadeEx.cst"  %>
+
+
+<%@ Property Name="NameSpace" Type="System.String" Optional="False" Category="01. NameSpace - Required" %>
+<%@ Property Name="SourceDatabase" Type="SchemaExplorer.DatabaseSchema" DeepLoad="True" Optional="False" Category="01. Getting Started - Required" Description="Database that the tables views, and stored procedures should be based on. IMPORTANT!!! If SourceTables and SourceViews are left blank, the Entire Database will then be generated." %>
+
+
+<%@ Property Name="IDaoDir" Type="System.String" Optional="False" Category="03. Output Directory - Required" Editor="System.Windows.Forms.Design.FolderNameEditor, System.Design, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" %>
+<%@ Property Name="DaoDir" Type="System.String" Optional="False" Category="03. Output Directory - Required" Editor="System.Windows.Forms.Design.FolderNameEditor, System.Design, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" %>
+<%@ Property Name="DtoDir" Type="System.String" Optional="False" Category="03. Output Directory - Required" Editor="System.Windows.Forms.Design.FolderNameEditor, System.Design, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" %>
+<%@ Property Name="IBalDir" Type="System.String" Optional="True" Category="03. Output Directory - Required" Editor="System.Windows.Forms.Design.FolderNameEditor, System.Design, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" %>
+<%@ Property Name="BalDir" Type="System.String" Optional="False" Category="03. Output Directory - Required" Editor="System.Windows.Forms.Design.FolderNameEditor, System.Design, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" %>
+
+
+
+<script runat="template">
+
+public override void Render(TextWriter writer)
+{		
+	foreach(TableSchema table in SourceDatabase.Tables) 
+	{
+		
+//		if((table.Name == "CMS_GEN_SocialSites") 
+//		
+//		)
+		//if(table.Name.ToUpper().StartsWith("HR"))
+        if(table.Name.ToLower().Contains("hr_"))
+        {
+			CreateIDao(table);
+			CreateDao(table);
+			//CreateDto(table);
+			CreateIBal(table);
+			CreateBal(table);
+		}
+	}
+}
+public void CreateIDao(TableSchema table)
+{
+    IDataAccess composer = this.Create<IDataAccess>();
+	composer.SourceTable = table;
+	composer.NameSpace = NameSpace;	
+    
+	string fileName = String.Format("{0}/I{1}DataAccessObjects.cs", this.IDaoDir, table.Name.ToString().ToLower());
+	
+	OutputFile outputFile = new OutputFile(fileName);
+	composer.RenderToFile(outputFile, true);	
+}
+public void CreateDao(TableSchema table)
+{
+    DataAccess composer = this.Create<DataAccess>();
+	composer.SourceTable = table;
+	composer.NameSpace = NameSpace;	
+    
+	string fileName = String.Format("{0}/{1}DataAccessObjects.cs", this.DaoDir, table.Name.ToString().ToLower());
+	
+	OutputFile outputFile = new OutputFile(fileName);
+	composer.RenderToFile(outputFile, true);	
+}
+
+public void CreateIBal(TableSchema table)
+{
+    IBusinessFacade composer = this.Create<IBusinessFacade>();
+	composer.SourceTable = table;
+	composer.NameSpace = NameSpace;	
+    
+	string fileName = String.Format("{0}/I{1}FacadeObjects.cs", this.IBalDir, table.Name.ToString().ToLower());
+	
+	OutputFile outputFile = new OutputFile(fileName);
+	composer.RenderToFile(outputFile, true);	
+}
+public void CreateBal(TableSchema table)
+{
+    BusinessFacade composer = this.Create<BusinessFacade>();
+	composer.SourceTable = table;
+	composer.NameSpace = NameSpace;	
+    
+	string fileName = String.Format("{0}/{1}FacadeObjects.cs", this.BalDir, table.Name.ToString().ToLower());
+	
+	OutputFile outputFile = new OutputFile(fileName);
+	composer.RenderToFile(outputFile, true);	
+}
+
+
+</script>

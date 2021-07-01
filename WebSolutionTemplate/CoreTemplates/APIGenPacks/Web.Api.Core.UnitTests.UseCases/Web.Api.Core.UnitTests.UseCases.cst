@@ -1,0 +1,207 @@
+﻿<%@ CodeTemplate Language="C#" TargetLanguage="C#" Description="Generates a ASP UserControl." Debug=true %>
+  
+  <%@ CodeTemplate Src="C:\ClassLibrary1\ClassLibrary1\LinqFunctions.cs" Inherits="LinqFunctions" Language="C#" TargetLanguage="C#"
+  Description="Generates a data context and entities for given tables." %>
+ 
+
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Assembly Name="CodeSmith.BaseTemplates" %>
+<%@ Assembly Name="CodeSmith.CustomProperties" %>
+<%@ Assembly Name="System.Data" %>
+<%@ Assembly Name="System" %>
+<%@ Assembly Name="System.Core" %>
+<%@ Assembly Name="System.Collections" %>
+<%@ Assembly Name="System.Linq" %>
+
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Import Namespace="CodeSmith.CustomProperties" %>
+<%@ Import Namespace="CodeSmith.BaseTemplates" %>
+<%@ Import Namespace="System.Data" %>
+<%@ Import Namespace="System.Collections.Generic" %>
+<%@ Import Namespace="System.Text" %>
+
+<%@ Import Namespace="System.Text.RegularExpressions" %>
+<%@ Property Name="SourceTable" Type="SchemaExplorer.TableSchema" DeepLoad="True" Default="" Optional="False" %>
+<%@ Property Name="NameSpace" Type="System.String" Default="" Optional="False" %>
+<%@ Property Name="WebNameSpace" Type="System.String" Optional="False" %>
+<%
+    List<ColumnSchema> objColumnList = new List<ColumnSchema>();
+
+        string divRowStart = "<div class=\"row \">";
+        string divColumnStart = "<div class=\"col-md-6\">";
+        string divClose = "</div>";
+        string div = string.Empty;
+%>
+using Xunit;
+using System.Net.Http;
+using Microsoft.AspNetCore.TestHost;
+using System.Net;
+using Web.Api.Core.UnitTests.StaruUp;
+using Newtonsoft.Json;
+using BDO.DataAccessObjects.CorsCore;
+using System.Text;
+using System.Collections.Generic;
+using System.Net.Http.Headers;
+using ComplexFaker;
+
+namespace Web.Api.Core.UnitTests.UseCases
+{
+    public class <%=GetTableNamesWithoutPrefix(SourceTable) %>UseCaseTests : IClassFixture<TestFixture<Startup>>
+    {
+        protected TestServer _testserver;
+        private HttpClient _client;
+
+        public <%=GetTableNamesWithoutPrefix(SourceTable) %>UseCaseTests(TestFixture<Startup> fixture)
+        {
+            _client = fixture.Client;
+        }
+
+        [Fact]
+        public async void GetAll<%=GetTableNamesWithPrefix(SourceTable)%>()
+        {
+            var request = new HttpRequestMessage(new HttpMethod("GET"), "/api/<%=GetTableNamesWithPrefix(SourceTable)%>/GetAll<%=GetTableNamesWithPrefix(SourceTable)%>");
+            //If authorized required
+            LoginTestDataGet objGetToken = new LoginTestDataGet();
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", await objGetToken.GetAccessToken(_client));
+            //If authorized required
+            var response = await _client.SendAsync(request);
+            response.EnsureSuccessStatusCode();
+            //Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Contains(response.StatusCode, new[] { HttpStatusCode.OK, HttpStatusCode.NotFound });
+        }
+
+        [Fact]
+        public async void GetAllPaged<%=GetTableNamesWithPrefix(SourceTable)%>()
+        {
+            var json = JsonConvert.SerializeObject(GetDataForPaged());
+            var request = new HttpRequestMessage(HttpMethod.Post, "/api/<%=GetTableNamesWithPrefix(SourceTable)%>/GetAllPaged<%=GetTableNamesWithPrefix(SourceTable)%>");
+            //If authorized required
+            LoginTestDataGet objGetToken = new LoginTestDataGet();
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", await objGetToken.GetAccessToken(_client));
+            //If authorized required
+            request.Content = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = _client.SendAsync(request).Result;
+            var JsonString = await response.Content.ReadAsStringAsync();
+            response.EnsureSuccessStatusCode();
+            Assert.Contains(response.StatusCode, new[] { HttpStatusCode.OK, HttpStatusCode.NotFound });
+        }
+
+        [Fact]
+        public async void GetListView<%=GetTableNamesWithPrefix(SourceTable)%>()
+        {
+            var json = JsonConvert.SerializeObject(GetDataForPagedListView());
+            var request = new HttpRequestMessage(HttpMethod.Post, "/api/<%=GetTableNamesWithPrefix(SourceTable)%>/GetListView<%=GetTableNamesWithPrefix(SourceTable)%>");
+            //If authorized required
+            LoginTestDataGet objGetToken = new LoginTestDataGet();
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", await objGetToken.GetAccessToken(_client));
+            //If authorized required
+            request.Content = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = _client.SendAsync(request).Result;
+            var JsonString = await response.Content.ReadAsStringAsync();
+            //response.EnsureSuccessStatusCode();
+            Assert.Contains(response.StatusCode, new[] { HttpStatusCode.OK, HttpStatusCode.NotFound });
+        }
+
+        [Fact]
+        public async void GetSingle<%=GetTableNamesWithPrefix(SourceTable)%>()
+        {
+            var json = JsonConvert.SerializeObject(GetDataForSingle());
+            var request = new HttpRequestMessage(HttpMethod.Post, "/api/<%=GetTableNamesWithPrefix(SourceTable)%>/GetSingle<%=GetTableNamesWithPrefix(SourceTable)%>");
+            //If authorized required
+            LoginTestDataGet objGetToken = new LoginTestDataGet();
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", await objGetToken.GetAccessToken(_client));
+            //If authorized required
+            request.Content = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = _client.SendAsync(request).Result;
+            var JsonString = await response.Content.ReadAsStringAsync();
+            //response.EnsureSuccessStatusCode();
+            Assert.Contains(response.StatusCode, new[] { HttpStatusCode.OK, HttpStatusCode.NotFound });
+        }
+
+        [Fact]
+        public async void Save<%=GetTableNamesWithPrefix(SourceTable)%>()
+        {
+            var json = JsonConvert.SerializeObject(GetDataForSave());
+            var request = new HttpRequestMessage(HttpMethod.Post, "/api/<%=GetTableNamesWithPrefix(SourceTable)%>/Save<%=GetTableNamesWithPrefix(SourceTable)%>");
+            LoginTestDataGet objGetToken = new LoginTestDataGet();
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", await objGetToken.GetAccessToken(_client));
+            request.Content = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = _client.SendAsync(request).Result;
+            var JsonString = await response.Content.ReadAsStringAsync();
+            response.EnsureSuccessStatusCode();
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        }
+
+        [Fact]
+        public async void Update<%=GetTableNamesWithPrefix(SourceTable)%>()
+        {
+            var json = JsonConvert.SerializeObject(GetDataForUpdate());
+            var request = new HttpRequestMessage(HttpMethod.Post, "/api/<%=GetTableNamesWithPrefix(SourceTable)%>/Update<%=GetTableNamesWithPrefix(SourceTable)%>");
+            //If authorized required
+            LoginTestDataGet objGetToken = new LoginTestDataGet();
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", await objGetToken.GetAccessToken(_client));
+            //If authorized required
+            request.Content = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = _client.SendAsync(request).Result;
+            var JsonString = await response.Content.ReadAsStringAsync();
+            response.EnsureSuccessStatusCode();
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        }
+
+        [Fact]
+        public async void Delete<%=GetTableNamesWithPrefix(SourceTable)%>()
+        {
+            var json = JsonConvert.SerializeObject(GetDataForDelete());
+            var request = new HttpRequestMessage(HttpMethod.Post, "/api/<%=GetTableNamesWithPrefix(SourceTable)%>/Delete<%=GetTableNamesWithPrefix(SourceTable)%>");
+            //If authorized required
+            LoginTestDataGet objGetToken = new LoginTestDataGet();
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", await objGetToken.GetAccessToken(_client));
+            //If authorized required
+            request.Content = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = _client.SendAsync(request).Result;
+            var JsonString = await response.Content.ReadAsStringAsync();
+            response.EnsureSuccessStatusCode();
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        }
+
+        public static <%=GetClassName(SourceTable)%>Entity GetDataForPaged()
+        {
+            return new <%=GetClassName(SourceTable)%>Entity
+            {
+                CurrentPage = 1,
+                PageSize = 1,
+                SortExpression = "priorityname DESC"
+            };
+        }
+        public static <%=GetClassName(SourceTable)%>Entity GetDataForPagedListView()
+        {
+            return new <%=GetClassName(SourceTable)%>Entity
+            {
+                CurrentPage = 1,
+                PageSize = 1,
+                SortExpression = "priorityname DESC",
+                strCommonSerachParam = "Hi"
+            };
+        }
+        public static <%=GetClassName(SourceTable)%>Entity GetDataForSingle()
+        {
+            IFakeDataService faker = new FakeDataService();
+            return faker.Generate<<%=GetClassName(SourceTable)%>Entity>();
+        }
+        public static <%=GetClassName(SourceTable)%>Entity GetDataForSave()
+        {
+            IFakeDataService faker = new FakeDataService();
+            return faker.Generate<<%=GetClassName(SourceTable)%>Entity>();
+        }
+        public static <%=GetClassName(SourceTable)%>Entity GetDataForUpdate()
+        {
+            IFakeDataService faker = new FakeDataService();
+            return faker.Generate<<%=GetClassName(SourceTable)%>Entity>();
+        }
+        public static <%=GetClassName(SourceTable)%>Entity GetDataForDelete()
+        {
+            IFakeDataService faker = new FakeDataService();
+            return faker.Generate<<%=GetClassName(SourceTable)%>Entity>();
+        }
+    }
+}

@@ -1,0 +1,139 @@
+﻿<%@ CodeTemplate Language="C#" TargetLanguage="C#" Description="Generates a ASP UserControl." Debug=true %>
+  
+  <%@ CodeTemplate Src="C:\ClassLibrary1\ClassLibrary1\LinqFunctions.cs" Inherits="LinqFunctions" Language="C#" TargetLanguage="C#"
+  Description="Generates a data context and entities for given tables." %>
+  
+
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Assembly Name="CodeSmith.BaseTemplates" %>
+<%@ Assembly Name="CodeSmith.CustomProperties" %>
+<%@ Assembly Name="System.Data" %>
+<%@ Assembly Name="System" %>
+<%@ Assembly Name="System.Core" %>
+<%@ Assembly Name="System.Collections" %>
+<%@ Assembly Name="System.Linq" %>
+
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Import Namespace="CodeSmith.CustomProperties" %>
+<%@ Import Namespace="CodeSmith.BaseTemplates" %>
+<%@ Import Namespace="System.Data" %>
+<%@ Import Namespace="System.Collections.Generic" %>
+<%@ Import Namespace="System.Text" %>
+
+<%@ Import Namespace="System.Text.RegularExpressions" %>
+<%@ Property Name="SourceTable" Type="SchemaExplorer.TableSchema" DeepLoad="True" Default="" Optional="False"  %>
+<%@ Property Name="SourceTableDetail" Type="SchemaExplorer.TableSchema" DeepLoad="True" Default="" Optional="False" %>
+
+<%
+    List<ColumnSchema> objColumnList = new List<ColumnSchema>();
+
+        string divRowStart = "<div class=\"row \">";
+        string divColumnStart = "<div class=\"col-md-6\">";
+        string divClose = "</div>";
+        string div = string.Empty;
+%>
+
+
+
+//PN: FILE NAME: "Newgen_leavebalancedetl.js"
+
+
+
+var baseurl = $('#txtBaseUrl').val();
+
+$(document).ready(function () {
+
+
+
+    AddAntiForgeryToken = function (data) {
+        data.__RequestVerificationToken = $('input[name=__RequestVerificationToken]').val();
+        return data;
+    };
+
+
+
+    $('body').on('click', '#btnSave<%= GetTableNamesWithPrefix(SourceTableDetail) %>', function (event) {
+        try {
+            event.preventDefault();
+            var form = $('#frm<%= GetTableNamesWithPrefix(SourceTableDetail) %>New');
+            jQuery.validator.unobtrusive.parse();
+            jQuery.validator.unobtrusive.parse(form);
+
+            if (form.valid()) {
+
+
+                var input = AddAntiForgeryToken({
+                    token: $(".txtUserSTK").val(),
+                    userinfo: $(".txtServerUtilObj").val(),
+                    useripaddress: $(".txtuserip").val(),
+                    sessionid: $(".txtUserSes").val(),
+                    methodname: "<%= GetTableNamesWithPrefix(SourceTableDetail) %>Insert",
+                    currenturl: window.location.href,
+                    strModelPrimaryKey: $('#strModelPrimaryKey').val(),
+                    <% 
+                            Response.Write(drawModelBuildForJS(SourceTableDetail));
+                        %>
+                });
+
+
+                confirmationDialog(_getCookieForLanguage("_confirmationTitle"), _getCookieForLanguage("_saveConfirmation"), _getCookieForLanguage("_btnYes"), _getCookieForLanguage("_btnNo")).then(function (answer) {
+                    if (answer == "true") {
+
+                        $.ajax({
+                            url: baseurl + "GenLeaveBalance/<%= GetTableNamesWithPrefix(SourceTableDetail) %>Insert",
+                            data: input,
+                            type: 'POST',
+                            success: function (data) {
+                                if (data.status === "success") {
+                                    inforamtionDialog(data.title, data.responsetext, _getCookieForLanguage("_btnOK")).then(function (answer) {
+                                        if (answer == "true") {
+                                            $('#mc<%= GetTableNamesWithPrefix(SourceTableDetail) %>New').html('');
+                                            $('#modal-container-<%= GetTableNamesWithPrefix(SourceTableDetail) %>New').modal('hide');
+                                            LoadDetailData(data.prikey);
+                                        }
+                                    });
+
+                                }
+                                else if (data.status === "failed") {
+                                       inforamtionDialog(data.title, data.responsetext, _getCookieForLanguage("_btnOK")).then(function (answer) {
+                                        $('#mc<%= GetTableNamesWithPrefix(SourceTableDetail) %>New').html('');
+                                        $('#modal-container-<%= GetTableNamesWithPrefix(SourceTableDetail) %>New').modal('hide');
+                                        LoadDetailData(data.prikey);
+                                   });
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+            else {
+                return;
+            }
+
+        } catch (e) {
+            $.alert({
+                title: _getCookieForLanguage("_informationTitle"),
+                content: e.message,
+                type: 'red'
+            });
+        }
+    });
+
+   $('body').on('click', '#btnModalCloseNew', function (event) {
+        try {
+            event.preventDefault();
+            $('#mc<%= GetTableNamesWithPrefix(SourceTableDetail) %>New').html('');
+            $('#modal-container-<%= GetTableNamesWithPrefix(SourceTableDetail) %>New').modal('hide');
+        } catch (e) {
+            $.alert({
+                title: _getCookieForLanguage("_informationTitle"),
+                content: e.message,
+                type: 'red'
+            });
+        }
+    });
+
+});
+
+
+

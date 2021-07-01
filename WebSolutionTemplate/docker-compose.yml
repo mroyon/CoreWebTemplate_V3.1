@@ -1,0 +1,81 @@
+version: '3.4'
+
+services:
+  webappfront:
+    image: ${DOCKER_REGISTRY-}webappfront
+    build:
+      context: .
+      dockerfile: WebAppFront/Dockerfile
+
+  webapi:
+    image: ${DOCKER_REGISTRY-}webapi
+    build:
+      context: .
+      dockerfile: WebApi/Dockerfile
+
+  webadmin:
+    image: ${DOCKER_REGISTRY-}webadmin
+    build:
+      context: .
+      dockerfile: WebAdmin/Dockerfile
+
+  mssql_container:
+    build:
+      context: .
+      dockerfile: data/Dockerfile
+    image: mroyon/mssqlbaseblackportal:latest
+    container_name: mssqldb
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: Asdf@1234
+      FILE_VERSION: 1.4
+    ports:
+      - 1434:1433
+    volumes:
+     - mssqldata:/var/opt/mssql  
+
+  redisdb_container:
+    image: mroyon/redisbase:latest
+    container_name: redisdb
+    ports:
+      - 6379:6379
+    volumes:
+      - /srv/docker/redis:/var/lib/redis
+    restart: always
+
+  mongodb_container:
+    image: mroyon/mongodb:latest
+    container_name: mongodb
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: Asdf1234
+    ports:
+      - 27017:27017
+    volumes:
+      - mongodb_data_container:/data/db
+
+  ftp-server:
+    image: mroyon/vsftpd
+    container_name: vsftpd
+    ports:
+      - "2340:20"
+      - "2341:21"
+      - "21100-21110:21100-21110"
+    volumes:
+      - ./data:/home/vsftpd
+      - ./log/vsftpd/:/var/log/vsftpd
+    environment:
+      - FTP_USER=ftpuser
+      - FTP_PASS=Asdf1234
+      - PASV_MIN_PORT=21100
+      - PASV_MAX_PORT=21110
+      - PASV_ADDRESS=10.1.222.170
+      - LOG_STDOUT=1
+    restart: always
+
+
+volumes:
+  mongodb_data_container:    
+  mssqldata:
+
+

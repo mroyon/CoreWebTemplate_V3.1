@@ -1,0 +1,69 @@
+﻿<%@ CodeTemplate Language="C#" TargetLanguage="C#" Description="Generates a ASP UserControl." Debug=true %>
+  
+  <%@ CodeTemplate Src="C:\ClassLibrary1\ClassLibrary1\LinqFunctions.cs" Inherits="LinqFunctions" Language="C#" TargetLanguage="C#"
+  Description="Generates a data context and entities for given tables." %>
+  
+
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Assembly Name="CodeSmith.BaseTemplates" %>
+<%@ Assembly Name="CodeSmith.CustomProperties" %>
+<%@ Assembly Name="System.Data" %>
+<%@ Assembly Name="System" %>
+<%@ Assembly Name="System.Core" %>
+<%@ Assembly Name="System.Collections" %>
+<%@ Assembly Name="System.Linq" %>
+
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Import Namespace="CodeSmith.CustomProperties" %>
+<%@ Import Namespace="CodeSmith.BaseTemplates" %>
+<%@ Import Namespace="System.Data" %>
+<%@ Import Namespace="System.Collections.Generic" %>
+<%@ Import Namespace="System.Text" %>
+
+<%@ Import Namespace="System.Text.RegularExpressions" %>
+<%@ Property Name="SourceTable" Type="SchemaExplorer.TableSchema" DeepLoad="True" Default="" Optional="False" %>
+<%@ Property Name="SourceTableDetail" Type="SchemaExplorer.TableSchema" DeepLoad="True" Default="" Optional="False" %>
+
+@model KAF.BusinessDataObjects.<%= GetClassName(SourceTableDetail) %>Entity
+
+<style>
+    .form-horizontal .form-group {
+        margin-right: 10px;
+        margin-left: 10px;
+    }
+</style>
+
+@using (Ajax.BeginForm("", "", null, new AjaxOptions { HttpMethod = "Post", OnSuccess = "", LoadingElementId = "divProgressBar" }, new { @id = "frm<%= GetTableNamesWithPrefix(SourceTableDetail) %>Edit", @class = "form-horizontal" }))
+{
+    HtmlHelper.UnobtrusiveJavaScriptEnabled = true;
+    HtmlHelper.ClientValidationEnabled = true;
+    @Html.AntiForgeryToken()
+
+    <div class="panel panel-primary list-panel" id="list-panel">
+        <div class="panel-heading list-panel-heading">
+            @KAF.MsgContainer._<%= GetClassName(SourceTableDetail) %>.<%= GetTableNamesWithoutPrefix(SourceTableDetail).ToLower() %>Update
+        </div>
+
+        <div class="panel-body">
+            <div class="modal-body">
+                <div class="form-horizontal container">
+                    <div class="row">
+                        @Html.HiddenFor(m => m.<%= getPrimaryKeyColumnName(SourceTableDetail) %>)
+                        @Html.HiddenFor(m => m.strAdditionalPrimaryKey)
+                    </div>
+                     <% 
+                            Response.Write(drawHTML(SourceTableDetail, "false"));
+                        %>
+                    <div class="btn-toolbar">
+                        <button type="submit" id="btnUpdate<%= GetTableNamesWithPrefix(SourceTableDetail) %>" class="btn btn-primary btn-md btnUpdate<%= GetTableNamesWithPrefix(SourceTableDetail) %>"><i class="fa fa-edit"> </i> @KAF.MsgContainer._Common._btnUpdate</button>
+                        <button type="submit" id="btnModalCloseEdit" class="btn btn-danger btn-md "><i class="fa fa-arrow-circle-left"> </i> @KAF.MsgContainer._Common._btnCancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+
+

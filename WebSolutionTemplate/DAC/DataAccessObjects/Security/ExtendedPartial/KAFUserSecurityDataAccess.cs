@@ -1,0 +1,502 @@
+﻿using System;
+using System.Data;
+using System.Data.Common;
+using System.Collections.Generic;
+using Microsoft.Practices.EnterpriseLibrary.Data;
+using AppConfig.ConfigDAAC;
+using DAC.Core.Base;
+using BDO.DataAccessObjects.SecurityModule;
+using AppConfig.EncryptionHandler;
+using System.Threading.Tasks;
+using System.Threading;
+using BDO.DataAccessObjects.ExtendedEntities;
+using IDAC.Core.IDataAccessObjects.Security.ExtendedPartial;
+
+namespace DAC.Core.DataAccessObjects.Security.ExtendedPartial
+{
+    internal sealed class KAFUserSecurityDataAccess : BaseDataAccess, IKAFUserSecurityDataAccess
+    {
+        #region Constructors
+        private string ClassName = "KAFUserSecurityDataAccess";
+        public KAFUserSecurityDataAccess(Context context)
+            : base(context)
+        {
+        }
+        private string SourceOfException(string methodName)
+        {
+            return "Class name: " + ClassName + " and Method name: " + methodName;
+        }
+        public owin_userEntity FillParameters(owin_userEntity owin_user, DbCommand cmd, Database Database, bool? isDelete = false)
+        {
+            if (owin_user.userid.HasValue)
+                Database.AddInParameter(cmd, "@UserId", DbType.Guid, owin_user.userid);
+            if (owin_user.masteruserid.HasValue)
+                Database.AddInParameter(cmd, "@MasterUserID", DbType.Int64, owin_user.masteruserid);
+            if (isDelete.GetValueOrDefault(false))
+                return owin_user;
+
+            Database.AddInParameter(cmd, "@ApplicationId", DbType.Guid, owin_user.applicationid);
+
+            if (!(string.IsNullOrEmpty(owin_user.username)))
+                Database.AddInParameter(cmd, "@UserName", DbType.String, owin_user.username);
+            if (!(string.IsNullOrEmpty(owin_user.emailaddress)))
+                Database.AddInParameter(cmd, "@EmailAddress", DbType.String, owin_user.emailaddress);
+            if (!(string.IsNullOrEmpty(owin_user.loweredusername)))
+                Database.AddInParameter(cmd, "@LoweredUserName", DbType.String, owin_user.loweredusername);
+            if (!(string.IsNullOrEmpty(owin_user.mobilenumber)))
+                Database.AddInParameter(cmd, "@MobileNumber", DbType.String, owin_user.mobilenumber);
+            if (!(string.IsNullOrEmpty(owin_user.userprofilephoto)))
+                Database.AddInParameter(cmd, "@UserProfilePhoto", DbType.String, owin_user.userprofilephoto);
+            if ((owin_user.isanonymous != null))
+                Database.AddInParameter(cmd, "@IsAnonymous", DbType.Boolean, owin_user.isanonymous);
+            if ((owin_user.ischildenable != null))
+                Database.AddInParameter(cmd, "@IsChildEnable", DbType.Boolean, owin_user.ischildenable);
+            if (!(string.IsNullOrEmpty(owin_user.masprivatekey)))
+                Database.AddInParameter(cmd, "@MasPrivateKey", DbType.String, owin_user.masprivatekey);
+            if (!(string.IsNullOrEmpty(owin_user.maspublickey)))
+                Database.AddInParameter(cmd, "@MasPublicKey", DbType.String, owin_user.maspublickey);
+            if (!(string.IsNullOrEmpty(owin_user.password)))
+                Database.AddInParameter(cmd, "@Password", DbType.String, owin_user.password);
+            if (!(string.IsNullOrEmpty(owin_user.passwordsalt)))
+                Database.AddInParameter(cmd, "@PasswordSalt", DbType.String, owin_user.passwordsalt);
+            if (!(string.IsNullOrEmpty(owin_user.passwordkey)))
+                Database.AddInParameter(cmd, "@PasswordKey", DbType.String, owin_user.passwordkey);
+            if (!(string.IsNullOrEmpty(owin_user.passwordvector)))
+                Database.AddInParameter(cmd, "@PasswordVector", DbType.String, owin_user.passwordvector);
+            if (!(string.IsNullOrEmpty(owin_user.mobilepin)))
+                Database.AddInParameter(cmd, "@MobilePIN", DbType.String, owin_user.mobilepin);
+            if (!(string.IsNullOrEmpty(owin_user.passwordquestion)))
+                Database.AddInParameter(cmd, "@PasswordQuestion", DbType.String, owin_user.passwordquestion);
+            if (!(string.IsNullOrEmpty(owin_user.passwordanswer)))
+                Database.AddInParameter(cmd, "@PasswordAnswer", DbType.String, owin_user.passwordanswer);
+            if ((owin_user.approved != null))
+                Database.AddInParameter(cmd, "@Approved", DbType.Boolean, owin_user.approved);
+            if ((owin_user.locked != null))
+                Database.AddInParameter(cmd, "@Locked", DbType.Boolean, owin_user.locked);
+            if ((owin_user.lastlogindate.HasValue))
+                Database.AddInParameter(cmd, "@LastLoginDate", DbType.DateTime, owin_user.lastlogindate);
+            if ((owin_user.lastpasschangeddate.HasValue))
+                Database.AddInParameter(cmd, "@LastPassChangedDate", DbType.DateTime, owin_user.lastpasschangeddate);
+            if ((owin_user.lastlockoutdate.HasValue))
+                Database.AddInParameter(cmd, "@LastLockoutDate", DbType.DateTime, owin_user.lastlockoutdate);
+            if (owin_user.failedpasswordattemptcount.HasValue)
+                Database.AddInParameter(cmd, "@FailedPasswordAttemptCount", DbType.Int32, owin_user.failedpasswordattemptcount);
+            if (!(string.IsNullOrEmpty(owin_user.comment)))
+                Database.AddInParameter(cmd, "@Comment", DbType.String, owin_user.comment);
+            if ((owin_user.lastactivitydate.HasValue))
+                Database.AddInParameter(cmd, "@LastActivityDate", DbType.DateTime, owin_user.lastactivitydate);
+            if ((owin_user.isreviewed != null))
+                Database.AddInParameter(cmd, "@IsReviewed", DbType.Boolean, owin_user.isreviewed);
+            if (owin_user.reviewedby.HasValue)
+                Database.AddInParameter(cmd, "@ReviewedBy", DbType.Int64, owin_user.reviewedby);
+            if (!(string.IsNullOrEmpty(owin_user.reviewedbyusername)))
+                Database.AddInParameter(cmd, "@ReviewedByUserName", DbType.String, owin_user.reviewedbyusername);
+            if ((owin_user.revieweddate.HasValue))
+                Database.AddInParameter(cmd, "@ReviewedDate", DbType.DateTime, owin_user.revieweddate);
+            if ((owin_user.isapproved != null))
+                Database.AddInParameter(cmd, "@IsApproved", DbType.Boolean, owin_user.isapproved);
+            if (owin_user.approvedby.HasValue)
+                Database.AddInParameter(cmd, "@ApprovedBy", DbType.Int64, owin_user.approvedby);
+            if (!(string.IsNullOrEmpty(owin_user.approvedbyusername)))
+                Database.AddInParameter(cmd, "@ApprovedByUserName", DbType.String, owin_user.approvedbyusername);
+            if ((owin_user.approveddate.HasValue))
+                Database.AddInParameter(cmd, "@ApprovedDate", DbType.DateTime, owin_user.approveddate);
+            if ((owin_user.isemailconfirmed != null))
+                Database.AddInParameter(cmd, "@IsEmailConfirmed", DbType.Boolean, owin_user.isemailconfirmed);
+            if ((owin_user.emailconfirmationbyuserdate.HasValue))
+                Database.AddInParameter(cmd, "@EmailConfirmationByUserDate", DbType.DateTime, owin_user.emailconfirmationbyuserdate);
+            if ((owin_user.twofactorenable != null))
+                Database.AddInParameter(cmd, "@TwoFactorEnable", DbType.Boolean, owin_user.twofactorenable);
+            if ((owin_user.ismobilenumberconfirmed != null))
+                Database.AddInParameter(cmd, "@IsMobileNumberConfirmed", DbType.Boolean, owin_user.ismobilenumberconfirmed);
+            if ((owin_user.mobilenumberconfirmedbyuserdate.HasValue))
+                Database.AddInParameter(cmd, "@MobileNumberConfirmedByUserDate", DbType.DateTime, owin_user.mobilenumberconfirmedbyuserdate);
+            return owin_user;
+        }
+        #endregion
+        async Task<owin_userEntity> IKAFUserSecurityDataAccess.GetUserByParams(owin_userEntity owin_user, CancellationToken cancellationToken)
+        {
+            long returnValue = -99;
+            IList<owin_userEntity> itemList = new List<owin_userEntity>();
+            try
+            {
+                #region Check if user exists
+
+                using (DbCommand cmd = Database.GetStoredProcCommand("owin_user_GA"))
+                {
+                    owin_user = FillParameters(owin_user, cmd, Database);
+                    FillSequrityParameters(owin_user.BaseSecurityParam, cmd, Database);
+
+                    IAsyncResult result = Database.BeginExecuteReader(cmd, null, null);
+                    while (!result.IsCompleted)
+                    {
+                    }
+                    using (IDataReader reader = Database.EndExecuteReader(result))
+                    {
+                        while (reader.Read())
+                        {
+                            itemList.Add(new owin_userEntity(reader));
+                        }
+                        reader.Close();
+                    }
+                    cmd.Dispose();
+                }
+
+                #endregion
+            }
+            catch (Exception ex)
+            {
+                throw GetDataAccessException(ex, SourceOfException("IKAFUserSecurityDataAccess.GetUserByParams"));
+            }
+            finally
+            {
+            }
+            if (itemList != null && itemList.Count > 0)
+                return itemList[0];
+            else
+                return null;
+        }
+
+
+        async Task<owin_userEntity> IKAFUserSecurityDataAccess.UserSignInAsync(owin_userEntity owin_user, CancellationToken cancellationToken)
+        {
+            owin_userEntity returnObject = new owin_userEntity();
+            IList<owin_userEntity> itemList = new List<owin_userEntity>();
+            try
+            {
+                using (DbCommand cmd = Database.GetStoredProcCommand("KAF_OwinUserByUserName"))
+                {
+                    owin_user = FillParameters(owin_user, cmd, Database);
+                    FillSequrityParameters(owin_user.BaseSecurityParam, cmd, Database);
+
+                    IAsyncResult result = Database.BeginExecuteReader(cmd, null, null);
+                    while (!result.IsCompleted)
+                    {
+                    }
+                    using (IDataReader reader = Database.EndExecuteReader(result))
+                    {
+                        while (reader.Read())
+                        {
+                            itemList.Add(new owin_userEntity(reader));
+                        }
+                        reader.Close();
+                    }
+                    cmd.Dispose();
+                }
+                
+                if (itemList != null && itemList.Count > 0)
+                {
+                    try
+                    {
+                        EncryptionHelper objenc = new EncryptionHelper();
+                        
+                        string usersalt = itemList[0].passwordsalt;
+                        HashWithSaltResult ob2 = objenc.EncodePassword(owin_user.password, usersalt);
+                        if (itemList[0].password.Equals(ob2.Digest) && owin_user.username == itemList[0].username)
+                        {
+                            itemList[0].password = "blablablabla";
+                            itemList[0].passwordquestion = "blablablabla";
+                            itemList[0].passwordanswer = "blablablabla";
+                            itemList[0].passwordkey = "blablablabla";
+                            itemList[0].passwordvector = "blablablabla";
+                            itemList[0].passwordsalt = "blablablabla";
+                            itemList[0].masprivatekey = "blablablabla";
+                            itemList[0].maspublickey = "blablablabla";
+
+                            return itemList[0];
+                        }
+                        else
+                            return null;
+                    }
+                    catch (Exception ex)
+                    {
+                        throw GetDataAccessException(ex, SourceOfException("IKAFUserSecurityDataAccess.UserSignInAsync"));
+                    }
+                }
+                else
+                    return null;
+            }
+            catch (Exception ex)
+            {
+                throw GetDataAccessException(ex, SourceOfException("IKAFUserSecurityDataAccess.UserSignInAsync"));
+            }
+        }
+
+        async Task<long> IKAFUserSecurityDataAccess.UserSignInLogUpdateAsync(owin_userEntity owin_user, CancellationToken cancellationToken)
+        {
+            long returnValue = -99;
+            try
+            {
+                const string SP = "owin_user_UpdLastLogin";
+                using (DbCommand cmd = Database.GetStoredProcCommand(SP))
+                {
+                    owin_user.lastlogindate = DateTime.Now;
+                    owin_user = FillParameters(owin_user, cmd, Database);
+
+                    Database.AddInParameter(cmd, "@SessionID", DbType.String, owin_user.BaseSecurityParam.sessionid);
+                    Database.AddInParameter(cmd, "@UserToken", DbType.String, owin_user.BaseSecurityParam.usertoken);
+
+                    FillSequrityParameters(owin_user.BaseSecurityParam, cmd, Database);
+                    AddOutputParameter(cmd);
+                    try
+                    {
+                        IAsyncResult result = Database.BeginExecuteNonQuery(cmd, null, null);
+                        while (!result.IsCompleted)
+                        {
+                        }
+                        returnValue = Database.EndExecuteNonQuery(result);
+                        returnValue = (Int64)(cmd.Parameters["@RETURN_KEY"].Value);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw GetDataAccessException(ex, SourceOfException("Iowin_userDataAccess.CreateUser"));
+                    }
+                    cmd.Dispose();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw GetDataAccessException(ex, SourceOfException("IKAFUserSecurityDataAccess.UserSignInAsync"));
+            }
+            return returnValue;
+        }
+
+        async Task<long> IKAFUserSecurityDataAccess.UserResetPasswordAsync(owin_userEntity owin_user, CancellationToken cancellationToken)
+        {
+            long returnValue = -99;
+            try
+            {
+                const string SP = "KAF_Owin_UserPasswordChangeWithCode";
+
+                EncryptionHelper objenc = new EncryptionHelper();
+                var salt = objenc.GenerateRandomCryptographicKey(128);
+                HashWithSaltResult ob1 = objenc.EncodePassword(owin_user.password, salt);
+                owin_user.password = ob1.Digest;
+                owin_user.passwordsalt = ob1.Salt;
+                owin_user.passwordkey = objenc.GenerateRandomCryptographicKey(24);
+                owin_user.passwordvector = objenc.GenerateRandomCryptographicKey(32);
+
+                using (DbCommand cmd = Database.GetStoredProcCommand(SP))
+                {
+                    owin_user.lastlogindate = DateTime.Now;
+                    owin_user = FillParameters(owin_user, cmd, Database);
+
+                    Database.AddInParameter(cmd, "@SessionID", DbType.String, owin_user.BaseSecurityParam.sessionid);
+                    Database.AddInParameter(cmd, "@SessionToken", DbType.String, owin_user.code);
+
+                    FillSequrityParameters(owin_user.BaseSecurityParam, cmd, Database);
+                    AddOutputParameter(cmd);
+                    try
+                    {
+                        IAsyncResult result = Database.BeginExecuteNonQuery(cmd, null, null);
+                        while (!result.IsCompleted)
+                        {
+                        }
+                        returnValue = Database.EndExecuteNonQuery(result);
+                        returnValue = (Int64)(cmd.Parameters["@RETURN_KEY"].Value);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw GetDataAccessException(ex, SourceOfException("Iowin_userDataAccess.UserResetPasswordAsync"));
+                    }
+                    cmd.Dispose();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw GetDataAccessException(ex, SourceOfException("IKAFUserSecurityDataAccess.UserResetPasswordAsync"));
+            }
+            return returnValue;
+        }
+
+        async Task<long> IKAFUserSecurityDataAccess.UserEmailAddressConfirmed(owin_userEntity owin_user, CancellationToken cancellationToken)
+        {
+            long returnValue = -99;
+            try
+            {
+                const string SP = "KAF_UserEmailAddressConfirmed";
+
+                using (DbCommand cmd = Database.GetStoredProcCommand(SP))
+                {
+                    owin_user = FillParameters(owin_user, cmd, Database);
+
+                    FillSequrityParameters(owin_user.BaseSecurityParam, cmd, Database);
+                    AddOutputParameter(cmd);
+                    try
+                    {
+                        IAsyncResult result = Database.BeginExecuteNonQuery(cmd, null, null);
+                        while (!result.IsCompleted)
+                        {
+                        }
+                        returnValue = Database.EndExecuteNonQuery(result);
+                        returnValue = (Int64)(cmd.Parameters["@RETURN_KEY"].Value);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw GetDataAccessException(ex, SourceOfException("Iowin_userDataAccess.UserEmailAddressConfirmed"));
+                    }
+                    cmd.Dispose();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw GetDataAccessException(ex, SourceOfException("IKAFUserSecurityDataAccess.UserEmailAddressConfirmed"));
+            }
+            return returnValue;
+        }
+
+
+        async Task<long> IKAFUserSecurityDataAccess.UserPhoneNumberConfirmed(owin_userEntity owin_user, CancellationToken cancellationToken)
+        {
+            long returnValue = -99;
+            try
+            {
+                const string SP = "KAF_UserPhoneNumberConfirmed";
+            
+                using (DbCommand cmd = Database.GetStoredProcCommand(SP))
+                {
+                    owin_user = FillParameters(owin_user, cmd, Database);
+
+                    FillSequrityParameters(owin_user.BaseSecurityParam, cmd, Database);
+                    AddOutputParameter(cmd);
+                    try
+                    {
+                        IAsyncResult result = Database.BeginExecuteNonQuery(cmd, null, null);
+                        while (!result.IsCompleted)
+                        {
+                        }
+                        returnValue = Database.EndExecuteNonQuery(result);
+                        returnValue = (Int64)(cmd.Parameters["@RETURN_KEY"].Value);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw GetDataAccessException(ex, SourceOfException("IKAFUserSecurityDataAccess.UserPhoneNumberConfirmed"));
+                    }
+                    cmd.Dispose();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw GetDataAccessException(ex, SourceOfException("IKAFUserSecurityDataAccess.UserPhoneNumberConfirmed"));
+            }
+            return returnValue;
+        }
+
+        async Task<IList<owin_userEntity>> IKAFUserSecurityDataAccess.GetUsersInRoleAsync(owin_userEntity objEntity, CancellationToken cancellationToken)
+        {
+            try
+            {
+                const string SP = "KAF_GetUsersInRoleAsync";
+                IList<owin_userEntity> itemList = new List<owin_userEntity>();
+                using (DbCommand cmd = Database.GetStoredProcCommand(SP))
+                {
+
+                    AddSortExpressionParameter(cmd, objEntity.SortExpression);
+                    FillSequrityParameters(objEntity.BaseSecurityParam, cmd, Database);
+
+                    FillParameters(objEntity, cmd, Database);
+                    if (objEntity.roleid != null && objEntity.roleid > 0)
+                        Database.AddInParameter(cmd, "@RoleID", DbType.Int64, objEntity.roleid);
+
+                    IAsyncResult result = Database.BeginExecuteReader(cmd, null, null);
+                    while (!result.IsCompleted)
+                    {
+                    }
+                    using (IDataReader reader = Database.EndExecuteReader(result))
+                    {
+                        while (reader.Read())
+                        {
+                            itemList.Add(new owin_userEntity(reader));
+                        }
+                        reader.Close();
+                    }
+                    cmd.Dispose();
+                    return itemList;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw GetDataAccessException(ex, SourceOfException("IKAFUserSecurityDataAccess.GetUsersInRoleAsync"));
+            }
+        }
+
+
+        async Task<long> IKAFUserSecurityDataAccess.RemoveFromRoleAsync(owin_userEntity user, owin_roleEntity role, CancellationToken cancellationToken)
+        {
+            long returnValue = -99;
+            try
+            {
+                const string SP = "KAF_RemoveFromRoleAsync";
+
+                using (DbCommand cmd = Database.GetStoredProcCommand(SP))
+                {
+
+                    FillSequrityParameters(user.BaseSecurityParam, cmd, Database);
+                    Database.AddInParameter(cmd, "@RoleID", DbType.Int64, role.roleid);
+                    Database.AddInParameter(cmd, "@UserId", DbType.Guid, user.userid);
+                    AddOutputParameter(cmd);
+                    try
+                    {
+                        IAsyncResult result = Database.BeginExecuteNonQuery(cmd, null, null);
+                        while (!result.IsCompleted)
+                        {
+                        }
+                        returnValue = Database.EndExecuteNonQuery(result);
+                        returnValue = (Int64)(cmd.Parameters["@RETURN_KEY"].Value);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw GetDataAccessException(ex, SourceOfException("IKAFUserSecurityDataAccess.RemoveFromRoleAsync"));
+                    }
+                    cmd.Dispose();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw GetDataAccessException(ex, SourceOfException("IKAFUserSecurityDataAccess.UserPhoneNumberConfirmed"));
+            }
+            return returnValue;
+        }
+        async Task<long> IKAFUserSecurityDataAccess.SetEmailAsync(owin_userEntity user, CancellationToken cancellationToken)
+        {
+            long returnValue = -99;
+            try
+            {
+                const string SP = "KAF_SetEmailAsync";
+
+                using (DbCommand cmd = Database.GetStoredProcCommand(SP))
+                {
+
+                    FillSequrityParameters(user.BaseSecurityParam, cmd, Database);
+                    Database.AddInParameter(cmd, "@UserId", DbType.Guid, user.userid);
+                    Database.AddInParameter(cmd, "@EmailAddress", DbType.String, user.emailaddress);
+                    Database.AddInParameter(cmd, "@IsEmailConfirmed", DbType.Boolean, user.isemailconfirmed);
+                    Database.AddInParameter(cmd, "@EmailConfirmationByUserDate", DbType.DateTime, user.emailconfirmationbyuserdate);
+
+                    AddOutputParameter(cmd);
+                    try
+                    {
+                        IAsyncResult result = Database.BeginExecuteNonQuery(cmd, null, null);
+                        while (!result.IsCompleted)
+                        {
+                        }
+                        returnValue = Database.EndExecuteNonQuery(result);
+                        returnValue = (Int64)(cmd.Parameters["@RETURN_KEY"].Value);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw GetDataAccessException(ex, SourceOfException("IKAFUserSecurityDataAccess.SetEmailAsync"));
+                    }
+                    cmd.Dispose();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw GetDataAccessException(ex, SourceOfException("IKAFUserSecurityDataAccess.SetEmailAsync"));
+            }
+            return returnValue;
+        }
+       
+    }
+
+}

@@ -1,0 +1,158 @@
+﻿<%@ CodeTemplate OutputType="None" Language="C#" TargetLanguage="Text" Src="" Inherits="" CompilerVersion="v3.5" Debug="False" Description="Template description here." %>
+
+<%@ CodeTemplate Src="C:\ClassLibrary1\ClassLibrary1\LinqFunctions.cs" Inherits="LinqFunctions" Language="C#" TargetLanguage="C#"
+  Description="Generates a data context and entities for given tables." %>
+  
+  
+<%-- Assembly References --%>
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Assembly Name="CodeSmith.BaseTemplates" %>
+<%@ Assembly Name="CodeSmith.CustomProperties" %>
+<%@ Assembly Name="System.Data" %>
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Import Namespace="CodeSmith.CustomProperties" %>
+<%@ Import Namespace="CodeSmith.BaseTemplates" %>
+<%@ Import Namespace="System.Data" %>
+<%@ Import Namespace="System.Text.RegularExpressions" %>
+<%@ Import Namespace="System.Text" %>
+<%@ Import NameSpace="System.IO" %>
+
+<%@ Property Name="ServiceNameSpace" Type="System.String" Optional="False" Default="KAF" %>
+<%@ Property Name="WebNameSpace" Type="System.String" Optional="False" %>
+<%@ Property Name="SourceDatabase" Type="SchemaExplorer.DatabaseSchema" DeepLoad="True" Optional="False" Category="01. Getting Started - Required" Description="Database that the tables views, and stored procedures should be based on. IMPORTANT!!! If SourceTables and SourceViews are left blank, the Entire Database will then be generated." %>
+<%@ Property Name="WPOutputDirectory" Type="System.String" Optional="False" Editor="System.Windows.Forms.Design.FolderNameEditor, System.Design, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" %>
+
+
+<%@ Register Name="Gen_WebApiController" Template="Web.Api.Controller/Web.Api.Controller.cst"  %>
+<%@ Register Name="GEN_WebApiPresenters" Template="Web.Api.Presenters/Web.Api.Presenters.cst"  %>
+
+<%@ Register Name="GEN_WebCoreFrameCoreModules" Template="Web.Core.Frame.CoreModules/Web.Core.Frame.CoreModules.cst"  %>
+
+<%@ Register Name="GEN_WebCoreFrameInterfacesUseCases" Template="Web.Core.Frame.Interfaces.UseCases/Web.Core.Frame.Interfaces.UseCases.cst"  %>
+<%@ Register Name="GEN_WebCoreFrameRequestResponseUseCaseRequests" Template="Web.Core.Frame.RequestResponse.UseCaseRequests/Web.Core.Frame.RequestResponse.UseCaseRequests.cst"  %>
+<%@ Register Name="GEN_WebCoreFrameRequestResponseUseCaseResponses" Template="Web.Core.Frame.RequestResponse.UseCaseResponses/Web.Core.Frame.RequestResponse.UseCaseResponses.cst"  %>
+<%@ Register Name="GEN_WebCoreFrameUseCases" Template="Web.Core.Frame.UseCases/Web.Core.Frame.UseCases.cst"  %>
+
+<%@ Register Name="GEN_WebApiCoreUnitTestsUseCases" Template="Web.Api.Core.UnitTests.UseCases/Web.Api.Core.UnitTests.UseCases.cst"  %>
+
+
+<script runat="template">
+
+public override void Render(TextWriter writer)
+{
+    
+    string Gen_WebApiControllerOutPutDir = String.Format("{0}/{1}", this.WPOutputDirectory,"Web.Api.Controller");
+    string GEN_WebApiPresentersOutPutDir = String.Format("{0}/{1}", this.WPOutputDirectory,"Web.Api.Presenters");
+    
+    string GEN_WebCoreFrameCoreModulesOutPutDir = String.Format("{0}/{1}", this.WPOutputDirectory,"Web.Core.Frame.CoreModules");
+    
+    string GEN_WebCoreFrameInterfacesUseCasesDirectory=String.Format("{0}/{1}", this.WPOutputDirectory,"Web.Core.Frame.Interfaces.UseCases");
+    string GEN_WebCoreFrameRequestResponseUseCaseRequestsOutputDirectory=String.Format("{0}/{1}", this.WPOutputDirectory,"Web.Core.Frame.RequestResponse.UseCaseRequests");
+    string GEN_WebCoreFrameRequestResponseUseCaseResponsesOutputDirectory=String.Format("{0}/{1}", this.WPOutputDirectory,"Web.Core.Frame.RequestResponse.UseCaseResponses");
+    string GEN_WebCoreFrameUseCasesOutputDirectory=String.Format("{0}/{1}", this.WPOutputDirectory,"Web.Core.Frame.UseCases");
+    
+    string GEN_WebApiCoreUnitTestsUseCasesOutputDirectory=String.Format("{0}/{1}", this.WPOutputDirectory,"Web.Api.Core.UnitTests.UseCases");
+    
+
+    foreach(TableSchema table in SourceDatabase.Tables.Where(t => t.HasPrimaryKey ))
+	{
+        Response.Write(table.Name);
+        try{
+            
+    		if (!System.IO.Directory.Exists(this.WPOutputDirectory))
+                {
+                    System.IO.Directory.CreateDirectory(this.WPOutputDirectory);
+                }
+            
+            CreateGen_WebApiControllerOutPutDir(table, Gen_WebApiControllerOutPutDir);
+            CreateGEN_WebApiPresentersOutPutDir(table, GEN_WebApiPresentersOutPutDir);
+            
+            CreateGEN_WebCoreFrameInterfacesUseCasesDirectory(table, GEN_WebCoreFrameInterfacesUseCasesDirectory);
+            CreateGEN_WebCoreFrameRequestResponseUseCaseRequestsOutputDirectory(table, GEN_WebCoreFrameRequestResponseUseCaseRequestsOutputDirectory);    
+            CreateGEN_WebCoreFrameRequestResponseUseCaseResponsesOutputDirectory(table, GEN_WebCoreFrameRequestResponseUseCaseResponsesOutputDirectory);    
+            CreateGEN_WebCoreFrameUseCasesOutputDirectory(table, GEN_WebCoreFrameUseCasesOutputDirectory);    
+            CreateGEN_WebApiCoreUnitTestsUseCasesOutputDirectory(table, GEN_WebApiCoreUnitTestsUseCasesOutputDirectory);
+                
+        }catch{
+        }
+	}
+    CreateGEN_WebCoreFrameCoreModulesOutPutDir(GEN_WebCoreFrameCoreModulesOutPutDir);
+}
+public void CreateGen_WebApiControllerOutPutDir(TableSchema table,string OutputDirectory)
+{
+    Gen_WebApiController controller = this.Create<Gen_WebApiController>();
+    controller.SourceTable = table;
+	controller.NameSpace = ServiceNameSpace;	
+    controller.WebNameSpace = WebNameSpace;
+	string fileName = String.Format("{0}/{1}.cs", OutputDirectory, GetTableNamesWithPrefix(table)+"Controller");
+    OutputFile outputFile = new OutputFile(fileName);
+	controller.RenderToFile(outputFile, true);	
+}
+public void CreateGEN_WebApiPresentersOutPutDir(TableSchema table,string OutputDirectory)
+{
+    GEN_WebApiPresenters controller = this.Create<GEN_WebApiPresenters>();
+    controller.SourceTable = table;
+	controller.NameSpace = ServiceNameSpace;	
+    controller.WebNameSpace = WebNameSpace;
+	string fileName = String.Format("{0}/{1}.cs", OutputDirectory, GetTableNamesWithoutPrefix(table)+"Presenter");
+    OutputFile outputFile = new OutputFile(fileName);
+	controller.RenderToFile(outputFile, true);	
+}
+public void CreateGEN_WebCoreFrameCoreModulesOutPutDir(string OutputDirectory)
+{
+    GEN_WebCoreFrameCoreModules controller = this.Create<GEN_WebCoreFrameCoreModules>();
+	string fileName = String.Format("{0}/{1}.cs", OutputDirectory, "CoreModuleExtended");
+    OutputFile outputFile = new OutputFile(fileName);
+	controller.RenderToFile(outputFile, true);	
+}
+public void CreateGEN_WebCoreFrameInterfacesUseCasesDirectory(TableSchema table,string OutputDirectory)
+{
+    GEN_WebCoreFrameInterfacesUseCases controller = this.Create<GEN_WebCoreFrameInterfacesUseCases>();
+    controller.SourceTable = table;
+	controller.NameSpace = ServiceNameSpace;	
+    controller.WebNameSpace = WebNameSpace;
+	string fileName = String.Format("{0}/{1}.cs", OutputDirectory, "I"+GetTableNamesWithoutPrefix(table)+"UseCase");
+    OutputFile outputFile = new OutputFile(fileName);
+	controller.RenderToFile(outputFile, true);	
+}
+public void CreateGEN_WebCoreFrameRequestResponseUseCaseRequestsOutputDirectory(TableSchema table,string OutputDirectory)
+{
+    GEN_WebCoreFrameRequestResponseUseCaseRequests controller = this.Create<GEN_WebCoreFrameRequestResponseUseCaseRequests>();
+    controller.SourceTable = table;
+	controller.NameSpace = ServiceNameSpace;	
+    controller.WebNameSpace = WebNameSpace;
+	string fileName = String.Format("{0}/{1}.cs", OutputDirectory, GetTableNamesWithoutPrefix(table)+"Request");
+    OutputFile outputFile = new OutputFile(fileName);
+	controller.RenderToFile(outputFile, true);	
+}
+public void CreateGEN_WebCoreFrameRequestResponseUseCaseResponsesOutputDirectory(TableSchema table,string OutputDirectory)
+{
+    GEN_WebCoreFrameRequestResponseUseCaseResponses controller = this.Create<GEN_WebCoreFrameRequestResponseUseCaseResponses>();
+    controller.SourceTable = table;
+	controller.NameSpace = ServiceNameSpace;	
+    controller.WebNameSpace = WebNameSpace;
+	string fileName = String.Format("{0}/{1}.cs", OutputDirectory, GetTableNamesWithoutPrefix(table)+"Response");
+    OutputFile outputFile = new OutputFile(fileName);
+	controller.RenderToFile(outputFile, true);	
+}
+public void CreateGEN_WebCoreFrameUseCasesOutputDirectory(TableSchema table,string OutputDirectory)
+{
+    GEN_WebCoreFrameUseCases controller = this.Create<GEN_WebCoreFrameUseCases>();
+    controller.SourceTable = table;
+	controller.NameSpace = ServiceNameSpace;	
+    controller.WebNameSpace = WebNameSpace;
+	string fileName = String.Format("{0}/{1}.cs", OutputDirectory, GetTableNamesWithoutPrefix(table)+"UseCase");
+    OutputFile outputFile = new OutputFile(fileName);
+	controller.RenderToFile(outputFile, true);	
+}
+public void CreateGEN_WebApiCoreUnitTestsUseCasesOutputDirectory(TableSchema table,string OutputDirectory)
+{
+    GEN_WebApiCoreUnitTestsUseCases controller = this.Create<GEN_WebApiCoreUnitTestsUseCases>();
+    controller.SourceTable = table;
+	controller.NameSpace = ServiceNameSpace;	
+    controller.WebNameSpace = WebNameSpace;
+	string fileName = String.Format("{0}/{1}.cs", OutputDirectory, GetTableNamesWithoutPrefix(table)+"UseCaseTests");
+    OutputFile outputFile = new OutputFile(fileName);
+	controller.RenderToFile(outputFile, true);	
+}
+</script>

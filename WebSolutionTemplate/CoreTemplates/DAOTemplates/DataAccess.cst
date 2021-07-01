@@ -1,0 +1,1403 @@
+﻿<%@ CodeTemplate Language="C#" TargetLanguage="Text" Description="This template demonstrates using properties defined in external assemblies." %>
+
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Assembly Name="CodeSmith.BaseTemplates" %>
+<%@ Assembly Name="CodeSmith.CustomProperties" %>
+<%@ Assembly Name="System.Data" %>
+<%@ Assembly Name="System.Core" %>
+ 
+
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Import Namespace="CodeSmith.CustomProperties" %>
+<%@ Import Namespace="CodeSmith.BaseTemplates" %>
+<%@ Import Namespace="System.Data" %>
+<%@ Import Namespace="System.Collections.Generic" %>
+<%@ Import Namespace="System.Text.RegularExpressions" %>
+
+<%@ Property Name="SourceTable" Type="SchemaExplorer.TableSchema" Category="Context" Description="Table that the object is based on." %>
+<%@ Property Name="NameSpace" Type="System.String" %>
+
+<%-- 
+This template demonstrates using properties defined in external assemblies.
+
+CodeSmith is 100% extensible.  A property can be any .NET type that has designer support.
+This includes all of the standard .NET data types and most other standard .NET types as well.
+
+You can also create your own custom property types or you can use one any of the custom types
+included in CodeSmith.  This template uses the included SchemaExplorer.TableSchema type and is
+defined in the SchemaExplorer assembly.  This type provides access to nearly all possible schema
+information about a particular database table.
+
+--%>
+<%
+string tableName = this.SourceTable.Name;
+string localVar = tableName.Substring( 0 , 1 ).ToLower() + tableName.Substring( 1, tableName.Length - 1);
+string ClassName = tableName.Substring( 0 , 1 ).ToLower() + tableName.Substring( 1, tableName.Length - 1).ToLower();
+string collectionClassName= ClassName+"List";
+ColumnSchema primaryKeyColumn = SourceTable.PrimaryKey.MemberColumns[0];
+string primaryKeyColumnNameCamelCase = this.GetCamelCaseName(primaryKeyColumn.Name);
+string primaryKeyColumnName = primaryKeyColumn.Name;
+//string MasterTableName = GetDetailTableName(this.SourceTable);
+%>
+using System;
+using System.Data;
+using System.Data.Common;
+using System.Collections.Generic;
+using Microsoft.Practices.EnterpriseLibrary.Data;
+using AppConfig.ConfigDAAC;
+using DAC.Core.Base;
+using IDAC.IDataAccessObjects.Security;
+using BDO.DataAccessObjects.SecurityModule;
+using BDO.Base;
+using IDAC.IDataAccessObjects.Security.ExtendedPartial;
+using BDO.DataAccessObjects.SecurityModule.ExtendedPartial;
+using AppConfig.EncryptionHandler;
+using System.Linq;
+using AppConfig.HelperClasses;
+using System.Threading.Tasks;
+using System.Threading;
+
+
+
+namespace DAC.Core.DataAccessObjects.Security
+{
+	/// <summary>
+    /// Un touched: From Generator
+    /// KAF Information Center
+    /// </summary>
+	
+	internal sealed partial class <%=ClassName%>DataAccessObjects : BaseDataAccess, I<%=ClassName%>DataAccessObjects
+	{
+		
+	    #region Constructors
+        
+		private string ClassName = "<%=ClassName%>DataAccessObjects";
+        
+		public <%= ClassName %>DataAccessObjects(Context context): base(context)
+		{
+		}
+		
+		private string SourceOfException(string methodName)
+        {
+            return "Class name: " + ClassName + " and Method name: " + methodName;
+        }
+        
+		#endregion
+		
+        public static void FillParameters(<%= ClassName %>Entity <%= ClassName %>, DbCommand cmd,Database Database,bool forDelete=false)
+        {
+				<%
+				foreach ( ColumnSchema column in this.SourceTable.Columns)
+				{
+				if (column.IsPrimaryKeyMember)
+				{%>
+				<%Response.WriteLine("			"+AssignNullIfNotSent(column, ClassName.ToString()+ "."));%>
+				Database.AddInParameter(cmd, "@<%= column.Name  %>", DbType.<%=GetCSharpVariableType(column) %>, <%= ClassName %>.<%= column.Name.ToLower()  %>);
+				<%
+				primaryKeyColumnName = column.Name.ToString();
+				}
+				}
+                 
+				%>
+            if (forDelete) return;
+				<%
+				foreach ( ColumnSchema column in this.SourceTable.NonPrimaryKeyColumns)
+				{
+				if((column.Name.ToLower() != "ts" && column.Name != "TransID" && column.Name != "UserOrganizationKey" && column.Name != "UserEntityKey" && column.Name != "EntryUserKey" && column.Name != "EntryDate" && column.Name != "LastUpdateUserKey" && column.Name != "LastUpdateDate" && column.Name != "FormID" && column.Name != "CreatedBy"&& column.Name != "UpdatedBy"&& column.Name != "CreatedDate"&& column.Name != "UpdatedDate" && column.Name != "UpdatedByUserName" && column.Name != "CreatedByUserName" && column.Name.ToLower() != "ipaddress"))
+			   
+				{%>
+				<%Response.WriteLine("			"+AssignNullIfNotSent(column, ClassName.ToString()+ "."));%>
+				Database.AddInParameter(cmd, "@<%= column.Name  %>", DbType.<%=GetCSharpVariableType(column) %>, <%= ClassName %>.<%= column.Name.ToLower()  %>);
+				<%}
+				}
+				%>
+
+        }
+		
+        
+		#region Add Operation
+
+        async Task<long> I<%= ClassName %>DataAccessObjects.Add(<%=  ClassName +"Entity " + ClassName%>, CancellationToken cancellationToken)
+        {
+            long returnCode = -99;
+            const string SP = "<%= ClassName.ToLower() %>_Ins";
+			
+			using (DbCommand cmd =  Database.GetStoredProcCommand(SP))
+            {
+                FillParameters(<%= ClassName %>, cmd,Database);
+                FillSequrityParameters(<%= ClassName %>.BaseSecurityParam, cmd, Database);
+				AddOutputParameter(cmd);
+				try
+                {
+                    IAsyncResult result = Database.BeginExecuteNonQuery(cmd, null, null);
+                    while (!result.IsCompleted)
+                    {
+                    }
+                    returnCode = Database.EndExecuteNonQuery(result);
+                    returnCode = (Int64)(cmd.Parameters["@RETURN_KEY"].Value);
+                }
+                catch (Exception ex)
+                {
+                    throw GetDataAccessException(ex, SourceOfException("I<%= ClassName %>DataAccess.Add<%= ClassName %>"));
+                }
+                cmd.Dispose();
+            }
+            return returnCode;
+        }
+       
+        #endregion Add Operation
+		
+		#region Update Operation
+
+        async Task<long> I<%= ClassName %>DataAccessObjects.Update(<%=  ClassName +"Entity " + ClassName%>, CancellationToken cancellationToken)
+        {
+           long returnCode = -99;
+            const string SP = "<%= ClassName.ToLower() %>_Upd";
+			
+            using (DbCommand cmd =  Database.GetStoredProcCommand(SP))
+            {
+			    FillParameters(<%= ClassName %>, cmd,Database);
+                FillSequrityParameters(<%= ClassName %>.BaseSecurityParam, cmd, Database);
+				AddOutputParameter(cmd);
+                try
+                {
+                  	IAsyncResult result = Database.BeginExecuteNonQuery(cmd, null, null);
+                    while (!result.IsCompleted)
+                    {
+                    }
+                    returnCode = Database.EndExecuteNonQuery(result);
+                    returnCode = (Int64)(cmd.Parameters["@RETURN_KEY"].Value);
+                }
+                catch (Exception ex)
+                {
+                    throw GetDataAccessException(ex, SourceOfException("I<%= ClassName %>DataAccess.Update<%= ClassName %>"));
+                }
+                cmd.Dispose();
+            }
+            return returnCode;
+        }
+
+        #endregion Update Operation
+		
+		#region Delete Operation
+
+        async Task<long> I<%= ClassName %>DataAccessObjects.Delete(<%=  ClassName +"Entity " + ClassName%>, CancellationToken cancellationToken)
+        {
+            long returnCode = -99;
+           	const string SP = "<%= ClassName.ToLower() %>_Del";
+			
+           	using (DbCommand cmd =  Database.GetStoredProcCommand(SP))
+            {
+				FillParameters(<%= ClassName %>, cmd,Database, true);
+                FillSequrityParameters(<%= ClassName %>.BaseSecurityParam, cmd, Database);
+				AddOutputParameter(cmd);
+				try
+                {
+                   	IAsyncResult result = Database.BeginExecuteNonQuery(cmd, null, null);
+                    while (!result.IsCompleted)
+                    {
+                    }
+                    returnCode = Database.EndExecuteNonQuery(result);
+                    returnCode = (Int64)(cmd.Parameters["@RETURN_KEY"].Value);
+                }
+                catch (Exception ex)
+                {
+                   throw GetDataAccessException(ex, SourceOfException("I<%= ClassName %>DataAccess.Delete<%= ClassName %>"));
+                }
+                cmd.Dispose();
+            }
+            return returnCode;
+        }
+
+		#endregion Delete Operation
+        
+        #region SaveList<>
+		
+        async Task<long> I<%= ClassName %>DataAccessObjects.SaveList(IList<<%= ClassName.ToLower() %>Entity> listAdded, IList<<%= ClassName.ToLower() %>Entity> listUpdated, IList<<%= ClassName.ToLower() %>Entity> listDeleted, CancellationToken cancellationToken)
+        {
+            long returnCode = -99;
+
+            const string SPInsert = "<%= ClassName.ToLower() %>_Ins";
+            const string SPUpdate = "<%= ClassName.ToLower() %>_Upd";
+            const string SPDelete = "<%= ClassName.ToLower() %>_Del";
+
+            DbConnection connection = Database.CreateConnection();
+            connection.Open();
+            DbTransaction transaction = connection.BeginTransaction();
+            
+            try
+            {
+                if (listDeleted.Count > 0 )
+                {
+                    foreach (<%= ClassName %>Entity <%= ClassName %> in listDeleted)
+                    {
+                        using (DbCommand cmd = Database.GetStoredProcCommand(SPDelete))
+                        {
+                            FillParameters(<%= ClassName %>, cmd, Database, true);
+                            FillSequrityParameters(<%= ClassName %>.BaseSecurityParam, cmd, Database);
+                            AddOutputParameter(cmd);
+                            
+                            IAsyncResult result = Database.BeginExecuteNonQuery(cmd, transaction, null, null);
+                            while (!result.IsCompleted)
+                            {
+                            }
+                            returnCode = Database.EndExecuteNonQuery(result);
+                            if (returnCode < 0)
+                            { 
+                                throw new ArgumentException("Error in transaction.");
+                            }
+                            cmd.Dispose();
+                        }
+                    }
+                }
+                if (listUpdated.Count > 0 )
+                {
+                    foreach (<%= ClassName %>Entity <%= ClassName %> in listUpdated)
+                    {
+                        using (DbCommand cmd = Database.GetStoredProcCommand(SPUpdate))
+                        {
+                            FillParameters(<%= ClassName %>, cmd, Database);
+                            FillSequrityParameters(<%= ClassName %>.BaseSecurityParam, cmd, Database);
+                            AddOutputParameter(cmd);
+                            IAsyncResult result = Database.BeginExecuteNonQuery(cmd, transaction, null, null);
+                            while (!result.IsCompleted)
+                            {
+                            }
+                            returnCode = Database.EndExecuteNonQuery(result);
+                            if (returnCode < 0)
+                            {
+                                 throw new ArgumentException("Error in transaction.");
+                            }
+                            cmd.Dispose();
+                        }
+                    }
+                }
+                if (listAdded.Count > 0 )
+                {
+                    foreach (<%= ClassName %>Entity <%= ClassName %> in listAdded)
+                    {
+                        using (DbCommand cmd = Database.GetStoredProcCommand(SPInsert))
+                        {
+                            FillParameters(<%= ClassName %>, cmd, Database);
+                            FillSequrityParameters(<%= ClassName %>.BaseSecurityParam, cmd, Database);
+                            AddOutputParameter(cmd);
+                            
+                            IAsyncResult result = Database.BeginExecuteNonQuery(cmd, transaction, null, null);
+                            while (!result.IsCompleted)
+                            {
+                            }
+                            returnCode = Database.EndExecuteNonQuery(result);
+                            if (returnCode < 0)
+                            {
+                                 throw new ArgumentException("Error in transaction.");
+                            }
+                            cmd.Dispose();
+                        }
+                    }
+                }
+
+                transaction.Commit();
+            }
+            catch (Exception ex)
+            {
+                transaction.Rollback();
+                throw GetDataAccessException(ex, SourceOfException("I<%= ClassName %>DataAccess.Save_<%= ClassName %>"));
+            }
+            finally
+            {
+                transaction.Dispose();
+                connection.Close();
+                connection = null;
+            }
+            return returnCode;
+        }
+        
+        
+       public async Task<long> SaveList(
+       Database db , 
+       DbTransaction transaction,
+       IList<<%= ClassName.ToLower() %>Entity> listAdded, 
+       IList<<%= ClassName.ToLower() %>Entity> listUpdated, 
+       IList<<%= ClassName.ToLower() %>Entity> listDeleted, 
+       CancellationToken cancellationToken) 
+       {
+            long returnCode = -99;
+
+            const string SPInsert = "<%= ClassName.ToLower() %>_Ins";
+            const string SPUpdate = "<%= ClassName.ToLower() %>_Upd";
+            const string SPDelete = "<%= ClassName.ToLower() %>_Del";
+
+            
+            
+            try
+            {
+                if (listDeleted.Count > 0 )
+                {
+                    foreach (<%= ClassName %>Entity <%= ClassName %> in listDeleted)
+                    {
+                        using (DbCommand cmd = Database.GetStoredProcCommand(SPDelete))
+                        {
+                            FillParameters(<%= ClassName %>, cmd, db, true);
+                            FillSequrityParameters(<%= ClassName %>.BaseSecurityParam, cmd, db);
+                            AddOutputParameter(cmd);
+                            IAsyncResult result = Database.BeginExecuteNonQuery(cmd, transaction, null, null);
+                            while (!result.IsCompleted)
+                            {
+                            }
+                            returnCode = Database.EndExecuteNonQuery(result);
+                            if (returnCode < 0)
+                            { 
+                                  throw new ArgumentException("Error in transaction.");
+                            }
+                            cmd.Dispose();
+                        }
+                    }
+                }
+                if (listUpdated.Count > 0 )
+                {
+                    foreach (<%= ClassName %>Entity <%= ClassName %> in listUpdated)
+                    {
+                        using (DbCommand cmd = Database.GetStoredProcCommand(SPUpdate))
+                        {
+                            FillParameters(<%= ClassName %>, cmd, db);
+                            FillSequrityParameters(<%= ClassName %>.BaseSecurityParam, cmd, db);
+                            AddOutputParameter(cmd);
+                            IAsyncResult result = Database.BeginExecuteNonQuery(cmd, transaction, null, null);
+                            while (!result.IsCompleted)
+                            {
+                            }
+                            returnCode = Database.EndExecuteNonQuery(result);
+                            if (returnCode < 0)
+                            {
+                                 throw new ArgumentException("Error in transaction.");
+                            }
+                            cmd.Dispose();
+                        }
+                    }
+                }
+                if (listAdded.Count > 0 )
+                {
+                    foreach (<%= ClassName %>Entity <%= ClassName %> in listAdded)
+                    {
+                        using (DbCommand cmd = Database.GetStoredProcCommand(SPInsert))
+                        {
+                            FillParameters(<%= ClassName %>, cmd, db);
+                            FillSequrityParameters(<%= ClassName %>.BaseSecurityParam, cmd, db);
+                            AddOutputParameter(cmd);
+                            
+                            IAsyncResult result = Database.BeginExecuteNonQuery(cmd, transaction, null, null);
+                            while (!result.IsCompleted)
+                            {
+                            }
+                            returnCode = Database.EndExecuteNonQuery(result);
+                            if (returnCode < 0)
+                            {
+                                 throw new ArgumentException("Error in transaction.");
+                            }
+                            cmd.Dispose();
+                        }
+                    }
+                }
+
+              
+            }
+            catch (Exception ex)
+            {
+               
+                throw GetDataAccessException(ex, SourceOfException("I<%= ClassName %>DataAccess.Save_<%= ClassName %>"));
+            }
+            finally
+            {
+               
+            }
+            return returnCode;
+        }
+        
+        #endregion SaveList<>
+		
+		#region GetAll
+
+        async Task<IList<<%= ClassName %>Entity>> I<%= ClassName %>DataAccessObjects.GetAll(<%=  ClassName +"Entity"%> <%= ClassName %>, CancellationToken cancellationToken)
+        {
+           try
+            {
+				const string SP = "<%= ClassName %>_GA";
+                IList<<%= ClassName %>Entity> itemList = new List<<%= ClassName %>Entity>();
+				using (DbCommand cmd = Database.GetStoredProcCommand(SP))
+				{
+					
+					AddSortExpressionParameter(cmd, <%= ClassName %>.SortExpression);
+                    FillSequrityParameters(<%= ClassName %>.BaseSecurityParam, cmd, Database);
+                    FillParameters(<%= ClassName %>, cmd, Database);
+                    
+                    IAsyncResult result = Database.BeginExecuteReader(cmd, null,null);
+                    while (!result.IsCompleted)
+                    {
+                    }
+                    using (IDataReader reader = Database.EndExecuteReader(result))
+                    {
+                        while (reader.Read())
+                        {
+                            itemList.Add(new <%= ClassName %>Entity(reader));
+                        }
+                        reader.Close();
+                    }                    
+                    cmd.Dispose();
+                    return itemList;
+				}
+			}
+            catch (Exception ex)
+            {
+                throw GetDataAccessException(ex, SourceOfException("I<%= ClassName %>DataAccess.GetAll<%= ClassName %>"));
+            }	
+        }
+		
+        async Task<IList<<%= ClassName %>Entity>> I<%= ClassName %>DataAccessObjects.GetAllByPages(<%=  ClassName +"Entity"%> <%= ClassName %>, CancellationToken cancellationToken)
+        {
+        try
+            {
+				const string SP = "<%= ClassName %>_GAPg";
+				using (DbCommand cmd = Database.GetStoredProcCommand(SP))
+				{
+					AddTotalRecordParameter(cmd);
+                    AddSortExpressionParameter(cmd, <%= ClassName %>.SortExpression);
+                    AddPageSizeParameter(cmd, <%= ClassName %>.PageSize);
+                    AddCurrentPageParameter(cmd, <%= ClassName %>.CurrentPage);                    
+                    FillSequrityParameters(<%= ClassName %>.BaseSecurityParam, cmd, Database);
+                    
+					FillParameters(<%= ClassName %>, cmd,Database);
+
+                    IList<<%= ClassName %>Entity> itemList = new List<<%= ClassName %>Entity>();
+                    
+                    IAsyncResult result = Database.BeginExecuteReader(cmd, null,null);
+                    while (!result.IsCompleted)
+                    {
+                    }
+                    using (IDataReader reader = Database.EndExecuteReader(result))
+                    {
+                        while (reader.Read())
+                        {
+                            itemList.Add(new <%= ClassName %>Entity(reader));
+                        }
+                        reader.Close();
+                    }
+                    if(itemList.Count>0)
+					{
+                        itemList[0].RETURN_KEY   = Convert.ToInt64(cmd.Parameters["@TotalRecord"].Value.ToString());
+						<%= ClassName %>.RETURN_KEY = Convert.ToInt64(cmd.Parameters["@TotalRecord"].Value.ToString());
+                    }
+                    cmd.Dispose();
+                    return itemList;
+				}
+			}
+            catch (Exception ex)
+            {
+                throw GetDataAccessException(ex, SourceOfException("I<%= ClassName %>DataAccess.GetAllByPages<%= ClassName %>"));
+            }
+        }
+        
+        #endregion
+        
+        #region Save Master/Details
+        
+         <%
+            
+
+            List<string> PrimaryKeyList = new List<string>();
+            
+        foreach(TableKeySchema tableKey in SourceTable.PrimaryKeys)
+        {
+     
+             bool t = true;
+             foreach(string s in  PrimaryKeyList)
+             {
+                if(s==tableKey.ForeignKeyTable.Name)
+                {
+                    t=false;
+                   break;
+                }
+             }
+            if(t)
+            {
+             
+             PrimaryKeyList.Add(tableKey.ForeignKeyTable.Name);
+            
+            TableSchema DetTable = tableKey.ForeignKeyTable;
+            string DetTableName = tableKey.ForeignKeyTable.Name.ToLower();
+            string DetTableNamePKey =tableKey.ForeignKeyTable.PrimaryKey.MemberColumns[0].Name;
+            string DetClassName = DetTableName.Substring( 0 , 1 ).ToLower() + DetTableName.Substring( 1, DetTableName.Length - 1).ToLower();
+            string collectionClassDetName= DetClassName+"List";
+            string PrimaryKeyName = primaryKeyColumn.Name.ToString();
+            string PrimaryKeyDataType =GetCSharpVariableType(primaryKeyColumn);
+            string ForeignKeyName ="";
+            string RefColumnName =getMasterTableNameDetail(tableKey)[0];
+            
+    
+            %>
+        
+        async Task<long> I<%= ClassName %>DataAccessObjects.SaveMasterDet<%= DetClassName %>(<%= ClassName %>Entity masterEntity, 
+        IList<<%= DetClassName %>Entity> listAdded, 
+        IList<<%= DetClassName %>Entity> listUpdated,
+        IList<<%= DetClassName %>Entity> listDeleted, 
+        CancellationToken cancellationToken)
+        {
+			long returnCode = -99;
+            <%=PrimaryKeyDataType%> PrimaryKeyMaster = -99;
+            
+            string SP = "";
+            const string MasterSPInsert = "<%=ClassName.ToLower()%>_Ins";
+            const string MasterSPUpdate = "<%=ClassName.ToLower()%>_Upd";
+            const string MasterSPDelete = "<%=ClassName.ToLower()%>_Del";
+            
+			
+            DbConnection connection = Database.CreateConnection();
+            connection.Open();
+            DbTransaction transaction = connection.BeginTransaction();
+			
+            if (masterEntity.CurrentState == BaseEntity.EntityState.Added)
+                SP = MasterSPInsert;
+            else if (masterEntity.CurrentState == BaseEntity.EntityState.Changed)
+                SP = MasterSPUpdate;
+            else if (masterEntity.CurrentState == BaseEntity.EntityState.Deleted)
+                 SP = MasterSPDelete;
+            else
+            {
+                throw new Exception("Nothing to save.");
+            }
+            DateTime dt = DateTime.Now;
+            
+            try
+            {
+                using (DbCommand cmd = Database.GetStoredProcCommand(SP))
+				{
+                    if (masterEntity.CurrentState == BaseEntity.EntityState.Added || masterEntity.CurrentState == BaseEntity.EntityState.Changed)
+                    {
+                        FillParameters(masterEntity, cmd, Database);
+                    }
+                    else
+                    {
+                        FillParameters(masterEntity, cmd, Database, true);
+                    }
+                    FillSequrityParameters(masterEntity.BaseSecurityParam, cmd, Database);                    
+                    AddOutputParameter(cmd, Database);
+					
+					if (masterEntity.CurrentState != BaseEntity.EntityState.Deleted)
+                    {
+                        IAsyncResult result = Database.BeginExecuteNonQuery(cmd, transaction, null, null);
+                        while (!result.IsCompleted)
+                        {
+                        }
+                        returnCode = Database.EndExecuteNonQuery(result);
+                        PrimaryKeyMaster = (Int64)(cmd.Parameters["@RETURN_KEY"].Value);
+                        masterEntity.RETURN_KEY = PrimaryKeyMaster;
+                    }
+                    else
+                    {
+                        returnCode = 1;
+                    }
+				
+                    if (returnCode>0)
+                    {
+                        if (masterEntity.CurrentState != BaseEntity.EntityState.Deleted)
+                        {
+                            foreach (var item in listAdded)
+                            {
+                                item.<%=RefColumnName.ToLower()%>=PrimaryKeyMaster;
+                            }
+                        }
+                        <%= DetClassName.ToLower() %>DataAccessObjects obj<%= DetClassName.ToLower() %>=new <%= DetClassName.ToLower() %>DataAccessObjects(this.Context);
+                        obj<%= DetClassName.ToLower() %>.SaveList(Database, transaction, listAdded, listUpdated, listDeleted, cancellationToken);
+                    }
+                    if (masterEntity.CurrentState == BaseEntity.EntityState.Deleted)
+                        returnCode = Database.ExecuteNonQuery(cmd, transaction);
+                        cmd.Dispose();
+                }
+				transaction.Commit();                
+			}
+			catch (Exception ex)
+            {
+                transaction.Rollback();
+                throw GetDataAccessException(ex, SourceOfException("I<%= ClassName %>DataAccess.SaveDs<%= ClassName %>"));
+            }
+            finally
+            {
+                transaction.Dispose();
+                connection.Close();
+                connection = null;
+            }
+            return returnCode;
+		}
+        
+            <%
+            
+        }}
+        %>
+        #endregion
+        
+        
+        #region Simple load Single Row
+        async Task<<%= ClassName %>Entity> I<%= ClassName %>DataAccessObjects.GetSingle(<%=  ClassName +"Entity"%> <%= ClassName %>, CancellationToken cancellationToken)
+        {
+           try
+            {
+				const string SP = "<%= ClassName %>_GS";
+				using (DbCommand cmd = Database.GetStoredProcCommand(SP))
+				{
+                    FillSequrityParameters(<%= ClassName %>.BaseSecurityParam, cmd, Database);
+                    FillParameters(<%= ClassName %>, cmd, Database);
+                    
+                    IList<<%= ClassName %>Entity> itemList = new List<<%= ClassName %>Entity>();
+                    
+                    IAsyncResult result = Database.BeginExecuteReader(cmd, null,null);
+                    while (!result.IsCompleted)
+                    {
+                    }
+                    using (IDataReader reader = Database.EndExecuteReader(result))
+                    {
+                        while (reader.Read())
+                        {
+                            itemList.Add(new <%= ClassName %>Entity(reader));
+                        }
+                        reader.Close();
+                    }                    
+                    cmd.Dispose();
+                    
+                    if(itemList != null && itemList.Count > 0)
+                        return itemList[0];
+                    else
+                        return null;
+				}
+			}
+            catch (Exception ex)
+            {
+                throw GetDataAccessException(ex, SourceOfException("I<%= ClassName %>DataAccess.GetSingle<%= ClassName %>"));
+            }	
+        }
+        #endregion
+        
+        #region ForListView Paged Method
+        async Task<IList<<%= ClassName %>Entity>> I<%= ClassName %>DataAccessObjects.GAPgListView(<%=  ClassName +"Entity"%> <%= ClassName %>, CancellationToken cancellationToken)
+        {
+        try
+            {
+				const string SP = "<%= ClassName %>_GAPgListView";
+				using (DbCommand cmd = Database.GetStoredProcCommand(SP))
+				{
+					AddTotalRecordParameter(cmd);
+                    AddSortExpressionParameter(cmd, <%= ClassName %>.SortExpression);
+                    AddPageSizeParameter(cmd, <%= ClassName %>.PageSize);
+                    AddCurrentPageParameter(cmd, <%= ClassName %>.CurrentPage);                    
+                    FillSequrityParameters(<%= ClassName %>.BaseSecurityParam, cmd, Database);
+                    
+					FillParameters(<%= ClassName %>, cmd,Database);
+                    
+					if (!string.IsNullOrEmpty (<%= ClassName %>.strCommonSerachParam))
+                        Database.AddInParameter(cmd, "@CommonSerachParam", DbType.String,  "%"+<%= ClassName %>.strCommonSerachParam+"%");
+
+                    IList<<%= ClassName %>Entity> itemList = new List<<%= ClassName %>Entity>();
+					
+                    IAsyncResult result = Database.BeginExecuteReader(cmd, null,null);
+                    while (!result.IsCompleted)
+                    {
+                    }
+                    using (IDataReader reader = Database.EndExecuteReader(result))
+                    {
+                        while (reader.Read())
+                        {
+                            itemList.Add(new <%= ClassName %>Entity(reader));
+                        }
+                        reader.Close();
+                    }
+                    
+                    if(itemList.Count>0)
+					{
+                        itemList[0].RETURN_KEY   = Convert.ToInt64(cmd.Parameters["@TotalRecord"].Value.ToString());
+						<%= ClassName %>.RETURN_KEY = Convert.ToInt64(cmd.Parameters["@TotalRecord"].Value.ToString());
+                    }
+                    cmd.Dispose();
+                    return itemList;
+				}
+			}
+            catch (Exception ex)
+            {
+                throw GetDataAccessException(ex, SourceOfException("I<%= ClassName %>DataAccess.GAPgListView<%= ClassName %>"));
+            }
+        }
+        #endregion
+        
+        #region Extras Reviewed, Published, Archived
+        <%
+				foreach ( ColumnSchema column in this.SourceTable.Columns)
+				{
+                    if((column.Name.ToLower() == "isreviewed"))
+                    {%>
+        async Task<long> I<%= ClassName %>DataAccessObjects.UpdateReviewed(<%= ClassName %>Entity <%= ClassName %>, CancellationToken cancellationToken)                    
+        {
+           long returnCode = -99;
+            const string SP = "<%= ClassName.ToLower() %>_UpdRev";
+			
+            using (DbCommand cmd =  Database.GetStoredProcCommand(SP))
+            {
+			    FillParameters(<%= ClassName %>, cmd,Database);
+                FillSequrityParameters(<%= ClassName %>.BaseSecurityParam, cmd, Database);
+				AddOutputParameter(cmd);
+                try
+                {
+                  	IAsyncResult result = Database.BeginExecuteNonQuery(cmd, null, null);
+                        while (!result.IsCompleted)
+                        {
+                        }
+                        returnCode= Database.EndExecuteNonQuery(result);
+                        returnCode= (Int64)(cmd.Parameters["@RETURN_KEY"].Value);
+                }
+                catch (Exception ex)
+                {
+                    throw GetDataAccessException(ex, SourceOfException("I<%= ClassName %>DataAccess.UpdateReviewed<%= ClassName %>"));
+                }
+                cmd.Dispose();
+            }
+            return returnCode;
+        }                        
+                    <%} //end if%>
+                    <%if((column.Name.ToLower() == "ispublished"))
+                    {%>
+        
+        async Task<long> I<%= ClassName %>DataAccessObjects.UpdatePublished(<%= ClassName %>Entity <%= ClassName %>, CancellationToken cancellationToken)                    
+        {
+           long returnCode = -99;
+            const string SP = "<%= ClassName.ToLower() %>_UpdPub";
+			
+            using (DbCommand cmd =  Database.GetStoredProcCommand(SP))
+            {
+			    FillParameters(<%= ClassName %>, cmd,Database);
+                FillSequrityParameters(<%= ClassName %>.BaseSecurityParam, cmd, Database);
+				AddOutputParameter(cmd);
+                try
+                {
+                  	IAsyncResult result = Database.BeginExecuteNonQuery(cmd, null, null);
+                        while (!result.IsCompleted)
+                        {
+                        }
+                        returnCode= Database.EndExecuteNonQuery(result);
+                        returnCode= (Int64)(cmd.Parameters["@RETURN_KEY"].Value);
+                }
+                catch (Exception ex)
+                {
+                    throw GetDataAccessException(ex, SourceOfException("I<%= ClassName %>DataAccess.UpdatePublished<%= ClassName %>"));
+                }
+                cmd.Dispose();
+            }
+            return returnCode;
+        }  
+                    <%} //end if%>
+                    <%if((column.Name.ToLower() == "isarchived"))
+                    {%>
+        
+        async Task<long> I<%= ClassName %>DataAccessObjects.UpdateArchived(<%= ClassName %>Entity <%= ClassName %>, CancellationToken cancellationToken)                    
+        {
+           long returnCode = -99;
+            const string SP = "<%= ClassName.ToLower() %>_UpdArch";
+			
+            using (DbCommand cmd =  Database.GetStoredProcCommand(SP))
+            {
+			    FillParameters(<%= ClassName %>, cmd,Database);
+                FillSequrityParameters(<%= ClassName %>.BaseSecurityParam, cmd, Database);
+				AddOutputParameter(cmd);
+                try
+                {
+                  	IAsyncResult result = Database.BeginExecuteNonQuery(cmd, null, null);
+                        while (!result.IsCompleted)
+                        {
+                        }
+                        returnCode= Database.EndExecuteNonQuery(result);
+                        returnCode= (Int64)(cmd.Parameters["@RETURN_KEY"].Value);
+                }
+                catch (Exception ex)
+                {
+                    throw GetDataAccessException(ex, SourceOfException("I<%= ClassName %>DataAccess.UpdateArchived<%= ClassName %>"));
+                }
+                cmd.Dispose();
+            }
+            return returnCode;
+        } 
+                    <%} //end if%>
+                <%} //end foreach%>
+        #endregion
+	}
+}
+<script runat="template">
+public string [] getMasterTableNameDetail(TableKeySchema tableKey)
+{
+    string ForeignKeyMemberColumns = tableKey.ForeignKeyMemberColumns.ToString();
+    string PrimaryKey = tableKey.PrimaryKeyTable.PrimaryKey.MemberColumns.ToString();
+
+    ForeignKeyMemberColumns=ForeignKeyMemberColumns.Substring(1);
+    PrimaryKey=PrimaryKey.Substring(1);
+    
+	ForeignKeyMemberColumns=ForeignKeyMemberColumns.Replace('"','.');
+	PrimaryKey=PrimaryKey.Replace('"','.');
+    
+	string[] NamesVal = new string [5];
+    NamesVal[0]= ForeignKeyMemberColumns.Split('.')[2].ToString().ToLower();//forignkey
+    NamesVal[1]= PrimaryKey.Split('.')[1].ToString().ToLower();//tablename
+    NamesVal[2]= PrimaryKey.Split('.')[2].ToString().ToLower();//primarykey
+    NamesVal[3]= GetCSharpVariableType(tableKey.ForeignKeyMemberColumns[0]);//type
+	return NamesVal;
+}
+
+public string GetRefColumnName(TableKeySchema tableKey)
+{
+    string RefColumnName  = "";
+            TableSchema DetTable = tableKey.ForeignKeyTable;
+            foreach(TableKeySchema cc in DetTable.ForeignKeys)
+            {
+             if(cc.PrimaryKeyTable.Name.ToString() == this.SourceTable.Name.ToString())
+                    {
+
+                        RefColumnName = cc.ForeignKeyMemberColumns[0].Name.ToString();        
+                    }   
+            }
+            return RefColumnName;
+    }
+
+
+
+public string AssignNullIfNotSent(ColumnSchema column, string objName)
+{
+	string syntaxG = "";
+	
+	if(column.IsPrimaryKeyMember)
+	{
+		syntaxG = "if ("+objName+column.Name.ToString().ToLower()+".HasValue)";
+	}
+	else
+	{
+		if(column.NativeType.ToString() == "varchar" || column.NativeType.ToString() == "nvarchar") //string
+		{
+			syntaxG = "if (!(string.IsNullOrEmpty("+objName+column.Name.ToString().ToLower()+")))";
+		}
+		else if((column.NativeType.ToString() == "bigint") ) //Long && (column.Scale <= 0)
+		{
+			syntaxG = "if ("+objName+column.Name.ToString().ToLower()+".HasValue)";
+		}
+        else if((column.NativeType.ToString() == "int") ) //int && (column.Scale <= 0)
+		{
+			syntaxG = "if ("+objName+column.Name.ToString().ToLower()+".HasValue)";
+		}
+		else if((column.NativeType.ToString() == "numeric") && (column.Scale > 1)) //Decimal
+		{
+			syntaxG = "if ("+objName+column.Name.ToString().ToLower()+".HasValue)";
+		}
+		else if((column.NativeType.ToString() == "decimal") && (column.Scale > 1)) //Decimal
+		{
+			syntaxG = "if ("+objName+column.Name.ToString().ToLower()+".HasValue)";
+		}
+		else if((column.NativeType.ToString() == "char")) //CHAR
+		{
+			syntaxG = "if (("+objName+column.Name.ToString().ToLower()+" != null))";
+		}
+		else if((column.NativeType.ToString() == "datetime") || (column.NativeType.ToString() == "date")) //DATE
+		{
+			syntaxG = "if (("+objName+column.Name.ToString().ToLower()+".HasValue))";
+		}
+		else if((column.NativeType.ToString() == "Image")) //BLOB
+		{
+			syntaxG = "if (("+objName+column.ToString().ToLower()+" != null))";
+		}
+		else if((column.NativeType.ToString() == "bit") ) //bit 
+		{
+			syntaxG = "if (("+objName+column.Name.ToString().ToLower()+" != null))";
+		}
+	}
+	return syntaxG;
+}
+
+public string GenClassName(TableSchema table,  ColumnSchema column)
+{
+	string param = "";
+	string tableName="";	
+	foreach(TableKeySchema fk in table.ForeignKeys) 
+	{
+		foreach( ColumnSchema c in fk.PrimaryKeyTable.Columns) 
+		{
+			if(column.Name == c.Name)
+			{
+				tableName = fk.PrimaryKeyTable.Name;
+				param =tableName.Substring( 0 , 1 ).ToLower() + tableName.Substring( 1, tableName.Length - 1).ToLower();
+			}
+		}
+	}
+		return param;
+}
+
+public string GetMasterPrimaryKeyName ( TableSchema table,  ColumnSchema column) {
+
+string param = "";
+
+	foreach(TableKeySchema fk in table.ForeignKeys) 
+	{
+		foreach( ColumnSchema c in fk.PrimaryKeyTable.Columns) 
+		{
+			if(column.Name == c.Name)
+			{
+				foreach( ColumnSchema cfg in fk.PrimaryKeyTable.Columns) 
+				{	
+					if(cfg.IsPrimaryKeyMember)
+					{
+						param = cfg.Name.ToString();
+					}
+				}
+			}	
+		}
+		
+		//foreach( ColumnSchema c in fk.PrimaryKeyTable.Columns) 
+		//{
+		//	param += "					cmd.Parameters.Add(p_"+ c.Name +", OracleType."+ GetOraVariableTypeForCSharp(c)+").Value = objMasEntity."+ c.Name.ToLower()+";";
+		//	param += "\n";
+		//}
+			//foreach( ColumnSchema c in fk.PrimaryKeyTable.Columns) {
+	//Response.Write("member column=" + c.Name + " in table=" + c.Table.Name + "\n");
+	//}
+	//param += "\n";
+	}
+		return param;
+}
+
+public string GetMasterSPSelection ( TableSchema table,  ColumnSchema column, string MasterClassName) {
+
+string param = "";
+
+	foreach(TableKeySchema fk in table.ForeignKeys) 
+	{
+		foreach( ColumnSchema c in fk.PrimaryKeyTable.Columns) 
+		{
+			if(column.Name == c.Name)
+			{
+				foreach( ColumnSchema cfg in fk.PrimaryKeyTable.Columns) 
+				{	
+					if(cfg.IsPrimaryKeyMember)
+					{
+						param += "						if(objMasEntity."+ cfg.Name.ToLower() +" < 0 )";
+						param += "\n";
+						param += "							SPMaster = "+ MasterClassName +"Package.Insert"+  MasterClassName + ";";
+						param += "\n";
+						param += "						if(objMasEntity."+ cfg.Name.ToLower() +"< 0 )";
+						param += "\n";
+						param += "							SPMaster = "+ MasterClassName +"Package.Update"+  MasterClassName +";";
+						param += "\n";
+					}	
+				}
+			}	
+		}
+		
+		//foreach( ColumnSchema c in fk.PrimaryKeyTable.Columns) 
+		//{
+		//	param += "					cmd.Parameters.Add(p_"+ c.Name +", OracleType."+ GetOraVariableTypeForCSharp(c)+").Value = objMasEntity."+ c.Name.ToLower()+";";
+		//	param += "\n";
+		//}
+			//foreach( ColumnSchema c in fk.PrimaryKeyTable.Columns) {
+	//Response.Write("member column=" + c.Name + " in table=" + c.Table.Name + "\n");
+	//}
+	//param += "\n";
+	}
+		return param;
+}
+
+public string getMasterCmdArranged ( TableSchema table,  ColumnSchema column) {
+
+string param = "";
+
+	foreach(TableKeySchema fk in table.ForeignKeys) 
+	{
+		foreach( ColumnSchema c in fk.PrimaryKeyTable.Columns) 
+		{
+			if(column.Name == c.Name)
+			{
+				foreach( ColumnSchema cfg in fk.PrimaryKeyTable.Columns) 
+				{	
+					if(cfg.IsPrimaryKeyMember)
+					{
+						param += "						if(objMasEntity."+ cfg.Name.ToLower() +" > 0 )";
+						param += "\n";
+						param += "							cmd.Parameters.Add(p_"+ cfg.Name +", OracleType."+ GetOraVariableTypeForCSharp(cfg)+").Value = objMasEntity."+ cfg.Name.ToLower()+";";
+						param += "\n";
+						param += "						if(objMasEntity."+ cfg.Name.ToLower() +"< 0 )";
+						param += "\n";
+						param += "							cmd.Parameters.Add(p_"+ cfg.Name +", OracleType."+ GetOraVariableTypeForCSharp(cfg)+").Value = 0 ;";
+						param += "\n";
+					}
+					else
+					{
+						param += "						cmd.Parameters.Add(p_"+ cfg.Name +", OracleType."+ GetOraVariableTypeForCSharp(cfg)+").Value = objMasEntity."+ cfg.Name.ToLower()+";";
+						param += "\n";
+					}	
+				}
+			}	
+		}
+		
+		//foreach( ColumnSchema c in fk.PrimaryKeyTable.Columns) 
+		//{
+		//	param += "					cmd.Parameters.Add(p_"+ c.Name +", OracleType."+ GetOraVariableTypeForCSharp(c)+").Value = objMasEntity."+ c.Name.ToLower()+";";
+		//	param += "\n";
+		//}
+			//foreach( ColumnSchema c in fk.PrimaryKeyTable.Columns) {
+	//Response.Write("member column=" + c.Name + " in table=" + c.Table.Name + "\n");
+	//}
+	//param += "\n";
+	}
+		return param;
+}
+
+
+public string getMasterTableName ( TableSchema table,  ColumnSchema column) {
+
+string param = "";
+	
+	foreach( TableKeySchema fk in table.ForeignKeys) 
+	{
+		foreach( ColumnSchema c in fk.PrimaryKeyTable.Columns) 
+		{
+			if(c.IsPrimaryKeyMember)
+				if(column.Name == c.Name)
+					param = fk.PrimaryKeyTable.Name.Substring( 0 , 1 ).ToLower() +  fk.PrimaryKeyTable.Name.Substring( 1,  fk.PrimaryKeyTable.Name.Length - 1).ToLower();	
+
+		}
+			//foreach( ColumnSchema c in fk.PrimaryKeyTable.Columns) {
+	//Response.Write("member column=" + c.Name + " in table=" + c.Table.Name + "\n");
+	//}
+	//param += "\n";
+	}
+		return param;
+}
+
+public string GetMemberVariableDeclarationStatement(ColumnSchema column)
+{
+	return GetMemberVariableDeclarationStatement("private", column);
+}
+
+public string GetMemberVariableDeclarationStatement(string protectionLevel, ColumnSchema column)
+{
+	string statement = protectionLevel + " ";
+	statement += GetCSharpVariableType(column) + " " + GetMemberVariableName(column);
+	
+	string defaultValue = GetMemberVariableDefaultValue(column);
+	if (defaultValue != "")
+	{
+		statement += " = " + defaultValue;
+	}
+	
+	statement += ";";
+	
+	return statement;
+}
+
+public string GetReaderAssignmentStatement(ColumnSchema column, int index)
+{
+	string statement = "if (!reader.IsDBNull(" + index.ToString() + ")) ";
+	statement += GetMemberVariableName(column) + " = ";
+	
+	//if (column.Name.EndsWith("TypeCode")) statement += "(" + column.Name + ")";
+	
+	statement += "reader." + GetReaderMethod(column) + "(" + index.ToString() + ");";
+	
+	return statement;
+}
+
+public string GetCamelCaseName(string value)
+{
+	return value.Substring(0, 1).ToLower() + value.Substring(1);
+}
+
+public string GetMemberVariableName(ColumnSchema column)
+{
+	string propertyName = GetPropertyName(column);
+	string memberVariableName = "_" + GetCamelCaseName(propertyName);
+	
+	return memberVariableName;
+}
+
+public string GetPropertyName(ColumnSchema column)
+{
+	string propertyName = column.Name;
+	
+	//if (propertyName == column.Table.Name + "Name") return "Name";
+	//if (propertyName == column.Table.Name + "Description") return "Description";
+	//
+	//if (propertyName.EndsWith("TypeCode")) propertyName = propertyName.Substring(0, propertyName.Length - 4);
+	
+	return propertyName;
+}
+
+public string GetMemberVariableDefaultValue(ColumnSchema column)
+{
+	switch (column.DataType)
+	{
+		case DbType.Guid:
+		{
+			return "Guid.Empty";
+		}
+		case DbType.DateTime:
+		{
+			return "DateTime.MinValue";
+		}
+		case DbType.Boolean:
+		{
+			return "false";
+		}
+		case DbType.AnsiString:
+		case DbType.AnsiStringFixedLength:
+		case DbType.String:
+		case DbType.StringFixedLength:
+		{
+			return "string.Empty";
+		}
+		default:
+		{
+			return "0";
+		}
+	}
+}
+
+public string GetOraVariableTypeForCSharp(ColumnSchema column){
+	
+	switch (column.NativeType)
+	{
+		case "NUMBER": 
+		if (column.Scale<1){
+					return "Number";
+				}else {
+					return  "Double";
+				}
+		case "Int16": return "Int16";
+		case "VARCHAR": return "VarChar";
+		case "CHAR": return "Char";
+		case "Int32": return "Int32";
+		case "decimal": return "Decimal";
+		case "Varchar": return "VarChar";
+		case "VARCHAR2": return "VarChar";
+		case "int": return "Int";
+		case "money": return "Money";
+		case "nchar": return "NChar";
+		case "ntext": return "NText";
+		case "numeric": return "Decimal";
+		case "nvarchar": return "NVarChar";
+		case "real": return "Real";
+		case "smalldatetime": return "SmallDateTime";
+		case "smallint": return "SmallInt";
+		case "DATATIME": return "DateTime";
+		case "DateTime": return "DateTime";
+		case "Datetime": return "DateTime";
+		case "text": return "Text";
+		case "timestamp": return "Timestamp";
+		case "tinyint": return "TinyInt";
+		case "uniqueidentifier": return "UniqueIdentifier";
+		case "varbinary": return "VarBinary";
+		case "varchar": return "VarChar";
+		case "DATE": return "DateTime";
+		default: return "__UNKNOWN__" + column.NativeType;
+	}
+}
+
+public string GetCSharpVariableTypeForOra(ColumnSchema column){
+	string strResult = "__UNKNOWN__" + column.NativeType;
+	//note: not all oracle data types are supported yet
+	switch (column.NativeType.Trim().ToLower())
+		{
+			case "number":
+			if (column.Scale<1){
+					strResult= "long";
+				}else if (column.Scale>1){
+					strResult= "decimal";
+				}
+			 	break;
+			case "binary": strResult= "Byte"; break;
+			case "char": strResult= "string"; break;
+			case "date": strResult= "DateTime"; break;
+			case "long": strResult= "Int64"; break;
+			case "blob": strResult= "byte"; break;
+			case "nvarchar2": strResult= "string"; break;
+			case "raw": strResult= "byte"; break;
+			case "rowid": strResult= "string"; break;
+			case "clob": strResult= "byte"; break;
+			case "nclob": strResult= "byte"; break;
+			case "bfile": strResult= "byte"; break;
+			case "float": strResult= "single"; break;
+			case "varchar2": strResult= "string"; break;
+			case "varchar": strResult= "string"; break;
+			case "integer": strResult= "int32"; break;
+		}
+	
+	return strResult;
+}
+
+public string GetCSharpVariableType(ColumnSchema column)
+{
+	//if (column.Name.EndsWith("TypeCode")) return column.Name;
+	
+	switch (column.DataType)
+	{
+		case DbType.AnsiString: return "String";
+		case DbType.AnsiStringFixedLength: return "String";
+		case DbType.Binary: return "Binary";
+		case DbType.Boolean: return "Boolean";
+		case DbType.Byte: return "Byte";
+		case DbType.Currency: return "decimal";
+		case DbType.Date: return "DateTime";
+		case DbType.DateTime: return "DateTime";
+		case DbType.Decimal: return "Decimal";
+		case DbType.Double: return "Double";
+		case DbType.Guid: return "Guid";
+		case DbType.Int16: return "Int16";
+		case DbType.Int32: return "Int32";
+		case DbType.Int64: return "Int64";
+		case DbType.Object: return "object";
+		case DbType.SByte: return "SByte";
+		case DbType.Single: return "float";
+		case DbType.String: return "String";
+		case DbType.StringFixedLength: return "String";
+		case DbType.Time: return "TimeSpan";
+		case DbType.UInt16: return "short";
+		case DbType.UInt32: return "int";
+		case DbType.UInt64: return "long";
+		case DbType.Xml: return "Xml";
+		case DbType.VarNumeric: return "Decimal";
+		
+		default:
+		{
+			return "__UNKNOWN__" + column.NativeType;
+		}
+	}
+}
+
+public string GetReaderMethod(ColumnSchema column)
+{
+	switch (column.DataType)
+	{
+		case DbType.Byte:
+		{
+			return "GetByte";
+		}
+		case DbType.Int16:
+		{
+			return "GetInt16";
+		}
+		case DbType.Int32:
+		{
+			return "GetInt32";
+		}
+		case DbType.Int64:
+		{
+			return "Lon";
+		}
+		case DbType.AnsiStringFixedLength:
+		case DbType.AnsiString:
+		case DbType.String:
+		case DbType.StringFixedLength:
+		{
+			return "GetString";
+		}
+		case DbType.Boolean:
+		{
+			return "GetBoolean";
+		}
+		case DbType.Guid:
+		{
+			return "GetGuid";
+		}
+		case DbType.Currency:
+		case DbType.Decimal:
+		{
+			return "GetDecimal";
+		}
+		case DbType.DateTime:
+		case DbType.Date:
+		{
+			return "GetDateTime";
+		}
+		case DbType.Binary:
+		{
+			return "GetBytes";
+		}
+		default:
+		{
+			return "__SQL__" + column.DataType;
+		}
+	}
+}
+
+public string GetClassName(TableSchema table)
+{
+	if (table.Name.EndsWith("s"))
+	{
+		return table.Name.Substring(0, table.Name.Length - 1);
+	}
+	else
+	{
+		return table.Name;
+	}
+}
+
+public string GetSqlDbType(ColumnSchema column)
+{
+	switch (column.NativeType)
+	{
+		case "bigint": return "BigInt";
+		case "binary": return "Binary";
+		case "bit": return "Bit";
+		case "char": return "Char";
+		case "datetime": return "DateTime";
+		case "decimal": return "Decimal";
+		case "float": return "Float";
+		case "image": return "Image";
+		case "int": return "Int";
+		case "money": return "Money";
+		case "nchar": return "NChar";
+		case "ntext": return "NText";
+		case "numeric": return "Decimal";
+		case "nvarchar": return "NVarChar";
+		case "real": return "Real";
+		case "smalldatetime": return "SmallDateTime";
+		case "smallint": return "SmallInt";
+		case "smallmoney": return "SmallMoney";
+		case "sql_variant": return "Variant";
+		case "sysname": return "NChar";
+		case "text": return "Text";
+		case "timestamp": return "Timestamp";
+		case "tinyint": return "TinyInt";
+		case "uniqueidentifier": return "UniqueIdentifier";
+		case "varbinary": return "VarBinary";
+		case "varchar": return "VarChar";
+		default: return "__UNKNOWN__" + column.NativeType;
+	}
+}
+
+public string GetPrimaryKeyType(TableSchema table)
+{
+	if (table.PrimaryKey != null)
+	{
+		if (table.PrimaryKey.MemberColumns.Count == 1)
+		{
+			return GetCSharpVariableType(table.PrimaryKey.MemberColumns[0]);
+		}
+		else
+		{
+			throw new ApplicationException("This template will not work on primary keys with more than one member column.");
+		}
+	}
+	else
+	{
+		throw new ApplicationException("This template will only work on tables with a primary key.");
+	}
+}
+
+public override string GetFileName()
+{
+	return this.GetClassName(this.SourceTable) + "DataAccess.cs";
+}
+
+public ColumnSchema GetPrimaryKeyColumn()
+{
+     return SourceTable.PrimaryKey.MemberColumns[0];
+}
+
+</script>

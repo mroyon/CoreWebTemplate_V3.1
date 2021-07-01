@@ -1,0 +1,110 @@
+[
+  {
+    "outputFileName": "wwwroot/css/site.min.css",
+    // An array of relative input file paths. Globbing patterns supported
+    "inputFiles": [
+      "wwwroot/css/site.css"
+    ],
+    "minify": { "enabled": false }
+  },
+  {
+    "outputFileName": "wwwroot/js/site.min.js",
+    "inputFiles": [
+      "wwwroot/js/site.js"
+    ],
+    // Optionally specify minification options
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    // Optinally generate .map file
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/css/vendor.min.css",
+    "inputFiles": [
+      "wwwroot/lib/font-awesome/fontawesome.css",
+      "wwwroot/lib/bootstrap/dist/css/bootstrap.css",
+      "wwwroot/lib/icofont/icofont.min.css",
+      "wwwroot/lib/boxicons/css/boxicons.css",
+      "wwwroot/lib/animate.css/animate.css",
+      "wwwroot/lib/owl.carousel/dist/assets/owl.carousel.css",
+      "wwwroot/lib/venobox/venobox.css",
+      "wwwroot/lib/bootstrap-sweetalert/sweetalert.css",
+      "wwwroot/lib/aos/aos.css",
+      "wwwroot/lib/jquery.ui/jquery-ui.css"
+    ],
+    "minify": { "enabled": true }
+  },
+  {
+    "outputFileName": "wwwroot/css/vendor.rtl.min.css",
+    "inputFiles": [
+      "wwwroot/lib/font-awesome/fontawesome.css",
+      "wwwroot/lib/bootstrap/dist/css/bootstrap-rtl.css",
+      "wwwroot/lib/icofont/icofont.min.css",
+      "wwwroot/lib/boxicons/css/boxicons.css",
+      "wwwroot/lib/animate.css/animate.css",
+      "wwwroot/lib/owl.carousel/dist/assets/owl.carousel.css",
+      "wwwroot/lib/venobox/venobox.css",
+      "wwwroot/lib/bootstrap-sweetalert/sweetalert.css",
+      "wwwroot/lib/aos/aos.css",
+      "wwwroot/lib/jquery.ui/jquery-ui.css"
+    ],
+    "minify": { "enabled": true }
+  },
+  {
+    "outputFileName": "wwwroot/js/vendor.min.js",
+    "inputFiles": [
+      "wwwroot/lib/jquery/jquery.js",
+      "wwwroot/lib/bootstrap/dist/js/bootstrap.js",
+      "wwwroot/lib/jquery.easing/jquery.easing.js",
+      "wwwroot/lib/jquery-waypoints/waypoints.js",
+      "wwwroot/lib/counterup/jquery.counterup.js",
+      "wwwroot/lib/owl.carousel/dist/owl.carousel.js",
+      "wwwroot/lib/bootstrap-sweetalert/sweetalert.js",
+      "wwwroot/lib/venobox/venobox.js",
+      "wwwroot/lib/aos/aos.js",
+      "wwwroot/lib/jquery.ui/jquery-ui.js",
+      "wwwroot/lib/popper.js/umd/popper.js",
+      "wwwroot/js/jquery-migrate-3.0.0.min.js",
+      "wwwroot/js/captchaCommon.js"
+    ],
+    "minify": { "enabled": true }
+  },
+  // Vendor datatables JS
+  {
+    "outputFileName": "wwwroot/js/vendor-datatables.min.js",
+    "inputFiles": [
+      "wwwroot/lib/datatables/js/jquery.dataTables.js",
+      "wwwroot/lib/datatables.net-bs4/dataTables.bootstrap4.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  // Vendor datatables CSS
+  {
+    "outputFileName": "wwwroot/css/vendor-datatables.min.css",
+    "inputFiles": [
+      "wwwroot/lib/datatables.net-bs4/dataTables.bootstrap4.css"
+    ],
+    "minify": { "enabled": true }
+  },
+  // Vendor jquery validation JS
+  {
+    "outputFileName": "wwwroot/js/vendor-validation.min.js",
+    "inputFiles": [
+      "wwwroot/lib/jquery-validate/jquery.validate.js",
+      "wwwroot/lib/jquery-validate/additional-methods.js",
+      "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js",
+      "wwwroot/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  }
+]

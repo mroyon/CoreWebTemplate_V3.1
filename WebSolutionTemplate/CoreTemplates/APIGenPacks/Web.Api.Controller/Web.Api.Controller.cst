@@ -1,0 +1,178 @@
+﻿<%@ CodeTemplate Language="C#" TargetLanguage="C#" Description="Generates a ASP UserControl." Debug=true %>
+  
+  <%@ CodeTemplate Src="C:\ClassLibrary1\ClassLibrary1\LinqFunctions.cs" Inherits="LinqFunctions" Language="C#" TargetLanguage="C#"
+  Description="Generates a data context and entities for given tables." %>
+ 
+
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Assembly Name="CodeSmith.BaseTemplates" %>
+<%@ Assembly Name="CodeSmith.CustomProperties" %>
+<%@ Assembly Name="System.Data" %>
+<%@ Assembly Name="System" %>
+<%@ Assembly Name="System.Core" %>
+<%@ Assembly Name="System.Collections" %>
+<%@ Assembly Name="System.Linq" %>
+
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Import Namespace="CodeSmith.CustomProperties" %>
+<%@ Import Namespace="CodeSmith.BaseTemplates" %>
+<%@ Import Namespace="System.Data" %>
+<%@ Import Namespace="System.Collections.Generic" %>
+<%@ Import Namespace="System.Text" %>
+
+<%@ Import Namespace="System.Text.RegularExpressions" %>
+<%@ Property Name="SourceTable" Type="SchemaExplorer.TableSchema" DeepLoad="True" Default="" Optional="False" %>
+<%@ Property Name="NameSpace" Type="System.String" Default="" Optional="False" %>
+<%@ Property Name="WebNameSpace" Type="System.String" Optional="False" %>
+<%
+    List<ColumnSchema> objColumnList = new List<ColumnSchema>();
+
+        string divRowStart = "<div class=\"row \">";
+        string divColumnStart = "<div class=\"col-md-6\">";
+        string divClose = "</div>";
+        string div = string.Empty;
+%>
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
+using Web.Core.Frame.RequestResponse.UseCaseRequests;
+using Web.Core.Frame.Interfaces.UseCases;
+using Web.Api.Presenters;
+using BDO.DataAccessObjects.ExtendedEntities;
+using Microsoft.AspNetCore.Authorization;
+using Web.Api.Extensions;
+
+namespace Web.Api.Controllers
+{
+    /// <summary>
+    /// <%=GetTableNamesWithPrefix(SourceTable)%>Controller
+    /// </summary>
+    [Authorize(Policy = "ApiUser")]
+    [Route("api/[controller]")]
+    [ApiController]
+    public class <%=GetTableNamesWithPrefix(SourceTable)%>Controller : ControllerBase
+    {
+        private readonly I<%=GetTableNamesWithoutPrefix(SourceTable) %>UseCase _<%=GetTableNamesasLocalVariable(SourceTable)%>UseCase;
+        private readonly <%=GetTableNamesWithoutPrefix(SourceTable) %>Presenter _<%=GetTableNamesasLocalVariable(SourceTable)%>Presenter;
+        private readonly AuthSettings _authSettings;
+
+        /// <summary>
+        /// _configuration
+        /// </summary>
+        public IConfiguration _configuration { get; }
+
+        /// <summary>
+        /// <%=GetTableNamesWithPrefix(SourceTable)%>Controller
+        /// </summary>
+        /// <param name="<%=GetTableNamesasLocalVariable(SourceTable)%>UseCase"></param>
+        /// <param name="<%=GetTableNamesasLocalVariable(SourceTable)%>Presenter"></param>
+        /// <param name="authSettings"></param>
+        public <%=GetTableNamesWithPrefix(SourceTable)%>Controller(
+            I<%=GetTableNamesWithoutPrefix(SourceTable) %>UseCase <%=GetTableNamesasLocalVariable(SourceTable)%>UseCase,
+            <%=GetTableNamesWithoutPrefix(SourceTable) %>Presenter <%=GetTableNamesasLocalVariable(SourceTable)%>Presenter,
+            IOptions<AuthSettings> authSettings)
+        {
+            _authSettings = authSettings.Value;
+            _<%=GetTableNamesasLocalVariable(SourceTable)%>UseCase = <%=GetTableNamesasLocalVariable(SourceTable)%>UseCase;
+            _<%=GetTableNamesasLocalVariable(SourceTable)%>Presenter = <%=GetTableNamesasLocalVariable(SourceTable)%>Presenter;
+        }
+
+
+        /// <summary>
+        /// GetAll<%=GetTableNamesWithPrefix(SourceTable)%>
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("GetAll<%=GetTableNamesWithPrefix(SourceTable)%>")]
+        [ServiceFilter(typeof(ApiSecurityFillerAttribute))]
+        public async Task<ActionResult> GetAll<%=GetTableNamesWithPrefix(SourceTable)%>()
+        {
+            if (!ModelState.IsValid) { return BadRequest(ModelState); }
+            await _<%=GetTableNamesasLocalVariable(SourceTable)%>UseCase.GetAll(new <%=GetTableNamesWithoutPrefix(SourceTable) %>Request(new BDO.DataAccessObjects.CorsCore.<%=GetClassName(SourceTable)%>Entity()), _<%=GetTableNamesasLocalVariable(SourceTable)%>Presenter);
+            return _<%=GetTableNamesasLocalVariable(SourceTable)%>Presenter.ContentResult;
+        }
+
+        /// <summary>
+        /// GetAllPaged<%=GetTableNamesWithPrefix(SourceTable)%>
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetAllPaged<%=GetTableNamesWithPrefix(SourceTable)%>")]
+        [ServiceFilter(typeof(ApiSecurityFillerAttribute))]
+        public async Task<ActionResult> GetAllPaged<%=GetTableNamesWithPrefix(SourceTable)%>([FromBody] BDO.DataAccessObjects.CorsCore.<%=GetClassName(SourceTable)%>Entity request)
+        {
+            //if (!ModelState.IsValid) { return BadRequest(ModelState); }
+            await _<%=GetTableNamesasLocalVariable(SourceTable)%>UseCase.GetAllPaged(new <%=GetTableNamesWithoutPrefix(SourceTable) %>Request(request), _<%=GetTableNamesasLocalVariable(SourceTable)%>Presenter);
+            return _<%=GetTableNamesasLocalVariable(SourceTable)%>Presenter.ContentResult;
+        }
+
+        /// <summary>
+        /// GetListView<%=GetTableNamesWithPrefix(SourceTable)%>
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetListView<%=GetTableNamesWithPrefix(SourceTable)%>")]
+        [ServiceFilter(typeof(ApiSecurityFillerAttribute))]
+        public async Task<ActionResult> GetListView<%=GetTableNamesWithPrefix(SourceTable)%>([FromBody] BDO.DataAccessObjects.CorsCore.<%=GetClassName(SourceTable)%>Entity request)
+        {
+            //if (!ModelState.IsValid) { return BadRequest(ModelState); }
+            await _<%=GetTableNamesasLocalVariable(SourceTable)%>UseCase.GetListView(new <%=GetTableNamesWithoutPrefix(SourceTable) %>Request(request), _<%=GetTableNamesasLocalVariable(SourceTable)%>Presenter);
+            return _<%=GetTableNamesasLocalVariable(SourceTable)%>Presenter.ContentResult;
+        }
+
+        /// <summary>
+        /// GetSingle<%=GetTableNamesWithPrefix(SourceTable)%>
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetSingle<%=GetTableNamesWithPrefix(SourceTable)%>")]
+        [ServiceFilter(typeof(ApiSecurityFillerAttribute))]
+        public async Task<ActionResult> GetSingle<%=GetTableNamesWithPrefix(SourceTable)%>([FromBody] BDO.DataAccessObjects.CorsCore.<%=GetClassName(SourceTable)%>Entity request)
+        {
+            //if (!ModelState.IsValid) { return BadRequest(ModelState); }
+            await _<%=GetTableNamesasLocalVariable(SourceTable)%>UseCase.GetSingle(new <%=GetTableNamesWithoutPrefix(SourceTable) %>Request(request), _<%=GetTableNamesasLocalVariable(SourceTable)%>Presenter);
+            return _<%=GetTableNamesasLocalVariable(SourceTable)%>Presenter.ContentResult;
+        }
+
+        /// <summary>
+        /// Save<%=GetTableNamesWithPrefix(SourceTable)%>
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost("Save<%=GetTableNamesWithPrefix(SourceTable)%>")]
+        [ServiceFilter(typeof(ApiSecurityFillerAttribute))]
+        public async Task<ActionResult> Save<%=GetTableNamesWithPrefix(SourceTable)%>([FromBody] BDO.DataAccessObjects.CorsCore.<%=GetClassName(SourceTable)%>Entity request)
+        {
+            if (!ModelState.IsValid) { return BadRequest(ModelState); }
+            await _<%=GetTableNamesasLocalVariable(SourceTable)%>UseCase.Save(new <%=GetTableNamesWithoutPrefix(SourceTable) %>Request(request), _<%=GetTableNamesasLocalVariable(SourceTable)%>Presenter);
+            return _<%=GetTableNamesasLocalVariable(SourceTable)%>Presenter.ContentResult;
+        }
+
+        /// <summary>
+        /// Update<%=GetTableNamesWithPrefix(SourceTable)%>
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost("Update<%=GetTableNamesWithPrefix(SourceTable)%>")]
+        [ServiceFilter(typeof(ApiSecurityFillerAttribute))]
+        public async Task<ActionResult> Update<%=GetTableNamesWithPrefix(SourceTable)%>([FromBody] BDO.DataAccessObjects.CorsCore.<%=GetClassName(SourceTable)%>Entity request)
+        {
+            if (!ModelState.IsValid) { return BadRequest(ModelState); }
+            await _<%=GetTableNamesasLocalVariable(SourceTable)%>UseCase.Update(new <%=GetTableNamesWithoutPrefix(SourceTable) %>Request(request), _<%=GetTableNamesasLocalVariable(SourceTable)%>Presenter);
+            return _<%=GetTableNamesasLocalVariable(SourceTable)%>Presenter.ContentResult;
+        }
+
+        /// <summary>
+        /// Delete<%=GetTableNamesWithPrefix(SourceTable)%>
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost("Delete<%=GetTableNamesWithPrefix(SourceTable)%>")]
+        [ServiceFilter(typeof(ApiSecurityFillerAttribute))]
+        public async Task<ActionResult> Delete<%=GetTableNamesWithPrefix(SourceTable)%>([FromBody] BDO.DataAccessObjects.CorsCore.<%=GetClassName(SourceTable)%>Entity request)
+        {
+            ModelState.Remove("PriorityName");
+            ModelState.Remove("PriorityOrder");
+            if (!ModelState.IsValid) { return BadRequest(ModelState); }
+            await _<%=GetTableNamesasLocalVariable(SourceTable)%>UseCase.Delete(new <%=GetTableNamesWithoutPrefix(SourceTable) %>Request(request), _<%=GetTableNamesasLocalVariable(SourceTable)%>Presenter);
+            return _<%=GetTableNamesasLocalVariable(SourceTable)%>Presenter.ContentResult;
+        }
+    }
+}

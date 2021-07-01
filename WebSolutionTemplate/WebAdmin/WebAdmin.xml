@@ -1,0 +1,419 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>WebAdmin</name>
+    </assembly>
+    <members>
+        <member name="M:WebAdmin.Controllers.AccountController.#ctor(Web.Core.Frame.CustomIdentityManagers.ApplicationUserManager{BDO.DataAccessObjects.SecurityModule.owin_userEntity},Web.Core.Frame.CustomIdentityManagers.ApplicationSignInManager{BDO.DataAccessObjects.SecurityModule.owin_userEntity},WebAdmin.IntraServices.IEmailSender,Microsoft.Extensions.Logging.ILoggerFactory,Microsoft.Extensions.Localization.IStringLocalizerFactory,Microsoft.AspNetCore.Authentication.IAuthenticationSchemeProvider)">
+            <summary>
+            
+            </summary>
+            <param name="userManager"></param>
+            <param name="signInManager"></param>
+            <param name="emailSender"></param>
+            <param name="loggerFactory"></param>
+            <param name="factory"></param>
+            <param name="schemeProvider"></param>
+        </member>
+        <member name="M:WebAdmin.Controllers.AccountController.Index">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebAdmin.Controllers.AccountController.Login(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="returnUrl"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebAdmin.Controllers.AccountController.Login(BDO.DataAccessObjects.SecurityModule.owin_userEntity)">
+            <summary>
+            
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="T:WebAdmin.FilterAndAttributes.SecurityFillerAttribute">
+            <summary>
+            SecurityFillerAttribute
+            </summary>
+        </member>
+        <member name="M:WebAdmin.FilterAndAttributes.SecurityFillerAttribute.#ctor(Microsoft.AspNetCore.Http.IHttpContextAccessor)">
+            <summary>
+            SecurityFillerAttribute
+            </summary>
+            <param name="contextAccessor"></param>
+        </member>
+        <member name="M:WebAdmin.FilterAndAttributes.SecurityFillerAttribute.OnActionExecutionAsync(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext,Microsoft.AspNetCore.Mvc.Filters.ActionExecutionDelegate)">
+            <summary>
+            OnActionExecutionAsync
+            </summary>
+            <param name="context"></param>
+            <param name="next"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebAdmin.FilterAndAttributes.SecurityFillerAttribute.FillSecurity(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext)">
+            <summary>
+            FillSecurity
+            </summary>
+            <param name="context"></param>
+            <returns></returns>
+        </member>
+        <member name="T:WebAdmin.FilterAndAttributes.SecurityHeadersAttribute">
+            <summary>
+            SecurityHeadersAttribute
+            </summary>
+        </member>
+        <member name="M:WebAdmin.FilterAndAttributes.SecurityHeadersAttribute.OnResultExecuting(Microsoft.AspNetCore.Mvc.Filters.ResultExecutingContext)">
+            <summary>
+            OnResultExecuting
+            </summary>
+            <param name="context"></param>
+        </member>
+        <member name="M:WebAdmin.IntraServices.AdditionalUserClaimsPrincipalFactory.#ctor(Web.Core.Frame.CustomIdentityManagers.ApplicationUserManager{BDO.DataAccessObjects.SecurityModule.owin_userEntity},Microsoft.AspNetCore.Identity.RoleManager{Microsoft.AspNetCore.Identity.IdentityRole},Microsoft.Extensions.Options.IOptions{Microsoft.AspNetCore.Identity.IdentityOptions},Microsoft.AspNetCore.Http.IHttpContextAccessor)">
+            <summary>
+            AdditionalUserClaimsPrincipalFactory
+            </summary>
+            <param name="userManager"></param>
+            <param name="roleManager"></param>
+            <param name="optionsAccessor"></param>
+            <param name="contextAccessor"></param>
+        </member>
+        <member name="M:WebAdmin.IntraServices.AdditionalUserClaimsPrincipalFactory.CreateAsync(BDO.DataAccessObjects.SecurityModule.owin_userEntity)">
+            <summary>
+            CreateAsync
+            </summary>
+            <param name="user"></param>
+            <returns></returns>
+        </member>
+        <member name="T:WebAdmin.IntraServices.EmailSender">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:WebAdmin.IntraServices.EmailSender.#ctor(Microsoft.Extensions.Options.IOptions{BDO.DataAccessObjects.CommonEntities.EmailSettings})">
+            <summary>
+            
+            </summary>
+            <param name="optionsEmailSettings"></param>
+        </member>
+        <member name="M:WebAdmin.IntraServices.EmailSender.SendEmailAsync(System.String,System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="email"></param>
+            <param name="subject"></param>
+            <param name="message"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebAdmin.IntraServices.EmailSender.Execute(System.String,System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="email"></param>
+            <param name="subject"></param>
+            <param name="message"></param>
+            <returns></returns>
+        </member>
+        <member name="T:WebAdmin.IntraServices.IEmailSender">
+            <summary>
+            IEmailSender
+            </summary>
+        </member>
+        <member name="M:WebAdmin.IntraServices.IEmailSender.SendEmailAsync(System.String,System.String,System.String)">
+            <summary>
+            SendEmailAsync
+            </summary>
+            <param name="email"></param>
+            <param name="subject"></param>
+            <param name="message"></param>
+            <returns></returns>
+        </member>
+        <member name="T:WebAdmin.Providers.JWTSigningConfigurations">
+            <summary>
+            JWTSigningConfigurations
+            </summary>
+        </member>
+        <member name="P:WebAdmin.Providers.JWTSigningConfigurations.SecurityKey">
+            <summary>
+            SecurityKey
+            </summary>
+        </member>
+        <member name="P:WebAdmin.Providers.JWTSigningConfigurations.SigningCredentials">
+            <summary>
+            SigningCredentials
+            </summary>
+        </member>
+        <member name="M:WebAdmin.Providers.JWTSigningConfigurations.#ctor(System.String)">
+            <summary>
+            JWTSigningConfigurations
+            </summary>
+            <param name="key"></param>
+        </member>
+        <member name="T:WebAdmin.Providers.LocalizationQueryProvider">
+            <summary>
+            LocalizationQueryProvider
+            </summary>
+        </member>
+        <member name="F:WebAdmin.Providers.LocalizationQueryProvider.DefaultParameterName">
+            <summary>
+            DefaultParameterName
+            </summary>
+        </member>
+        <member name="P:WebAdmin.Providers.LocalizationQueryProvider.QueryParameterName">
+            <summary>
+            QueryParameterName
+            </summary>
+        </member>
+        <member name="M:WebAdmin.Providers.LocalizationQueryProvider.DetermineProviderCultureResult(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            DetermineProviderCultureResult
+            </summary>
+            <param name="httpContext"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebAdmin.Providers.LocalizationQueryProvider.ParseDefaultParamterValue(System.String)">
+            <summary>
+            ParseDefaultParamterValue
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="T:WebAdmin.Services.IInstaller">
+            <summary>
+            IInstaller
+            </summary>
+        </member>
+        <member name="M:WebAdmin.Services.IInstaller.InstallServices(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            InstallServices
+            </summary>
+            <param name="services"></param>
+            <param name="configuration"></param>
+        </member>
+        <member name="T:WebAdmin.Services.InstallerExtensions">
+            <summary>
+            InstallerExtensions
+            </summary>
+        </member>
+        <member name="M:WebAdmin.Services.InstallerExtensions.InstallServicesInAssembly(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            InstallServicesInAssembly
+            </summary>
+            <param name="services"></param>
+            <param name="configuration"></param>
+        </member>
+        <member name="T:WebAdmin.Services.WebAdmin">
+            <summary>
+            MvcInstaller
+            </summary>
+        </member>
+        <member name="M:WebAdmin.Services.WebAdmin.InstallServices(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            InstallServices
+            </summary>
+            <param name="services"></param>
+            <param name="configuration"></param>
+        </member>
+        <member name="M:WebAdmin.Services.WebAdmin.AddLocalizationConfigurations(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            AddLocalizationConfigurations
+            </summary>
+            <param name="services"></param>
+        </member>
+        <member name="M:WebAdmin.Services.WebAdmin.CheckSameSite(Microsoft.AspNetCore.Http.HttpContext,Microsoft.AspNetCore.Http.CookieOptions)">
+            <summary>
+            CheckSameSite
+            </summary>
+            <param name="httpContext"></param>
+            <param name="options"></param>
+        </member>
+        <member name="M:WebAdmin.Services.WebAdmin.DisallowsSameSiteNone(System.String)">
+            <summary>
+            DisallowsSameSiteNone
+            </summary>
+            <param name="userAgent"></param>
+            <returns></returns>
+        </member>
+        <member name="T:WebAdmin.Services.RedisCacheInstaller">
+            <summary>
+            RedisCacheInstaller
+            </summary>
+        </member>
+        <member name="M:WebAdmin.Services.RedisCacheInstaller.InstallServices(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            InstallServices
+            </summary>
+            <param name="services"></param>
+            <param name="configuration"></param>
+        </member>
+        <member name="T:WebAdmin.Services.SwaggerInstaller">
+            <summary>
+            SwaggerInstaller
+            </summary>
+        </member>
+        <member name="M:WebAdmin.Services.SwaggerInstaller.InstallServices(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            InstallServices
+            </summary>
+            <param name="services"></param>
+            <param name="configuration"></param>
+        </member>
+        <member name="T:WebAdmin.Startup">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:WebAdmin.Startup._configuration">
+            <summary>
+            _configuration
+            </summary>
+        </member>
+        <member name="P:WebAdmin.Startup._environment">
+            <summary>
+            _environment 
+            </summary>
+        </member>
+        <member name="M:WebAdmin.Startup.#ctor(Microsoft.Extensions.Configuration.IConfiguration,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
+            <summary>
+            Startup
+            </summary>
+            <param name="configuration"></param>
+            <param name="env"></param>
+        </member>
+        <member name="M:WebAdmin.Startup.ConfigureServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            ConfigureServices
+            </summary>
+            <param name="services"></param>
+        </member>
+        <member name="M:WebAdmin.Startup.Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.AspNetCore.Hosting.IWebHostEnvironment,AutoMapper.IMapper)">
+            <summary>
+            
+            </summary>
+            <param name="app"></param>
+            <param name="env"></param>
+        </member>
+        <member name="T:WebAdmin.ViewComponents.BreadCrumbsViewComponent">
+            <summary>
+            BreadCrumbsViewComponent
+            </summary>
+        </member>
+        <member name="M:WebAdmin.ViewComponents.BreadCrumbsViewComponent.#ctor">
+            <summary>
+            AboutUsViewComponent
+            </summary>
+        </member>
+        <member name="M:WebAdmin.ViewComponents.BreadCrumbsViewComponent.Invoke(System.String)">
+            <summary>
+            Invoke
+            </summary>
+            <param name="headertag"></param>
+            <returns></returns>
+        </member>
+        <member name="T:WebAdmin.ViewComponents.DashBoardRecapViewComponent">
+            <summary>
+            DashBoardRecapViewComponent
+            </summary>
+        </member>
+        <member name="M:WebAdmin.ViewComponents.DashBoardRecapViewComponent.#ctor">
+            <summary>
+            AboutUsViewComponent
+            </summary>
+        </member>
+        <member name="M:WebAdmin.ViewComponents.DashBoardRecapViewComponent.Invoke(System.String)">
+            <summary>
+            Invoke
+            </summary>
+            <param name="headertag"></param>
+            <returns></returns>
+        </member>
+        <member name="T:WebAdmin.ViewComponents.DashBoardViewComponent">
+            <summary>
+            DashBoardViewComponent
+            </summary>
+        </member>
+        <member name="M:WebAdmin.ViewComponents.DashBoardViewComponent.#ctor">
+            <summary>
+            AboutUsViewComponent
+            </summary>
+        </member>
+        <member name="M:WebAdmin.ViewComponents.DashBoardViewComponent.Invoke(System.String)">
+            <summary>
+            Invoke
+            </summary>
+            <param name="headertag"></param>
+            <returns></returns>
+        </member>
+        <member name="T:WebAdmin.ViewComponents.FooterViewComponent">
+            <summary>
+            FooterViewComponent
+            </summary>
+        </member>
+        <member name="M:WebAdmin.ViewComponents.FooterViewComponent.#ctor">
+            <summary>
+            AboutUsViewComponent
+            </summary>
+        </member>
+        <member name="M:WebAdmin.ViewComponents.FooterViewComponent.Invoke(System.String)">
+            <summary>
+            Invoke
+            </summary>
+            <param name="headertag"></param>
+            <returns></returns>
+        </member>
+        <member name="T:WebAdmin.ViewComponents.HeaderViewComponent">
+            <summary>
+            HeaderViewComponent
+            </summary>
+        </member>
+        <member name="M:WebAdmin.ViewComponents.HeaderViewComponent.#ctor">
+            <summary>
+            AboutUsViewComponent
+            </summary>
+        </member>
+        <member name="M:WebAdmin.ViewComponents.HeaderViewComponent.Invoke(System.String)">
+            <summary>
+            Invoke
+            </summary>
+            <param name="headertag"></param>
+            <returns></returns>
+        </member>
+        <member name="T:WebAdmin.ViewComponents.SideBarMenuViewComponent">
+            <summary>
+            SideBarMenu
+            </summary>
+        </member>
+        <member name="M:WebAdmin.ViewComponents.SideBarMenuViewComponent.#ctor">
+            <summary>
+            AboutUsViewComponent
+            </summary>
+        </member>
+        <member name="M:WebAdmin.ViewComponents.SideBarMenuViewComponent.Invoke(System.String)">
+            <summary>
+            Invoke
+            </summary>
+            <param name="SideBarMenuTag"></param>
+            <returns></returns>
+        </member>
+        <member name="T:WebAdmin.ViewComponents.VisitorsReportViewComponent">
+            <summary>
+            VisitorsReportViewComponent
+            </summary>
+        </member>
+        <member name="M:WebAdmin.ViewComponents.VisitorsReportViewComponent.#ctor">
+            <summary>
+            AboutUsViewComponent
+            </summary>
+        </member>
+        <member name="M:WebAdmin.ViewComponents.VisitorsReportViewComponent.Invoke(System.String)">
+            <summary>
+            Invoke
+            </summary>
+            <param name="headertag"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

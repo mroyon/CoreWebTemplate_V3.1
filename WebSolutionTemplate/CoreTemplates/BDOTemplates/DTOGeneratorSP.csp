@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<codeSmith xmlns="http://www.codesmithtools.com/schema/csp.xsd">
+  <variables>
+    <add key="ConnectionString1" value="Data Source=.;Initial Catalog=KAF_HR_V1.0;Persist Security Info=True;User ID=sa;Password=Asdf1234" />
+  </variables>
+  <propertySets>
+    <propertySet name="DTOGeneratorSP" template="Templates\DTOGeneratorSP.cst">
+      <property name="NameSpace">KAFWebAdmin</property>
+      <property name="SourceProc">
+        <connectionString>$(ConnectionString1)</connectionString>
+        <providerType>SchemaExplorer.SqlSchemaProvider,SchemaExplorer.SqlSchemaProvider</providerType>
+        <command>
+      <owner>dbo</owner>
+      <name>gen_country_GA</name>
+    </command>
+      </property>
+      <property name="OutputDirectory">C:\GenFromSP</property>
+    </propertySet>
+  </propertySets>
+</codeSmith>

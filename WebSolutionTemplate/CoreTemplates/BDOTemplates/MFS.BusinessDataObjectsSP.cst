@@ -1,0 +1,311 @@
+<%@ CodeTemplate Language="C#" TargetLanguage="C#" Description="Generates a very simple business object." %>
+
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Assembly Name="CodeSmith.BaseTemplates" %>
+<%@ Assembly Name="CodeSmith.CustomProperties" %>
+<%@ Assembly Name="System.Data" %>
+
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Import Namespace="CodeSmith.CustomProperties" %>
+<%@ Import Namespace="CodeSmith.BaseTemplates" %>
+<%@ Import Namespace="System.Data" %>
+<%@ Import Namespace="System.Text.RegularExpressions" %>
+<%@ Import Namespace="System.Data" %>
+
+<%@ Property Name="SourceProc"	Type="SchemaExplorer.CommandSchema"	Optional="False" %>
+<%@ Property Name="NameSpace"	Type="System.String"				Optional="False" %>
+
+
+using System;
+using System.Runtime.Serialization;
+using System.Data;
+using System.Data.SqlClient;
+using KAF.BusinessDataObjects.BusinessDataObjectsBase;
+
+namespace <%=this.NameSpace%>.BusinessDataObjects.BusinessDataObjectsPartials
+{
+
+	#region <%= GetClassName(SourceProc) %>
+	/// <summary>
+	/// This object represents the properties and methods of a <%= GetClassName(SourceProc) %>.
+	/// </summary>
+    [Serializable]
+    [DataContract(Name = "<%= GetClassName(SourceProc) %>Entity", Namespace = "http://www.<%=this.NameSpace%>.com/types")]
+	public class <%= GetClassName(SourceProc) %>Entity : ReportBaseEntity
+	{
+		<% for(int intCount = 0; intCount < SourceProc.CommandResults[0].Columns.Count; intCount++) { %>
+		    <% CommandResultColumnSchema column = SourceProc.CommandResults[0].Columns[intCount]; %>
+		    <%= GetMemberVariableDeclarationStatement(column) %>
+		<% } %>
+		
+		public <%= GetClassName(SourceProc) %>Entity()
+		{
+		}
+		
+		public <%= GetClassName(SourceProc) %>Entity(IDataReader ireader)
+		{
+			//LoadFromReader(ireader);
+            LoadFromReaderREF(ireader);
+		}
+		
+		protected void LoadFromReaderREF(IDataReader reader)
+		{
+			//SqlDataReader reader = (SqlDataReader)ireader;
+			if (reader != null && !reader.IsClosed)
+			{
+				<% for (int i = 0; i < SourceProc.CommandResults[0].Columns.Count; i++) { %>
+				    <%= GetReaderAssignmentStatement(SourceProc.CommandResults[0].Columns[i], i) %>
+				<% } %>
+			}
+		}
+		
+<%-- 		#region Public Properties
+		
+		<% for (int i = 0; i < SourceProc.CommandResults[0].Columns.Count; i++) { %>
+        
+            [DataMember]
+            public <%= GetCSharpVariableType(SourceProc.CommandResults[0].Columns[i]) %> <%= GetPropertyName(SourceProc.CommandResults[0].Columns[i]) %>
+            {
+                get {return <%= GetMemberVariableName(SourceProc.CommandResults[0].Columns[i]) %>;}
+                set {<%= GetMemberVariableName(SourceProc.CommandResults[0].Columns[i]) %> = value;}
+            }
+            
+            <% if (i < SourceProc.CommandResults[0].Columns.Count - 1) Response.Write("\r\n"); %>		
+            
+		<% } %>
+		#endregion --%>
+		
+		
+	}
+	#endregion
+    
+}
+
+    
+<script runat="template">
+public string GetMemberVariableDeclarationStatement(CommandResultColumnSchema column)
+{
+	return GetMemberVariableDeclarationStatement("public", column);
+}
+
+public string GetMemberVariableDeclarationStatement(string protectionLevel, CommandResultColumnSchema column)
+{
+    //public int MyProperty { get; set; }
+	string statement = protectionLevel + " ";
+	statement += GetCSharpVariableType(column) + " " + GetMemberVariableName(column) + "{ get; set; }";
+	
+	//string defaultValue = GetMemberVariableDefaultValue(column);
+	//if (defaultValue != "")
+	//{
+	//	statement += " = " + defaultValue;
+	//}
+	
+	statement += "";
+	
+	return statement;
+}
+
+public string GetReaderAssignmentStatement(CommandResultColumnSchema column, int index)
+{
+	string statement = "if (!reader.IsDBNull(reader.GetOrdinal(\"" + column.Name + "\"))) ";
+	statement += GetMemberVariableName(column) + " = ";
+	
+	if (column.Name.EndsWith("TypeCode")) statement += "(" + column.Name + ")";
+	
+	statement += "reader." + GetReaderMethod(column) + "(reader.GetOrdinal(\"" + column.Name + "\"));";
+	
+	return statement;
+}
+
+public string GetCamelCaseName(string value)
+{
+	return value.Substring(0, 1).ToLower() + value.Substring(1);
+}
+
+public string GetMemberVariableName(CommandResultColumnSchema column)
+{
+	string propertyName = GetPropertyName(column);
+	string memberVariableName =  GetCamelCaseName(propertyName);
+	
+	return memberVariableName.ToLower();
+}
+
+public string GetPropertyName(CommandResultColumnSchema column)
+{
+	string propertyName = column.Name;
+	
+	if (propertyName == column.Name + "Name") return "Name";
+	if (propertyName == column.Name + "Description") return "Description";
+	
+	if (propertyName.EndsWith("TypeCode")) propertyName = propertyName.Substring(0, propertyName.Length - 4);
+	
+	return propertyName;
+}
+		
+public string GetMemberVariableDefaultValue(CommandResultColumnSchema column)
+{
+	switch (column.DataType)
+	{
+		case DbType.Guid:
+		{
+			return "Guid.Empty";
+		}
+		case DbType.AnsiString:
+		case DbType.AnsiStringFixedLength:
+		case DbType.String:
+		case DbType.StringFixedLength:
+		{
+			return "String.Empty";
+		}
+		default:
+		{
+			return "";
+		}
+	}
+}
+
+public string GetCSharpVariableType(CommandResultColumnSchema column)
+{
+	if (column.Name.EndsWith("TypeCode")) return column.Name;
+	
+	switch (column.DataType)
+	{
+		case DbType.AnsiString: return "string";
+		case DbType.AnsiStringFixedLength: return "string";
+		case DbType.Binary: return "byte[]";
+		case DbType.Boolean: return "bool";
+		case DbType.Byte: return "byte";
+		case DbType.Currency: return "decimal ?";
+		case DbType.Date: return "DateTime ?";
+		case DbType.DateTime: return "DateTime ?";
+		case DbType.Decimal: return "decimal ?";
+		case DbType.Double: return "double ?";
+		case DbType.Guid: return "Guid";
+		case DbType.Int16: return "short ?";
+		case DbType.Int32: return "int ?";
+		case DbType.Int64: return "long ?";
+		case DbType.Object: return "object";
+		case DbType.SByte: return "sbyte";
+		case DbType.Single: return "float ?";
+		case DbType.String: return "string";
+		case DbType.StringFixedLength: return "string";
+		case DbType.Time: return "TimeSpan ?";
+		case DbType.UInt16: return "ushort";
+		case DbType.UInt32: return "uint";
+		case DbType.UInt64: return "ulong";
+		case DbType.VarNumeric: return "decimal";
+		default:
+		{
+			return "__UNKNOWN__" + column.NativeType;
+		}
+	}
+}
+
+public string GetReaderMethod(CommandResultColumnSchema column)
+{
+	switch (column.DataType)
+	{
+		case DbType.Byte:
+		{
+			return "GetByte";
+		}
+		case DbType.Int16:
+		{
+			return "GetInt16";
+		}
+		case DbType.Int32:
+		{
+			return "GetInt32";
+		}
+		case DbType.Int64:
+		{
+			return "GetInt64";
+		}
+		case DbType.AnsiStringFixedLength:
+		case DbType.AnsiString:
+		case DbType.String:
+		case DbType.StringFixedLength:
+		{
+			return "GetString";
+		}
+		case DbType.Boolean:
+		{
+			return "GetBoolean";
+		}
+		case DbType.Guid:
+		{
+			return "GetGuid";
+		}
+		case DbType.Currency:
+		case DbType.Decimal:
+		{
+			return "GetDecimal";
+		}
+		case DbType.DateTime:
+		case DbType.Date:
+		{
+			return "GetDateTime";
+		}
+		case DbType.Binary:
+		{
+			return "GetBytes";
+		}
+		default:
+		{
+			return "__SQL__" + column.DataType;
+		}
+	}
+}
+
+public string GetClassName(CommandSchema table)
+{
+	if (table.Name.EndsWith("s"))
+	{
+		return table.Name.Substring(0, table.Name.Length - 1);
+	}
+	else
+	{
+		return table.Name;
+	}
+}
+
+public string GetSqlDbType(CommandResultColumnSchema column)
+{
+	switch (column.NativeType)
+	{
+		case "bigint": return "BigInt";
+		case "binary": return "Binary";
+		case "bit": return "Bit";
+		case "char": return "Char";
+		case "datetime": return "DateTime";
+		case "decimal": return "Decimal";
+		case "float": return "Float";
+		case "image": return "Image";
+		case "int": return "Int";
+		case "money": return "Money";
+		case "nchar": return "NChar";
+		case "ntext": return "NText";
+		case "numeric": return "Decimal";
+		case "nvarchar": return "NVarChar";
+		case "real": return "Real";
+		case "smalldatetime": return "SmallDateTime";
+		case "smallint": return "SmallInt";
+		case "smallmoney": return "SmallMoney";
+		case "sql_variant": return "Variant";
+		case "sysname": return "NChar";
+		case "text": return "Text";
+		case "timestamp": return "Timestamp";
+		case "tinyint": return "TinyInt";
+		case "uniqueidentifier": return "UniqueIdentifier";
+		case "varbinary": return "VarBinary";
+		case "varchar": return "VarChar";
+		default: return "__UNKNOWN__" + column.NativeType;
+	}
+}
+
+
+public override string GetFileName()
+{
+	return this.GetClassName(this.SourceProc) + ".cs";
+}
+</script>

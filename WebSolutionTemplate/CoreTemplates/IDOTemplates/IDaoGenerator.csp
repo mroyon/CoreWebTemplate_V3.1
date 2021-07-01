@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<codeSmith xmlns="http://www.codesmithtools.com/schema/csp.xsd">
+  <variables>
+    <add key="ConnectionString2" value="Data Source=10.1.222.140;Initial Catalog=KAF_AssetRiskManagement_V1.0;Persist Security Info=True;User ID=sa;Password=121212" />
+  </variables>
+  <propertySets>
+    <propertySet name="IDaoGenerator" template="IDaoGenerator.cst">
+      <property name="NameSpace">KAF</property>
+      <property name="SourceDatabase">
+        <connectionString>$(ConnectionString2)</connectionString>
+        <providerType>SchemaExplorer.SqlSchemaProvider,SchemaExplorer.SqlSchemaProvider</providerType>
+      </property>
+      <property name="IDaoOutputDirectory">D:\temp\IDao</property>
+    </propertySet>
+  </propertySets>
+</codeSmith>

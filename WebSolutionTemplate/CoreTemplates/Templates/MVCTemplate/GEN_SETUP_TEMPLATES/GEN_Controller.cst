@@ -1,0 +1,486 @@
+﻿<%@ CodeTemplate Language="C#" TargetLanguage="C#" Description="Generates a ASP UserControl." Debug=true %>
+  
+  <%@ CodeTemplate Src="C:\ClassLibrary1\ClassLibrary1\LinqFunctions.cs" Inherits="LinqFunctions" Language="C#" TargetLanguage="C#"
+  Description="Generates a data context and entities for given tables." %>
+  
+
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Assembly Name="CodeSmith.BaseTemplates" %>
+<%@ Assembly Name="CodeSmith.CustomProperties" %>
+<%@ Assembly Name="System.Data" %>
+<%@ Assembly Name="System" %>
+<%@ Assembly Name="System.Core" %>
+<%@ Assembly Name="System.Collections" %>
+<%@ Assembly Name="System.Linq" %>
+
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Import Namespace="CodeSmith.CustomProperties" %>
+<%@ Import Namespace="CodeSmith.BaseTemplates" %>
+<%@ Import Namespace="System.Data" %>
+<%@ Import Namespace="System.Collections.Generic" %>
+<%@ Import Namespace="System.Text" %>
+
+<%@ Import Namespace="System.Text.RegularExpressions" %>
+<%@ Property Name="SourceTable" Type="SchemaExplorer.TableSchema" DeepLoad="True" Default="" Optional="False" %>
+<%@ Property Name="NameSpace" Type="System.String" Default="" Optional="False" %>
+<%@ Property Name="WebNameSpace" Type="System.String" Optional="False" %>
+
+
+<%
+    List<ColumnSchema> objColumnList = new List<ColumnSchema>();
+
+        string divRowStart = "<div class=\"row \">";
+        string divColumnStart = "<div class=\"col-md-6\">";
+        string divClose = "</div>";
+        string div = string.Empty;
+%>
+using DataTables.Mvc;
+using Newtonsoft.Json;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Linq;
+using System.Security.Claims;
+using System.Web;
+using System.Web.Mvc;
+using System.Web.Routing;
+using KAF.BusinessDataObjects;
+using KAF.BusinessDataObjects.BusinessDataObjectsBase;
+using KAF.BusinessDataObjects.BusinessDataObjectsPartials.MenuModel;
+using KAF.WebFramework;
+using System.Threading.Tasks;
+using KAF.CustomHelper.HelperClasses;
+using KAF.CustomFilters.Filters;
+using KAF.MVC.Common;
+using KAF.BusinessDataObjects.BusinessDataObjectsPartials;		
+using KAF.CustomHelper;
+    
+namespace KAFWebAdmin.Controllers.HR
+{
+    public class <%=GetTableNamesWithPrefix(SourceTable)%>Controller : BaseController
+    {
+        public clsModelStateValidation objModelVal = new clsModelStateValidation();
+        public clsPrivateKeys objClsPrivate = new clsPrivateKeys();
+        clsSecurityPanel objSecPanel = new clsSecurityPanel();
+        KAF.AppConfiguration.Configuration.FileHandler objFTP = new KAF.AppConfiguration.Configuration.FileHandler();    
+        
+        
+          #region LANDING LOAD
+        //Landing page caller
+
+        [LoggingFilterAttribute]
+        [SecurityFillerAttribute]
+        [AuthorizeFilterAttribute]
+        [AllowCrossSiteJsonAttribute]
+        [ExceptionFilterAttribute]
+        public async Task<ActionResult> <%=GetTableNamesWithPrefix(SourceTable)%>()
+        {
+            return View("<%=GetTableNamesWithPrefix(SourceTable)%>Landing");
+        }
+
+
+        //Datatable load
+        [HttpPost]
+        [AuthorizeFilterAttribute]
+        [ValidateInput(true)]
+        [RequestValidationAttribute]
+        [LoggingFilterAttribute]
+        [SecurityFillerAttribute]
+        [AllowCrossSiteJsonAttribute]
+        [ValidateAntiForgeryToken]
+        [ExceptionFilterAttribute]
+        public async Task<ActionResult> <%=GetTableNamesWithPrefix(SourceTable)%>TableData([ModelBinder(typeof(DataTablesBinder))] IDataTablesRequest requestModel, <%= GetClassName(SourceTable).ToLower() %>Entity input)
+        {
+            <%= GetClassName(SourceTable).ToLower() %>Entity objowin_<%= GetClassName(SourceTable).ToLower() %> = new <%= GetClassName(SourceTable).ToLower() %>Entity();
+            JsonResult result = new JsonResult();
+            try
+            {
+                string search = Request.Form.GetValues("search[value]")[0];
+                SecurityCapsule sec = new SecurityCapsule();
+                sec = (SecurityCapsule)Request.RequestContext.HttpContext.Items["CurrentSec"];
+                int CurrentPage = 0;
+                if (requestModel.Start == 0)
+                {
+                    CurrentPage = 1;
+                }
+                else
+                {
+                    CurrentPage = requestModel.Start / requestModel.Length + 1;
+                }
+                
+                input.CurrentPage = CurrentPage;
+                input.PageSize = requestModel.Length;
+                input.SortExpression = SortByColumnWithOrder((Request.Form.GetValues("order[0][column]"))[0], (Request.Form.GetValues("order[0][dir]"))[0]);
+
+                if (search != "")
+                {
+                    input.strCommonSerachParam = "%" + search + "%";
+                }
+           
+                List<<%= GetClassName(SourceTable).ToLower() %>Entity> data = this.GetAll<%=GetTableNamesWithPrefix(SourceTable)%>Data(input);
+
+                if (data != null && data.Count > 0)
+                {
+                    long totalRecords = data.FirstOrDefault().RETURN_KEY;
+
+                    var tut = (from t in data
+                               select new
+                               {
+                                 <% 
+                                     Response.Write(WriteDataTableViewColumns(SourceTable));
+                                 %>
+                                   
+                                   ex_nvarchar1 = objSecPanel.genButtonPanel(t.<%= getPrimaryKeyColumnName(SourceTable) %>.GetValueOrDefault(-99), "<%= getPrimaryKeyColumnName(SourceTable) %>", this.HttpContext.User.Identity as ClaimsIdentity,
+                                   "<%=GetTableNamesWithPrefix(SourceTable)%>/<%=GetTableNamesWithPrefix(SourceTable)%>Edit", "<%=GetTableNamesWithPrefix(SourceTable)%>Edit", 
+                                   "<%=GetTableNamesWithPrefix(SourceTable)%>/<%=GetTableNamesWithPrefix(SourceTable)%>Delete", "<%=GetTableNamesWithPrefix(SourceTable)%>Delete",
+                                   "<%=GetTableNamesWithPrefix(SourceTable)%>/<%=GetTableNamesWithPrefix(SourceTable)%>Detail", "<%=GetTableNamesWithPrefix(SourceTable)%>Detail")
+                               }).ToList();
+
+                    result = this.Json(new { draw = requestModel.Draw, recordsTotal = totalRecords, recordsFiltered = totalRecords, data = tut }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                    result = this.Json(new { draw = requestModel.Draw, recordsTotal = 0, recordsFiltered = 0, data = "" }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { status = KAF.MsgContainer._Status._statusFailed, title = KAF.MsgContainer._Status._titleGenericError, redirectUrl = "", responsetext = ex.Message });
+            }
+            return result;
+        }
+        
+        
+        List<<%= GetClassName(SourceTable).ToLower() %>Entity> GetAll<%=GetTableNamesWithPrefix(SourceTable)%>Data(<%= GetClassName(SourceTable).ToLower() %>Entity obj<%= GetClassName(SourceTable).ToLower() %>Entity)
+        {
+            string str = string.Empty;
+            var urlBuilder = new UrlHelper(Request.RequestContext);
+            List<<%= GetClassName(SourceTable).ToLower() %>Entity> listobj<%= GetClassName(SourceTable).ToLower() %>Entity = new List<<%= GetClassName(SourceTable).ToLower() %>Entity>();
+            try
+            {
+                listobj<%= GetClassName(SourceTable).ToLower() %>Entity = KAF.FacadeCreatorObjects.<%= GetClassName(SourceTable).ToLower() %>FCC.GetFacadeCreate().GAPgListView((obj<%= GetClassName(SourceTable).ToLower() %>Entity)).ToList();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return listobj<%= GetClassName(SourceTable).ToLower() %>Entity;
+        }
+        
+        private string SortByColumnWithOrder(string order, string orderDir)
+        {
+            string sortingVal = string.Empty;
+            try
+            {
+                switch (order)
+                {
+                  <% 
+                                     Response.Write(WriteDataTableSortViewColumns(SourceTable));
+                                 %>
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return sortingVal;
+        }
+
+        #endregion 
+        
+        
+        
+         #region Create <%=GetTableNamesWithPrefix(SourceTable)%>
+
+        //Create Page Load
+        [HttpPost]
+        [AuthorizeFilterAttribute]
+        [ValidateInput(true)]
+        [ValidateAntiForgeryToken]
+        [AllowCrossSiteJsonAttribute]
+        [SecurityFillerAttribute]
+        [LoggingFilterAttribute]
+        [RequestValidationAttribute]
+        [ExceptionFilterAttribute]
+        public async Task<ActionResult> <%=GetTableNamesWithPrefix(SourceTable)%>New(<%= GetClassName(SourceTable).ToLower() %>Entity input)
+        {
+            try
+            {
+                ModelState.Clear();
+                <%= GetClassName(SourceTable).ToLower() %>Entity model = new <%= GetClassName(SourceTable).ToLower() %>Entity();
+                <%  
+               Response.Write(new_Addons_fileControl(SourceTable));
+                %>
+                return PartialView("_<%=GetTableNamesWithPrefix(SourceTable)%>New", model);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { status = KAF.MsgContainer._Status._statusFailed, title = KAF.MsgContainer._Status._titleGenericError, redirectUrl = "", responsetext = ex.Message });
+            }
+        }
+
+
+        //Create Page Create Action
+        [HttpPost]
+        [AuthorizeFilterAttribute]
+        [ValidateInput(true)]
+        [ValidateAntiForgeryToken]
+        [AllowCrossSiteJsonAttribute]
+        [SecurityFillerAttribute]
+        [LoggingFilterAttribute]
+        [RequestValidationAttribute]
+        [ExceptionFilterAttribute]
+        public async Task<ActionResult> <%=GetTableNamesWithPrefix(SourceTable)%>Insert(<%= GetClassName(SourceTable).ToLower() %>Entity input)
+        {
+            try
+            {
+                string redirectURL = "";
+                string str = string.Empty;
+                Int64 ret = 0;
+                SecurityCapsule sec = new SecurityCapsule();
+                 <% 
+                        Response.Write(WriteDataModalStateRemove(SourceTable));
+                 %>
+               
+                if (input != null && ModelState.IsValid == true)
+                {
+                    sec = (SecurityCapsule)Request.RequestContext.HttpContext.Items["CurrentSec"];
+                    input.BaseSecurityParam = sec;
+                    //RN: OPEN THIS LINE IF HR INVOLDED
+                    //input.hrbasicid = long.Parse(objClsPrivate.GetUrlParamValMVCOnlyParam("hrbasicid", input.strAdditionalPrimaryKey));
+                    
+                    <% 
+                        Response.Write(insert_Addons_fileControl(SourceTable));
+                    %>
+                    if (ret > 0)
+                    {
+                        ModelState.Clear();
+                        return Json(new { status = KAF.MsgContainer._Status._statusSuccess, title = KAF.MsgContainer._Status._titleInformation, redirectUrl = redirectURL, responsetext = KAF.MsgContainer._Common._saveInformation });
+                    }
+                    else
+                        return Json(new { status = KAF.MsgContainer._Status._statusFailed, title = KAF.MsgContainer._Status._titleGenericError, redirectUrl = "", responsetext = KAF.MsgContainer._Common._generalErrorInformation });
+                }
+                else
+                {
+                    str = objModelVal.GetModelStateValidate(ModelState);
+                    var result = new JsonResult
+                    {
+                        Data = str
+                    };
+                    return Json(new { status = KAF.MsgContainer._Status._statusFailed, title = KAF.MsgContainer._Status._titleInvalidData, redirectUrl = "", responsetext = str });
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { status = KAF.MsgContainer._Status._statusFailed, title = KAF.MsgContainer._Status._titleGenericError, redirectUrl = "", responsetext = ex.Message });
+            }
+        }
+        #endregion
+        
+        
+        #region update <%=GetTableNamesWithPrefix(SourceTable)%>
+
+        //Update Page Load
+        [HttpPost]
+        [AuthorizeFilterAttribute]
+        [SecurityFillerAttribute]
+        [ValidateAntiForgeryToken]
+        [AllowCrossSiteJsonAttribute]
+        [ValidateInput(true)]
+        [LoggingFilterAttribute]
+        [RequestValidationAttribute]
+        [ExceptionFilterAttribute]
+        public async Task<ActionResult> <%=GetTableNamesWithPrefix(SourceTable)%>Edit(<%= GetClassName(SourceTable).ToLower() %>Entity input)
+        {
+            SecurityCapsule sec = new SecurityCapsule();
+            try
+            {
+                sec = (SecurityCapsule)Request.RequestContext.HttpContext.Items["CurrentSec"];
+                input.<%= getPrimaryKeyColumnName(SourceTable) %> = long.Parse(objClsPrivate.GetUrlParamValMVCOnlyParam("<%= getPrimaryKeyColumnName(SourceTable) %>", input.strModelPrimaryKey).ToString());
+                var model = KAF.FacadeCreatorObjects.<%= GetClassName(SourceTable).ToLower() %>FCC.GetFacadeCreate().GetAll(new <%= GetClassName(SourceTable).ToLower() %>Entity { <%= getPrimaryKeyColumnName(SourceTable) %> = input.<%= getPrimaryKeyColumnName(SourceTable) %> }).SingleOrDefault();
+                model.strModelPrimaryKey = input.strModelPrimaryKey;
+                //PN: LOAD DATA FOR PRE-SELECT2 DROP DOWN
+                <%
+                    Response.Write(DrawPrpLoadedDropDownCS(SourceTable));
+                %>
+                
+                
+                <%
+                    Response.Write(edit_Addons_fileControl(SourceTable));
+                %>
+
+                ModelState.Clear();
+                return PartialView("_<%=GetTableNamesWithPrefix(SourceTable)%>Edit", model);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { status = KAF.MsgContainer._Status._statusFailed, title = KAF.MsgContainer._Status._titleGenericError, redirectUrl = "", responsetext = ex.Message });
+            }
+        }
+
+
+        //Update Page Update Action
+        [HttpPost]
+        [AuthorizeFilterAttribute]
+        [ValidateInput(true)]
+        [ValidateAntiForgeryToken]
+        [AllowCrossSiteJsonAttribute]
+        [SecurityFillerAttribute]
+        [LoggingFilterAttribute]
+        [RequestValidationAttribute]
+        [ExceptionFilterAttribute]
+        public async Task<ActionResult> <%=GetTableNamesWithPrefix(SourceTable)%>Update(<%= GetClassName(SourceTable).ToLower() %>Entity input)
+        {
+            try
+            {
+                string redirectURL = "";
+                string str = string.Empty;
+                SecurityCapsule sec = new SecurityCapsule();
+                Int64 ret = 0;
+                
+                //PN: KEEP THE REQUIRED LINE AND REMOVE REST
+                <% 
+                        Response.Write(WriteDataModalStateRemove(SourceTable));
+                 %>
+               
+                if (input != null && ModelState.IsValid == true)
+                {
+                    sec = (SecurityCapsule)Request.RequestContext.HttpContext.Items["CurrentSec"];
+                    input.BaseSecurityParam = sec;
+
+                    <% 
+                        Response.Write(update_Addons_fileControl(SourceTable));
+                    %>
+                 
+                    if (ret > 0)
+                    {
+                        ModelState.Clear();
+                        return Json(new { status = KAF.MsgContainer._Status._statusSuccess, title = KAF.MsgContainer._Status._titleInformation, redirectUrl = redirectURL, responsetext = KAF.MsgContainer._Common._saveInformation });
+                    }
+                    else
+                        return Json(new { status = KAF.MsgContainer._Status._statusFailed, title = KAF.MsgContainer._Status._titleGenericError, redirectUrl = "", responsetext = KAF.MsgContainer._Common._generalErrorInformation });
+                }
+                else
+                {
+                    str = objModelVal.GetModelStateValidate(ModelState);
+                    var result = new JsonResult
+                    {
+                        Data = str
+                    };
+                    return Json(new { status = KAF.MsgContainer._Status._statusFailed, title = KAF.MsgContainer._Status._titleInvalidData, redirectUrl = "", responsetext = str });
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { status = KAF.MsgContainer._Status._statusFailed, title = KAF.MsgContainer._Status._titleGenericError, redirectUrl = "", responsetext = ex.Message });
+            }
+        }
+        #endregion
+
+        #region delete <%=GetTableNamesWithPrefix(SourceTable)%>
+
+        //Delete Page Delete Action
+        [HttpPost]
+        [AuthorizeFilterAttribute]
+        [AllowCrossSiteJsonAttribute]
+        [ValidateInput(true)]
+        [RequestValidationAttribute]
+        [LoggingFilterAttribute]
+        [ValidateAntiForgeryToken]
+        [SecurityFillerAttribute]
+        [ExceptionFilterAttribute]
+        public async Task<ActionResult> <%=GetTableNamesWithPrefix(SourceTable)%>Delete(<%= GetClassName(SourceTable).ToLower() %>Entity input)
+        {
+            string str = string.Empty;
+            string redirectURL = "";
+                Int64 ret = 0;
+            try
+            {
+                //PN: KEEP THE REQUIRED LINE AND REMOVE REST
+                <% 
+                        Response.Write(WriteDataModalStateRemoveForDelete(SourceTable));
+                 %>
+
+                if (input != null && ModelState.IsValid == true)
+                {
+                    SecurityCapsule sec = new SecurityCapsule();
+                    sec = (SecurityCapsule)Request.RequestContext.HttpContext.Items["CurrentSec"];
+                    input.BaseSecurityParam = sec;
+                    input.<%= getPrimaryKeyColumnName(SourceTable) %> = long.Parse(objClsPrivate.GetUrlParamValMVCOnlyParam("<%= getPrimaryKeyColumnName(SourceTable) %>", input.strModelPrimaryKey).ToString());
+               
+               
+                    <% 
+                        Response.Write(delete_Addons_fileControl(SourceTable));
+                    %>
+                 
+                    if (ret > 0)
+                        return Json(new { status = KAF.MsgContainer._Status._statusSuccess, title = KAF.MsgContainer._Status._titleInformation, redirectUrl = redirectURL, responsetext = KAF.MsgContainer._Common._deleteInformation });
+                    else
+                        return Json(new { status = KAF.MsgContainer._Status._statusFailed, title = KAF.MsgContainer._Status._titleGenericError, redirectUrl = "", responsetext = KAF.MsgContainer._Common._generalErrorInformation });
+                }
+                else
+                {
+                    str = objModelVal.GetModelStateValidate(ModelState);
+                    var result = new JsonResult
+                    {
+                        Data = str
+                    };
+                    return Json(new { status = KAF.MsgContainer._Status._statusFailed, title = KAF.MsgContainer._Status._titleInvalidData, redirectUrl = "", responsetext = str });
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { status = KAF.MsgContainer._Status._statusFailed, title = KAF.MsgContainer._Status._titleGenericError, redirectUrl = "", responsetext = ex.Message });
+            }
+            finally
+            {
+
+            }
+        }
+        #endregion
+
+        #region detail <%=GetTableNamesWithPrefix(SourceTable)%>
+
+        //Detail Page Load
+        [HttpPost]
+        [AuthorizeFilterAttribute]
+        [ValidateInput(true)]
+        [ValidateAntiForgeryToken]
+        [AllowCrossSiteJsonAttribute]
+        [SecurityFillerAttribute]
+        [LoggingFilterAttribute]
+        [RequestValidationAttribute]
+        [ExceptionFilterAttribute]
+        public async Task<ActionResult> <%=GetTableNamesWithPrefix(SourceTable)%>Detail(<%= GetClassName(SourceTable).ToLower() %>Entity input)
+        {
+            SecurityCapsule sec = new SecurityCapsule();
+            try
+            {
+                sec = (SecurityCapsule)Request.RequestContext.HttpContext.Items["CurrentSec"];
+                input.<%= getPrimaryKeyColumnName(SourceTable) %> = long.Parse(objClsPrivate.GetUrlParamValMVCOnlyParam("<%= getPrimaryKeyColumnName(SourceTable) %>", input.strModelPrimaryKey).ToString());
+               
+                var model = KAF.FacadeCreatorObjects.<%= GetClassName(SourceTable).ToLower() %>FCC.GetFacadeCreate().GetAll(new <%= GetClassName(SourceTable).ToLower() %>Entity { <%= getPrimaryKeyColumnName(SourceTable) %> = input.<%= getPrimaryKeyColumnName(SourceTable) %> }).SingleOrDefault();
+                model.strModelPrimaryKey = input.strModelPrimaryKey;
+                <%
+                    Response.Write(DrawPrpLoadedDropDownCS(SourceTable));
+                %>
+                
+                <%
+                    Response.Write(detail_Addons_fileControl(SourceTable));
+                %>
+                
+                ModelState.Clear();
+                return PartialView("_<%=GetTableNamesWithPrefix(SourceTable)%>Detail", model);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { status = KAF.MsgContainer._Status._statusFailed, title = KAF.MsgContainer._Status._titleGenericError, redirectUrl = "", responsetext = ex.Message });
+            }
+        }
+        #endregion
+        
+    }
+}
+
+
+

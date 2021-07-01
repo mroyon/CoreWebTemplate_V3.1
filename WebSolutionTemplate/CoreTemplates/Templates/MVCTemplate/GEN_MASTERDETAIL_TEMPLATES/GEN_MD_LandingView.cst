@@ -1,0 +1,256 @@
+﻿
+
+<%@ CodeTemplate Language="C#" TargetLanguage="C#" Description="Generates a ASP UserControl." Debug=true %>
+<%@ CodeTemplate Src="C:\ClassLibrary1\ClassLibrary1\LinqFunctions.cs" Inherits="LinqFunctions" Language="C#" TargetLanguage="C#"
+   Description="Generates a data context and entities for given tables." %>
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Assembly Name="CodeSmith.BaseTemplates" %>
+<%@ Assembly Name="CodeSmith.CustomProperties" %>
+<%@ Assembly Name="System.Data" %>
+<%@ Assembly Name="System" %>
+<%@ Assembly Name="System.Core" %>
+<%@ Assembly Name="System.Collections" %>
+<%@ Assembly Name="System.Linq" %>
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Import Namespace="CodeSmith.CustomProperties" %>
+<%@ Import Namespace="CodeSmith.BaseTemplates" %>
+<%@ Import Namespace="System.Data" %>
+<%@ Import Namespace="System.Collections.Generic" %>
+<%@ Import Namespace="System.Text" %>
+<%@ Import Namespace="System.Text.RegularExpressions" %>
+<%@ Property Name="SourceTable" Type="SchemaExplorer.TableSchema" DeepLoad="True" Default="" Optional="False" %>
+<%@ Property Name="SourceTableDetail" Type="SchemaExplorer.TableSchema" DeepLoad="True" Default="" Optional="False" %>
+<%
+   List<ColumnSchema> objColumnList = new List<ColumnSchema>();
+   
+       string divRowStart = "<div class=\"row \">";
+       string divColumnStart = "<div class=\"col-md-6\">";
+       string divClose = "</div>";
+       string div = string.Empty;
+   %>
+   
+@model KAF.BusinessDataObjects.<%= GetClassName(SourceTable) %>Entity
+@{
+    ViewBag.Title = "Leave Balance Master Details";
+}
+<style>
+    .detailheading {
+        background-color: darkgray !important;
+    }
+
+    .buttonpanelcenter {
+        text-align: center;
+    }
+
+    .form-horizontal .form-group {
+        margin-right: 10px;
+        margin-left: 10px;
+    }
+</style>
+@{
+    if (System.Threading.Thread.CurrentThread.CurrentUICulture.Name.ToLowerInvariant().ToLower() == "ar-kw")
+    {
+        <style>
+            .actionbuttonletright {
+                text-align: left;
+            }
+        </style>
+    }
+    else
+    {
+        <style>
+            .actionbuttonletright {
+                text-align: right;
+            }
+        </style>
+    }
+}
+
+
+<script src="~/ckeditor/ckeditor.js"></script>
+
+@using (Ajax.BeginForm("", "", null, new AjaxOptions { HttpMethod = "Post", OnSuccess = "", LoadingElementId = "divProgressBar" }, new { @id = "frm<%=GetTableNamesWithPrefix(SourceTable)%>", @class = "form-horizontal" }))
+{
+    HtmlHelper.UnobtrusiveJavaScriptEnabled = true;
+    HtmlHelper.ClientValidationEnabled = true;
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-primary list-panel" id="form-panel">
+                <div class="panel-heading list-panel-heading">
+                    Master Form
+                </div>
+                <div class="panel-body">
+                    <div class="container MainPageCnt" role="main">
+                        <div class='ms-bodyareacell clearfix'>
+                            <div class="container-fluid">
+                                <div class="row">
+                                    @Html.HiddenFor(m => m.<%= getPrimaryKeyColumnName(SourceTable) %>)
+                                    @Html.HiddenFor(m => m.strModelPrimaryKey)
+                                    @Html.HiddenFor(m => m.strValue2)
+                                </div>
+                                
+                                <% 
+                                      Response.Write(drawHTML(SourceTable, "false"));
+                                %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    @*THIS IS DETAIL TABLE PART*@
+                    <div class="panel panel-primary list-panel" id="detail-panel">
+                        <div class="panel-heading list-panel-heading detailheading">
+                            <div class="row">
+                                <div class="col-md-6 col-sm-6 col-xs-6">
+                                    Detail Form
+                                </div>
+                                <div class="col-md-6 col-sm-6 col-xs-6 actionbuttonletright">
+                                    @{
+                                        KAF.CustomHelper.HelperClasses.clsSecurityPanel objSecPanel = new KAF.CustomHelper.HelperClasses.clsSecurityPanel();
+
+                                        if (objSecPanel.checkButtonPermission("<%=GetTableNamesWithPrefix(SourceTable)%>/<%=GetTableNamesWithPrefix(SourceTable)%>New"))
+                                        {
+                                            <button type="submit" class="btn btn-primary btn-md  btnNew<%=GetTableNamesWithPrefix(SourceTableDetail)%>" id="btnNew<%=GetTableNamesWithPrefix(SourceTableDetail)%>">
+                                                <span class="glyphicon glyphicon-new-window" aria-hidden="true"></span> Add Detail Item
+                                            </button>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="container MainPageCnt" role="main">
+                                <div class='ms-bodyareacell clearfix'>
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            @Html.HiddenFor(m => m.<%= getPrimaryKeyColumnName(SourceTable) %>)
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                                <table id="<%=GetTableNamesWithPrefix(SourceTableDetail)%>Dt" class="table table-striped table-bordered" style="width:100%;">
+                                                    <thead>
+                                                        <tr>
+                                                           <% Response.Write(drawHTMLForDataTable(SourceTableDetail)); %>
+                                                            <th>Action</th>
+                                                        </tr>
+                                                    </thead>
+                                                </table>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-footer">
+                        </div>
+                    </div>
+                    @*THIS IS ACTION BUTTON PANEL*@
+                    <div class="panel panel-primary list-panel " id="action-panel">
+                        <div class="panel-heading list-panel-heading detailheading">
+                            Action Panel
+                        </div>
+                        <div class="panel-body">
+                            <div class="container MainPageCnt" role="main">
+                                <div class='ms-bodyareacell clearfix'>
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            <div class="col-md-12 col-sm-12 col-xs-12 buttonpanelcenter">
+                                                @{
+                                                    if (objSecPanel.checkButtonPermission("<%=GetTableNamesWithPrefix(SourceTable)%>/<%=GetTableNamesWithPrefix(SourceTable)%>Insert"))
+                                                    {
+                                                        <button type="submit" id="btnSave<%=GetTableNamesWithPrefix(SourceTable)%>" value='add' class="btn btn-primary btn-md btnSave<%=GetTableNamesWithPrefix(SourceTable)%>"> @KAF.MsgContainer._Common._btnSave <i class="fa fa-save"></i></button>
+                                                    }
+
+                                                    if (objSecPanel.checkButtonPermission("<%=GetTableNamesWithPrefix(SourceTable)%>/<%=GetTableNamesWithPrefix(SourceTable)%>Update"))
+                                                    {
+                                                        <button type="submit" id="btnUpdate<%=GetTableNamesWithPrefix(SourceTable)%>" value='add' class="btn btn-primary btn-md btnUpdate<%=GetTableNamesWithPrefix(SourceTable)%>"> @KAF.MsgContainer._Common._btnUpdate <i class="fa fa-edit"></i></button>
+                                                    }
+
+                                                    if (objSecPanel.checkButtonPermission("<%=GetTableNamesWithPrefix(SourceTable)%>/GenLeaveBalanceDelete"))
+                                                    {
+                                                        <button type="submit" id="btnDelete<%=GetTableNamesWithPrefix(SourceTable)%>" value='add' class="btn btn-primary btn-md btnDelete<%=GetTableNamesWithPrefix(SourceTable)%>"> @KAF.MsgContainer._Common._btnDelete<i class="fa fa-remove"></i></button>
+                                                    }
+                                                }
+                                                <button type="submit" id="btnCancel<%=GetTableNamesWithPrefix(SourceTable)%>" value='add' class="btn btn-primary btn-md btnCancel<%=GetTableNamesWithPrefix(SourceTable)%>"> @KAF.MsgContainer._Common._btnCancel <i class="fa fa-window-close"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-footer">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-primary list-panel" id="data-panel">
+            <div class="panel-heading list-panel-heading">
+                Data Panel
+            </div>
+            <div class="panel-body">
+                <div class="container MainPageCnt" role="main">
+                    <div class='ms-bodyareacell clearfix'>
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    Master Data
+                                </div>
+                            </div> <br />
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    @*<div class="panel panel-default">*@
+                                    <table id="<%=GetTableNamesWithPrefix(SourceTable)%>Dt" class="table table-striped table-bordered" style="width:100%;">
+                                        <thead>
+                                            <tr>
+                                                <% Response.Write(drawHTMLForDataTable(SourceTable)); %>
+                                                <th>@KAF.MsgContainer._CommonHtml._listAction</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                    @*</div>*@
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modal-container-<%=GetTableNamesWithPrefix(SourceTableDetail)%>Edit" class="modal fade hidden-print" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content" id="mc<%=GetTableNamesWithPrefix(SourceTableDetail)%>Edit">
+        </div>
+    </div>
+</div>
+
+<div id="modal-container-<%=GetTableNamesWithPrefix(SourceTableDetail)%>New" class="modal fade hidden-print" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content" id="mc<%=GetTableNamesWithPrefix(SourceTableDetail)%>New">
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @*<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"
+        integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30="
+        crossorigin="anonymous"></script>*@
+
+    <script src="~/DesignsAndScripts/PageWise/<%=GetTableNamesWithPrefix(SourceTable)%>/<%=GetTableNamesWithPrefix(SourceTable)%>Landing.js"></script>
+    <script src="~/DesignsAndScripts/PageWise/<%=GetTableNamesWithPrefix(SourceTable)%>/<%=GetTableNamesWithPrefix(SourceTableDetail)%>New.js"></script>
+    <script src="~/DesignsAndScripts/PageWise/<%=GetTableNamesWithPrefix(SourceTable)%>/<%=GetTableNamesWithPrefix(SourceTableDetail)%>Edit.js"></script>
+}
+
+
+
+                    
+

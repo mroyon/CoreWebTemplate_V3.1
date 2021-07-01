@@ -1,0 +1,670 @@
+﻿<%@ CodeTemplate Language="C#" TargetLanguage="C#" Description="Generates a ASP UserControl." Debug=true %>
+  
+  <%@ CodeTemplate Src="C:\ClassLibrary1\ClassLibrary1\LinqFunctions.cs" Inherits="LinqFunctions" Language="C#" TargetLanguage="C#"
+  Description="Generates a data context and entities for given tables." %>
+  
+
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Assembly Name="CodeSmith.BaseTemplates" %>
+<%@ Assembly Name="CodeSmith.CustomProperties" %>
+<%@ Assembly Name="System.Data" %>
+<%@ Assembly Name="System" %>
+<%@ Assembly Name="System.Core" %>
+<%@ Assembly Name="System.Collections" %>
+<%@ Assembly Name="System.Linq" %>
+
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Import Namespace="CodeSmith.CustomProperties" %>
+<%@ Import Namespace="CodeSmith.BaseTemplates" %>
+<%@ Import Namespace="System.Data" %>
+<%@ Import Namespace="System.Collections.Generic" %>
+<%@ Import Namespace="System.Text" %>
+
+<%@ Import Namespace="System.Text.RegularExpressions" %>
+<%@ Property Name="SourceTable" Type="SchemaExplorer.TableSchema" DeepLoad="True" Default="" Optional="False" %>
+<%@ Property Name="SourceTableDetail" Type="SchemaExplorer.TableSchema" DeepLoad="True" Default="" Optional="False" %>
+
+<%
+    List<ColumnSchema> objColumnList = new List<ColumnSchema>();
+
+        string divRowStart = "<div class=\"row \">";
+        string divColumnStart = "<div class=\"col-md-6\">";
+        string divClose = "</div>";
+        string div = string.Empty;
+%>
+
+var dt = new Date();
+var currYear = dt.getFullYear();
+var nextYear = eval(currYear) + 10;
+var baseurl = $('#txtBaseUrl').val();
+
+function changeBtnState() {
+    try {
+        var st = $("#strValue2").val();
+        if (st == "New") {
+            $("#btnSave<%=GetTableNamesWithPrefix(SourceTable)%>").removeClass("hidden");
+            $("#btnUpdate<%=GetTableNamesWithPrefix(SourceTable)%>").addClass("hidden");
+            $("#btnDelete<%=GetTableNamesWithPrefix(SourceTable)%>").addClass("hidden");
+        }
+        else {
+            $("#btnSave<%=GetTableNamesWithPrefix(SourceTable)%>").addClass("hidden");
+            $("#btnUpdate<%=GetTableNamesWithPrefix(SourceTable)%>").removeClass("hidden");
+            $("#btnDelete<%=GetTableNamesWithPrefix(SourceTable)%>").removeClass("hidden");
+        }
+
+
+    } catch (e) {
+        $.alert({
+            title: _getCookieForLanguage("_informationTitle"),
+            content: e.message,
+            type: 'red'
+        });
+    }
+}
+
+$(document).ready(function () {
+    changeBtnState();
+   
+    GetAllData<%=GetTableNamesWithPrefix(SourceTable)%>();
+    //DONE
+
+    $('body').on('click', '#btnCancel<%=GetTableNamesWithPrefix(SourceTable)%>', function (event) {
+        try {
+            event.preventDefault();
+            window.location.href = baseurl + "<%=GetTableNamesWithPrefix(SourceTable)%>/<%=GetTableNamesWithPrefix(SourceTable)%>";
+        } catch (e) {
+            $.alert({
+                title: _getCookieForLanguage("_informationTitle"),
+                content: e.message,
+                type: 'red'
+            });
+        }
+    });
+
+    //btnSave
+    $('body').on('click', '#btnSave<%=GetTableNamesWithPrefix(SourceTable)%>', function (event) {
+        try {
+            event.preventDefault();
+            var form = $('#frm<%=GetTableNamesWithPrefix(SourceTable)%>');
+            jQuery.validator.unobtrusive.parse();
+            jQuery.validator.unobtrusive.parse(form);
+
+            if (form.valid()) {
+
+                confirmationDialog(_getCookieForLanguage("_confirmationTitle"), _getCookieForLanguage("_saveConfirmation"), _getCookieForLanguage("_btnYes"), _getCookieForLanguage("_btnNo")).then(function (answer) {
+                    if (answer == "true") {
+
+                        AddAntiForgeryToken = function (data) {
+                            data.__RequestVerificationToken = $('input[name=__RequestVerificationToken]').val();
+                            return data;
+                        };
+                        var input = AddAntiForgeryToken({
+                            token: $(".txtUserSTK").val(),
+                            userinfo: $(".txtServerUtilObj").val(),
+                            useripaddress: $(".txtuserip").val(),
+                            sessionid: $(".txtUserSes").val(),
+                            methodname: "<%=GetTableNamesWithPrefix(SourceTable)%>Insert",
+                            currenturl: window.location.href,
+                            strModelPrimaryKey: $("#strModelPrimaryKey").val(),
+
+                            <%= getPrimaryKeyColumnName(SourceTable) %> : -99,
+                            <% 
+                                Response.Write(drawModelBuildForJS(SourceTable, false));
+                            %>
+                            
+                        });
+
+
+                        $.ajax({
+                            url: baseurl + "<%=GetTableNamesWithPrefix(SourceTable)%>/<%=GetTableNamesWithPrefix(SourceTable)%>Insert",
+                            type: 'POST',
+                            data: input,
+                            success: function (response) {
+                                if (response.status == "success") {
+                                    inforamtionDialog(response.title, response.responsetext, _getCookieForLanguage("_btnOK")).then(function (answer) {
+                                        window.location.href = baseurl + "<%=GetTableNamesWithPrefix(SourceTable)%>/<%=GetTableNamesWithPrefix(SourceTable)%>";
+                                    });
+                                }
+                                else {
+                                    inforamtionDialog(response.title, response.responsetext, _getCookieForLanguage("_btnOK")).then(function (answer) {
+                                    });
+                                }
+                            }
+                        });
+
+                    }
+                });
+            }
+            else {
+                return;
+            }
+
+        } catch (e) {
+            $.alert({
+                title: _getCookieForLanguage("_informationTitle"),
+                content: e.message,
+                type: 'red'
+            });
+        }
+    });
+    //btnUpdate
+    $('body').on('click', '#btnUpdate<%=GetTableNamesWithPrefix(SourceTable)%>', function (event) {
+        try {
+            event.preventDefault();
+            var form = $('#frm<%=GetTableNamesWithPrefix(SourceTable)%>');
+            jQuery.validator.unobtrusive.parse();
+            jQuery.validator.unobtrusive.parse(form);
+
+            if (form.valid()) {
+
+                confirmationDialog(_getCookieForLanguage("_confirmationTitle"), _getCookieForLanguage("_updateConfirmation"), _getCookieForLanguage("_btnYes"), _getCookieForLanguage("_btnNo")).then(function (answer) {
+                    if (answer == "true") {
+
+                        AddAntiForgeryToken = function (data) {
+                            data.__RequestVerificationToken = $('input[name=__RequestVerificationToken]').val();
+                            return data;
+                        };
+                        var input = AddAntiForgeryToken({
+                            token: $(".txtUserSTK").val(),
+                            userinfo: $(".txtServerUtilObj").val(),
+                            useripaddress: $(".txtuserip").val(),
+                            sessionid: $(".txtUserSes").val(),
+                            methodname: "<%=GetTableNamesWithPrefix(SourceTable)%>Update",
+                            currenturl: window.location.href,
+                            strModelPrimaryKey: $("#strModelPrimaryKey").val(),
+                            
+                            
+                            <% 
+                                Response.Write(drawModelBuildForJS(SourceTable));
+                            %>
+                            
+                        });
+
+
+                        $.ajax({
+                            url: baseurl + "<%=GetTableNamesWithPrefix(SourceTable)%>/<%=GetTableNamesWithPrefix(SourceTable)%>Update",
+                            type: 'POST',
+                            data: input,
+                            success: function (response) {
+                                if (response.status == "success") {
+                                    inforamtionDialog(response.title, response.responsetext, _getCookieForLanguage("_btnOK")).then(function (answer) {
+                                        window.location.href = baseurl + "<%=GetTableNamesWithPrefix(SourceTable)%>/<%=GetTableNamesWithPrefix(SourceTable)%>";
+                                    });
+                                }
+                                else {
+                                    inforamtionDialog(response.title, response.responsetext, _getCookieForLanguage("_btnOK")).then(function (answer) {
+                                    });
+                                }
+                            }
+                        });
+
+                    }
+                });
+            }
+            else {
+                return;
+            }
+
+        } catch (e) {
+            $.alert({
+                title: _getCookieForLanguage("_informationTitle"),
+                content: e.message,
+                type: 'red'
+            });
+        }
+    });
+    //btnDelete
+    $('body').on('click', '#btnDelete<%=GetTableNamesWithPrefix(SourceTable)%>', function (event) {
+        try {
+            event.preventDefault();
+            var form = $('#frm<%=GetTableNamesWithPrefix(SourceTable)%>');
+            jQuery.validator.unobtrusive.parse();
+            jQuery.validator.unobtrusive.parse(form);
+
+            if (form.valid()) {
+                confirmationDialog(_getCookieForLanguage("_confirmationTitle"), _getCookieForLanguage("_deleteConfirmation"), _getCookieForLanguage("_btnYes"), _getCookieForLanguage("_btnNo")).then(function (answer) {
+                    if (answer == "true") {
+
+                        AddAntiForgeryToken = function (data) {
+                            data.__RequestVerificationToken = $('input[name=__RequestVerificationToken]').val();
+                            return data;
+                        };
+
+                        var input = AddAntiForgeryToken({
+                            token: $(".txtUserSTK").val(),
+                            userinfo: $(".txtServerUtilObj").val(),
+                            useripaddress: $(".txtuserip").val(),
+                            sessionid: $(".txtUserSes").val(),
+                            methodname: "<%=GetTableNamesWithPrefix(SourceTable)%>Delete",
+                            currenturl: window.location.href,
+                            strModelPrimaryKey: $("#strModelPrimaryKey").val(),
+                            <%= getPrimaryKeyColumnName(SourceTable) %> : $('#<%= getPrimaryKeyColumnName(SourceTable) %> ').val()
+                        });
+
+
+                        $.ajax({
+                            url: baseurl + "<%=GetTableNamesWithPrefix(SourceTable)%>/<%=GetTableNamesWithPrefix(SourceTable)%>Delete",
+                            data: input,
+                            type: 'POST',
+                            success: function (response) {
+                                if (response.status == "success") {
+                                    inforamtionDialog(response.title, response.responsetext, _getCookieForLanguage("_btnOK")).then(function (answer) {
+                                        window.location.href = baseurl + "<%=GetTableNamesWithPrefix(SourceTable)%>/<%=GetTableNamesWithPrefix(SourceTable)%>";
+                                    });
+                                }
+                                else {
+                                    inforamtionDialog(response.title, response.responsetext, _getCookieForLanguage("_btnOK")).then(function (answer) {
+                                    });
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+            else {
+                return;
+            }
+        } catch (e) {
+            $.alert({
+                title: _getCookieForLanguage("_informationTitle"),
+                content: e.message,
+                type: 'red'
+            });
+        }
+    });
+
+
+    //DETAIL PART
+    $('body').on('click', '#btnNew<%=GetTableNamesWithPrefix(SourceTableDetail)%>', function (event) {
+        try {
+            event.preventDefault();
+            AddAntiForgeryToken = function (data) {
+                data.__RequestVerificationToken = $('input[name=__RequestVerificationToken]').val();
+                return data;
+            };
+            var input = AddAntiForgeryToken({
+                token: $(".txtUserSTK").val(),
+                userinfo: $(".txtServerUtilObj").val(),
+                useripaddress: $(".txtuserip").val(),
+                sessionid: $(".txtUserSes").val(),
+                methodname: "<%=GetTableNamesWithPrefix(SourceTableDetail)%>New",
+                currenturl: window.location.href,
+                strModelPrimaryKey: $("#strModelPrimaryKey").val() //sending primary key of master table.
+            });
+
+            $.ajax({
+                url: baseurl + "<%=GetTableNamesWithPrefix(SourceTable)%>/<%=GetTableNamesWithPrefix(SourceTableDetail)%>New",
+                type: 'POST',
+                data: input,
+                success: function (response) {
+                    $('#mc<%=GetTableNamesWithPrefix(SourceTableDetail)%>New').html('');
+                    $('#mc<%=GetTableNamesWithPrefix(SourceTableDetail)%>New').html(response);
+                    $('#modal-container-<%=GetTableNamesWithPrefix(SourceTableDetail)%>New').modal({
+                        backdrop: 'static',
+                        keyboard: false
+                    });
+                }
+            });
+
+        } catch (e) {
+            $.alert({
+                title: _getCookieForLanguage("_informationTitle"),
+                content: e.message,
+                type: 'red'
+            });
+        }
+    });
+
+
+});
+
+//LOAD MASTER DATA
+function GetAllData<%=GetTableNamesWithPrefix(SourceTable)%>() {
+
+    try {
+        AddAntiForgeryToken = function (data) {
+            data.__RequestVerificationToken = $('input[name=__RequestVerificationToken]').val();
+            return data;
+        };
+
+        var input = AddAntiForgeryToken({
+            token: $(".txtUserSTK").val(),
+            userinfo: $(".txtServerUtilObj").val(),
+            useripaddress: $(".txtuserip").val(),
+            sessionid: $(".txtUserSes").val(),
+            methodname: "<%=GetTableNamesWithPrefix(SourceTable)%>Data",
+            currenturl: window.location.href
+        });
+
+        $('#<%=GetTableNamesWithPrefix(SourceTable)%>Dt').DataTable({
+            "bFilter": true,
+            "columnDefs": [{
+                "targets": 0,
+                "searchable": true,
+                "orderable": true,
+            }],
+            "language": {
+                "processing": "<div class='overlay custom-loader-background'><i class='fa fa-cog fa-spin custom-loader-color'></i></div>"
+            },
+            "processing": true,
+            "serverSide": true,
+            "autoWidth": false,
+            "responsive": true,
+            "ajax": {
+                "url": baseurl + "<%=GetTableNamesWithPrefix(SourceTable)%>/<%=GetTableNamesWithPrefix(SourceTable)%>TableData",
+                "type": "POST",
+                "data": input
+
+            },
+            
+            
+            "columns": [
+            <% 
+                Response.Write(drawHTMLForDataTableJS(SourceTable));
+                        %>
+                    
+            {
+                "data": "ex_nvarchar1",
+                "render": function (data, type, full, meta) {
+                    return data;
+                }
+            }
+            ]
+        });
+    } catch (e) {
+        $.alert({
+            title: _getCookieForLanguage("_informationTitle"),
+            content: e.message,
+            type: 'red'
+        });
+    }
+}
+
+//Select from MASTER TABLE
+function Edit<%=GetTableNamesWithPrefix(SourceTable)%>(val) {
+    try {
+        AddAntiForgeryToken = function (data) {
+            data.__RequestVerificationToken = $('input[name=__RequestVerificationToken]').val();
+            return data;
+        };
+
+        var input = AddAntiForgeryToken({
+            token: $(".txtUserSTK").val(),
+            userinfo: $(".txtServerUtilObj").val(),
+            useripaddress: $(".txtuserip").val(),
+            sessionid: $(".txtUserSes").val(),
+            methodname: "<%=GetTableNamesWithPrefix(SourceTable)%>Edit",
+            currenturl: window.location.href,
+            strModelPrimaryKey: val
+        });
+
+        $.ajax({
+            url: baseurl + "<%=GetTableNamesWithPrefix(SourceTable)%>/<%=GetTableNamesWithPrefix(SourceTable)%>Edit",
+            type: 'POST',
+            data: input,
+            success: function (response) {
+
+                var res = response.data;
+                if (res != null) {
+
+                    Cleardata();
+                    $("#strModelPrimaryKey").val(res.strModelPrimaryKey);
+                    
+                     <% 
+                            Response.Write(drawFormFillerForJS(SourceTable));
+                        %>
+                        
+                    LoadDetailData(res.strModelPrimaryKey);
+                    $("#strValue2").val("Old");
+                    changeBtnState();
+                }
+            }
+        });
+
+    } catch (e) {
+        $.alert({
+            title: _getCookieForLanguage("_informationTitle"),
+            content: e.message,
+            type: 'red'
+        });
+    }
+}
+// Delete from Master Table
+function Delete<%=GetTableNamesWithPrefix(SourceTable)%>(val) {
+    try {
+        confirmationDialog(_getCookieForLanguage("_confirmationTitle"), _getCookieForLanguage("_deleteConfirmation"), _getCookieForLanguage("_btnYes"), _getCookieForLanguage("_btnNo")).then(function (answer) {
+            if (answer == "true") {
+
+                AddAntiForgeryToken = function (data) {
+                    data.__RequestVerificationToken = $('input[name=__RequestVerificationToken]').val();
+                    return data;
+                };
+
+                var input = AddAntiForgeryToken({
+                    token: $(".txtUserSTK").val(),
+                    userinfo: $(".txtServerUtilObj").val(),
+                    useripaddress: $(".txtuserip").val(),
+                    sessionid: $(".txtUserSes").val(),
+                    methodname: "<%=GetTableNamesWithPrefix(SourceTable)%>Delete",
+                    currenturl: window.location.href,
+                    strModelPrimaryKey: val,
+                    <%= getPrimaryKeyColumnName(SourceTable) %>: -99
+                });
+
+
+                $.ajax({
+                    url: baseurl + "<%=GetTableNamesWithPrefix(SourceTable)%>/<%=GetTableNamesWithPrefix(SourceTable)%>Delete",
+                    data: input,
+                    type: 'POST',
+                    success: function (response) {
+                        if (response.status == "success") {
+                            inforamtionDialog(response.title, response.responsetext, _getCookieForLanguage("_btnOK")).then(function (answer) {
+                                window.location.href = baseurl + "<%=GetTableNamesWithPrefix(SourceTable)%>/<%=GetTableNamesWithPrefix(SourceTable)%>";
+                            });
+                        }
+                        else {
+                            inforamtionDialog(response.title, response.responsetext, _getCookieForLanguage("_btnOK")).then(function (answer) {
+                            });
+                        }
+                    }
+                });
+            }
+        });
+
+    } catch (e) {
+        $.alert({
+            title: _getCookieForLanguage("_informationTitle"),
+            content: e.message,
+            type: 'red'
+        });
+    }
+}
+
+//Clear Master Form
+function Cleardata() {
+
+  <% 
+                            Response.Write(drawClearFormForJS(SourceTable));
+                        %>
+
+}
+
+
+// Load Detail Data by Master key
+function LoadDetailData(val) {
+    try {
+        AddAntiForgeryToken = function (data) {
+            data.__RequestVerificationToken = $('input[name=__RequestVerificationToken]').val();
+            return data;
+        };
+
+        $('#<%=GetTableNamesWithPrefix(SourceTableDetail)%>Dt').DataTable({
+            "destroy": true,
+            "bFilter": true,
+            "columnDefs": [{
+                "targets": 0,
+                "searchable": true,
+                "orderable": true,
+            }],
+            "language": {
+                "processing": "<div class='overlay custom-loader-background'><i class='fa fa-cog fa-spin custom-loader-color'></i></div>"
+            },
+            "processing": true,
+            "serverSide": true,
+            "autoWidth": false,
+            "responsive": true,
+            "ajax": {
+                "url": baseurl + "<%=GetTableNamesWithPrefix(SourceTable)%>/<%=GetTableNamesWithPrefix(SourceTableDetail)%>TableData",
+                "type": "POST",
+                "data": {
+                    __RequestVerificationToken: $('input[name=__RequestVerificationToken]').val(),
+                    token: $(".txtUserSTK").val(),
+                    userinfo: $(".txtServerUtilObj").val(),
+                    useripaddress: $(".txtuserip").val(),
+                    sessionid: $(".txtUserSes").val(),
+                    methodname: "<%=GetTableNamesWithPrefix(SourceTableDetail)%>TableData",
+                    currenturl: window.location.href,
+                    strModelPrimaryKey: $("#strModelPrimaryKey").val()
+                }
+
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                $.alert({
+                    title: _getCookieForLanguage("_informationTitle"),
+                    content: jqXHR.responseJSON.Error,
+                    type: 'red'
+                });
+            },
+            "columns": [
+            <% 
+                Response.Write(drawHTMLForDataTableJS(SourceTableDetail));
+                        %>
+            
+            {
+                "data": "ex_nvarchar1",
+                "render": function (data, type, full, meta) {
+                    return data;
+                }
+            }
+            ]
+        });
+    } catch (e) {
+        $.alert({
+            title: _getCookieForLanguage("_informationTitle"),
+            content: e.message,
+            type: 'red'
+        });
+    }
+}
+
+// Load Detail Data by Master key
+
+
+// Edit Detail data by detail key
+function <%=GetTableNamesWithPrefix(SourceTableDetail)%>Edit(val) {
+    try {
+        AddAntiForgeryToken = function (data) {
+            data.__RequestVerificationToken = $('input[name=__RequestVerificationToken]').val();
+            return data;
+        };
+        var input = AddAntiForgeryToken({
+            token: $(".txtUserSTK").val(),
+            userinfo: $(".txtServerUtilObj").val(),
+            useripaddress: $(".txtuserip").val(),
+            sessionid: $(".txtUserSes").val(),
+            methodname: "<%=GetTableNamesWithPrefix(SourceTableDetail)%>Edit",
+            currenturl: window.location.href,
+            strModelPrimaryKey: val // sending detail primary key
+
+        });
+
+        $.ajax({
+            url: baseurl + "<%=GetTableNamesWithPrefix(SourceTable)%>/<%=GetTableNamesWithPrefix(SourceTableDetail)%>Edit",
+            type: 'POST',
+            data: input,
+            success: function (response) {
+                $('#mc<%=GetTableNamesWithPrefix(SourceTableDetail)%>Edit').html('');
+                $('#mc<%=GetTableNamesWithPrefix(SourceTableDetail)%>Edit').html(response);
+                $('#modal-container-<%=GetTableNamesWithPrefix(SourceTableDetail)%>Edit').modal({
+                        backdrop: 'static',
+                        keyboard: false
+                    });
+            }
+        });
+
+    } catch (e) {
+        $.alert({
+            title: _getCookieForLanguage("_informationTitle"),
+            content: e.message,
+            type: 'red'
+        });
+    }
+}
+
+// delete Detail data by detail key
+function <%=GetTableNamesWithPrefix(SourceTableDetail)%>Delete(val) {
+    try {
+
+
+        AddAntiForgeryToken = function (data) {
+            data.__RequestVerificationToken = $('input[name=__RequestVerificationToken]').val();
+            return data;
+        };
+        var input = AddAntiForgeryToken({
+            token: $(".txtUserSTK").val(),
+            userinfo: $(".txtServerUtilObj").val(),
+            useripaddress: $(".txtuserip").val(),
+            sessionid: $(".txtUserSes").val(),
+            methodname: "GenLeaveBalanceDetlNew",
+            currenturl: window.location.href,
+            strModelPrimaryKey: val // sending detail primary key
+
+        });
+
+        confirmationDialog(_getCookieForLanguage("_confirmationTitle"),
+            _getCookieForLanguage("_deleteConfirmation"), _getCookieForLanguage("_btnYes"), _getCookieForLanguage("_btnNo")).then(function (answer) {
+                if (answer == "true") {
+
+                    $.ajax({
+                        url: baseurl + "<%=GetTableNamesWithPrefix(SourceTable)%>/<%=GetTableNamesWithPrefix(SourceTableDetail)%>Delete",
+                        data: input,
+                        type: 'POST',
+                        success: function (data) {
+                            if (data.status === "success") {
+                                inforamtionDialog(data.title, data.responsetext, _getCookieForLanguage("_btnOK")).then(function (answer) {
+                                     $('#mc<%= GetTableNamesWithPrefix(SourceTableDetail) %>Edit').html('');
+                                    $('#modal-container-<%=GetTableNamesWithPrefix(SourceTableDetail)%>Edit').modal('hide');
+                                    LoadDetailData(data.prikey);
+                                });
+                            }
+                        }
+                    });
+                }
+                else {
+                }
+            });
+
+
+    } catch (e) {
+        $.alert({
+            title: _getCookieForLanguage("_informationTitle"),
+            content: e.message,
+            type: 'red'
+        });
+    }
+}
+
+
+
+
+function datetoStr(data) {
+    var regex = /-?\d+/;
+    var match = regex.exec(data);
+    var pubdate = new Date(parseInt(match[0]));
+
+    var dd = pubdate.getDate(); var mm = pubdate.getMonth() + 1;
+    var yyyy = pubdate.getFullYear(); if (dd < 10) { dd = '0' + dd } if (mm < 10) { mm = '0' + mm }
+    var today = dd + '/' + mm + '/' + yyyy;
+    return today;
+}
+

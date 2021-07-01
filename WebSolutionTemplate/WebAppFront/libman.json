@@ -1,0 +1,219 @@
+{
+  "version": "1.0",
+  "defaultProvider": "unpkg",
+  "libraries": [
+    {
+      "library": "@laylazi/bootstrap-rtl@4.6.0-1",
+      "destination": "wwwroot/lib/bootstrap/",
+      "files": [
+        "dist/css/bootstrap-reboot-rtl.css",
+        "dist/css/bootstrap-reboot-rtl.min.css",
+        "dist/css/bootstrap-reboot.css",
+        "dist/css/bootstrap-reboot.min.css",
+        "dist/css/bootstrap-rtl.css",
+        "dist/css/bootstrap-rtl.min.css",
+        "dist/css/bootstrap.css",
+        "dist/css/bootstrap.min.css",
+        "dist/js/bootstrap.js",
+        "dist/js/bootstrap.min.js"
+      ]
+    },
+    {
+      "provider": "cdnjs",
+      "library": "jquery@3.6.0",
+      "destination": "wwwroot/lib/jquery/",
+      "files": [
+        "jquery.min.js",
+        "jquery.js"
+      ]
+    },
+    {
+      "provider": "cdnjs",
+      "library": "jquery-validation-unobtrusive@3.2.12",
+      "destination": "wwwroot/lib/jquery-validation-unobtrusive/",
+      "files": [
+        "jquery.validate.unobtrusive.min.js",
+        "jquery.validate.unobtrusive.js"
+      ]
+    },
+    {
+      "provider": "cdnjs",
+      "library": "jquery-validate@1.19.3",
+      "destination": "wwwroot/lib/jquery-validate/"
+    },
+    {
+      "provider": "cdnjs",
+      "library": "datatables@1.10.21",
+      "destination": "wwwroot/lib/datatables/"
+    },
+    {
+      "provider": "cdnjs",
+      "library": "datatables.net-bs4@3.2.2",
+      "destination": "wwwroot/lib/datatables.net-bs4/",
+      "files": [
+        "dataTables.bootstrap4.min.js",
+        "dataTables.bootstrap4.css",
+        "dataTables.bootstrap4.js",
+        "dataTables.bootstrap4.min.css"
+      ]
+    },
+    {
+      "provider": "cdnjs",
+      "library": "jquery-ajax-unobtrusive@3.2.6",
+      "destination": "wwwroot/lib/jquery-ajax-unobtrusive/",
+      "files": [
+        "jquery.unobtrusive-ajax.min.js",
+        "jquery.unobtrusive-ajax.js"
+      ]
+    },
+    {
+      "provider": "cdnjs",
+      "library": "font-awesome@5.15.3",
+      "destination": "wwwroot/lib/font-awesome/"
+    },
+    {
+      "provider": "cdnjs",
+      "library": "jquery-jcrop@0.9.15",
+      "destination": "wwwroot/lib/jquery-jcrop/"
+    },
+    {
+      "provider": "cdnjs",
+      "library": "toastr.js@2.1.4",
+      "destination": "wwwroot/lib/toastr.js/"
+    },
+    {
+      "provider": "cdnjs",
+      "library": "tinymce@5.8.1",
+      "destination": "wwwroot/lib/tinymce/",
+      "files": [
+        "tinymce.min.js"
+      ]
+    },
+    {
+      "library": "@icon/icofont@1.0.1-alpha.1",
+      "destination": "wwwroot/lib/icofont/",
+      "files": [
+        "icofont.css",
+        "icofont.woff",
+        "icofont.woff2",
+        "icofont.svg",
+        "icofont.ttf",
+        "icofont.eot"
+      ]
+    },
+    {
+      "library": "boxicons@2.0.7",
+      "destination": "wwwroot/lib/boxicons/",
+      "files": [
+        "css/animations.css",
+        "css/boxicons.css",
+        "css/boxicons.min.css",
+        "css/transformations.css",
+        "fonts/boxicons.eot",
+        "fonts/boxicons.svg",
+        "fonts/boxicons.ttf",
+        "fonts/boxicons.woff",
+        "fonts/boxicons.woff2"
+      ]
+    },
+    {
+      "provider": "cdnjs",
+      "library": "animate.css@4.1.1",
+      "destination": "wwwroot/lib/animate.css/"
+    },
+    {
+      "library": "owl.carousel@2.3.4",
+      "destination": "wwwroot/lib/owl.carousel/",
+      "files": [
+        "dist/assets/ajax-loader.gif",
+        "dist/assets/owl.carousel.css",
+        "dist/assets/owl.carousel.min.css",
+        "dist/assets/owl.theme.default.css",
+        "dist/assets/owl.theme.default.min.css",
+        "dist/assets/owl.theme.green.css",
+        "dist/assets/owl.theme.green.min.css",
+        "dist/assets/owl.video.play.png",
+        "dist/owl.carousel.js",
+        "dist/owl.carousel.min.js"
+      ]
+    },
+    {
+      "provider": "cdnjs",
+      "library": "venobox@1.9.3",
+      "destination": "wwwroot/lib/venobox/"
+    },
+    {
+      "provider": "cdnjs",
+      "library": "aos@2.3.4",
+      "destination": "wwwroot/lib/aos/",
+      "files": [
+        "aos.js",
+        "aos.css"
+      ]
+    },
+    {
+      "provider": "cdnjs",
+      "library": "bootstrap-v4-rtl@4.6.0-2",
+      "destination": "wwwroot/lib/bootstrap-v4-rtl/",
+      "files": [
+        "js/bootstrap.min.js",
+        "js/bootstrap.bundle.js",
+        "js/bootstrap.bundle.min.js",
+        "css/bootstrap.css",
+        "css/bootstrap.min.css",
+        "css/bootstrap-rtl.min.css",
+        "css/bootstrap-rtl.css",
+        "js/bootstrap.js"
+      ]
+    },
+    {
+      "library": "jquery.easing@1.4.1",
+      "destination": "wwwroot/lib/jquery.easing/",
+      "files": [
+        "jquery.easing.js",
+        "jquery.easing.min.js"
+      ]
+    },
+    {
+      "library": "jquery-waypoints@2.0.5",
+      "destination": "wwwroot/lib/jquery-waypoints/",
+      "files": [
+        "waypoints.js",
+        "waypoints.min.js"
+      ]
+    },
+    {
+      "library": "counterup@1.0.2",
+      "destination": "wwwroot/lib/counterup/",
+      "files": [
+        "jquery.counterup.js",
+        "jquery.counterup.min.js"
+      ]
+    },
+    {
+      "provider": "cdnjs",
+      "library": "jqueryui@1.12.1",
+      "destination": "wwwroot/lib/jquery.ui/",
+      "files": [
+        "jquery-ui.min.js",
+        "jquery-ui.css",
+        "jquery-ui.js",
+        "jquery-ui.min.css"
+      ]
+    },
+    {
+      "provider": "cdnjs",
+      "library": "popper.js@2.9.2",
+      "destination": "wwwroot/lib/popper.js/",
+      "files": [
+        "umd/popper.min.js",
+        "umd/popper.js"
+      ]
+    },
+    {
+      "provider": "cdnjs",
+      "library": "bootstrap-sweetalert@1.0.1",
+      "destination": "wwwroot/lib/bootstrap-sweetalert/"
+    }
+  ]
+}

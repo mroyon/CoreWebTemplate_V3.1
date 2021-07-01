@@ -1,0 +1,66 @@
+﻿<%@ CodeTemplate Language="C#" TargetLanguage="C#" Description="Generates a ASP UserControl." Debug=true %>
+  
+  <%@ CodeTemplate Src="C:\ClassLibrary1\ClassLibrary1\LinqFunctions.cs" Inherits="LinqFunctions" Language="C#" TargetLanguage="C#"
+  Description="Generates a data context and entities for given tables." %>
+ 
+
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Assembly Name="CodeSmith.BaseTemplates" %>
+<%@ Assembly Name="CodeSmith.CustomProperties" %>
+<%@ Assembly Name="System.Data" %>
+<%@ Assembly Name="System" %>
+<%@ Assembly Name="System.Core" %>
+<%@ Assembly Name="System.Collections" %>
+<%@ Assembly Name="System.Linq" %>
+
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Import Namespace="CodeSmith.CustomProperties" %>
+<%@ Import Namespace="CodeSmith.BaseTemplates" %>
+<%@ Import Namespace="System.Data" %>
+<%@ Import Namespace="System.Collections.Generic" %>
+<%@ Import Namespace="System.Text" %>
+
+<%@ Import Namespace="System.Text.RegularExpressions" %>
+<%@ Property Name="SourceTable" Type="SchemaExplorer.TableSchema" DeepLoad="True" Default="" Optional="False" %>
+<%@ Property Name="NameSpace" Type="System.String" Default="" Optional="False" %>
+<%@ Property Name="WebNameSpace" Type="System.String" Optional="False" %>
+<%
+    List<ColumnSchema> objColumnList = new List<ColumnSchema>();
+
+        string divRowStart = "<div class=\"row \">";
+        string divColumnStart = "<div class=\"col-md-6\">";
+        string divClose = "</div>";
+        string div = string.Empty;
+%>
+using BDO.DataAccessObjects.CorsCore;
+using BDO.DataAccessObjects.ExtendedEntities;
+using System.Collections.Generic;
+using Web.Core.Frame.Interfaces;
+
+namespace Web.Core.Frame.RequestResponse.UseCaseResponses
+{
+    public class <%=GetTableNamesWithoutPrefix(SourceTable) %>Response : UseCaseResponseMessage
+    {
+        public <%=GetClassName(SourceTable)%>Entity _<%=GetTableNamesasLocalVariable(SourceTable)%> { get; }
+
+        public IEnumerable<<%=GetClassName(SourceTable)%>Entity> _<%=GetTableNamesasLocalVariable(SourceTable)%>List { get; }
+
+        public Error Errors { get; }
+
+
+        public <%=GetTableNamesWithoutPrefix(SourceTable) %>Response(bool success = false, string message = null, Error errors = null) : base(success, message)
+        {
+            Errors = errors;
+        }
+
+        public <%=GetTableNamesWithoutPrefix(SourceTable) %>Response(IEnumerable<<%=GetClassName(SourceTable)%>Entity> <%=GetTableNamesasLocalVariable(SourceTable)%>List, bool success = false, string message = null) : base(success, message)
+        {
+            _<%=GetTableNamesasLocalVariable(SourceTable)%>List = <%=GetTableNamesasLocalVariable(SourceTable)%>List;
+        }
+        
+        public <%=GetTableNamesWithoutPrefix(SourceTable) %>Response(<%=GetClassName(SourceTable)%>Entity <%=GetTableNamesasLocalVariable(SourceTable)%>, bool success = false, string message = null) : base(success, message)
+        {
+            _<%=GetTableNamesasLocalVariable(SourceTable)%> = <%=GetTableNamesasLocalVariable(SourceTable)%>;
+        }
+    }
+}

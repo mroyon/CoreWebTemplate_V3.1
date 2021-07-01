@@ -1,0 +1,607 @@
+﻿<%@ CodeTemplate Language="C#" TargetLanguage="C#" Description="Generates a domain object." %>
+
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Assembly Name="CodeSmith.BaseTemplates" %>
+<%@ Assembly Name="CodeSmith.CustomProperties" %>
+<%@ Assembly Name="System.Data" %>
+
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Import Namespace="CodeSmith.CustomProperties" %>
+<%@ Import Namespace="CodeSmith.BaseTemplates" %>
+<%@ Import Namespace="System.Data" %>
+<%@ Import Namespace="System.Text.RegularExpressions" %>
+<%@ Import Namespace="System.Data" %>
+
+<%@ Property Name="SourceTable" Type="SchemaExplorer.TableSchema" Optional="False" %>
+<%@ Property Name="NameSpace" Type="System.String" Optional="False" %>
+<%@ Property Name="ExcludedColumns" Type="StringCollection" Optional="True" Default="" %>
+<%@ Property Name="ReadOnlyColumns" Type="StringCollection" Optional="True" Default="" %>
+
+<?xml version="1.0" encoding="utf-8" ?>
+<resources>
+    
+        <!--  ar-kwabic (ar-kw) -->
+        
+        <% foreach ( ColumnSchema column in this.SourceTable.NonPrimaryKeyColumns){%>
+        <% if((column.Name.ToLower() != "entryuserkey") && (column.Name.ToLower() != "lastupdateuserkey") && (column.Name.ToLower() != "UpdatedBy") && (column.Name.ToLower() != "UpdatedDate") && (column.Name.ToLower() != "CreatedDate")  && (column.Name.ToLower() != "CreatedBy")  && (column.Name.ToLower() != "EntryDate") && (column.Name.ToLower() != "FormID") && (column.Name.ToLower() != "formid") 
+        && (column.Name.ToLower() != "createdby") && (column.Name.ToLower() != "createddate")
+        && (column.Name.ToLower() != "updatedby")
+        && (column.Name.ToLower() != "updateddate")
+        && (column.Name.ToLower() != "ipaddress")
+        && (column.Name.ToLower() != "transid")
+        && (column.Name.ToLower() != "userentitykey")
+        && (column.Name.ToLower() != "userorganizationkey")
+        && (column.Name.ToLower() != "ts")
+		&& (column.Name.ToLower() != "ex_date1")
+		&& (column.Name.ToLower() != "ex_date2")
+		&& (column.Name.ToLower() != "ex_nvarchar1")
+		&& (column.Name.ToLower() != "ex_nvarchar2")
+		&& (column.Name.ToLower() != "ex_bigint1")
+		&& (column.Name.ToLower() != "ex_bigint2")
+		&& (column.Name.ToLower() != "ex_decimal1")
+		&& (column.Name.ToLower() != "ex_decimal2")
+		&& (column.Name.ToLower() != "createdbyusername")
+		&& (column.Name.ToLower() != "updatedbyusername")
+        ){
+             string na = column.Name.Replace("_", "");
+             %>
+       <resource culture="ar-kw" name="<%= GetPropertyName(column) %>" value="AR: <%= StringSplitter(na) %>"></resource>
+       <% 
+            if(!column.AllowDBNull)
+            {
+       %>
+       <resource culture="ar-kw" name="<%= GetPropertyName(column) %>Required" value="AR: Please provide <%= StringSplitter(na) %>"></resource>
+        <%}%>
+        <%}%>
+        <%}%>
+		<resource culture="ar-kw" name="<%=GetTableNamesWithoutPrefix(this.SourceTable).ToLower()%>List" value="AR: View All"></resource>
+		<resource culture="ar-kw" name="<%=GetTableNamesWithoutPrefix(this.SourceTable).ToLower()%>Create" value="AR: Create"></resource>
+		<resource culture="ar-kw" name="<%=GetTableNamesWithoutPrefix(this.SourceTable).ToLower()%>Update" value="AR: Update"></resource>
+		<resource culture="ar-kw" name="<%=GetTableNamesWithoutPrefix(this.SourceTable).ToLower()%>Details" value="AR: Detail"></resource>
+
+         <!--  ar-kwabic (ar-kw) -->
+         
+          <!--  English (en-US) -->
+        <% foreach ( ColumnSchema column in this.SourceTable.NonPrimaryKeyColumns){%>
+        <% if((column.Name.ToLower() != "entryuserkey") && (column.Name.ToLower() != "lastupdateuserkey") && (column.Name.ToLower() != "UpdatedBy") && (column.Name.ToLower() != "UpdatedDate") && (column.Name.ToLower() != "CreatedDate")  && (column.Name.ToLower() != "CreatedBy")  && (column.Name.ToLower() != "EntryDate") && (column.Name.ToLower() != "FormID") && (column.Name.ToLower() != "formid") 
+        && (column.Name.ToLower() != "createdby") && (column.Name.ToLower() != "createddate")
+        && (column.Name.ToLower() != "updatedby")
+        && (column.Name.ToLower() != "updateddate")
+        && (column.Name.ToLower() != "ipaddress")
+        && (column.Name.ToLower() != "transid")
+        && (column.Name.ToLower() != "userentitykey")
+        && (column.Name.ToLower() != "userorganizationkey")
+        && (column.Name.ToLower() != "ts")
+		&& (column.Name.ToLower() != "ex_date1")
+		&& (column.Name.ToLower() != "ex_date2")
+		&& (column.Name.ToLower() != "ex_nvarchar1")
+		&& (column.Name.ToLower() != "ex_nvarchar2")
+		&& (column.Name.ToLower() != "ex_bigint1")
+		&& (column.Name.ToLower() != "ex_bigint2")
+		&& (column.Name.ToLower() != "ex_decimal1")
+		&& (column.Name.ToLower() != "ex_decimal2")
+		&& (column.Name.ToLower() != "createdbyusername")
+		&& (column.Name.ToLower() != "updatedbyusername")
+        ){
+            
+            string na = column.Name.Replace("_", "");
+        %>
+       <resource culture="en-us" name="<%= GetPropertyName(column) %>" value="<%=StringSplitter(na) %>"></resource>
+       <% 
+            if(!column.AllowDBNull)
+            {
+       %>
+       <resource culture="en-us" name="<%= GetPropertyName(column) %>Required" value="Please provide <%= StringSplitter(na) %>"></resource>
+        <%}%>
+        <%}%>
+        <%}%>
+        <resource culture="en-us" name="<%=GetTableNamesWithoutPrefix(this.SourceTable).ToLower()%>List" value="View All"></resource>
+		<resource culture="en-us" name="<%=GetTableNamesWithoutPrefix(this.SourceTable).ToLower()%>Create" value="Create"></resource>
+		<resource culture="en-us" name="<%=GetTableNamesWithoutPrefix(this.SourceTable).ToLower()%>Update" value="Update"></resource>
+		<resource culture="en-us" name="<%=GetTableNamesWithoutPrefix(this.SourceTable).ToLower()%>Details" value="Detail"></resource>
+          <!--  English (en-US) -->
+        
+         
+
+</resources>        
+<script runat="template">
+
+private Regex excludedColumnRegex = null;
+private Regex readOnlyColumnRegex = null;
+public void GenerateIndent(int indentLevel)
+{
+for (int i = 0; i < indentLevel; i++)
+{
+Response.Write('\t');
+}
+}
+public void GenerateParameteNameOnlys(ColumnSchema column, int indentLevel, bool isFirst, bool isLast)
+{
+GenerateParameterNameOnly(column, indentLevel, isFirst, isLast, false);
+}
+public void GenerateParameteNameOnlys(ColumnSchemaCollection columns, int indentLevel)
+{
+GenerateParameteNameOnlys(columns, indentLevel, false);
+}
+public void GenerateParameteNameOnlys(ColumnSchemaCollection columns, int indentLevel, bool includeTrailingComma)
+{
+ColumnSchemaCollection filteredColumns = FilterExcludedColumns(columns);
+for (int i = 0; i < filteredColumns.Count; i++)
+{
+GenerateParameteNameOnlys(filteredColumns[i], indentLevel, i == 0, i == filteredColumns.Count - 1 && !includeTrailingComma);
+}
+}
+public void GenerateParameterNameOnly(ColumnSchema column, int indentLevel, bool isFirst, bool isLast, bool isOutput)
+{
+GenerateIndent(indentLevel);
+Response.Write(column.Name);
+}
+public bool ColumnIsExcluded(ColumnSchema column)
+{
+if (column.IsPrimaryKeyMember) return false;
+
+if (excludedColumnRegex == null)
+{
+if (ExcludedColumns != null && ExcludedColumns.Count > 0)
+{
+string excluded = String.Empty;
+for (int i = 0; i < ExcludedColumns.Count; i++)
+{
+if (ExcludedColumns[i].Trim().Length > 0)
+{
+excluded += "(" + Regex.Escape(ExcludedColumns[i]).Replace("\\*", ".*?") + ")|";
+}
+}
+
+if (excluded.Length > 0)
+{
+excluded = excluded.Substring(0, excluded.Length - 1);
+excludedColumnRegex = new Regex(excluded, RegexOptions.IgnoreCase);
+}
+}
+}
+
+if (excludedColumnRegex != null && excludedColumnRegex.IsMatch(column.Name)) return true;
+
+return false;
+}
+public ColumnSchemaCollection FilterExcludedColumns(ColumnSchemaCollection columns)
+{
+ColumnSchemaCollection filteredColumns = new ColumnSchemaCollection();
+
+for (int i = 0; i < columns.Count; i++)
+{
+if (!ColumnIsExcluded(columns[i])) filteredColumns.Add(columns[i]);
+}
+
+return filteredColumns;
+}
+public string StringSplitter(string stringtosplit)
+{
+string words = string.Empty;
+if (!string.IsNullOrEmpty(stringtosplit))
+{
+foreach (char ch in stringtosplit)
+{
+if (char.IsLower(ch))
+{
+words += ch.ToString().Trim();
+}
+else
+{
+words += " " + ch.ToString().Trim();
+}
+
+
+}
+return words;
+}
+else
+return string.Empty;
+}
+public string GetMemberVariableDeclarationStatement(ColumnSchema column)
+{
+if ((column.Name == "CreatedBy") || (column.Name == "CreatedDate") || (column.Name == "UpdatedDate"))
+{
+return null;
+}
+return GetMemberVariableDeclarationStatement("private", column);
+}
+public bool ShouldExcludeColumn(ColumnSchema column)
+{
+if (
+(column.Name == "FormID") || 
+(column.Name == "CreatedBy") || 
+(column.Name == "CreatedDate") || 
+(column.Name == "UpdatedBy") || 
+(column.Name == "UpdatedDate") || 
+(column.Name == "IPAddress"))
+{
+return true;
+}
+
+return false;
+}
+public string GetMemberVariableDeclarationStatement(string protectionLevel, ColumnSchema column)
+{
+string statement = protectionLevel + " ";
+statement += GetCSharpVariableType(column) + " " + GetMemberVariableName(column);
+
+string defaultValue = GetMemberVariableDefaultValue(column);
+if (defaultValue != "")
+{
+statement += " = " + defaultValue;
+}
+
+statement += ";";
+
+return statement;
+}
+public string GetMemberVariableParameterStatement(ColumnSchema column)
+{
+string statement = GetCSharpVariableType(column) + " " + GetCamelCaseName(column.Name);
+
+string defaultValue = GetMemberVariableDefaultValue(column);
+
+statement += ", ";
+
+return statement;
+}
+public string GetCamelCaseName(string value)
+{
+return value.Substring(0, 1).ToLower() + value.Substring(1);
+}
+public string GetPropertyName(ColumnSchema column)
+{
+    
+string propertyName = column.Name.ToLower();
+
+return propertyName;
+}
+
+
+public string GetMemberVariableNameForSec(ColumnSchema column)
+{
+string propertyName = GetPropertyName(column);
+string memberVariableName = "" + GetCamelCaseName(propertyName);
+//string memberVariableName = "_" + propertyName;
+return memberVariableName;
+}
+public string GetMemberVariableName(ColumnSchema column)
+{
+string propertyName = GetPropertyName(column);
+string memberVariableName = "_" + GetCamelCaseName(propertyName);
+//string memberVariableName = "_" + propertyName;
+return memberVariableName;
+}
+public string GetCSharpVariableTypes(ColumnSchema column){
+string strResult = "_UNKNOWN_" + column.NativeType;
+//note: not all oracle data types are supported yet
+switch (column.NativeType.Trim().ToLower())
+{
+case "number":
+if (column.Scale<1){
+strResult= "long";
+}else if (column.Scale>1){
+strResult= "decimal";
+}
+break;
+case "binary": strResult= "Byte"; break;
+case "char": strResult= "string"; break;
+case "date": strResult= "DateTime"; break;
+case "long": strResult= "Int64"; break;
+case "blob": strResult= "byte []"; break;
+case "nvarchar2": strResult= "string"; break;
+case "nvarchar": strResult= "string"; break;
+case "raw": strResult= "byte"; break;
+case "rowid": strResult= "string"; break;
+case "clob": strResult= "byte"; break;
+case "nclob": strResult= "byte"; break;
+case "bfile": strResult= "byte"; break;
+case "float": strResult= "single"; break;
+case "varchar2": strResult= "string"; break;
+case "varchar": strResult= "string"; break;
+case "integer": strResult= "int32"; break;
+}
+
+return strResult;
+}
+public string GetMemberVariableDefaultValue(ColumnSchema column)
+{
+switch (column.DataType)
+{
+case DbType.Guid:
+{
+return "";
+}
+case DbType.AnsiString:
+case DbType.AnsiStringFixedLength:
+case DbType.String:
+case DbType.StringFixedLength:
+{
+return "string.Empty";
+}
+default:
+{
+return "";
+}
+}
+}
+public string GetCSharpVariableTypecc(ColumnSchema column){
+string strResult = "_UNKNOWN_" + column.NativeType;
+//note: not all oracle data types are supported yet
+switch (column.NativeType.Trim().ToLower())
+{
+case "number": strResult= "Number"; break;
+case "binary": strResult= "Binary"; break;
+case "char": strResult= "Char"; break;
+
+case "date": strResult= "DateTime";
+
+break;
+case "long": strResult= "Long"; break;
+case "blob": strResult= "Blob"; break;
+case "nvarchar2": strResult= "NVarChar";
+break;
+case "raw": strResult= "Raw"; break;
+case "rowid": strResult= "RowId"; break;
+case "clob": strResult= "Clob"; break;
+case "nclob": strResult= "NClob"; break;
+case "bfile": strResult= "BFile"; break;
+case "float": strResult= "Float"; break;
+case "varchar2": strResult= "VarChar";
+
+break;
+}
+//put string into uppercase if its to be used in a package
+
+return strResult;
+}
+public string GetCSharpVariableType(ColumnSchema column)
+{
+//if (column.Name.EndsWith("TypeCode")) return column.Name;
+
+switch (column.DataType)
+{
+case DbType.AnsiString: return "string";
+case DbType.AnsiStringFixedLength: return "string";
+case DbType.Binary: return "byte[]";
+case DbType.Boolean: return "bool ?";
+case DbType.Byte: return "byte";
+case DbType.Currency: return "decimal ?";
+case DbType.Date: return "DateTime ?";
+case DbType.DateTime: return "DateTime ?";
+case DbType.Decimal: return "decimal ?";
+case DbType.Double: return "double ?";
+case DbType.Guid: return "Guid ?";
+case DbType.Int16: return "short ?";
+case DbType.Int32: return "int ?";
+case DbType.Int64: return "long ?";
+case DbType.Object: return "object";
+case DbType.SByte: return "sbyte";
+case DbType.Single: return "float ?";
+case DbType.String: return "string";
+case DbType.StringFixedLength: return "string";
+case DbType.Time: return "TimeSpan";
+case DbType.UInt16: return "ushort";
+case DbType.UInt32: return "uint";
+case DbType.UInt64: return "ulong";
+case DbType.VarNumeric: return "decimal ?";
+case DbType.Xml: return "string";
+default:
+{
+return "_UNKNOWN_" + column.NativeType;
+}
+}
+}
+public string GetClassName(TableSchema table)
+{
+string ClassName = table.Name.Substring( 0 , 1 ).ToLower() + table.Name.Substring( 1, table.Name.Length - 1).ToLower();
+return ClassName;
+}
+public string GetSqlDbType(ColumnSchema column)
+{
+switch (column.NativeType)
+{
+case "bigint": return "BigInt";
+case "binary": return "Binary";
+case "bit": return "Bit";
+case "char": return "Char";
+case "datetime": return "DateTime ?";
+case "decimal": return "Decimal ?";
+case "float": return "Float";
+case "image": return "Image";
+case "int": return "Int";
+case "money": return "Money";
+case "nchar": return "NChar";
+case "ntext": return "NText";
+case "numeric": return "Decimal ?";
+case "nvarchar": return "NVarChar";
+case "real": return "Real";
+case "smalldatetime": return "SmallDateTime";
+case "smallint": return "SmallInt";
+case "smallmoney": return "SmallMoney";
+case "sql_variant": return "Variant";
+case "sysname": return "NChar";
+case "text": return "Text";
+case "timestamp": return "Timestamp";
+case "tinyint": return "TinyInt";
+case "uniqueidentifier": return "UniqueIdentifier";
+case "varbinary": return "VarBinary";
+case "varchar": return "VarChar";
+default: return "_UNKNOWN_" + column.NativeType;
+}
+}
+public string GetPrimaryKeyType(TableSchema table)
+{
+if (table.PrimaryKey != null)
+{
+if (table.PrimaryKey.MemberColumns.Count == 1)
+{
+return GetCSharpVariableType(table.PrimaryKey.MemberColumns[0]);
+}
+else
+{
+throw new ApplicationException("This template will not work on primary keys with more than one member column.");
+}
+}
+else
+{
+throw new ApplicationException("This template will only work on tables with a primary key.");
+}
+}
+public override string GetFileName()
+{
+return this.GetClassName(this.SourceTable) + "Entity.cs";
+}
+public string ConvertString(string stringToBeConvert)
+{
+
+string output="";
+
+stringToBeConvert=stringToBeConvert.Trim();
+
+int len = stringToBeConvert.Length;
+if(len>0)
+output += char.ToUpper(stringToBeConvert[0]);
+
+for (int i = 1; i < len; ++i)
+{
+if (char.IsWhiteSpace(stringToBeConvert[i-1]) == true && char.IsLetter(stringToBeConvert[i]) == true)
+{
+output += "_" + char.ToUpper(stringToBeConvert[i]);
+}
+else if (stringToBeConvert[i] >= 'A' && stringToBeConvert[i] <= 'Z')
+{
+output += char.ToLower(stringToBeConvert[i]);
+}
+else if (char.IsWhiteSpace(stringToBeConvert[i])==false)
+output += stringToBeConvert[i];
+
+}
+
+return output;
+}
+public string GetReaderAssignmentStatement(ColumnSchema column, int index)
+{
+    
+    string statement ="";
+if((column.Name.ToLower() == "formid") || (column.Name.ToLower() == "createdby")
+|| (column.Name.ToLower() == "createddate")
+|| (column.Name.ToLower() == "updateddate")
+|| (column.Name.ToLower() == "updatedby")
+|| (column.Name.ToLower() == "ipaddress")
+|| (column.Name.ToLower() == "userentitykey")
+|| (column.Name.ToLower() == "transid")
+|| (column.Name.ToLower() == "userorganizationkey"))
+{
+    //RONTY
+statement = "if (!reader.IsDBNull(reader.GetOrdinal(\"" + column.Name + "\"))) ";
+statement +=  "this.BaseSecurityParam." +  GetMemberVariableNameForSec(column) + " = ";
+
+statement += "reader." + GetReaderMethod(column) + "(reader.GetOrdinal(\"" + column.Name + "\"));";
+}
+else if((column.Name.ToLower() == "ts") )
+{
+     //RONTY
+statement = "if (!reader.IsDBNull(reader.GetOrdinal(\"" + column.Name + "\"))) ";
+statement +=  "this.BaseSecurityParam.ts = ";
+statement += "reader.GetInt64(reader.GetOrdinal(\"ts\"));";
+
+    }
+else
+{
+
+statement = "if (!reader.IsDBNull(reader.GetOrdinal(\"" + column.Name + "\"))) ";
+statement += GetMemberVariableName(column) + " = ";
+
+//if (column.Name.EndsWith("TypeCode")) statement += "(" + column.Name + ")";
+
+if(column.DataType == DbType.Binary)
+{
+statement += "(byte[])reader.GetValue(reader.GetOrdinal(\"" + column.Name + "\"));";
+}
+else
+{
+statement += "reader." + GetReaderMethod(column) + "(reader.GetOrdinal(\"" + column.Name + "\"));";
+}
+}
+return statement;
+}
+
+
+public string GetReaderMethod(ColumnSchema column)
+{
+switch (column.DataType)
+{
+case DbType.Byte:
+{
+return "GetByte";
+}
+case DbType.Int16:
+{
+return "GetInt16";
+}
+case DbType.Int32:
+{
+return "GetInt32";
+}
+case DbType.Int64:
+{
+return "GetInt64";
+}
+case DbType.AnsiStringFixedLength:
+case DbType.AnsiString:
+case DbType.String:
+case DbType.StringFixedLength:
+{
+return "GetString";
+}
+case DbType.Boolean:
+{
+return "GetBoolean";
+}
+case DbType.Guid:
+{
+return "GetGuid";
+}
+case DbType.Currency:
+case DbType.Decimal:
+{
+return "GetDecimal";
+}
+case DbType.DateTime:
+case DbType.Date:
+{
+return "GetDateTime";
+}
+case DbType.Binary:
+{
+return "GetBytes";
+}
+default:
+{
+return "_SQL_" + column.DataType;
+}
+}
+}
+public string GetTableNamesWithPrefix(TableSchema table)
+{	
+      string result = "";
+        foreach (char c in table.Name)
+        {
+            if ('_'==c)
+                continue;
+            else
+                result += c;
+        }
+        return result;
+}
+public string GetTableNamesWithoutPrefix(TableSchema table)
+{	
+       if(table.Name.Contains("_")==true)
+        return table.Name.Split('_')[1];
+       else
+        return table.Name;
+}
+</script>

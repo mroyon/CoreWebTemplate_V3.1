@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<codeSmith xmlns="http://www.codesmithtools.com/schema/csp.xsd">
+  <variables>
+    <add key="ConnectionString1" value="Data Source=10.1.222.140;Initial Catalog=KAF_AssetRiskManagement_V1.0;Persist Security Info=True;User ID=sa;Password=121212" />
+    <add key="ConnectionString2" value="Data Source=192.168.200.202;User ID=sa;Password=Asdf1234;Initial Catalog=KAF_HR_V1.0;" />
+    <add key="ConnectionString3" value="Data Source=192.168.200.202;User ID=sa;Password=Asdf1234;Initial Catalog=KAF_HR_V1.0_R;" />
+    <add key="ConnectionString4" value="Data Source=.;Initial Catalog=KW_TEMPLATE;Persist Security Info=True;User ID=sa;Password=Asdf1234" />
+    <add key="ConnectionString5" value="Data Source=.;Initial Catalog=OwinTemplate;Persist Security Info=True;User ID=sa;Password=Asdf1234" />
+    <add key="ConnectionString6" value="Data Source=10.255.222.80;Initial Catalog=KAF_Correspondence;User ID=devlead_rn;Password=Asdf@1234" />
+    <add key="ConnectionString7" value="Data Source=10.255.222.80;Initial Catalog=KAF_Correspondence;Persist Security Info=True;User ID=KAF_CorrespondenceUser;Password=Asdf1234" />
+    <add key="ConnectionString8" value="Data Source=localhost,1434;Initial Catalog=KAFBlackPortal;User ID=sa;Password=Asdf@1234" />
+  </variables>
+  <propertySets>
+    <propertySet name="_XMLSchemaGenerator.txt" output="_XMLSchemaGenerator.txt" template="_XMLSchemaGenerator.cst">
+      <property name="NameSpace">KAF</property>
+      <property name="SourceDatabase">
+        <connectionString>$(ConnectionString8)</connectionString>
+        <providerType>SchemaExplorer.SqlSchemaProvider,SchemaExplorer.SqlSchemaProvider</providerType>
+      </property>
+      <property name="OutputDirectory">C:\temp\lan</property>
+    </propertySet>
+  </propertySets>
+</codeSmith>

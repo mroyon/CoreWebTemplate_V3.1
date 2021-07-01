@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<resources>
+    
+        <!--  ar-kwabic (ar-kw) -->
+        
+       <resource culture="ar-kw" name="appformid" value="AR:  App Form I D"></resource>
+       <resource culture="ar-kw" name="appformidRequired" value="AR: Please provide  App Form I D"></resource>
+       <resource culture="ar-kw" name="actionname" value="AR:  Action Name"></resource>
+       <resource culture="ar-kw" name="actionnameRequired" value="AR: Please provide  Action Name"></resource>
+       <resource culture="ar-kw" name="actiontype" value="AR:  Action Type"></resource>
+       <resource culture="ar-kw" name="isview" value="AR:  Is View"></resource>
+       <resource culture="ar-kw" name="eventname" value="AR:  Event Name"></resource>
+       <resource culture="ar-kw" name="sequence" value="AR:  Sequence"></resource>
+		<resource culture="ar-kw" name="formactionList" value="AR: View All"></resource>
+		<resource culture="ar-kw" name="formactionCreate" value="AR: Create"></resource>
+		<resource culture="ar-kw" name="formactionUpdate" value="AR: Update"></resource>
+		<resource culture="ar-kw" name="formactionDetails" value="AR: Detail"></resource>
+
+         <!--  ar-kwabic (ar-kw) -->
+         
+          <!--  English (en-US) -->
+       <resource culture="en-us" name="appformid" value=" App Form I D"></resource>
+       <resource culture="en-us" name="appformidRequired" value="Please provide  App Form I D"></resource>
+       <resource culture="en-us" name="actionname" value=" Action Name"></resource>
+       <resource culture="en-us" name="actionnameRequired" value="Please provide  Action Name"></resource>
+       <resource culture="en-us" name="actiontype" value=" Action Type"></resource>
+       <resource culture="en-us" name="isview" value=" Is View"></resource>
+       <resource culture="en-us" name="eventname" value=" Event Name"></resource>
+       <resource culture="en-us" name="sequence" value=" Sequence"></resource>
+        <resource culture="en-us" name="formactionList" value="View All"></resource>
+		<resource culture="en-us" name="formactionCreate" value="Create"></resource>
+		<resource culture="en-us" name="formactionUpdate" value="Update"></resource>
+		<resource culture="en-us" name="formactionDetails" value="Detail"></resource>
+          <!--  English (en-US) -->
+        
+         
+
+</resources>        

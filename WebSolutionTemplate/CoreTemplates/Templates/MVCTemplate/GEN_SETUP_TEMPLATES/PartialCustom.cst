@@ -1,0 +1,158 @@
+﻿<%@ CodeTemplate Language="C#" TargetLanguage="C#" Description="Generates a ASP UserControl." Debug=true %>
+  
+  <%@ CodeTemplate Src="C:\ClassLibrary1\ClassLibrary1\LinqFunctions.cs" Inherits="LinqFunctions" Language="C#" TargetLanguage="C#"
+  Description="Generates a data context and entities for given tables." %>
+  
+
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Assembly Name="CodeSmith.BaseTemplates" %>
+<%@ Assembly Name="CodeSmith.CustomProperties" %>
+<%@ Assembly Name="System.Data" %>
+<%@ Assembly Name="System" %>
+<%@ Assembly Name="System.Core" %>
+<%@ Assembly Name="System.Collections" %>
+<%@ Assembly Name="System.Linq" %>
+
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Import Namespace="CodeSmith.CustomProperties" %>
+<%@ Import Namespace="CodeSmith.BaseTemplates" %>
+<%@ Import Namespace="System.Data" %>
+<%@ Import Namespace="System.Collections.Generic" %>
+<%@ Import Namespace="System.Text" %>
+
+<%@ Import Namespace="System.Text.RegularExpressions" %>
+
+
+<%@ Property Name="SourceDatabase" Type="SchemaExplorer.DatabaseSchema" DeepLoad="True" Optional="False" Category="01. Getting Started - Required"  %>
+
+
+
+
+<%
+    List<ColumnSchema> objColumnList = new List<ColumnSchema>();
+
+        string divRowStart = "<div class=\"row \">";
+        string divColumnStart = "<div class=\"col-md-6\">";
+        string divClose = "</div>";
+        string div = string.Empty;
+        
+
+ foreach(TableSchema table in SourceDatabase.Tables)
+	{
+        if(table.Name.ToUpper().StartsWith("HR"))
+        {%>
+            List<KAFGenericComboEntity> InsertUpdateDelete_<%=GetTableNamesWithPrefix(table)%>_WithFiles(<%= GetClassName(table).ToLower() %>Entity masterEntity);
+        <%}  
+   }
+%>
+
+<%--
+<%
+    List<ColumnSchema> objColumnList = new List<ColumnSchema>();
+
+        string divRowStart = "<div class=\"row \">";
+        string divColumnStart = "<div class=\"col-md-6\">";
+        string divClose = "</div>";
+        string div = string.Empty;
+
+ foreach(TableSchema table in SourceDatabase.Tables)
+	{
+        if(table.Name.ToUpper().StartsWith("HR"))
+        {
+            %>
+            IList<<%= GetClassName(table).ToLower() %>Entity> IHRCoreGetPGByHRBasicsDataAccessObjects.<%=GetTableNamesWithPrefix(table)%>_GAPgListViewByHRBasicID(<%=  GetClassName(table).ToLower() +"Entity"%> <%= GetClassName(table).ToLower() %>)
+            {
+            try
+                {
+    				const string SP = "<%= GetClassName(table).ToLower() %>_GAPgListViewByHRBasicID";
+    				using (DbCommand cmd = Database.GetStoredProcCommand(SP))
+    				{
+    					AddTotalRecordParameter(cmd);
+                        AddSortExpressionParameter(cmd, <%= GetClassName(table).ToLower() %>.SortExpression);
+                        AddPageSizeParameter(cmd, <%= GetClassName(table).ToLower() %>.PageSize);
+                        AddCurrentPageParameter(cmd, <%= GetClassName(table).ToLower() %>.CurrentPage);                    
+                        FillSequrityParameters(<%= GetClassName(table).ToLower() %>.BaseSecurityParam, cmd, Database);
+                        
+                        <%= GetClassName(table).ToLower() %>DataAccessObjects.FillParameters(<%= GetClassName(table).ToLower() %>, cmd, Database);
+                        
+    					
+                        
+    					if (!string.IsNullOrEmpty (<%= GetClassName(table).ToLower() %>.strCommonSerachParam))
+                            Database.AddInParameter(cmd, "@CommonSerachParam", DbType.String, <%= GetClassName(table).ToLower() %>.strCommonSerachParam);
+
+                        IList<<%= GetClassName(table).ToLower() %>Entity> itemList = new List<<%= GetClassName(table).ToLower() %>Entity>();
+    					using (IDataReader reader = Database.ExecuteReader(cmd))
+    					{
+                            while (reader.Read())
+                            {
+                                itemList.Add(new <%= GetClassName(table).ToLower() %>Entity(reader));
+                            }
+                            reader.Close();
+    					}
+                        
+                        if(itemList.Count>0)
+    					{
+                            itemList[0].RETURN_KEY   = Convert.ToInt64(cmd.Parameters["@TotalRecord"].Value.ToString());
+    						<%= GetClassName(table).ToLower() %>.RETURN_KEY = Convert.ToInt64(cmd.Parameters["@TotalRecord"].Value.ToString());
+                        }
+                        cmd.Dispose();
+                        return itemList;
+    				}
+    			}
+                catch (Exception ex)
+                {
+                    throw GetDataAccessException(ex, SourceOfException("IHRCoreGetPGByHRBasicsDataAccessObjects.<%=GetTableNamesWithPrefix(table)%>_GAPgListViewByHRBasicID<%= GetClassName(table).ToLower() %>"));
+                }
+            }
+            <%}
+    }
+%>--%>
+<%--
+
+<%
+    List<ColumnSchema> objColumnList = new List<ColumnSchema>();
+
+        string divRowStart = "<div class=\"row \">";
+        string divColumnStart = "<div class=\"col-md-6\">";
+        string divClose = "</div>";
+        string div = string.Empty;
+
+ foreach(TableSchema table in SourceDatabase.Tables)
+	{
+        if(table.Name.ToUpper().StartsWith("HR")){
+               Response.WriteLine("[OperationContract]"); 
+               Response.WriteLine("IList<"+GetClassName(table).ToLower()+"Entity>" +GetTableNamesWithPrefix(table) +"_GAPgListViewByHRBasicID("+GetClassName(table).ToLower()+"Entity entity);"); 
+        }
+    }
+%>--%>
+
+
+
+<%--<%
+    List<ColumnSchema> objColumnList = new List<ColumnSchema>();
+
+        string divRowStart = "<div class=\"row \">";
+        string divColumnStart = "<div class=\"col-md-6\">";
+        string divClose = "</div>";
+        string div = string.Empty;
+
+ foreach(TableSchema table in SourceDatabase.Tables)
+	{
+        if(table.Name.ToUpper().StartsWith("HR"))
+        {
+            %>
+            IList<<%= GetClassName(table).ToLower() %>Entity> IHRCoreGetPGByHRBasicsFacadeObjects.<%=GetTableNamesWithPrefix(table)%>_GAPgListViewByHRBasicID(<%=  GetClassName(table).ToLower() +"Entity"%> <%= GetClassName(table).ToLower() %>)
+            {
+            try
+                {
+    				return DataAccessFactory.CreateHRCoreGetPGByHRBasicsDataAccessObjects().<%=GetTableNamesWithPrefix(table)%>_GAPgListViewByHRBasicID(<%= GetClassName(table).ToLower() %>);
+    			}
+                catch (Exception ex)
+                {
+                    throw GetFacadeException(ex, SourceOfException("IList<<%= GetClassName(table).ToLower() %>Entity> IHRCoreGetPGByHRBasicsFacadeObjects.<%=GetTableNamesWithPrefix(table)%>_GAPgListViewByHRBasicID<%= GetClassName(table).ToLower() %>"));
+                }
+            }
+            <%}
+    }
+%>--%>
+

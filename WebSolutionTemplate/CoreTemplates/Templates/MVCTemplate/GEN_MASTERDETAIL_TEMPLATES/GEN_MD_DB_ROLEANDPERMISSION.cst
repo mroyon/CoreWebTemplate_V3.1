@@ -1,0 +1,51 @@
+﻿<%@ CodeTemplate Language="C#" TargetLanguage="C#" Description="Generates a ASP UserControl." Debug=true %>
+  
+  <%@ CodeTemplate Src="C:\ClassLibrary1\ClassLibrary1\LinqFunctions.cs" Inherits="LinqFunctions" Language="C#" TargetLanguage="C#"
+  Description="Generates a data context and entities for given tables." %>
+  
+
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Assembly Name="CodeSmith.BaseTemplates" %>
+<%@ Assembly Name="CodeSmith.CustomProperties" %>
+<%@ Assembly Name="System.Data" %>
+<%@ Assembly Name="System" %>
+<%@ Assembly Name="System.Core" %>
+<%@ Assembly Name="System.Collections" %>
+<%@ Assembly Name="System.Linq" %>
+
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Import Namespace="CodeSmith.CustomProperties" %>
+<%@ Import Namespace="CodeSmith.BaseTemplates" %>
+<%@ Import Namespace="System.Data" %>
+<%@ Import Namespace="System.Collections.Generic" %>
+<%@ Import Namespace="System.Text" %>
+
+<%@ Import Namespace="System.Text.RegularExpressions" %>
+<%@ Property Name="SourceTable" Type="SchemaExplorer.TableSchema" DeepLoad="True" Default="" Optional="False"  %>
+<%@ Property Name="SourceTableDetail" Type="SchemaExplorer.TableSchema" DeepLoad="True" Default="" Optional="True" %>
+<%@ Property Name="NameSpace" Type="System.String" Default="KAF" Optional="False" %>
+<%@ Property Name="WebNameSpace" Type="System.String" Default="WebAdmin" Optional="False" %>
+
+
+<%
+    List<string> objColumnList = new List<string>();
+%>
+
+        
+       <%=GetTableNamesWithPrefix(SourceTable)%>()
+       <%=GetTableNamesWithPrefix(SourceTable)%>TableData()
+       <%=GetTableNamesWithPrefix(SourceTable)%>Insert()
+       <%=GetTableNamesWithPrefix(SourceTable)%>Edit()
+       <%=GetTableNamesWithPrefix(SourceTable)%>Update()
+       <%=GetTableNamesWithPrefix(SourceTable)%>Delete()
+       <%=GetTableNamesWithPrefix(SourceTableDetail)%>TableData()
+       <%=GetTableNamesWithPrefix(SourceTableDetail)%>New()
+       <%=GetTableNamesWithPrefix(SourceTableDetail)%>Insert()
+       <%=GetTableNamesWithPrefix(SourceTableDetail)%>Edit()
+       <%=GetTableNamesWithPrefix(SourceTableDetail)%>Update()
+       <%=GetTableNamesWithPrefix(SourceTableDetail)%>Delete()
+       
+       
+
+
+

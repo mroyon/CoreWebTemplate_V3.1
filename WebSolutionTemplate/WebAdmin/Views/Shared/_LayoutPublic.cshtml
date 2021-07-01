@@ -1,0 +1,60 @@
+﻿<!DOCTYPE html>
+@{
+
+}
+
+<html lang="en" dir="@(System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.IsRightToLeft ? "rtl" : "ltr")">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>@ViewData["Title"] - BlackPortalWebFront</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+    <!-- Favicons -->
+    <link href="~/img/favicon.png" rel="icon">
+    <link href="~/img/apple-touch-icon.png" rel="apple-touch-icon">
+    @{
+        if (System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.IsRightToLeft)
+        {
+            <link rel="stylesheet" href="~/css/vendor.login.rtl.min.css" asp-append-version="true" />
+        }
+        else
+        {
+            <link rel="stylesheet" href="~/css/vendor.login.min.css" asp-append-version="true" />
+
+        }
+    }
+</head>
+<body class="hold-transition dark-mode sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed my-login-page">
+    <div class="wrapper">
+        <div class="container">
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
+        </div>
+        <!-- /.content-wrapper -->
+        <!-- Control Sidebar -->
+        <aside class="control-sidebar control-sidebar-dark">
+            <!-- Control sidebar content goes here -->
+        </aside>
+        <!-- /.control-sidebar -->
+        <!-- Main Footer -->
+
+        <footer class="main-footer" style="margin-left:0 !important;">
+            <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong>
+            All rights reserved.
+            <div class="float-right d-none d-sm-inline-block">
+                <b>Version</b> 3.1.0
+            </div>
+        </footer>
+    </div>
+    <!-- ./wrapper -->
+    <!-- REQUIRED SCRIPTS -->
+
+    <div id="preloader"></div>
+    <a href="#" class="back-to-top"><i class="icofont-simple-up"></i></a>
+    <script src="~/js/vendor.login.min.js" asp-append-version="true"></script>
+    @RenderSection("scripts", required: false)
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+</body>
+</html>

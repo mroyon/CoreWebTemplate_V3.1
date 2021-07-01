@@ -1,0 +1,67 @@
+<%@ CodeTemplate OutputType="None" Language="C#" TargetLanguage="Text" Src="" Inherits="" CompilerVersion="v3.5" Debug="False" Description="Template description here." %>
+
+<%-- Assembly References --%>
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Assembly Name="CodeSmith.BaseTemplates" %>
+<%@ Assembly Name="CodeSmith.CustomProperties" %>
+<%@ Assembly Name="System.Data" %>
+
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Import Namespace="CodeSmith.CustomProperties" %>
+<%@ Import Namespace="CodeSmith.BaseTemplates" %>
+<%@ Import Namespace="System.Data" %>
+<%@ Import Namespace="System.Text.RegularExpressions" %>
+<%@ Import Namespace="System.Text" %>
+<%@ Import NameSpace="System.IO" %>
+
+<%@ Property Name="NameSpace" Type="System.String" Optional="False" %>
+<%@ Property Name="SourceDatabase" Type="SchemaExplorer.DatabaseSchema" DeepLoad="True" Optional="False" Category="01. Getting Started - Required" Description="Database that the tables views, and stored procedures should be based on. IMPORTANT!!! If SourceTables and SourceViews are left blank, the Entire Database will then be generated." %>
+<%@ Property Name="OutputDirectory" Type="System.String" Default="" Optional="False" Description="The folder to save the generated files." Editor="System.Windows.Forms.Design.FolderNameEditor, System.Design, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" %>
+
+<%@ Register Name="FacadeCreator" Template="FacadeCreator.cst"  %>
+
+<script runat="template">
+
+public override void Render(TextWriter writer)
+{
+	if (!System.IO.Directory.Exists(this.OutputDirectory))
+	{
+		System.IO.Directory.CreateDirectory(this.OutputDirectory);
+	}
+		
+	foreach(TableSchema table in SourceDatabase.Tables.Where(t => t.HasPrimaryKey))
+	{
+		//if(!table.Name.StartsWith("asec_") )
+       {
+			CreateFacadeCreator(table);
+		}
+        //CreateFacadeCreator(table);
+	}
+}
+
+public void CreateFacadeCreator(TableSchema table)
+{
+    FacadeCreator facadeCreator = this.Create<FacadeCreator>();
+	facadeCreator.SourceTable = table;
+	facadeCreator.NameSpace = NameSpace;	
+
+	string fileName = String.Format("{0}/{1}FacadeCreatorObjects.cs", OutputDirectory, table.Name.ToString().ToLower());
+	
+	OutputFile outputFile = new OutputFile(fileName);
+	facadeCreator.RenderToFile(outputFile, true);	
+}
+
+
+public string GetClassName(TableSchema table)
+{
+	if (table.Name.EndsWith("s"))
+	{
+		return table.Name.Substring(0, table.Name.Length - 1);
+	}
+	else
+	{
+		return table.Name;
+	}
+}
+
+</script>
