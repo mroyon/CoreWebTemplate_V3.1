@@ -9,7 +9,7 @@ namespace CLL.LLClasses.Models
     
     public  class _gen_doctype : _Common
     {
-         private static IResourceProvider resourceProvider_gen_doctype = new XmlResourceProvider(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"LanguagesFiles\_gen_doctype.xml"));//DbResourceProvider(); //  
+         private static IResourceProvider resourceProvider_gen_doctype = new XmlResourceProvider(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"LanguagesFiles/_gen_doctype.xml"));//DbResourceProvider(); //  
          
          
         public static string doctypeList

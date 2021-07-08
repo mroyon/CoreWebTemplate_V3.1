@@ -7,7 +7,7 @@ namespace CLL.LLClasses.SecurityModule
 {
     public class _Login : _Common
     {
-        private static IResourceProvider resourceProviderlogin = new XmlResourceProvider(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"LanguagesFiles\_Login.xml"));//DbResourceProvider(); //  
+        private static IResourceProvider resourceProviderlogin = new XmlResourceProvider(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"LanguagesFiles/_Login.xml"));//DbResourceProvider(); //  
         public static string headerText
         {
             get

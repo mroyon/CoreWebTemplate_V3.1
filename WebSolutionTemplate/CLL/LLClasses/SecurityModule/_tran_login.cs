@@ -8,7 +8,7 @@ namespace CLL.LLClasses.SecurityModule
     
     public  class _tran_login : _Common
     {
-         private static IResourceProvider resourceProvider_tran_login = new XmlResourceProvider(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"LanguagesFiles\_tran_login.xml"));//DbResourceProvider(); //  
+         private static IResourceProvider resourceProvider_tran_login = new XmlResourceProvider(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"LanguagesFiles/_tran_login.xml"));//DbResourceProvider(); //  
          
          
         public static string loginList

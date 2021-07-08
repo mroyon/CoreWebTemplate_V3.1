@@ -9,7 +9,7 @@ namespace CLL.LLClasses
 {
     public class _Status
     {
-        private static IResourceProvider resourceProviderstatus = new XmlResourceProvider(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"LanguagesFiles\_Status.xml"));//DbResourceProvider(); //  
+        private static IResourceProvider resourceProviderstatus = new XmlResourceProvider(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"LanguagesFiles/_Status.xml"));//DbResourceProvider(); //  
 
         public static string _statusFailed
         {

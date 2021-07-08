@@ -8,7 +8,7 @@ namespace CLL.LLClasses.Models
     
     public  class _gen_linkedservice : _Common
     {
-         private static IResourceProvider resourceProvider_gen_linkedservice = new XmlResourceProvider(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"LanguagesFiles\_gen_linkedservice.xml"));//DbResourceProvider(); //  
+         private static IResourceProvider resourceProvider_gen_linkedservice = new XmlResourceProvider(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"LanguagesFiles/_gen_linkedservice.xml"));//DbResourceProvider(); //  
          
          
         public static string linkedserviceList

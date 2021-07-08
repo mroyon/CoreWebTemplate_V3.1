@@ -9,7 +9,7 @@ namespace CLL.LLClasses
 {
     public class _Responses
     {
-        private static IResourceProvider resourceProviderrsponse = new XmlResourceProvider(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"LanguagesFiles\_Responses.xml"));//DbResourceProvider(); //  
+        private static IResourceProvider resourceProviderrsponse = new XmlResourceProvider(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"LanguagesFiles/_Responses.xml"));//DbResourceProvider(); //  
 
         public static string _resforgetPasswordReply
         {
