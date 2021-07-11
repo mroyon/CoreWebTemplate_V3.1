@@ -50,26 +50,29 @@ services:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: Asdf1234
     ports:
-      - 27017:27017
+      - 27017:27017 
     volumes:
       - mongodb_data_container:/data/db
 
   ftp-server:
+    build:
+      context: .
+      dockerfile: ftp/Dockerfile
     image: mroyon/vsftpd
     container_name: vsftpd
     ports:
-      - "2340:20"
-      - "2341:21"
+      - "2343:20"
+      - "2344:21"
       - "21100-21110:21100-21110"
     volumes:
-      - ./data:/home/vsftpd
-      - ./log/vsftpd/:/var/log/vsftpd
+      - ./ftp/data:/home/vsftpd
+      - ./ftp/log/vsftpd/:/var/log/vsftpd
     environment:
       - FTP_USER=ftpuser
       - FTP_PASS=Asdf1234
       - PASV_MIN_PORT=21100
       - PASV_MAX_PORT=21110
-      - PASV_ADDRESS=10.1.222.170
+      - PASV_ADDRESS=192.168.8.109
       - LOG_STDOUT=1
     restart: always
 

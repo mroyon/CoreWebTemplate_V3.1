@@ -20,5 +20,14 @@
     </None>
     <None Include="docker-compose.yml" />
     <None Include=".dockerignore" />
+    <None Include="ftp\Dockerfile" />
+    <None Include="ftp\log\vsftpd\vsftpd.log" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ftp\data\ftpuser\blackportalftpfolder\gallary\" />
+    <Folder Include="ftp\data\ftpuser\blackportalftpfolder\links\" />
+    <Folder Include="ftp\data\ftpuser\blackportalftpfolder\news\" />
+    <Folder Include="ftp\data\ftpuser\blackportalftpfolder\services\" />
+    <Folder Include="ftp\data\ftpuser\blackportalftpfolder\users\" />
   </ItemGroup>
 </Project>
