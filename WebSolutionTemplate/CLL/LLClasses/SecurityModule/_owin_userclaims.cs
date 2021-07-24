@@ -1,14 +1,14 @@
-﻿using CLL.Abstract;
-using System;
+﻿using System;
 using System.Globalization;
 using System.IO;
+using CLL.Abstract;
 
 namespace CLL.LLClasses.SecurityModule
 {
     
     public  class _owin_userclaims : _Common
     {
-         private static IResourceProvider resourceProvider_owin_userclaims = new XmlResourceProvider(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"LanguagesFiles/_owin_userclaims.xml"));//DbResourceProvider(); //  
+         private static IResourceProvider resourceProvider_owin_userclaims = new XmlResourceProvider(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"LanguagesFiles\_owin_userclaims.xml"));//DbResourceProvider(); //  
          
          
         public static string userclaimsList

@@ -5,9 +5,9 @@ using Microsoft.Extensions.Options;
 using Web.Core.Frame.RequestResponse.UseCaseRequests;
 using Web.Core.Frame.Interfaces.UseCases;
 using WebApi.Presenters;
-using BDO.DataAccessObjects.ExtendedEntities;
 using Microsoft.AspNetCore.Authorization;
 using WebApi.Extensions;
+using BDO.DataAccessObjects.ExtendedEntities;
 
 namespace WebApi.Controllers
 {

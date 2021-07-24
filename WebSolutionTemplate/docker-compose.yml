@@ -30,7 +30,7 @@ services:
       SA_PASSWORD: Asdf@1234
       FILE_VERSION: 1.4
     ports:
-      - 1434:1433
+      - 1436:1433
     volumes:
      - mssqldata:/var/opt/mssql  
 
@@ -54,27 +54,38 @@ services:
     volumes:
       - mongodb_data_container:/data/db
 
-  ftp-server:
+  nginx_container:
     build:
       context: .
-      dockerfile: ftp/Dockerfile
-    image: mroyon/vsftpd
-    container_name: vsftpd
+      dockerfile: nginxweb/Dockerfile
+    image: mroyon/nginx
+    container_name: webftp
     ports:
-      - "2343:20"
-      - "2344:21"
-      - "21100-21110:21100-21110"
+      - 8080:80
+      - 8433:443
     volumes:
-      - ./ftp/data:/home/vsftpd
-      - ./ftp/log/vsftpd/:/var/log/vsftpd
+      - ./sitesdata:/usr/share/nginx/html
+
+  ftp_container:
+    build:
+      context: .
+      dockerfile: vsftp/Dockerfile
+    image: mroyon/vsftpd
+    container_name: ftp
+    ports:
+      - "2020:20"
+      - "2121:21"
+      - 21100-21110:21100-21110
     environment:
       - FTP_USER=ftpuser
       - FTP_PASS=Asdf1234
       - PASV_MIN_PORT=21100
       - PASV_MAX_PORT=21110
-      - PASV_ADDRESS=192.168.8.109
+      - PASV_ADDRESS=127.0.0.1
       - LOG_STDOUT=1
-    restart: always
+    volumes:
+      - ./sitesdata:/home/vsftpd/ftpuser
+      - ./log/vsftpd/:/var/log/vsftpd
 
 
 volumes:

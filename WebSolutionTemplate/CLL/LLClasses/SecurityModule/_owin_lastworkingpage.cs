@@ -8,7 +8,7 @@ namespace CLL.LLClasses.SecurityModule
     
     public  class _owin_lastworkingpage : _Common
     {
-         private static IResourceProvider resourceProvider_owin_lastworkingpage = new XmlResourceProvider(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"LanguagesFiles/_owin_lastworkingpage.xml"));//DbResourceProvider(); //  
+         private static IResourceProvider resourceProvider_owin_lastworkingpage = new XmlResourceProvider(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"LanguagesFiles\_owin_lastworkingpage.xml"));//DbResourceProvider(); //  
          
          
         public static string lastworkingpageList

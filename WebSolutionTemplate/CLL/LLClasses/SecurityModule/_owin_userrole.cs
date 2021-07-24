@@ -8,7 +8,7 @@ namespace CLL.LLClasses.SecurityModule
     
     public  class _owin_userrole : _Common
     {
-         private static IResourceProvider resourceProvider_owin_userrole = new XmlResourceProvider(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"LanguagesFiles/_owin_userrole.xml"));//DbResourceProvider(); //  
+         private static IResourceProvider resourceProvider_owin_userrole = new XmlResourceProvider(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"LanguagesFiles\_owin_userrole.xml"));//DbResourceProvider(); //  
          
          
         public static string userroleList
@@ -60,13 +60,6 @@ namespace CLL.LLClasses.SecurityModule
             get
             {
                 return resourceProvider_owin_userrole.GetResource("masteruserid", CultureInfo.CurrentUICulture.Name) as String;
-            }
-        }
-        public static string masteruseridRequired
-        {
-            get
-            {
-                return resourceProvider_owin_userrole.GetResource("masteruseridRequired", CultureInfo.CurrentUICulture.Name) as String;
             }
         }
          public static string roleid

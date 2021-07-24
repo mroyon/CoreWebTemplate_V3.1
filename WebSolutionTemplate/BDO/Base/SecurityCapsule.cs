@@ -9,18 +9,13 @@ namespace BDO.Base
     [DataContract(Name = "SecurityCapsule", Namespace = "http://www.MOI.com/types")]
     public class SecurityCapsule
     {
-        protected long? _createdby;
         protected string _createdbyusername;
-        protected long? _updatedby;
         protected string _updatedbyusername;
         protected Guid? _userid;
         protected long? _ts;
 
         protected DateTime? _createddate;
         protected DateTime? _updateddate;
-
-        protected long? _appformid;
-        protected long? _userorganizationkey;
 
         protected string _macaddress;
         protected string _ipaddress;
@@ -90,22 +85,10 @@ namespace BDO.Base
         }
 
         [DataMember]
-        public long? updatedby
-        {
-            get { return _updatedby; }
-            set { _updatedby = value; }
-        }
-        [DataMember]
         public string updatedbyusername
         {
             get { return _updatedbyusername; }
             set { _updatedbyusername = value; }
-        }
-        [DataMember]
-        public long? createdby
-        {
-            get { return _createdby; }
-            set { _createdby = value; }
         }
 
         [DataMember]
@@ -154,12 +137,6 @@ namespace BDO.Base
             set { _username = value; }
         }
         [DataMember]
-        public long? userorganizationkey
-        {
-            get { return _userorganizationkey; }
-            set { _userorganizationkey = value; }
-        }
-        [DataMember]
         public string macaddress
         {
             get { return _macaddress; }
@@ -178,12 +155,6 @@ namespace BDO.Base
             set { _actioname = value; }
         }
 
-        [DataMember]
-        public long? appformid
-        {
-            get { return _appformid; }
-            set { _appformid = value; }
-        }
         [DataMember]
         public string usertoken
         {

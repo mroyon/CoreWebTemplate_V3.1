@@ -15,10 +15,10 @@ namespace BDO.DataAccessObjects.SecurityModule
     
         protected long ? _appformid;
         protected string _formname;
-        protected string _formnamear;
         protected long ? _parentid;
         protected int ? _levelid;
         protected string _menulevel;
+        protected string _formnamear;
         protected bool ? _hasdirectchild;
         protected byte[] _icon;
         protected string _classicon;
@@ -48,15 +48,6 @@ namespace BDO.DataAccessObjects.SecurityModule
         }
         
         [DataMember]
-        [MaxLength(150)]
-        [Display(Name = "formnamear", ResourceType = typeof(CLL.LLClasses.SecurityModule._owin_forminfo))]
-        public string formnamear
-        {
-            get { return _formnamear; }
-            set { _formnamear = value; this.OnChnaged(); }
-        }
-        
-        [DataMember]
         [Display(Name = "parentid", ResourceType = typeof(CLL.LLClasses.SecurityModule._owin_forminfo))]
         public long ? parentid
         {
@@ -79,6 +70,15 @@ namespace BDO.DataAccessObjects.SecurityModule
         {
             get { return _menulevel; }
             set { _menulevel = value; this.OnChnaged(); }
+        }
+        
+        [DataMember]
+        [MaxLength(150)]
+        [Display(Name = "formnamear", ResourceType = typeof(CLL.LLClasses.SecurityModule._owin_forminfo))]
+        public string formnamear
+        {
+            get { return _formnamear; }
+            set { _formnamear = value; this.OnChnaged(); }
         }
         
         [DataMember]
@@ -181,10 +181,10 @@ namespace BDO.DataAccessObjects.SecurityModule
                 this.BaseSecurityParam = new SecurityCapsule();
                 if (!reader.IsDBNull(reader.GetOrdinal("AppFormID"))) _appformid = reader.GetInt64(reader.GetOrdinal("AppFormID"));
                 if (!reader.IsDBNull(reader.GetOrdinal("FormName"))) _formname = reader.GetString(reader.GetOrdinal("FormName"));
-                if (!reader.IsDBNull(reader.GetOrdinal("FormNameAr"))) _formnamear = reader.GetString(reader.GetOrdinal("FormNameAr"));
                 if (!reader.IsDBNull(reader.GetOrdinal("ParentID"))) _parentid = reader.GetInt64(reader.GetOrdinal("ParentID"));
                 if (!reader.IsDBNull(reader.GetOrdinal("LevelID"))) _levelid = reader.GetInt32(reader.GetOrdinal("LevelID"));
                 if (!reader.IsDBNull(reader.GetOrdinal("MenuLevel"))) _menulevel = reader.GetString(reader.GetOrdinal("MenuLevel"));
+                if (!reader.IsDBNull(reader.GetOrdinal("FormNameAr"))) _formnamear = reader.GetString(reader.GetOrdinal("FormNameAr"));
                 if (!reader.IsDBNull(reader.GetOrdinal("HasDirectChild"))) _hasdirectchild = reader.GetBoolean(reader.GetOrdinal("HasDirectChild"));
                 if (!reader.IsDBNull(reader.GetOrdinal("Icon"))) _icon = (byte[])reader.GetValue(reader.GetOrdinal("Icon"));
                 if (!reader.IsDBNull(reader.GetOrdinal("ClassIcon"))) _classicon = reader.GetString(reader.GetOrdinal("ClassIcon"));
@@ -194,16 +194,17 @@ namespace BDO.DataAccessObjects.SecurityModule
                 if (!reader.IsDBNull(reader.GetOrdinal("IsDynamic"))) _isdynamic = reader.GetBoolean(reader.GetOrdinal("IsDynamic"));
                 if (!reader.IsDBNull(reader.GetOrdinal("IsSuperAdmin"))) _issuperadmin = reader.GetBoolean(reader.GetOrdinal("IsSuperAdmin"));
                 if (!reader.IsDBNull(reader.GetOrdinal("IsVisibleInMenu"))) _isvisibleinmenu = reader.GetBoolean(reader.GetOrdinal("IsVisibleInMenu"));
+
                 if (!reader.IsDBNull(reader.GetOrdinal("TransID"))) this.BaseSecurityParam.transid = reader.GetString(reader.GetOrdinal("TransID"));
-                
-                if (!reader.IsDBNull(reader.GetOrdinal("CreatedDate"))) this.BaseSecurityParam.createddate = reader.GetDateTime(reader.GetOrdinal("CreatedDate"));
                 if (!reader.IsDBNull(reader.GetOrdinal("CreatedByUserName"))) _createdbyusername = reader.GetString(reader.GetOrdinal("CreatedByUserName"));
-                this.BaseSecurityParam.createdbyusername = _createdbyusername;
+                BaseSecurityParam.createdbyusername = _createdbyusername;
+                if (!reader.IsDBNull(reader.GetOrdinal("CreatedDate"))) this.BaseSecurityParam.createddate = reader.GetDateTime(reader.GetOrdinal("CreatedDate"));
                 if (!reader.IsDBNull(reader.GetOrdinal("UpdatedByUserName"))) _updatedbyusername = reader.GetString(reader.GetOrdinal("UpdatedByUserName"));
-                this.BaseSecurityParam.updatedbyusername = _updatedbyusername;
+                BaseSecurityParam.updatedbyusername = _updatedbyusername;
                 if (!reader.IsDBNull(reader.GetOrdinal("UpdatedDate"))) this.BaseSecurityParam.updateddate = reader.GetDateTime(reader.GetOrdinal("UpdatedDate"));
                 if (!reader.IsDBNull(reader.GetOrdinal("IPAddress"))) this.BaseSecurityParam.ipaddress = reader.GetString(reader.GetOrdinal("IPAddress"));
                 if (!reader.IsDBNull(reader.GetOrdinal("TS"))) this.BaseSecurityParam.ts = reader.GetInt64(reader.GetOrdinal("ts"));
+
                 CurrentState = EntityState.Unchanged;
             }
         }
@@ -216,10 +217,10 @@ namespace BDO.DataAccessObjects.SecurityModule
                 this.BaseSecurityParam = new SecurityCapsule();
                 if (!reader.IsDBNull(reader.GetOrdinal("AppFormID"))) _appformid = reader.GetInt64(reader.GetOrdinal("AppFormID"));
                 if (!reader.IsDBNull(reader.GetOrdinal("FormName"))) _formname = reader.GetString(reader.GetOrdinal("FormName"));
-                if (!reader.IsDBNull(reader.GetOrdinal("FormNameAr"))) _formnamear = reader.GetString(reader.GetOrdinal("FormNameAr"));
                 if (!reader.IsDBNull(reader.GetOrdinal("ParentID"))) _parentid = reader.GetInt64(reader.GetOrdinal("ParentID"));
                 if (!reader.IsDBNull(reader.GetOrdinal("LevelID"))) _levelid = reader.GetInt32(reader.GetOrdinal("LevelID"));
                 if (!reader.IsDBNull(reader.GetOrdinal("MenuLevel"))) _menulevel = reader.GetString(reader.GetOrdinal("MenuLevel"));
+                if (!reader.IsDBNull(reader.GetOrdinal("FormNameAr"))) _formnamear = reader.GetString(reader.GetOrdinal("FormNameAr"));
                 if (!reader.IsDBNull(reader.GetOrdinal("HasDirectChild"))) _hasdirectchild = reader.GetBoolean(reader.GetOrdinal("HasDirectChild"));
                 if (!reader.IsDBNull(reader.GetOrdinal("Icon"))) _icon = (byte[])reader.GetValue(reader.GetOrdinal("Icon"));
                 if (!reader.IsDBNull(reader.GetOrdinal("ClassIcon"))) _classicon = reader.GetString(reader.GetOrdinal("ClassIcon"));
@@ -229,13 +230,13 @@ namespace BDO.DataAccessObjects.SecurityModule
                 if (!reader.IsDBNull(reader.GetOrdinal("IsDynamic"))) _isdynamic = reader.GetBoolean(reader.GetOrdinal("IsDynamic"));
                 if (!reader.IsDBNull(reader.GetOrdinal("IsSuperAdmin"))) _issuperadmin = reader.GetBoolean(reader.GetOrdinal("IsSuperAdmin"));
                 if (!reader.IsDBNull(reader.GetOrdinal("IsVisibleInMenu"))) _isvisibleinmenu = reader.GetBoolean(reader.GetOrdinal("IsVisibleInMenu"));
+
                 if (!reader.IsDBNull(reader.GetOrdinal("TransID"))) this.BaseSecurityParam.transid = reader.GetString(reader.GetOrdinal("TransID"));
-                
-                if (!reader.IsDBNull(reader.GetOrdinal("CreatedDate"))) this.BaseSecurityParam.createddate = reader.GetDateTime(reader.GetOrdinal("CreatedDate"));
                 if (!reader.IsDBNull(reader.GetOrdinal("CreatedByUserName"))) _createdbyusername = reader.GetString(reader.GetOrdinal("CreatedByUserName"));
-                this.BaseSecurityParam.createdbyusername = _createdbyusername;
+                BaseSecurityParam.createdbyusername = _createdbyusername;
+                if (!reader.IsDBNull(reader.GetOrdinal("CreatedDate"))) this.BaseSecurityParam.createddate = reader.GetDateTime(reader.GetOrdinal("CreatedDate"));
                 if (!reader.IsDBNull(reader.GetOrdinal("UpdatedByUserName"))) _updatedbyusername = reader.GetString(reader.GetOrdinal("UpdatedByUserName"));
-                this.BaseSecurityParam.updatedbyusername = _updatedbyusername;
+                BaseSecurityParam.updatedbyusername = _updatedbyusername;
                 if (!reader.IsDBNull(reader.GetOrdinal("UpdatedDate"))) this.BaseSecurityParam.updateddate = reader.GetDateTime(reader.GetOrdinal("UpdatedDate"));
                 if (!reader.IsDBNull(reader.GetOrdinal("IPAddress"))) this.BaseSecurityParam.ipaddress = reader.GetString(reader.GetOrdinal("IPAddress"));
                 if (!reader.IsDBNull(reader.GetOrdinal("TS"))) this.BaseSecurityParam.ts = reader.GetInt64(reader.GetOrdinal("ts"));

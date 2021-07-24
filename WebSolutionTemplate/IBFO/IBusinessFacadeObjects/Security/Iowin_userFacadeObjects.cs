@@ -1,4 +1,5 @@
 ﻿
+
 using System;
 using System.Collections.Generic;
 using System.ServiceModel;
@@ -42,7 +43,23 @@ namespace IBFO.Core.IBusinessFacadeObjects.Security
 		
         #region Save Master/Details	
         
-       
+        [OperationContract]
+        Task<long> SaveMasterDetowin_lastworkingpage(owin_userEntity Master, List<owin_lastworkingpageEntity> DetailList, CancellationToken cancellationToken);
+
+        [OperationContract]
+        Task<long> SaveMasterDetowin_userclaims(owin_userEntity Master, List<owin_userclaimsEntity> DetailList, CancellationToken cancellationToken);
+
+        [OperationContract]
+        Task<long> SaveMasterDetowin_userlogintrail(owin_userEntity Master, List<owin_userlogintrailEntity> DetailList, CancellationToken cancellationToken);
+
+        [OperationContract]
+        Task<long> SaveMasterDetowin_userpasswordresetinfo(owin_userEntity Master, List<owin_userpasswordresetinfoEntity> DetailList, CancellationToken cancellationToken);
+
+        [OperationContract]
+        Task<long> SaveMasterDetowin_userprefferencessettings(owin_userEntity Master, List<owin_userprefferencessettingsEntity> DetailList, CancellationToken cancellationToken);
+
+        [OperationContract]
+        Task<long> SaveMasterDetowin_userrole(owin_userEntity Master, List<owin_userroleEntity> DetailList, CancellationToken cancellationToken);
 
         #endregion Save Master/Details	
         

@@ -1,4 +1,7 @@
-﻿using BFO.Core.BusinessFacadeObjects.Security;
+﻿
+
+
+using BFO.Core.BusinessFacadeObjects.Security;
 using IBFO.Core.IBusinessFacadeObjects.Security;
 using Microsoft.AspNetCore.Http;
 
@@ -14,12 +17,12 @@ namespace BFC.Core.FacadeCreatorObjects.Security
 		
 		public static Iowin_userrolesFacadeObjects GetFacadeCreate(IHttpContextAccessor httpContextAccessor)
         {
+			Iowin_userrolesFacadeObjects facade = null;
             var context = httpContextAccessor.HttpContext;
-            Iowin_userrolesFacadeObjects facade = null;
             if (context != null)
             {
                 facade = context.Items["Iowin_userrolesFacadeObjects"] as Iowin_userrolesFacadeObjects;
-
+    
                 if (facade == null)
                 {
                     facade = new owin_userrolesFacadeObjects();

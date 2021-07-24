@@ -1,8 +1,8 @@
 ﻿using System.Net;
 using Web.Core.Frame.RequestResponse.UseCaseResponses;
 using Web.Core.Frame.Interfaces;
-using Web.Api.Infrastructure.Helpers;
 using Web.Api.Infrastructure.Serialization;
+using Web.Api.Infrastructure.Helpers;
 
 namespace WebApi.Presenters
 {

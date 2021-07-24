@@ -58,7 +58,7 @@ KAF Information Center
 foreach(TableSchema table in SourceDatabase.Tables)
 	{
 		SourceTable = table;
-        if(table.Name.ToString().Contains("Tran_Login"))
+        if(table.Name.ToString().Contains("_"))
         {
 %> 
 
@@ -426,7 +426,7 @@ public void GenerateUpdate(ColumnSchema column, int indentLevel, bool isFirst, b
         }
 		if (!isLast) 
             {
-                if(column.Name.ToString() != "FormID")
+                if(column.Name.ToString() != "IPAddress")
                     Response.Write(",");
             }    
 		if (indentLevel >= 0)
@@ -473,7 +473,7 @@ public void GenerateVariable(ColumnSchema column, int indentLevel, bool isFirst,
 			Response.Write(column.Name);
 			if (!isLast) 
             {
-                if(column.Name.ToString() != "FormID")
+                if(column.Name.ToString() != "IPAddress")
                     Response.Write(",");
             }    
 			if (indentLevel >= 0)
@@ -1571,7 +1571,7 @@ public void GenerateColumnsForGetSPForOrderByClause(ColumnSchema column, int ind
                 Response.Write("CASE WHEN @SortExpression ='"+ column.Name + " DESC' THEN "+ column.Table.ToString().Substring(4) + "." + column.Name +" END DESC");
                 if (!isLast) 
                 {
-                    if(column.Name.ToString() != "FormID")
+                    if(column.Name.ToString() != "IPAddress")
                         Response.Write(",");
                 }    
                 if (indentLevel >= 0)
@@ -1647,7 +1647,7 @@ public void GenerateColumn(ColumnSchema column, int indentLevel, bool isFirst, b
         
 		if (!isLast) 
         {
-            if(column.Name.ToString() != "FormID")
+            if(column.Name.ToString() != "IPAddress")
                 Response.Write(",");
         }
 		if (indentLevel >= 0)

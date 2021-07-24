@@ -30,7 +30,18 @@ namespace IDAC.Core.IDataAccessObjects.Security
 		#endregion GetAll
 		
 		#region SaveMasterDetails
-       
+        Task<long> SaveMasterDetowin_lastworkingpage(owin_userEntity masterEntity, IList<owin_lastworkingpageEntity> listAdded, IList<owin_lastworkingpageEntity> listUpdated, IList<owin_lastworkingpageEntity> listDeleted, CancellationToken cancellationToken);
+
+        Task<long> SaveMasterDetowin_userclaims(owin_userEntity masterEntity, IList<owin_userclaimsEntity> listAdded, IList<owin_userclaimsEntity> listUpdated, IList<owin_userclaimsEntity> listDeleted, CancellationToken cancellationToken);
+
+        Task<long> SaveMasterDetowin_userlogintrail(owin_userEntity masterEntity, IList<owin_userlogintrailEntity> listAdded, IList<owin_userlogintrailEntity> listUpdated, IList<owin_userlogintrailEntity> listDeleted, CancellationToken cancellationToken);
+
+        Task<long> SaveMasterDetowin_userpasswordresetinfo(owin_userEntity masterEntity, IList<owin_userpasswordresetinfoEntity> listAdded, IList<owin_userpasswordresetinfoEntity> listUpdated, IList<owin_userpasswordresetinfoEntity> listDeleted, CancellationToken cancellationToken);
+
+        Task<long> SaveMasterDetowin_userprefferencessettings(owin_userEntity masterEntity, IList<owin_userprefferencessettingsEntity> listAdded, IList<owin_userprefferencessettingsEntity> listUpdated, IList<owin_userprefferencessettingsEntity> listDeleted, CancellationToken cancellationToken);
+
+        Task<long> SaveMasterDetowin_userrole(owin_userEntity masterEntity, IList<owin_userroleEntity> listAdded, IList<owin_userroleEntity> listUpdated, IList<owin_userroleEntity> listDeleted, CancellationToken cancellationToken);
+
         #endregion SaveMasterDetails
         
          #region Simple load Single Row

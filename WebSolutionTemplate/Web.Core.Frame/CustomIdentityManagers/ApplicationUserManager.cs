@@ -382,26 +382,27 @@ namespace Web.Core.Frame.CustomIdentityManagers
         {
             CancellationToken cancellationToken = new CancellationToken();
 
-            tran_loginEntity objTran = new tran_loginEntity()
-            {
-                BaseSecurityParam = _seccapfillerfromjwtclaim.SetCap(AccessToken.Token, RemoteIpAddress,
-                out DateTime? tokenValidFromTime,
-                out DateTime? tokenValidToTime),
-                parentserialloginid = null,
-                samaccount = user.username,
-                samemail = user.username,
-                userid = user.userid,
-                logindate = tokenValidFromTime.GetValueOrDefault(DateTime.Now),
-                logintoken = AccessToken.Token,
-                expires = tokenValidToTime.GetValueOrDefault(DateTime.Now),
-                refreshtoken = RefreshToken,
-                tokenissuedate = tokenValidFromTime.GetValueOrDefault(DateTime.Now),
-                remarks = "Logged in from SP",
-            };
+            //ronty fix
+            //tran_loginEntity objTran = new tran_loginEntity()
+            //{
+            //    BaseSecurityParam = _seccapfillerfromjwtclaim.SetCap(AccessToken.Token, RemoteIpAddress,
+            //    out DateTime? tokenValidFromTime,
+            //    out DateTime? tokenValidToTime),
+            //    parentserialloginid = null,
+            //    samaccount = user.username,
+            //    samemail = user.username,
+            //    userid = user.userid,
+            //    logindate = tokenValidFromTime.GetValueOrDefault(DateTime.Now),
+            //    logintoken = AccessToken.Token,
+            //    expires = tokenValidToTime.GetValueOrDefault(DateTime.Now),
+            //    refreshtoken = RefreshToken,
+            //    tokenissuedate = tokenValidFromTime.GetValueOrDefault(DateTime.Now),
+            //    remarks = "Logged in from SP",
+            //};
 
-            return await BFC.Core.FacadeCreatorObjects.Security.tran_loginFCC.GetFacadeCreate(_contextAccessor).Add(objTran, cancellationToken);
+            //return await BFC.Core.FacadeCreatorObjects.Security.tran_loginFCC.GetFacadeCreate(_contextAccessor).Add(objTran, cancellationToken);
 
-
+            return -99;
         }
 
 
@@ -435,7 +436,6 @@ namespace Web.Core.Frame.CustomIdentityManagers
             resLoginAdd = await BFC.Core.FacadeCreatorObjects.Security.owin_userlogintrailFCC.GetFacadeCreate(_contextAccessor).Add(new owin_userlogintrailEntity()
             {
                 userid = securityCapsule.userid,
-                masteruserid = securityCapsule.createdby,
                 loginfrom = "Web App",
                 logindate = securityCapsule.createddate,
                 logoutdate = null,
@@ -472,7 +472,6 @@ namespace Web.Core.Frame.CustomIdentityManagers
                     {
                         serialno = long.Parse(resLoginSeriale),
                         userid = _securityCapsule.userid,
-                        masteruserid = _securityCapsule.createdby,
                         loginfrom = "Web App",
                         logindate = _securityCapsule.createddate,
                         logoutdate = DateTime.Now,

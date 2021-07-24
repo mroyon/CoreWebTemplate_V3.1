@@ -1,6 +1,4 @@
-﻿
-
-using BDO.DataAccessObjects.Models;
+﻿using BDO.DataAccessObjects.Models;
 using System;
 using System.Collections.Generic;
 using System.ServiceModel;

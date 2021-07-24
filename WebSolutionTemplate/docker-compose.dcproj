@@ -20,14 +20,27 @@
     </None>
     <None Include="docker-compose.yml" />
     <None Include=".dockerignore" />
-    <None Include="ftp\Dockerfile" />
-    <None Include="ftp\log\vsftpd\vsftpd.log" />
+    <None Include="nginxweb\Dockerfile" />
+    <None Include="nginxweb\obj\Docker\CanonicalServiceNames.cache" />
+    <None Include="nginx\obj\Docker\CanonicalServiceNames.cache" />
+    <None Include="sitesdata\blackportalftpfolder\hello.html" />
+    <None Include="sitesdata\hello.html" />
+    <None Include="sitesdata\hello2.html" />
+    <None Include="sitesdata\hello3.html" />
+    <None Include="sitesdata\hello4.html" />
+    <None Include="sitesdata\hello5.html" />
+    <None Include="sitesdata\hello6.html" />
+    <None Include="sitesdata\index.html" />
+    <None Include="vsftp\Dockerfile" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="ftp\data\ftpuser\blackportalftpfolder\gallary\" />
-    <Folder Include="ftp\data\ftpuser\blackportalftpfolder\links\" />
-    <Folder Include="ftp\data\ftpuser\blackportalftpfolder\news\" />
-    <Folder Include="ftp\data\ftpuser\blackportalftpfolder\services\" />
-    <Folder Include="ftp\data\ftpuser\blackportalftpfolder\users\" />
+    <Folder Include="sitesdata\blackportalftpfolder\gallary\" />
+    <Folder Include="sitesdata\blackportalftpfolder\links\" />
+    <Folder Include="sitesdata\blackportalftpfolder\news\" />
+    <Folder Include="sitesdata\blackportalftpfolder\services\" />
+    <Folder Include="sitesdata\blackportalftpfolder\users\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="nginx\**" />
   </ItemGroup>
 </Project>

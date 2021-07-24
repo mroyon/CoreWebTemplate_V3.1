@@ -5,22 +5,22 @@ using Microsoft.Extensions.Options;
 using Web.Core.Frame.RequestResponse.UseCaseRequests;
 using Web.Core.Frame.Interfaces.UseCases;
 using WebApi.Presenters;
-using BDO.DataAccessObjects.ExtendedEntities;
 using Microsoft.AspNetCore.Authorization;
 using WebApi.Extensions;
+using BDO.DataAccessObjects.ExtendedEntities;
 
 namespace WebApi.Controllers
 {
     /// <summary>
-    /// GenFAQController
+    /// GenFaqController
     /// </summary>
     [Authorize(Policy = "ApiUser")]
     [Route("api/[controller]")]
     [ApiController]
-    public class GenFAQController : ControllerBase
+    public class GenFaqController : ControllerBase
     {
-        private readonly IGen_FAQUseCase _gen_FAQUseCase;
-        private readonly Gen_FAQPresenter _gen_FAQPresenter;
+        private readonly IGen_FaqUseCase _gen_FaqUseCase;
+        private readonly Gen_FaqPresenter _gen_FaqPresenter;
         private readonly AuthSettings _authSettings;
 
         /// <summary>
@@ -29,116 +29,116 @@ namespace WebApi.Controllers
         public IConfiguration _configuration { get; }
 
         /// <summary>
-        /// GenFAQController
+        /// GenFaqController
         /// </summary>
-        /// <param name="gen_FAQUseCase"></param>
-        /// <param name="gen_FAQPresenter"></param>
+        /// <param name="gen_FaqUseCase"></param>
+        /// <param name="gen_FaqPresenter"></param>
         /// <param name="authSettings"></param>
-        public GenFAQController(
-            IGen_FAQUseCase gen_FAQUseCase,
-            Gen_FAQPresenter gen_FAQPresenter,
+        public GenFaqController(
+            IGen_FaqUseCase gen_FaqUseCase,
+            Gen_FaqPresenter gen_FaqPresenter,
             IOptions<AuthSettings> authSettings)
         {
             _authSettings = authSettings.Value;
-            _gen_FAQUseCase = gen_FAQUseCase;
-            _gen_FAQPresenter = gen_FAQPresenter;
+            _gen_FaqUseCase = gen_FaqUseCase;
+            _gen_FaqPresenter = gen_FaqPresenter;
         }
 
 
         /// <summary>
-        /// GetAllGenFAQ
+        /// GetAllGenFaq
         /// </summary>
         /// <returns></returns>
-        [HttpGet("GetAllGenFAQ")]
+        [HttpGet("GetAllGenFaq")]
         [ServiceFilter(typeof(ApiSecurityFillerAttribute))]
-        public async Task<ActionResult> GetAllGenFAQ()
+        public async Task<ActionResult> GetAllGenFaq()
         {
             if (!ModelState.IsValid) { return BadRequest(ModelState); }
-            await _gen_FAQUseCase.GetAll(new Gen_FAQRequest(new BDO.DataAccessObjects.Models.gen_faqEntity()), _gen_FAQPresenter);
-            return _gen_FAQPresenter.ContentResult;
+            await _gen_FaqUseCase.GetAll(new Gen_FaqRequest(new BDO.DataAccessObjects.Models.gen_faqEntity()), _gen_FaqPresenter);
+            return _gen_FaqPresenter.ContentResult;
         }
 
         /// <summary>
-        /// GetAllPagedGenFAQ
+        /// GetAllPagedGenFaq
         /// </summary>
         /// <returns></returns>
-        [HttpPost("GetAllPagedGenFAQ")]
+        [HttpPost("GetAllPagedGenFaq")]
         [ServiceFilter(typeof(ApiSecurityFillerAttribute))]
-        public async Task<ActionResult> GetAllPagedGenFAQ([FromBody] BDO.DataAccessObjects.Models.gen_faqEntity request)
+        public async Task<ActionResult> GetAllPagedGenFaq([FromBody] BDO.DataAccessObjects.Models.gen_faqEntity request)
         {
             //if (!ModelState.IsValid) { return BadRequest(ModelState); }
-            await _gen_FAQUseCase.GetAllPaged(new Gen_FAQRequest(request), _gen_FAQPresenter);
-            return _gen_FAQPresenter.ContentResult;
+            await _gen_FaqUseCase.GetAllPaged(new Gen_FaqRequest(request), _gen_FaqPresenter);
+            return _gen_FaqPresenter.ContentResult;
         }
 
         /// <summary>
-        /// GetListViewGenFAQ
+        /// GetListViewGenFaq
         /// </summary>
         /// <returns></returns>
-        [HttpPost("GetListViewGenFAQ")]
+        [HttpPost("GetListViewGenFaq")]
         [ServiceFilter(typeof(ApiSecurityFillerAttribute))]
-        public async Task<ActionResult> GetListViewGenFAQ([FromBody] BDO.DataAccessObjects.Models.gen_faqEntity request)
+        public async Task<ActionResult> GetListViewGenFaq([FromBody] BDO.DataAccessObjects.Models.gen_faqEntity request)
         {
             //if (!ModelState.IsValid) { return BadRequest(ModelState); }
-            await _gen_FAQUseCase.GetListView(new Gen_FAQRequest(request), _gen_FAQPresenter);
-            return _gen_FAQPresenter.ContentResult;
+            await _gen_FaqUseCase.GetListView(new Gen_FaqRequest(request), _gen_FaqPresenter);
+            return _gen_FaqPresenter.ContentResult;
         }
 
         /// <summary>
-        /// GetSingleGenFAQ
+        /// GetSingleGenFaq
         /// </summary>
         /// <returns></returns>
-        [HttpPost("GetSingleGenFAQ")]
+        [HttpPost("GetSingleGenFaq")]
         [ServiceFilter(typeof(ApiSecurityFillerAttribute))]
-        public async Task<ActionResult> GetSingleGenFAQ([FromBody] BDO.DataAccessObjects.Models.gen_faqEntity request)
+        public async Task<ActionResult> GetSingleGenFaq([FromBody] BDO.DataAccessObjects.Models.gen_faqEntity request)
         {
             //if (!ModelState.IsValid) { return BadRequest(ModelState); }
-            await _gen_FAQUseCase.GetSingle(new Gen_FAQRequest(request), _gen_FAQPresenter);
-            return _gen_FAQPresenter.ContentResult;
+            await _gen_FaqUseCase.GetSingle(new Gen_FaqRequest(request), _gen_FaqPresenter);
+            return _gen_FaqPresenter.ContentResult;
         }
 
         /// <summary>
-        /// SaveGenFAQ
+        /// SaveGenFaq
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        [HttpPost("SaveGenFAQ")]
+        [HttpPost("SaveGenFaq")]
         [ServiceFilter(typeof(ApiSecurityFillerAttribute))]
-        public async Task<ActionResult> SaveGenFAQ([FromBody] BDO.DataAccessObjects.Models.gen_faqEntity request)
+        public async Task<ActionResult> SaveGenFaq([FromBody] BDO.DataAccessObjects.Models.gen_faqEntity request)
         {
             if (!ModelState.IsValid) { return BadRequest(ModelState); }
-            await _gen_FAQUseCase.Save(new Gen_FAQRequest(request), _gen_FAQPresenter);
-            return _gen_FAQPresenter.ContentResult;
+            await _gen_FaqUseCase.Save(new Gen_FaqRequest(request), _gen_FaqPresenter);
+            return _gen_FaqPresenter.ContentResult;
         }
 
         /// <summary>
-        /// UpdateGenFAQ
+        /// UpdateGenFaq
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        [HttpPost("UpdateGenFAQ")]
+        [HttpPost("UpdateGenFaq")]
         [ServiceFilter(typeof(ApiSecurityFillerAttribute))]
-        public async Task<ActionResult> UpdateGenFAQ([FromBody] BDO.DataAccessObjects.Models.gen_faqEntity request)
+        public async Task<ActionResult> UpdateGenFaq([FromBody] BDO.DataAccessObjects.Models.gen_faqEntity request)
         {
             if (!ModelState.IsValid) { return BadRequest(ModelState); }
-            await _gen_FAQUseCase.Update(new Gen_FAQRequest(request), _gen_FAQPresenter);
-            return _gen_FAQPresenter.ContentResult;
+            await _gen_FaqUseCase.Update(new Gen_FaqRequest(request), _gen_FaqPresenter);
+            return _gen_FaqPresenter.ContentResult;
         }
 
         /// <summary>
-        /// DeleteGenFAQ
+        /// DeleteGenFaq
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        [HttpPost("DeleteGenFAQ")]
+        [HttpPost("DeleteGenFaq")]
         [ServiceFilter(typeof(ApiSecurityFillerAttribute))]
-        public async Task<ActionResult> DeleteGenFAQ([FromBody] BDO.DataAccessObjects.Models.gen_faqEntity request)
+        public async Task<ActionResult> DeleteGenFaq([FromBody] BDO.DataAccessObjects.Models.gen_faqEntity request)
         {
             ModelState.Remove("PriorityName");
             ModelState.Remove("PriorityOrder");
             if (!ModelState.IsValid) { return BadRequest(ModelState); }
-            await _gen_FAQUseCase.Delete(new Gen_FAQRequest(request), _gen_FAQPresenter);
-            return _gen_FAQPresenter.ContentResult;
+            await _gen_FaqUseCase.Delete(new Gen_FaqRequest(request), _gen_FaqPresenter);
+            return _gen_FaqPresenter.ContentResult;
         }
     }
 }

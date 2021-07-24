@@ -46,19 +46,6 @@ namespace DAC.Core.CoreFactory
 
 		#region Factory Methods 
 
-		#region gen_doctype
-		[DebuggerStepThrough()]
-		public override Igen_doctypeDataAccessObjects Creategen_doctypeDataAccess()
-		{
-			string type = typeof(gen_doctypeDataAccessObjects).ToString();
-			if (!CurrentContext.Contains(type))
-			{
-				CurrentContext[type] = new gen_doctypeDataAccessObjects(CurrentContext);
-			}
-			return (Igen_doctypeDataAccessObjects)CurrentContext[type];
-		}
-		#endregion gen_doctype
-
 
 		#region gen_faq
 		[DebuggerStepThrough()]
@@ -74,18 +61,18 @@ namespace DAC.Core.CoreFactory
 		#endregion gen_faq
 
 
-		#region gen_faqcategory
+		#region gen_faqcagetogy
 		[DebuggerStepThrough()]
-		public override Igen_faqcategoryDataAccessObjects Creategen_faqcategoryDataAccess()
+		public override Igen_faqcagetogyDataAccessObjects Creategen_faqcagetogyDataAccess()
 		{
-			string type = typeof(gen_faqcategoryDataAccessObjects).ToString();
+			string type = typeof(gen_faqcagetogyDataAccessObjects).ToString();
 			if (!CurrentContext.Contains(type))
 			{
-				CurrentContext[type] = new gen_faqcategoryDataAccessObjects(CurrentContext);
+				CurrentContext[type] = new gen_faqcagetogyDataAccessObjects(CurrentContext);
 			}
-			return (Igen_faqcategoryDataAccessObjects)CurrentContext[type];
+			return (Igen_faqcagetogyDataAccessObjects)CurrentContext[type];
 		}
-		#endregion gen_faqcategory
+		#endregion gen_faqcagetogy
 
 
 		#region gen_imagegallary
@@ -116,18 +103,32 @@ namespace DAC.Core.CoreFactory
 		#endregion gen_imagegallarycategory
 
 
-		#region gen_linkedservice
+		#region gen_sertivetype
 		[DebuggerStepThrough()]
-		public override Igen_linkedserviceDataAccessObjects Creategen_linkedserviceDataAccess()
+		public override Igen_sertivetypeDataAccessObjects Creategen_sertivetypeDataAccess()
 		{
-			string type = typeof(gen_linkedserviceDataAccessObjects).ToString();
+			string type = typeof(gen_sertivetypeDataAccessObjects).ToString();
 			if (!CurrentContext.Contains(type))
 			{
-				CurrentContext[type] = new gen_linkedserviceDataAccessObjects(CurrentContext);
+				CurrentContext[type] = new gen_sertivetypeDataAccessObjects(CurrentContext);
 			}
-			return (Igen_linkedserviceDataAccessObjects)CurrentContext[type];
+			return (Igen_sertivetypeDataAccessObjects)CurrentContext[type];
 		}
-		#endregion gen_linkedservice
+		#endregion gen_sertivetype
+
+
+		#region gen_services
+		[DebuggerStepThrough()]
+		public override Igen_servicesDataAccessObjects Creategen_servicesDataAccess()
+		{
+			string type = typeof(gen_servicesDataAccessObjects).ToString();
+			if (!CurrentContext.Contains(type))
+			{
+				CurrentContext[type] = new gen_servicesDataAccessObjects(CurrentContext);
+			}
+			return (Igen_servicesDataAccessObjects)CurrentContext[type];
+		}
+		#endregion gen_services
 
 
 		#region owin_formaction
@@ -156,6 +157,7 @@ namespace DAC.Core.CoreFactory
 			return (Iowin_forminfoDataAccessObjects)CurrentContext[type];
 		}
 		#endregion owin_forminfo
+
 
 		#region owin_lastworkingpage
 		[DebuggerStepThrough()]
@@ -310,18 +312,6 @@ namespace DAC.Core.CoreFactory
 		}
 		#endregion owin_userstatuschangehistory
 
-		#region tran_login
-		[DebuggerStepThrough()]
-		public override Itran_loginDataAccessObjects Createtran_loginDataAccess()
-		{
-			string type = typeof(tran_loginDataAccessObjects).ToString();
-			if (!CurrentContext.Contains(type))
-			{
-				CurrentContext[type] = new tran_loginDataAccessObjects(CurrentContext);
-			}
-			return (Itran_loginDataAccessObjects)CurrentContext[type];
-		}
-		#endregion tran_login
 		#endregion Factory Methods 
 	}
 }

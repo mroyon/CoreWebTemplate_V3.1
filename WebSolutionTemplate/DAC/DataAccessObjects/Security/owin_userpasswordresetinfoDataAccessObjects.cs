@@ -5,11 +5,13 @@ using System.Collections.Generic;
 using Microsoft.Practices.EnterpriseLibrary.Data;
 using AppConfig.ConfigDAAC;
 using DAC.Core.Base;
-
 using BDO.DataAccessObjects.SecurityModule;
+using BDO.Base;
+using AppConfig.HelperClasses;
 using System.Threading.Tasks;
 using System.Threading;
 using IDAC.Core.IDataAccessObjects.Security;
+
 
 namespace DAC.Core.DataAccessObjects.Security
 {
@@ -502,7 +504,7 @@ namespace DAC.Core.DataAccessObjects.Security
 					FillParameters(owin_userpasswordresetinfo, cmd,Database);
                     
 					if (!string.IsNullOrEmpty (owin_userpasswordresetinfo.strCommonSerachParam))
-                        Database.AddInParameter(cmd, "@CommonSerachParam", DbType.String, owin_userpasswordresetinfo.strCommonSerachParam);
+                        Database.AddInParameter(cmd, "@CommonSerachParam", DbType.String,  "%"+owin_userpasswordresetinfo.strCommonSerachParam+"%");
 
                     IList<owin_userpasswordresetinfoEntity> itemList = new List<owin_userpasswordresetinfoEntity>();
 					

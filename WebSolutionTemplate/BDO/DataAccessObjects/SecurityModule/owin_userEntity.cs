@@ -58,6 +58,24 @@ namespace BDO.DataAccessObjects.SecurityModule
         protected bool ? _twofactorenable;
         protected bool ? _ismobilenumberconfirmed;
         protected DateTime ? _mobilenumberconfirmedbyuserdate;
+
+        protected string _securitystamp;
+        protected string _concurrencystamp;
+        [DataMember]
+        public string securitystamp
+        {
+            get { return _securitystamp; }
+            set { _securitystamp = value; }
+        }
+
+        [DataMember]
+        public string concurrencystamp
+        {
+            get { return _concurrencystamp; }
+            set { _concurrencystamp = value;  }
+        }
+
+
         [DataMember]
         public long? roleid
         {
@@ -517,20 +535,16 @@ namespace BDO.DataAccessObjects.SecurityModule
                 
                 if (!reader.IsDBNull(reader.GetOrdinal("IsMobileNumberConfirmed"))) _ismobilenumberconfirmed = reader.GetBoolean(reader.GetOrdinal("IsMobileNumberConfirmed"));
                 if (!reader.IsDBNull(reader.GetOrdinal("MobileNumberConfirmedByUserDate"))) _mobilenumberconfirmedbyuserdate = reader.GetDateTime(reader.GetOrdinal("MobileNumberConfirmedByUserDate"));
-                
+
+
                 if (!reader.IsDBNull(reader.GetOrdinal("TransID"))) this.BaseSecurityParam.transid = reader.GetString(reader.GetOrdinal("TransID"));
-                if (!reader.IsDBNull(reader.GetOrdinal("UserOrganizationKey"))) this.BaseSecurityParam.userorganizationkey = reader.GetInt64(reader.GetOrdinal("UserOrganizationKey"));
-                if (!reader.IsDBNull(reader.GetOrdinal("CreatedBy"))) this.BaseSecurityParam.createdby = reader.GetInt64(reader.GetOrdinal("CreatedBy"));
-                
-                if (!reader.IsDBNull(reader.GetOrdinal("CreatedDate"))) this.BaseSecurityParam.createddate = reader.GetDateTime(reader.GetOrdinal("CreatedDate"));
-                if (!reader.IsDBNull(reader.GetOrdinal("UpdatedBy"))) this.BaseSecurityParam.updatedby = reader.GetInt64(reader.GetOrdinal("UpdatedBy"));
                 if (!reader.IsDBNull(reader.GetOrdinal("CreatedByUserName"))) _createdbyusername = reader.GetString(reader.GetOrdinal("CreatedByUserName"));
-                this.BaseSecurityParam.createdbyusername = _createdbyusername;
+                BaseSecurityParam.createdbyusername = _createdbyusername;
+                if (!reader.IsDBNull(reader.GetOrdinal("CreatedDate"))) this.BaseSecurityParam.createddate = reader.GetDateTime(reader.GetOrdinal("CreatedDate"));
                 if (!reader.IsDBNull(reader.GetOrdinal("UpdatedByUserName"))) _updatedbyusername = reader.GetString(reader.GetOrdinal("UpdatedByUserName"));
-                this.BaseSecurityParam.updatedbyusername = _updatedbyusername;
+                BaseSecurityParam.updatedbyusername = _updatedbyusername;
                 if (!reader.IsDBNull(reader.GetOrdinal("UpdatedDate"))) this.BaseSecurityParam.updateddate = reader.GetDateTime(reader.GetOrdinal("UpdatedDate"));
                 if (!reader.IsDBNull(reader.GetOrdinal("IPAddress"))) this.BaseSecurityParam.ipaddress = reader.GetString(reader.GetOrdinal("IPAddress"));
-                if (!reader.IsDBNull(reader.GetOrdinal("FormID"))) this.BaseSecurityParam.appformid = reader.GetInt64(reader.GetOrdinal("FormID"));
                 if (!reader.IsDBNull(reader.GetOrdinal("TS"))) this.BaseSecurityParam.ts = reader.GetInt64(reader.GetOrdinal("ts"));
                 CurrentState = EntityState.Unchanged;
             }
@@ -583,21 +597,17 @@ namespace BDO.DataAccessObjects.SecurityModule
                 
                 if (!reader.IsDBNull(reader.GetOrdinal("IsMobileNumberConfirmed"))) _ismobilenumberconfirmed = reader.GetBoolean(reader.GetOrdinal("IsMobileNumberConfirmed"));
                 if (!reader.IsDBNull(reader.GetOrdinal("MobileNumberConfirmedByUserDate"))) _mobilenumberconfirmedbyuserdate = reader.GetDateTime(reader.GetOrdinal("MobileNumberConfirmedByUserDate"));
-                
+
                 if (!reader.IsDBNull(reader.GetOrdinal("TransID"))) this.BaseSecurityParam.transid = reader.GetString(reader.GetOrdinal("TransID"));
-                if (!reader.IsDBNull(reader.GetOrdinal("UserOrganizationKey"))) this.BaseSecurityParam.userorganizationkey = reader.GetInt64(reader.GetOrdinal("UserOrganizationKey"));
-                if (!reader.IsDBNull(reader.GetOrdinal("CreatedBy"))) this.BaseSecurityParam.createdby = reader.GetInt64(reader.GetOrdinal("CreatedBy"));
-                
-                if (!reader.IsDBNull(reader.GetOrdinal("CreatedDate"))) this.BaseSecurityParam.createddate = reader.GetDateTime(reader.GetOrdinal("CreatedDate"));
-                if (!reader.IsDBNull(reader.GetOrdinal("UpdatedBy"))) this.BaseSecurityParam.updatedby = reader.GetInt64(reader.GetOrdinal("UpdatedBy"));
                 if (!reader.IsDBNull(reader.GetOrdinal("CreatedByUserName"))) _createdbyusername = reader.GetString(reader.GetOrdinal("CreatedByUserName"));
-                this.BaseSecurityParam.createdbyusername = _createdbyusername;
+                BaseSecurityParam.createdbyusername = _createdbyusername;
+                if (!reader.IsDBNull(reader.GetOrdinal("CreatedDate"))) this.BaseSecurityParam.createddate = reader.GetDateTime(reader.GetOrdinal("CreatedDate"));
                 if (!reader.IsDBNull(reader.GetOrdinal("UpdatedByUserName"))) _updatedbyusername = reader.GetString(reader.GetOrdinal("UpdatedByUserName"));
-                this.BaseSecurityParam.updatedbyusername = _updatedbyusername;
+                BaseSecurityParam.updatedbyusername = _updatedbyusername;
                 if (!reader.IsDBNull(reader.GetOrdinal("UpdatedDate"))) this.BaseSecurityParam.updateddate = reader.GetDateTime(reader.GetOrdinal("UpdatedDate"));
                 if (!reader.IsDBNull(reader.GetOrdinal("IPAddress"))) this.BaseSecurityParam.ipaddress = reader.GetString(reader.GetOrdinal("IPAddress"));
-                if (!reader.IsDBNull(reader.GetOrdinal("FormID"))) this.BaseSecurityParam.appformid = reader.GetInt64(reader.GetOrdinal("FormID"));
                 if (!reader.IsDBNull(reader.GetOrdinal("TS"))) this.BaseSecurityParam.ts = reader.GetInt64(reader.GetOrdinal("ts"));
+
                 CurrentState = EntityState.Unchanged;
             }
         }

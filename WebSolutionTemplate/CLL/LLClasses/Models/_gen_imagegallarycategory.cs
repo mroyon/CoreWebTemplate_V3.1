@@ -8,7 +8,7 @@ namespace CLL.LLClasses.Models
     
     public  class _gen_imagegallarycategory : _Common
     {
-         private static IResourceProvider resourceProvider_gen_imagegallarycategory = new XmlResourceProvider(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"LanguagesFiles/_gen_imagegallarycategory.xml"));//DbResourceProvider(); //  
+         private static IResourceProvider resourceProvider_gen_imagegallarycategory = new XmlResourceProvider(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"LanguagesFiles\_gen_imagegallarycategory.xml"));//DbResourceProvider(); //  
          
          
         public static string imagegallarycategoryList
@@ -41,25 +41,25 @@ namespace CLL.LLClasses.Models
         }
          
      
-         public static string categoryname
+         public static string imagegallarycategory
         {
             get
             {
-                return resourceProvider_gen_imagegallarycategory.GetResource("categoryname", CultureInfo.CurrentUICulture.Name) as String;
+                return resourceProvider_gen_imagegallarycategory.GetResource("imagegallarycategory", CultureInfo.CurrentUICulture.Name) as String;
             }
         }
-        public static string categorynameRequired
+        public static string imagegallarycategoryRequired
         {
             get
             {
-                return resourceProvider_gen_imagegallarycategory.GetResource("categorynameRequired", CultureInfo.CurrentUICulture.Name) as String;
+                return resourceProvider_gen_imagegallarycategory.GetResource("imagegallarycategoryRequired", CultureInfo.CurrentUICulture.Name) as String;
             }
         }
-         public static string categorydescription
+         public static string descriptions
         {
             get
             {
-                return resourceProvider_gen_imagegallarycategory.GetResource("categorydescription", CultureInfo.CurrentUICulture.Name) as String;
+                return resourceProvider_gen_imagegallarycategory.GetResource("descriptions", CultureInfo.CurrentUICulture.Name) as String;
             }
         }
         

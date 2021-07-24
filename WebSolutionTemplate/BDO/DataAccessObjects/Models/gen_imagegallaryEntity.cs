@@ -19,7 +19,7 @@ namespace BDO.DataAccessObjects.Models
         protected string _imagetype;
         protected string _imageextension;
         protected string _imagename;
-        protected bool ? _isinslider;
+        protected bool ? _isslider;
                 
         
         [DataMember]
@@ -41,7 +41,6 @@ namespace BDO.DataAccessObjects.Models
         [DataMember]
         [MaxLength(250)]
         [Display(Name = "imagepath", ResourceType = typeof(CLL.LLClasses.Models._gen_imagegallary))]
-        [Required(ErrorMessageResourceType = typeof(CLL.LLClasses.Models._gen_imagegallary), ErrorMessageResourceName = "imagepathRequired")]
         public string imagepath
         {
             get { return _imagepath; }
@@ -49,9 +48,8 @@ namespace BDO.DataAccessObjects.Models
         }
         
         [DataMember]
-        [MaxLength(50)]
+        [MaxLength(150)]
         [Display(Name = "imagetype", ResourceType = typeof(CLL.LLClasses.Models._gen_imagegallary))]
-        [Required(ErrorMessageResourceType = typeof(CLL.LLClasses.Models._gen_imagegallary), ErrorMessageResourceName = "imagetypeRequired")]
         public string imagetype
         {
             get { return _imagetype; }
@@ -59,9 +57,8 @@ namespace BDO.DataAccessObjects.Models
         }
         
         [DataMember]
-        [MaxLength(50)]
+        [MaxLength(10)]
         [Display(Name = "imageextension", ResourceType = typeof(CLL.LLClasses.Models._gen_imagegallary))]
-        [Required(ErrorMessageResourceType = typeof(CLL.LLClasses.Models._gen_imagegallary), ErrorMessageResourceName = "imageextensionRequired")]
         public string imageextension
         {
             get { return _imageextension; }
@@ -69,9 +66,8 @@ namespace BDO.DataAccessObjects.Models
         }
         
         [DataMember]
-        [MaxLength(50)]
+        [MaxLength(150)]
         [Display(Name = "imagename", ResourceType = typeof(CLL.LLClasses.Models._gen_imagegallary))]
-        [Required(ErrorMessageResourceType = typeof(CLL.LLClasses.Models._gen_imagegallary), ErrorMessageResourceName = "imagenameRequired")]
         public string imagename
         {
             get { return _imagename; }
@@ -79,11 +75,11 @@ namespace BDO.DataAccessObjects.Models
         }
         
         [DataMember]
-        [Display(Name = "isinslider", ResourceType = typeof(CLL.LLClasses.Models._gen_imagegallary))]
-        public bool ? isinslider
+        [Display(Name = "isslider", ResourceType = typeof(CLL.LLClasses.Models._gen_imagegallary))]
+        public bool ? isslider
         {
-            get { return _isinslider; }
-            set { _isinslider = value; this.OnChnaged(); }
+            get { return _isslider; }
+            set { _isslider = value; this.OnChnaged(); }
         }
         
         
@@ -116,14 +112,14 @@ namespace BDO.DataAccessObjects.Models
                 if (!reader.IsDBNull(reader.GetOrdinal("ImageType"))) _imagetype = reader.GetString(reader.GetOrdinal("ImageType"));
                 if (!reader.IsDBNull(reader.GetOrdinal("ImageExtension"))) _imageextension = reader.GetString(reader.GetOrdinal("ImageExtension"));
                 if (!reader.IsDBNull(reader.GetOrdinal("ImageName"))) _imagename = reader.GetString(reader.GetOrdinal("ImageName"));
-                if (!reader.IsDBNull(reader.GetOrdinal("IsInSlider"))) _isinslider = reader.GetBoolean(reader.GetOrdinal("IsInSlider"));
+                if (!reader.IsDBNull(reader.GetOrdinal("IsSlider"))) _isslider = reader.GetBoolean(reader.GetOrdinal("IsSlider"));
+
                 if (!reader.IsDBNull(reader.GetOrdinal("TransID"))) this.BaseSecurityParam.transid = reader.GetString(reader.GetOrdinal("TransID"));
-                
-                if (!reader.IsDBNull(reader.GetOrdinal("CreatedDate"))) this.BaseSecurityParam.createddate = reader.GetDateTime(reader.GetOrdinal("CreatedDate"));
                 if (!reader.IsDBNull(reader.GetOrdinal("CreatedByUserName"))) _createdbyusername = reader.GetString(reader.GetOrdinal("CreatedByUserName"));
-                this.BaseSecurityParam.createdbyusername = _createdbyusername;
+                BaseSecurityParam.createdbyusername = _createdbyusername;
+                if (!reader.IsDBNull(reader.GetOrdinal("CreatedDate"))) this.BaseSecurityParam.createddate = reader.GetDateTime(reader.GetOrdinal("CreatedDate"));
                 if (!reader.IsDBNull(reader.GetOrdinal("UpdatedByUserName"))) _updatedbyusername = reader.GetString(reader.GetOrdinal("UpdatedByUserName"));
-                this.BaseSecurityParam.updatedbyusername = _updatedbyusername;
+                BaseSecurityParam.updatedbyusername = _updatedbyusername;
                 if (!reader.IsDBNull(reader.GetOrdinal("UpdatedDate"))) this.BaseSecurityParam.updateddate = reader.GetDateTime(reader.GetOrdinal("UpdatedDate"));
                 if (!reader.IsDBNull(reader.GetOrdinal("IPAddress"))) this.BaseSecurityParam.ipaddress = reader.GetString(reader.GetOrdinal("IPAddress"));
                 if (!reader.IsDBNull(reader.GetOrdinal("TS"))) this.BaseSecurityParam.ts = reader.GetInt64(reader.GetOrdinal("ts"));
@@ -143,14 +139,14 @@ namespace BDO.DataAccessObjects.Models
                 if (!reader.IsDBNull(reader.GetOrdinal("ImageType"))) _imagetype = reader.GetString(reader.GetOrdinal("ImageType"));
                 if (!reader.IsDBNull(reader.GetOrdinal("ImageExtension"))) _imageextension = reader.GetString(reader.GetOrdinal("ImageExtension"));
                 if (!reader.IsDBNull(reader.GetOrdinal("ImageName"))) _imagename = reader.GetString(reader.GetOrdinal("ImageName"));
-                if (!reader.IsDBNull(reader.GetOrdinal("IsInSlider"))) _isinslider = reader.GetBoolean(reader.GetOrdinal("IsInSlider"));
+                if (!reader.IsDBNull(reader.GetOrdinal("IsSlider"))) _isslider = reader.GetBoolean(reader.GetOrdinal("IsSlider"));
+
                 if (!reader.IsDBNull(reader.GetOrdinal("TransID"))) this.BaseSecurityParam.transid = reader.GetString(reader.GetOrdinal("TransID"));
-                
-                if (!reader.IsDBNull(reader.GetOrdinal("CreatedDate"))) this.BaseSecurityParam.createddate = reader.GetDateTime(reader.GetOrdinal("CreatedDate"));
                 if (!reader.IsDBNull(reader.GetOrdinal("CreatedByUserName"))) _createdbyusername = reader.GetString(reader.GetOrdinal("CreatedByUserName"));
-                this.BaseSecurityParam.createdbyusername = _createdbyusername;
+                BaseSecurityParam.createdbyusername = _createdbyusername;
+                if (!reader.IsDBNull(reader.GetOrdinal("CreatedDate"))) this.BaseSecurityParam.createddate = reader.GetDateTime(reader.GetOrdinal("CreatedDate"));
                 if (!reader.IsDBNull(reader.GetOrdinal("UpdatedByUserName"))) _updatedbyusername = reader.GetString(reader.GetOrdinal("UpdatedByUserName"));
-                this.BaseSecurityParam.updatedbyusername = _updatedbyusername;
+                BaseSecurityParam.updatedbyusername = _updatedbyusername;
                 if (!reader.IsDBNull(reader.GetOrdinal("UpdatedDate"))) this.BaseSecurityParam.updateddate = reader.GetDateTime(reader.GetOrdinal("UpdatedDate"));
                 if (!reader.IsDBNull(reader.GetOrdinal("IPAddress"))) this.BaseSecurityParam.ipaddress = reader.GetString(reader.GetOrdinal("IPAddress"));
                 if (!reader.IsDBNull(reader.GetOrdinal("TS"))) this.BaseSecurityParam.ts = reader.GetInt64(reader.GetOrdinal("ts"));

@@ -14,8 +14,8 @@ namespace BDO.DataAccessObjects.Models
         #region Properties
     
         protected long ? _imagegallarycategoryid;
-        protected string _categoryname;
-        protected string _categorydescription;
+        protected string _imagegallarycategory;
+        protected string _descriptions;
                 
         
         [DataMember]
@@ -26,22 +26,22 @@ namespace BDO.DataAccessObjects.Models
         }
         
         [DataMember]
-        [MaxLength(150)]
-        [Display(Name = "categoryname", ResourceType = typeof(CLL.LLClasses.Models._gen_imagegallarycategory))]
-        [Required(ErrorMessageResourceType = typeof(CLL.LLClasses.Models._gen_imagegallarycategory), ErrorMessageResourceName = "categorynameRequired")]
-        public string categoryname
+        [MaxLength(250)]
+        [Display(Name = "imagegallarycategory", ResourceType = typeof(CLL.LLClasses.Models._gen_imagegallarycategory))]
+        [Required(ErrorMessageResourceType = typeof(CLL.LLClasses.Models._gen_imagegallarycategory), ErrorMessageResourceName = "imagegallarycategoryRequired")]
+        public string imagegallarycategory
         {
-            get { return _categoryname; }
-            set { _categoryname = value; this.OnChnaged(); }
+            get { return _imagegallarycategory; }
+            set { _imagegallarycategory = value; this.OnChnaged(); }
         }
         
         [DataMember]
-        [MaxLength(250)]
-        [Display(Name = "categorydescription", ResourceType = typeof(CLL.LLClasses.Models._gen_imagegallarycategory))]
-        public string categorydescription
+        [MaxLength(550)]
+        [Display(Name = "descriptions", ResourceType = typeof(CLL.LLClasses.Models._gen_imagegallarycategory))]
+        public string descriptions
         {
-            get { return _categorydescription; }
-            set { _categorydescription = value; this.OnChnaged(); }
+            get { return _descriptions; }
+            set { _descriptions = value; this.OnChnaged(); }
         }
         
         
@@ -69,15 +69,15 @@ namespace BDO.DataAccessObjects.Models
             {
                 this.BaseSecurityParam = new SecurityCapsule();
                 if (!reader.IsDBNull(reader.GetOrdinal("ImageGallaryCategoryID"))) _imagegallarycategoryid = reader.GetInt64(reader.GetOrdinal("ImageGallaryCategoryID"));
-                if (!reader.IsDBNull(reader.GetOrdinal("CategoryName"))) _categoryname = reader.GetString(reader.GetOrdinal("CategoryName"));
-                if (!reader.IsDBNull(reader.GetOrdinal("CategoryDescription"))) _categorydescription = reader.GetString(reader.GetOrdinal("CategoryDescription"));
+                if (!reader.IsDBNull(reader.GetOrdinal("ImageGallaryCategory"))) _imagegallarycategory = reader.GetString(reader.GetOrdinal("ImageGallaryCategory"));
+                if (!reader.IsDBNull(reader.GetOrdinal("Descriptions"))) _descriptions = reader.GetString(reader.GetOrdinal("Descriptions"));
+
                 if (!reader.IsDBNull(reader.GetOrdinal("TransID"))) this.BaseSecurityParam.transid = reader.GetString(reader.GetOrdinal("TransID"));
-                
-                if (!reader.IsDBNull(reader.GetOrdinal("CreatedDate"))) this.BaseSecurityParam.createddate = reader.GetDateTime(reader.GetOrdinal("CreatedDate"));
                 if (!reader.IsDBNull(reader.GetOrdinal("CreatedByUserName"))) _createdbyusername = reader.GetString(reader.GetOrdinal("CreatedByUserName"));
-                this.BaseSecurityParam.createdbyusername = _createdbyusername;
+                BaseSecurityParam.createdbyusername = _createdbyusername;
+                if (!reader.IsDBNull(reader.GetOrdinal("CreatedDate"))) this.BaseSecurityParam.createddate = reader.GetDateTime(reader.GetOrdinal("CreatedDate"));
                 if (!reader.IsDBNull(reader.GetOrdinal("UpdatedByUserName"))) _updatedbyusername = reader.GetString(reader.GetOrdinal("UpdatedByUserName"));
-                this.BaseSecurityParam.updatedbyusername = _updatedbyusername;
+                BaseSecurityParam.updatedbyusername = _updatedbyusername;
                 if (!reader.IsDBNull(reader.GetOrdinal("UpdatedDate"))) this.BaseSecurityParam.updateddate = reader.GetDateTime(reader.GetOrdinal("UpdatedDate"));
                 if (!reader.IsDBNull(reader.GetOrdinal("IPAddress"))) this.BaseSecurityParam.ipaddress = reader.GetString(reader.GetOrdinal("IPAddress"));
                 if (!reader.IsDBNull(reader.GetOrdinal("TS"))) this.BaseSecurityParam.ts = reader.GetInt64(reader.GetOrdinal("ts"));
@@ -92,15 +92,15 @@ namespace BDO.DataAccessObjects.Models
             {
                 this.BaseSecurityParam = new SecurityCapsule();
                 if (!reader.IsDBNull(reader.GetOrdinal("ImageGallaryCategoryID"))) _imagegallarycategoryid = reader.GetInt64(reader.GetOrdinal("ImageGallaryCategoryID"));
-                if (!reader.IsDBNull(reader.GetOrdinal("CategoryName"))) _categoryname = reader.GetString(reader.GetOrdinal("CategoryName"));
-                if (!reader.IsDBNull(reader.GetOrdinal("CategoryDescription"))) _categorydescription = reader.GetString(reader.GetOrdinal("CategoryDescription"));
+                if (!reader.IsDBNull(reader.GetOrdinal("ImageGallaryCategory"))) _imagegallarycategory = reader.GetString(reader.GetOrdinal("ImageGallaryCategory"));
+                if (!reader.IsDBNull(reader.GetOrdinal("Descriptions"))) _descriptions = reader.GetString(reader.GetOrdinal("Descriptions"));
+
                 if (!reader.IsDBNull(reader.GetOrdinal("TransID"))) this.BaseSecurityParam.transid = reader.GetString(reader.GetOrdinal("TransID"));
-                
-                if (!reader.IsDBNull(reader.GetOrdinal("CreatedDate"))) this.BaseSecurityParam.createddate = reader.GetDateTime(reader.GetOrdinal("CreatedDate"));
                 if (!reader.IsDBNull(reader.GetOrdinal("CreatedByUserName"))) _createdbyusername = reader.GetString(reader.GetOrdinal("CreatedByUserName"));
-                this.BaseSecurityParam.createdbyusername = _createdbyusername;
+                BaseSecurityParam.createdbyusername = _createdbyusername;
+                if (!reader.IsDBNull(reader.GetOrdinal("CreatedDate"))) this.BaseSecurityParam.createddate = reader.GetDateTime(reader.GetOrdinal("CreatedDate"));
                 if (!reader.IsDBNull(reader.GetOrdinal("UpdatedByUserName"))) _updatedbyusername = reader.GetString(reader.GetOrdinal("UpdatedByUserName"));
-                this.BaseSecurityParam.updatedbyusername = _updatedbyusername;
+                BaseSecurityParam.updatedbyusername = _updatedbyusername;
                 if (!reader.IsDBNull(reader.GetOrdinal("UpdatedDate"))) this.BaseSecurityParam.updateddate = reader.GetDateTime(reader.GetOrdinal("UpdatedDate"));
                 if (!reader.IsDBNull(reader.GetOrdinal("IPAddress"))) this.BaseSecurityParam.ipaddress = reader.GetString(reader.GetOrdinal("IPAddress"));
                 if (!reader.IsDBNull(reader.GetOrdinal("TS"))) this.BaseSecurityParam.ts = reader.GetInt64(reader.GetOrdinal("ts"));

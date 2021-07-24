@@ -1,4 +1,6 @@
-﻿using BFO.Core.BusinessFacadeObjects.Security;
+﻿
+
+using BFO.Core.BusinessFacadeObjects.Security;
 using IBFO.Core.IBusinessFacadeObjects.Security;
 using Microsoft.AspNetCore.Http;
 
@@ -14,12 +16,12 @@ namespace BFC.Core.FacadeCreatorObjects.Security
 		
 		public static Iowin_lastworkingpageFacadeObjects GetFacadeCreate(IHttpContextAccessor httpContextAccessor)
         {
+			Iowin_lastworkingpageFacadeObjects facade = null;
             var context = httpContextAccessor.HttpContext;
-            Iowin_lastworkingpageFacadeObjects facade = null;
             if (context != null)
             {
                 facade = context.Items["Iowin_lastworkingpageFacadeObjects"] as Iowin_lastworkingpageFacadeObjects;
-
+    
                 if (facade == null)
                 {
                     facade = new owin_lastworkingpageFacadeObjects();
@@ -32,7 +34,6 @@ namespace BFC.Core.FacadeCreatorObjects.Security
                 return facade;
             }
             return facade;
-          
         }
 		
 		

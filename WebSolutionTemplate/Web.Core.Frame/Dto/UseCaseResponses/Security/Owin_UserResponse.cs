@@ -1,7 +1,7 @@
-﻿using Web.Core.Frame.Dto;
-using BDO.DataAccessObjects.SecurityModule;
-using System.Collections.Generic;
+﻿using BDO.DataAccessObjects.SecurityModule;
 using Web.Core.Frame.Interfaces;
+using System.Collections.Generic;
+using Web.Core.Frame.Dto;
 
 namespace Web.Core.Frame.RequestResponse.UseCaseResponses
 {

@@ -68,19 +68,14 @@ namespace DAC.Core.CoreFactory
 		#region Factory Methods 
 
 
-		#region gen_doctype
-		public abstract Igen_doctypeDataAccessObjects Creategen_doctypeDataAccess();
-		#endregion gen_doctype
-
-
 		#region gen_faq
 		public abstract Igen_faqDataAccessObjects Creategen_faqDataAccess();
 		#endregion gen_faq
 
 
-		#region gen_faqcategory
-		public abstract Igen_faqcategoryDataAccessObjects Creategen_faqcategoryDataAccess();
-		#endregion gen_faqcategory
+		#region gen_faqcagetogy
+		public abstract Igen_faqcagetogyDataAccessObjects Creategen_faqcagetogyDataAccess();
+		#endregion gen_faqcagetogy
 
 
 		#region gen_imagegallary
@@ -93,9 +88,14 @@ namespace DAC.Core.CoreFactory
 		#endregion gen_imagegallarycategory
 
 
-		#region gen_linkedservice
-		public abstract Igen_linkedserviceDataAccessObjects Creategen_linkedserviceDataAccess();
-		#endregion gen_linkedservice
+		#region gen_sertivetype
+		public abstract Igen_sertivetypeDataAccessObjects Creategen_sertivetypeDataAccess();
+		#endregion gen_sertivetype
+
+
+		#region gen_services
+		public abstract Igen_servicesDataAccessObjects Creategen_servicesDataAccess();
+		#endregion gen_services
 
 
 		#region owin_formaction
@@ -106,6 +106,7 @@ namespace DAC.Core.CoreFactory
 		#region owin_forminfo
 		public abstract Iowin_forminfoDataAccessObjects Createowin_forminfoDataAccess();
 		#endregion owin_forminfo
+
 
 		#region owin_lastworkingpage
 		public abstract Iowin_lastworkingpageDataAccessObjects Createowin_lastworkingpageDataAccess();
@@ -161,11 +162,6 @@ namespace DAC.Core.CoreFactory
 		public abstract Iowin_userstatuschangehistoryDataAccessObjects Createowin_userstatuschangehistoryDataAccess();
 		#endregion owin_userstatuschangehistory
 
-
-
-		#region tran_login
-		public abstract Itran_loginDataAccessObjects Createtran_loginDataAccess();
-		#endregion tran_login
 
 		#endregion
 	}

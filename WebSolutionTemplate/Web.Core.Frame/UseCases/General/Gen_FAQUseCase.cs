@@ -19,17 +19,17 @@ using BDO.DataAccessObjects.Models;
 
 namespace Web.Core.Frame.UseCases
 {
-    public sealed class Gen_FAQUseCase : IGen_FAQUseCase
+    public sealed class Gen_FaqUseCase : IGen_FaqUseCase
     {
         private readonly IHttpContextAccessor _contextAccessor;
         private readonly IJwtFactory _jwtFactory;
         private readonly IStringLocalizer _sharedLocalizer;
-        private readonly ILogger<Gen_FAQUseCase> _logger;
+        private readonly ILogger<Gen_FaqUseCase> _logger;
         private readonly IHttpClientHR _ihttpclienthr;
 
         public Error _errors { get; set; }
 
-        public Gen_FAQUseCase(
+        public Gen_FaqUseCase(
             IHttpContextAccessor contextAccessor,
             IJwtFactory jwtFactory,
             IStringLocalizerFactory factory,
@@ -38,7 +38,7 @@ namespace Web.Core.Frame.UseCases
         {
             _contextAccessor = contextAccessor;
             _jwtFactory = jwtFactory;
-            _logger = loggerFactory.CreateLogger<Gen_FAQUseCase>();
+            _logger = loggerFactory.CreateLogger<Gen_FaqUseCase>();
 
             var type = typeof(SharedResource);
             var assemblyName = new AssemblyName(type.GetTypeInfo().Assembly.FullName);
@@ -46,12 +46,12 @@ namespace Web.Core.Frame.UseCases
             _ihttpclienthr = ihttpclienthr;
         }
 
-        public Task<bool> Handle(Gen_FAQRequest message, IOutputPort<Gen_FAQResponse> outputPort)
+        public Task<bool> Handle(Gen_FaqRequest message, IOutputPort<Gen_FaqResponse> outputPort)
         {
             throw new Exception("Not Implemented");
         }
 
-        public async Task<bool> GetAll(Gen_FAQRequest message, ICRUDRequestHandler<Gen_FAQResponse> outputPort)
+        public async Task<bool> GetAll(Gen_FaqRequest message, ICRUDRequestHandler<Gen_FaqResponse> outputPort)
         {
             CancellationToken cancellationToken = new CancellationToken();
             try
@@ -61,11 +61,11 @@ namespace Web.Core.Frame.UseCases
 
                 if (oblist != null && oblist.Count > 0)
                 {
-                    outputPort.GetAll(new Gen_FAQResponse(oblist.ToList(), true));
+                    outputPort.GetAll(new Gen_FaqResponse(oblist.ToList(), true));
                 }
                 else
                 {
-                    Gen_FAQResponse objResponse = new Gen_FAQResponse(false, _sharedLocalizer["NO_DATA_FOUND"], new Error(
+                    Gen_FaqResponse objResponse = new Gen_FaqResponse(false, _sharedLocalizer["NO_DATA_FOUND"], new Error(
                      "404",
                      _sharedLocalizer["NO_DATA_FOUND"]));
                     _logger.LogInformation(JsonConvert.SerializeObject(objResponse));
@@ -75,7 +75,7 @@ namespace Web.Core.Frame.UseCases
             }
             catch (Exception ex)
             {
-                Gen_FAQResponse objResponse = new Gen_FAQResponse(false, _sharedLocalizer["DATA_FETCH_ERROR"], new Error(
+                Gen_FaqResponse objResponse = new Gen_FaqResponse(false, _sharedLocalizer["DATA_FETCH_ERROR"], new Error(
                     "500",
                     ex.Message));
                 _logger.LogInformation(JsonConvert.SerializeObject(objResponse));
@@ -84,7 +84,7 @@ namespace Web.Core.Frame.UseCases
             }
         }
 
-        public async Task<bool> GetAllPaged(Gen_FAQRequest message, ICRUDRequestHandler<Gen_FAQResponse> outputPort)
+        public async Task<bool> GetAllPaged(Gen_FaqRequest message, ICRUDRequestHandler<Gen_FaqResponse> outputPort)
         {
             CancellationToken cancellationToken = new CancellationToken();
             try
@@ -94,11 +94,11 @@ namespace Web.Core.Frame.UseCases
 
                 if (oblist != null && oblist.Count > 0)
                 {
-                    outputPort.GetAllPaged(new Gen_FAQResponse(oblist.ToList(), true));
+                    outputPort.GetAllPaged(new Gen_FaqResponse(oblist.ToList(), true));
                 }
                 else
                 {
-                    Gen_FAQResponse objResponse = new Gen_FAQResponse(false, _sharedLocalizer["NO_DATA_FOUND"], new Error(
+                    Gen_FaqResponse objResponse = new Gen_FaqResponse(false, _sharedLocalizer["NO_DATA_FOUND"], new Error(
                      "404",
                      _sharedLocalizer["NO_DATA_FOUND"]));
                     _logger.LogInformation(JsonConvert.SerializeObject(objResponse));
@@ -108,7 +108,7 @@ namespace Web.Core.Frame.UseCases
             }
             catch (Exception ex)
             {
-                Gen_FAQResponse objResponse = new Gen_FAQResponse(false, _sharedLocalizer["DATA_FETCH_ERROR"], new Error(
+                Gen_FaqResponse objResponse = new Gen_FaqResponse(false, _sharedLocalizer["DATA_FETCH_ERROR"], new Error(
                     "500",
                     ex.Message));
                 _logger.LogInformation(JsonConvert.SerializeObject(objResponse));
@@ -117,7 +117,7 @@ namespace Web.Core.Frame.UseCases
             }
         }
 
-        public async Task<bool> GetListView(Gen_FAQRequest message, ICRUDRequestHandler<Gen_FAQResponse> outputPort)
+        public async Task<bool> GetListView(Gen_FaqRequest message, ICRUDRequestHandler<Gen_FaqResponse> outputPort)
         {
             CancellationToken cancellationToken = new CancellationToken();
             try
@@ -127,11 +127,11 @@ namespace Web.Core.Frame.UseCases
                 .GAPgListView(message.Objgen_faq, cancellationToken);
                 if (oblist != null && oblist.Count > 0)
                 {
-                    outputPort.GetListView(new Gen_FAQResponse(oblist.ToList(), true));
+                    outputPort.GetListView(new Gen_FaqResponse(oblist.ToList(), true));
                 }
                 else
                 {
-                    Gen_FAQResponse objResponse = new Gen_FAQResponse(false, _sharedLocalizer["NO_DATA_FOUND"], new Error(
+                    Gen_FaqResponse objResponse = new Gen_FaqResponse(false, _sharedLocalizer["NO_DATA_FOUND"], new Error(
                      "404",
                      _sharedLocalizer["NO_DATA_FOUND"]));
                     _logger.LogInformation(JsonConvert.SerializeObject(objResponse));
@@ -141,7 +141,7 @@ namespace Web.Core.Frame.UseCases
             }
             catch (Exception ex)
             {
-                Gen_FAQResponse objResponse = new Gen_FAQResponse(false, _sharedLocalizer["DATA_FETCH_ERROR"], new Error(
+                Gen_FaqResponse objResponse = new Gen_FaqResponse(false, _sharedLocalizer["DATA_FETCH_ERROR"], new Error(
                     "500",
                     ex.Message));
                 _logger.LogInformation(JsonConvert.SerializeObject(objResponse));
@@ -150,7 +150,7 @@ namespace Web.Core.Frame.UseCases
             }
         }
 
-        public async Task<bool> GetSingle(Gen_FAQRequest message, ICRUDRequestHandler<Gen_FAQResponse> outputPort)
+        public async Task<bool> GetSingle(Gen_FaqRequest message, ICRUDRequestHandler<Gen_FaqResponse> outputPort)
         {
             CancellationToken cancellationToken = new CancellationToken();
             try
@@ -159,11 +159,11 @@ namespace Web.Core.Frame.UseCases
                 .GetSingle(message.Objgen_faq, cancellationToken);
                 if (objSingle != null)
                 {
-                    outputPort.GetSingle(new Gen_FAQResponse(objSingle, true));
+                    outputPort.GetSingle(new Gen_FaqResponse(objSingle, true));
                 }
                 else
                 {
-                    Gen_FAQResponse objResponse = new Gen_FAQResponse(false, _sharedLocalizer["NO_DATA_FOUND"], new Error(
+                    Gen_FaqResponse objResponse = new Gen_FaqResponse(false, _sharedLocalizer["NO_DATA_FOUND"], new Error(
                      "404",
                      _sharedLocalizer["NO_DATA_FOUND"]));
                     _logger.LogInformation(JsonConvert.SerializeObject(objResponse));
@@ -173,7 +173,7 @@ namespace Web.Core.Frame.UseCases
             }
             catch (Exception ex)
             {
-                Gen_FAQResponse objResponse = new Gen_FAQResponse(false, _sharedLocalizer["DATA_FETCH_ERROR"], new Error(
+                Gen_FaqResponse objResponse = new Gen_FaqResponse(false, _sharedLocalizer["DATA_FETCH_ERROR"], new Error(
                     "500",
                     ex.Message));
                 _logger.LogInformation(JsonConvert.SerializeObject(objResponse));
@@ -182,7 +182,7 @@ namespace Web.Core.Frame.UseCases
             }
         }
 
-        public async Task<bool> Save(Gen_FAQRequest message, ICRUDRequestHandler<Gen_FAQResponse> outputPort)
+        public async Task<bool> Save(Gen_FaqRequest message, ICRUDRequestHandler<Gen_FaqResponse> outputPort)
         {
             _logger.LogInformation(JsonConvert.SerializeObject(message));
             CancellationToken cancellationToken = new CancellationToken();
@@ -191,12 +191,12 @@ namespace Web.Core.Frame.UseCases
             {
                 i = await BFC.Core.FacadeCreatorObjects.General.gen_faqFCC.GetFacadeCreate(_contextAccessor)
                     .Add(message.Objgen_faq, cancellationToken);
-                outputPort.Save(new Gen_FAQResponse(true, _sharedLocalizer["DATA_SAVE_CONFIRMATION"], null));
+                outputPort.Save(new Gen_FaqResponse(true, _sharedLocalizer["DATA_SAVE_CONFIRMATION"], null));
                 return true;
             }
             catch (Exception ex)
             {
-                Gen_FAQResponse objResponse = new Gen_FAQResponse(false, _sharedLocalizer["DATA_SAVE_ERROR"], new Error(
+                Gen_FaqResponse objResponse = new Gen_FaqResponse(false, _sharedLocalizer["DATA_SAVE_ERROR"], new Error(
                     "500",
                     ex.Message));
                 _logger.LogInformation(JsonConvert.SerializeObject(objResponse));
@@ -205,7 +205,7 @@ namespace Web.Core.Frame.UseCases
             }
         }
 
-        public async Task<bool> Update(Gen_FAQRequest message, ICRUDRequestHandler<Gen_FAQResponse> outputPort)
+        public async Task<bool> Update(Gen_FaqRequest message, ICRUDRequestHandler<Gen_FaqResponse> outputPort)
         {
             CancellationToken cancellationToken = new CancellationToken();
             long? i = null;
@@ -213,12 +213,12 @@ namespace Web.Core.Frame.UseCases
             {
                 i = await BFC.Core.FacadeCreatorObjects.General.gen_faqFCC.GetFacadeCreate(_contextAccessor)
                     .Update(message.Objgen_faq, cancellationToken);
-                outputPort.Update(new Gen_FAQResponse(true, _sharedLocalizer["DATA_UPDATE_CONFIRMATION"], null));
+                outputPort.Update(new Gen_FaqResponse(true, _sharedLocalizer["DATA_UPDATE_CONFIRMATION"], null));
                 return true;
             }
             catch (Exception ex)
             {
-                Gen_FAQResponse objResponse = new Gen_FAQResponse(false, _sharedLocalizer["DATA_UPDATE_ERROR"], new Error(
+                Gen_FaqResponse objResponse = new Gen_FaqResponse(false, _sharedLocalizer["DATA_UPDATE_ERROR"], new Error(
                        "500",
                        ex.Message));
                 _logger.LogInformation(JsonConvert.SerializeObject(objResponse));
@@ -227,7 +227,7 @@ namespace Web.Core.Frame.UseCases
             }
         }
 
-        public async Task<bool> Delete(Gen_FAQRequest message, ICRUDRequestHandler<Gen_FAQResponse> outputPort)
+        public async Task<bool> Delete(Gen_FaqRequest message, ICRUDRequestHandler<Gen_FaqResponse> outputPort)
         {
             CancellationToken cancellationToken = new CancellationToken();
             long? i = null;
@@ -235,12 +235,12 @@ namespace Web.Core.Frame.UseCases
             {
                 i = await BFC.Core.FacadeCreatorObjects.General.gen_faqFCC.GetFacadeCreate(_contextAccessor)
                     .Delete(message.Objgen_faq, cancellationToken);
-                outputPort.Delete(new Gen_FAQResponse(true, _sharedLocalizer["DATA_DELETE_CONFIRMATION"], null));
+                outputPort.Delete(new Gen_FaqResponse(true, _sharedLocalizer["DATA_DELETE_CONFIRMATION"], null));
                 return true;
             }
             catch (Exception ex)
             {
-                Gen_FAQResponse objResponse = new Gen_FAQResponse(false, _sharedLocalizer["DATA_DELETE_ERROR"], new Error(
+                Gen_FaqResponse objResponse = new Gen_FaqResponse(false, _sharedLocalizer["DATA_DELETE_ERROR"], new Error(
                          "500",
                          ex.Message));
                 _logger.LogInformation(JsonConvert.SerializeObject(objResponse));

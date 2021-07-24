@@ -15,8 +15,10 @@ namespace BDO.DataAccessObjects.Models
     
         protected long ? _faqid;
         protected long ? _faqcategoryid;
-        protected string _faqquestion;
-        protected string _faqanswer;
+        protected string _questions;
+        protected string _answers;
+        protected string _tags;
+        protected string _urls;
                 
         
         [DataMember]
@@ -36,22 +38,38 @@ namespace BDO.DataAccessObjects.Models
         }
         
         [DataMember]
-        [MaxLength(250)]
-        [Display(Name = "faqquestion", ResourceType = typeof(CLL.LLClasses.Models._gen_faq))]
-        [Required(ErrorMessageResourceType = typeof(CLL.LLClasses.Models._gen_faq), ErrorMessageResourceName = "faqquestionRequired")]
-        public string faqquestion
+        [MaxLength(550)]
+        [Display(Name = "questions", ResourceType = typeof(CLL.LLClasses.Models._gen_faq))]
+        public string questions
         {
-            get { return _faqquestion; }
-            set { _faqquestion = value; this.OnChnaged(); }
+            get { return _questions; }
+            set { _questions = value; this.OnChnaged(); }
         }
         
         [DataMember]
-        [MaxLength(550)]
-        [Display(Name = "faqanswer", ResourceType = typeof(CLL.LLClasses.Models._gen_faq))]
-        public string faqanswer
+        [Display(Name = "answers", ResourceType = typeof(CLL.LLClasses.Models._gen_faq))]
+        public string answers
         {
-            get { return _faqanswer; }
-            set { _faqanswer = value; this.OnChnaged(); }
+            get { return _answers; }
+            set { _answers = value; this.OnChnaged(); }
+        }
+        
+        [DataMember]
+        [MaxLength(-1)]
+        [Display(Name = "tags", ResourceType = typeof(CLL.LLClasses.Models._gen_faq))]
+        public string tags
+        {
+            get { return _tags; }
+            set { _tags = value; this.OnChnaged(); }
+        }
+        
+        [DataMember]
+        [MaxLength(350)]
+        [Display(Name = "urls", ResourceType = typeof(CLL.LLClasses.Models._gen_faq))]
+        public string urls
+        {
+            get { return _urls; }
+            set { _urls = value; this.OnChnaged(); }
         }
         
         
@@ -80,15 +98,17 @@ namespace BDO.DataAccessObjects.Models
                 this.BaseSecurityParam = new SecurityCapsule();
                 if (!reader.IsDBNull(reader.GetOrdinal("FAQID"))) _faqid = reader.GetInt64(reader.GetOrdinal("FAQID"));
                 if (!reader.IsDBNull(reader.GetOrdinal("FAQCategoryID"))) _faqcategoryid = reader.GetInt64(reader.GetOrdinal("FAQCategoryID"));
-                if (!reader.IsDBNull(reader.GetOrdinal("FAQQuestion"))) _faqquestion = reader.GetString(reader.GetOrdinal("FAQQuestion"));
-                if (!reader.IsDBNull(reader.GetOrdinal("FAQAnswer"))) _faqanswer = reader.GetString(reader.GetOrdinal("FAQAnswer"));
+                if (!reader.IsDBNull(reader.GetOrdinal("Questions"))) _questions = reader.GetString(reader.GetOrdinal("Questions"));
+                if (!reader.IsDBNull(reader.GetOrdinal("Answers"))) _answers = reader.GetString(reader.GetOrdinal("Answers"));
+                if (!reader.IsDBNull(reader.GetOrdinal("TAGS"))) _tags = reader.GetString(reader.GetOrdinal("TAGS"));
+                if (!reader.IsDBNull(reader.GetOrdinal("URLS"))) _urls = reader.GetString(reader.GetOrdinal("URLS"));
+
                 if (!reader.IsDBNull(reader.GetOrdinal("TransID"))) this.BaseSecurityParam.transid = reader.GetString(reader.GetOrdinal("TransID"));
-                
-                if (!reader.IsDBNull(reader.GetOrdinal("CreatedDate"))) this.BaseSecurityParam.createddate = reader.GetDateTime(reader.GetOrdinal("CreatedDate"));
                 if (!reader.IsDBNull(reader.GetOrdinal("CreatedByUserName"))) _createdbyusername = reader.GetString(reader.GetOrdinal("CreatedByUserName"));
-                this.BaseSecurityParam.createdbyusername = _createdbyusername;
+                BaseSecurityParam.createdbyusername = _createdbyusername;
+                if (!reader.IsDBNull(reader.GetOrdinal("CreatedDate"))) this.BaseSecurityParam.createddate = reader.GetDateTime(reader.GetOrdinal("CreatedDate"));
                 if (!reader.IsDBNull(reader.GetOrdinal("UpdatedByUserName"))) _updatedbyusername = reader.GetString(reader.GetOrdinal("UpdatedByUserName"));
-                this.BaseSecurityParam.updatedbyusername = _updatedbyusername;
+                BaseSecurityParam.updatedbyusername = _updatedbyusername;
                 if (!reader.IsDBNull(reader.GetOrdinal("UpdatedDate"))) this.BaseSecurityParam.updateddate = reader.GetDateTime(reader.GetOrdinal("UpdatedDate"));
                 if (!reader.IsDBNull(reader.GetOrdinal("IPAddress"))) this.BaseSecurityParam.ipaddress = reader.GetString(reader.GetOrdinal("IPAddress"));
                 if (!reader.IsDBNull(reader.GetOrdinal("TS"))) this.BaseSecurityParam.ts = reader.GetInt64(reader.GetOrdinal("ts"));
@@ -104,15 +124,17 @@ namespace BDO.DataAccessObjects.Models
                 this.BaseSecurityParam = new SecurityCapsule();
                 if (!reader.IsDBNull(reader.GetOrdinal("FAQID"))) _faqid = reader.GetInt64(reader.GetOrdinal("FAQID"));
                 if (!reader.IsDBNull(reader.GetOrdinal("FAQCategoryID"))) _faqcategoryid = reader.GetInt64(reader.GetOrdinal("FAQCategoryID"));
-                if (!reader.IsDBNull(reader.GetOrdinal("FAQQuestion"))) _faqquestion = reader.GetString(reader.GetOrdinal("FAQQuestion"));
-                if (!reader.IsDBNull(reader.GetOrdinal("FAQAnswer"))) _faqanswer = reader.GetString(reader.GetOrdinal("FAQAnswer"));
-                if (!reader.IsDBNull(reader.GetOrdinal("TransID"))) this.BaseSecurityParam.transid = reader.GetString(reader.GetOrdinal("TransID"));
+                if (!reader.IsDBNull(reader.GetOrdinal("Questions"))) _questions = reader.GetString(reader.GetOrdinal("Questions"));
+                if (!reader.IsDBNull(reader.GetOrdinal("Answers"))) _answers = reader.GetString(reader.GetOrdinal("Answers"));
+                if (!reader.IsDBNull(reader.GetOrdinal("TAGS"))) _tags = reader.GetString(reader.GetOrdinal("TAGS"));
+                if (!reader.IsDBNull(reader.GetOrdinal("URLS"))) _urls = reader.GetString(reader.GetOrdinal("URLS"));
 
-                if (!reader.IsDBNull(reader.GetOrdinal("CreatedDate"))) this.BaseSecurityParam.createddate = reader.GetDateTime(reader.GetOrdinal("CreatedDate"));
+                if (!reader.IsDBNull(reader.GetOrdinal("TransID"))) this.BaseSecurityParam.transid = reader.GetString(reader.GetOrdinal("TransID"));
                 if (!reader.IsDBNull(reader.GetOrdinal("CreatedByUserName"))) _createdbyusername = reader.GetString(reader.GetOrdinal("CreatedByUserName"));
-                this.BaseSecurityParam.createdbyusername = _createdbyusername;
+                BaseSecurityParam.createdbyusername = _createdbyusername;
+                if (!reader.IsDBNull(reader.GetOrdinal("CreatedDate"))) this.BaseSecurityParam.createddate = reader.GetDateTime(reader.GetOrdinal("CreatedDate"));
                 if (!reader.IsDBNull(reader.GetOrdinal("UpdatedByUserName"))) _updatedbyusername = reader.GetString(reader.GetOrdinal("UpdatedByUserName"));
-                this.BaseSecurityParam.updatedbyusername = _updatedbyusername;
+                BaseSecurityParam.updatedbyusername = _updatedbyusername;
                 if (!reader.IsDBNull(reader.GetOrdinal("UpdatedDate"))) this.BaseSecurityParam.updateddate = reader.GetDateTime(reader.GetOrdinal("UpdatedDate"));
                 if (!reader.IsDBNull(reader.GetOrdinal("IPAddress"))) this.BaseSecurityParam.ipaddress = reader.GetString(reader.GetOrdinal("IPAddress"));
                 if (!reader.IsDBNull(reader.GetOrdinal("TS"))) this.BaseSecurityParam.ts = reader.GetInt64(reader.GetOrdinal("ts"));

@@ -1,5 +1,4 @@
-﻿
-using CLL.Localization;
+﻿using CLL.Localization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;

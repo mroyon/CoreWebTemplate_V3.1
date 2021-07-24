@@ -6,9 +6,13 @@ using Microsoft.Practices.EnterpriseLibrary.Data;
 using AppConfig.ConfigDAAC;
 using DAC.Core.Base;
 using BDO.DataAccessObjects.SecurityModule;
+using BDO.Base;
+using AppConfig.HelperClasses;
 using System.Threading.Tasks;
 using System.Threading;
 using IDAC.Core.IDataAccessObjects.Security;
+
+
 
 namespace DAC.Core.DataAccessObjects.Security
 {
@@ -501,7 +505,7 @@ namespace DAC.Core.DataAccessObjects.Security
 					FillParameters(owin_userstatuschangehistory, cmd,Database);
                     
 					if (!string.IsNullOrEmpty (owin_userstatuschangehistory.strCommonSerachParam))
-                        Database.AddInParameter(cmd, "@CommonSerachParam", DbType.String, owin_userstatuschangehistory.strCommonSerachParam);
+                        Database.AddInParameter(cmd, "@CommonSerachParam", DbType.String,  "%"+owin_userstatuschangehistory.strCommonSerachParam+"%");
 
                     IList<owin_userstatuschangehistoryEntity> itemList = new List<owin_userstatuschangehistoryEntity>();
 					

@@ -7,12 +7,13 @@
     <add key="ConnectionString4" value="Data Source=.;Initial Catalog=KW_TEMPLATE;Persist Security Info=True;User ID=sa;Password=Asdf1234" />
     <add key="ConnectionString5" value="Data Source=.;Initial Catalog=OwinTemplate;Persist Security Info=True;User ID=sa;Password=Asdf1234" />
     <add key="ConnectionString6" value="Data Source=.;Initial Catalog=OwinTemplatesV2;Persist Security Info=True;User ID=sa;Password=Asdf1234" />
+    <add key="ConnectionString7" value="Data Source=.;Initial Catalog=OwinTemplate2;Persist Security Info=True;User ID=sa;Password=Asdf1234" />
   </variables>
   <propertySets>
     <propertySet name="_xmlResourceClassGenerate.txt" output="_xmlResourceClassGenerate.txt" template="_xmlResourceClassGenerate.cst">
-      <property name="NameSpace">KAF</property>
+      <property name="NameSpace">CLL</property>
       <property name="SourceDatabase">
-        <connectionString>$(ConnectionString6)</connectionString>
+        <connectionString>$(ConnectionString7)</connectionString>
         <providerType>SchemaExplorer.SqlSchemaProvider,SchemaExplorer.SqlSchemaProvider</providerType>
       </property>
       <property name="OutputDirectory">C:\temp\lan</property>

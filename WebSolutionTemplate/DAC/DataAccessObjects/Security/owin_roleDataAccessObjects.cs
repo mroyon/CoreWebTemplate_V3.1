@@ -6,9 +6,12 @@ using Microsoft.Practices.EnterpriseLibrary.Data;
 using AppConfig.ConfigDAAC;
 using DAC.Core.Base;
 using BDO.DataAccessObjects.SecurityModule;
+using BDO.Base;
+using AppConfig.HelperClasses;
 using System.Threading.Tasks;
 using System.Threading;
 using IDAC.Core.IDataAccessObjects.Security;
+
 
 namespace DAC.Core.DataAccessObjects.Security
 {
@@ -493,7 +496,7 @@ namespace DAC.Core.DataAccessObjects.Security
 					FillParameters(owin_role, cmd,Database);
                     
 					if (!string.IsNullOrEmpty (owin_role.strCommonSerachParam))
-                        Database.AddInParameter(cmd, "@CommonSerachParam", DbType.String, owin_role.strCommonSerachParam);
+                        Database.AddInParameter(cmd, "@CommonSerachParam", DbType.String,  "%"+owin_role.strCommonSerachParam+"%");
 
                     IList<owin_roleEntity> itemList = new List<owin_roleEntity>();
 					

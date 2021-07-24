@@ -151,16 +151,12 @@ namespace DAC.Core.Base
         {
             if (securityCapsule != null)
             {
-                database.AddInParameter(cmd, "@CreatedBy", DbType.Int64, securityCapsule.createdby);
                 database.AddInParameter(cmd, "@CreatedByUserName", DbType.String, securityCapsule.createdbyusername);
-                database.AddInParameter(cmd, "@UpdatedBy", DbType.Int64, securityCapsule.updatedby);
                 database.AddInParameter(cmd, "@UpdatedByUserName", DbType.String, securityCapsule.updatedbyusername);
                 database.AddInParameter(cmd, "@CreatedDate", DbType.DateTime, securityCapsule.createddate.GetValueOrDefault(DateTime.Now));
                 database.AddInParameter(cmd, "@UpdatedDate", DbType.DateTime, securityCapsule.updateddate.GetValueOrDefault(DateTime.Now));
-                database.AddInParameter(cmd, "@FormID", DbType.Int64, securityCapsule.appformid);
                 database.AddInParameter(cmd, "@IPAddress", DbType.String, securityCapsule.ipaddress);
                 database.AddInParameter(cmd, "@TransID", DbType.String, securityCapsule.transid);
-                database.AddInParameter(cmd, "@UserOrganizationKey", DbType.Int64, securityCapsule.userorganizationkey.GetValueOrDefault(0));
                 database.AddInParameter(cmd, "@Ts", DbType.String, securityCapsule.ts);
             }
         }

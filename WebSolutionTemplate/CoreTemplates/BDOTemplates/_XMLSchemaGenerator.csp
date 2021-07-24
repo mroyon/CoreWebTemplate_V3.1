@@ -9,12 +9,13 @@
     <add key="ConnectionString6" value="Data Source=10.255.222.80;Initial Catalog=KAF_Correspondence;User ID=devlead_rn;Password=Asdf@1234" />
     <add key="ConnectionString7" value="Data Source=10.255.222.80;Initial Catalog=KAF_Correspondence;Persist Security Info=True;User ID=KAF_CorrespondenceUser;Password=Asdf1234" />
     <add key="ConnectionString8" value="Data Source=localhost,1434;Initial Catalog=KAFBlackPortal;User ID=sa;Password=Asdf@1234" />
+    <add key="ConnectionString9" value="Data Source=.;Initial Catalog=OwinTemplate2;Persist Security Info=True;User ID=sa;Password=Asdf1234" />
   </variables>
   <propertySets>
     <propertySet name="_XMLSchemaGenerator.txt" output="_XMLSchemaGenerator.txt" template="_XMLSchemaGenerator.cst">
       <property name="NameSpace">KAF</property>
       <property name="SourceDatabase">
-        <connectionString>$(ConnectionString8)</connectionString>
+        <connectionString>$(ConnectionString9)</connectionString>
         <providerType>SchemaExplorer.SqlSchemaProvider,SchemaExplorer.SqlSchemaProvider</providerType>
       </property>
       <property name="OutputDirectory">C:\temp\lan</property>

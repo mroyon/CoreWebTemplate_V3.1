@@ -8,7 +8,7 @@ namespace CLL.LLClasses.Models
     
     public  class _gen_imagegallary : _Common
     {
-         private static IResourceProvider resourceProvider_gen_imagegallary = new XmlResourceProvider(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"LanguagesFiles/_gen_imagegallary.xml"));//DbResourceProvider(); //  
+         private static IResourceProvider resourceProvider_gen_imagegallary = new XmlResourceProvider(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"LanguagesFiles\_gen_imagegallary.xml"));//DbResourceProvider(); //  
          
          
         public static string imagegallaryList
@@ -62,25 +62,11 @@ namespace CLL.LLClasses.Models
                 return resourceProvider_gen_imagegallary.GetResource("imagepath", CultureInfo.CurrentUICulture.Name) as String;
             }
         }
-        public static string imagepathRequired
-        {
-            get
-            {
-                return resourceProvider_gen_imagegallary.GetResource("imagepathRequired", CultureInfo.CurrentUICulture.Name) as String;
-            }
-        }
          public static string imagetype
         {
             get
             {
                 return resourceProvider_gen_imagegallary.GetResource("imagetype", CultureInfo.CurrentUICulture.Name) as String;
-            }
-        }
-        public static string imagetypeRequired
-        {
-            get
-            {
-                return resourceProvider_gen_imagegallary.GetResource("imagetypeRequired", CultureInfo.CurrentUICulture.Name) as String;
             }
         }
          public static string imageextension
@@ -90,13 +76,6 @@ namespace CLL.LLClasses.Models
                 return resourceProvider_gen_imagegallary.GetResource("imageextension", CultureInfo.CurrentUICulture.Name) as String;
             }
         }
-        public static string imageextensionRequired
-        {
-            get
-            {
-                return resourceProvider_gen_imagegallary.GetResource("imageextensionRequired", CultureInfo.CurrentUICulture.Name) as String;
-            }
-        }
          public static string imagename
         {
             get
@@ -104,18 +83,11 @@ namespace CLL.LLClasses.Models
                 return resourceProvider_gen_imagegallary.GetResource("imagename", CultureInfo.CurrentUICulture.Name) as String;
             }
         }
-        public static string imagenameRequired
+         public static string isslider
         {
             get
             {
-                return resourceProvider_gen_imagegallary.GetResource("imagenameRequired", CultureInfo.CurrentUICulture.Name) as String;
-            }
-        }
-         public static string isinslider
-        {
-            get
-            {
-                return resourceProvider_gen_imagegallary.GetResource("isinslider", CultureInfo.CurrentUICulture.Name) as String;
+                return resourceProvider_gen_imagegallary.GetResource("isslider", CultureInfo.CurrentUICulture.Name) as String;
             }
         }
         

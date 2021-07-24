@@ -5,10 +5,10 @@ using CLL.Abstract;
 
 namespace CLL.LLClasses.SecurityModule
 {
-    
+
     public  class _owin_formaction : _Common
     {
-         private static IResourceProvider resourceProvider_owin_formaction = new XmlResourceProvider(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"LanguagesFiles/_owin_formaction.xml"));//DbResourceProvider(); //  
+         private static IResourceProvider resourceProvider_owin_formaction = new XmlResourceProvider(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"LanguagesFiles\_owin_formaction.xml"));//DbResourceProvider(); //  
          
          
         public static string formactionList

@@ -42,10 +42,14 @@ namespace DAC.Core.DataAccessObjects.General
             if (forDelete) return;
 			if (gen_faq.faqcategoryid.HasValue)
 				Database.AddInParameter(cmd, "@FAQCategoryID", DbType.Int64, gen_faq.faqcategoryid);
-			if (!(string.IsNullOrEmpty(gen_faq.faqquestion)))
-				Database.AddInParameter(cmd, "@FAQQuestion", DbType.String, gen_faq.faqquestion);
-			if (!(string.IsNullOrEmpty(gen_faq.faqanswer)))
-				Database.AddInParameter(cmd, "@FAQAnswer", DbType.String, gen_faq.faqanswer);
+			if (!(string.IsNullOrEmpty(gen_faq.questions)))
+				Database.AddInParameter(cmd, "@Questions", DbType.String, gen_faq.questions);
+			
+				Database.AddInParameter(cmd, "@Answers", DbType.String, gen_faq.answers);
+			if (!(string.IsNullOrEmpty(gen_faq.tags)))
+				Database.AddInParameter(cmd, "@TAGS", DbType.String, gen_faq.tags);
+			if (!(string.IsNullOrEmpty(gen_faq.urls)))
+				Database.AddInParameter(cmd, "@URLS", DbType.String, gen_faq.urls);
 
         }
 		

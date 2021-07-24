@@ -5,12 +5,12 @@ using CLL.Abstract;
 
 namespace CLL.LLClasses.SecurityModule
 {
-
-    public class _owin_user : _Common
+    
+    public  class _owin_user : _Common
     {
-        private static IResourceProvider resourceProvider_owin_user = new XmlResourceProvider(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"LanguagesFiles/_owin_user.xml"));//DbResourceProvider(); //  
-
-
+         private static IResourceProvider resourceProvider_owin_user = new XmlResourceProvider(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"LanguagesFiles\_owin_user.xml"));//DbResourceProvider(); //  
+         
+         
         public static string userList
         {
             get
@@ -39,9 +39,9 @@ namespace CLL.LLClasses.SecurityModule
                 return resourceProvider_owin_user.GetResource("userDetails", CultureInfo.CurrentUICulture.Name) as String;
             }
         }
-
-
-        public static string applicationid
+         
+     
+         public static string applicationid
         {
             get
             {
@@ -55,7 +55,7 @@ namespace CLL.LLClasses.SecurityModule
                 return resourceProvider_owin_user.GetResource("applicationidRequired", CultureInfo.CurrentUICulture.Name) as String;
             }
         }
-        public static string masteruserid
+         public static string masteruserid
         {
             get
             {
@@ -69,7 +69,7 @@ namespace CLL.LLClasses.SecurityModule
                 return resourceProvider_owin_user.GetResource("masteruseridRequired", CultureInfo.CurrentUICulture.Name) as String;
             }
         }
-        public static string username
+         public static string username
         {
             get
             {
@@ -83,7 +83,7 @@ namespace CLL.LLClasses.SecurityModule
                 return resourceProvider_owin_user.GetResource("usernameRequired", CultureInfo.CurrentUICulture.Name) as String;
             }
         }
-        public static string emailaddress
+         public static string emailaddress
         {
             get
             {
@@ -97,7 +97,7 @@ namespace CLL.LLClasses.SecurityModule
                 return resourceProvider_owin_user.GetResource("emailaddressRequired", CultureInfo.CurrentUICulture.Name) as String;
             }
         }
-        public static string loweredusername
+         public static string loweredusername
         {
             get
             {
@@ -111,21 +111,21 @@ namespace CLL.LLClasses.SecurityModule
                 return resourceProvider_owin_user.GetResource("loweredusernameRequired", CultureInfo.CurrentUICulture.Name) as String;
             }
         }
-        public static string mobilenumber
+         public static string mobilenumber
         {
             get
             {
                 return resourceProvider_owin_user.GetResource("mobilenumber", CultureInfo.CurrentUICulture.Name) as String;
             }
         }
-        public static string userprofilephoto
+         public static string userprofilephoto
         {
             get
             {
                 return resourceProvider_owin_user.GetResource("userprofilephoto", CultureInfo.CurrentUICulture.Name) as String;
             }
         }
-        public static string isanonymous
+         public static string isanonymous
         {
             get
             {
@@ -139,14 +139,14 @@ namespace CLL.LLClasses.SecurityModule
                 return resourceProvider_owin_user.GetResource("isanonymousRequired", CultureInfo.CurrentUICulture.Name) as String;
             }
         }
-        public static string ischildenable
+         public static string ischildenable
         {
             get
             {
                 return resourceProvider_owin_user.GetResource("ischildenable", CultureInfo.CurrentUICulture.Name) as String;
             }
         }
-        public static string masprivatekey
+         public static string masprivatekey
         {
             get
             {
@@ -160,7 +160,7 @@ namespace CLL.LLClasses.SecurityModule
                 return resourceProvider_owin_user.GetResource("masprivatekeyRequired", CultureInfo.CurrentUICulture.Name) as String;
             }
         }
-        public static string maspublickey
+         public static string maspublickey
         {
             get
             {
@@ -174,7 +174,7 @@ namespace CLL.LLClasses.SecurityModule
                 return resourceProvider_owin_user.GetResource("maspublickeyRequired", CultureInfo.CurrentUICulture.Name) as String;
             }
         }
-        public static string password
+         public static string password
         {
             get
             {
@@ -188,7 +188,7 @@ namespace CLL.LLClasses.SecurityModule
                 return resourceProvider_owin_user.GetResource("passwordRequired", CultureInfo.CurrentUICulture.Name) as String;
             }
         }
-        public static string passwordsalt
+         public static string passwordsalt
         {
             get
             {
@@ -202,7 +202,7 @@ namespace CLL.LLClasses.SecurityModule
                 return resourceProvider_owin_user.GetResource("passwordsaltRequired", CultureInfo.CurrentUICulture.Name) as String;
             }
         }
-        public static string passwordkey
+         public static string passwordkey
         {
             get
             {
@@ -216,7 +216,7 @@ namespace CLL.LLClasses.SecurityModule
                 return resourceProvider_owin_user.GetResource("passwordkeyRequired", CultureInfo.CurrentUICulture.Name) as String;
             }
         }
-        public static string passwordvector
+         public static string passwordvector
         {
             get
             {
@@ -230,175 +230,189 @@ namespace CLL.LLClasses.SecurityModule
                 return resourceProvider_owin_user.GetResource("passwordvectorRequired", CultureInfo.CurrentUICulture.Name) as String;
             }
         }
-        public static string mobilepin
+         public static string mobilepin
         {
             get
             {
                 return resourceProvider_owin_user.GetResource("mobilepin", CultureInfo.CurrentUICulture.Name) as String;
             }
         }
-        public static string passwordquestion
+         public static string passwordquestion
         {
             get
             {
                 return resourceProvider_owin_user.GetResource("passwordquestion", CultureInfo.CurrentUICulture.Name) as String;
             }
         }
-        public static string passwordanswer
+         public static string passwordanswer
         {
             get
             {
                 return resourceProvider_owin_user.GetResource("passwordanswer", CultureInfo.CurrentUICulture.Name) as String;
             }
         }
-        public static string approved
+         public static string approved
         {
             get
             {
                 return resourceProvider_owin_user.GetResource("approved", CultureInfo.CurrentUICulture.Name) as String;
             }
         }
-        public static string locked
+         public static string locked
         {
             get
             {
                 return resourceProvider_owin_user.GetResource("locked", CultureInfo.CurrentUICulture.Name) as String;
             }
         }
-        public static string lastlogindate
+         public static string lastlogindate
         {
             get
             {
                 return resourceProvider_owin_user.GetResource("lastlogindate", CultureInfo.CurrentUICulture.Name) as String;
             }
         }
-        public static string lastpasschangeddate
+         public static string lastpasschangeddate
         {
             get
             {
                 return resourceProvider_owin_user.GetResource("lastpasschangeddate", CultureInfo.CurrentUICulture.Name) as String;
             }
         }
-        public static string lastlockoutdate
+         public static string lastlockoutdate
         {
             get
             {
                 return resourceProvider_owin_user.GetResource("lastlockoutdate", CultureInfo.CurrentUICulture.Name) as String;
             }
         }
-        public static string failedpasswordattemptcount
+         public static string failedpasswordattemptcount
         {
             get
             {
                 return resourceProvider_owin_user.GetResource("failedpasswordattemptcount", CultureInfo.CurrentUICulture.Name) as String;
             }
         }
-        public static string comment
+         public static string comment
         {
             get
             {
                 return resourceProvider_owin_user.GetResource("comment", CultureInfo.CurrentUICulture.Name) as String;
             }
         }
-        public static string lastactivitydate
+         public static string lastactivitydate
         {
             get
             {
                 return resourceProvider_owin_user.GetResource("lastactivitydate", CultureInfo.CurrentUICulture.Name) as String;
             }
         }
-        public static string isreviewed
+         public static string isreviewed
         {
             get
             {
                 return resourceProvider_owin_user.GetResource("isreviewed", CultureInfo.CurrentUICulture.Name) as String;
             }
         }
-        public static string reviewedby
+         public static string reviewedby
         {
             get
             {
                 return resourceProvider_owin_user.GetResource("reviewedby", CultureInfo.CurrentUICulture.Name) as String;
             }
         }
-        public static string reviewedbyusername
+         public static string reviewedbyusername
         {
             get
             {
                 return resourceProvider_owin_user.GetResource("reviewedbyusername", CultureInfo.CurrentUICulture.Name) as String;
             }
         }
-        public static string revieweddate
+         public static string revieweddate
         {
             get
             {
                 return resourceProvider_owin_user.GetResource("revieweddate", CultureInfo.CurrentUICulture.Name) as String;
             }
         }
-        public static string isapproved
+         public static string isapproved
         {
             get
             {
                 return resourceProvider_owin_user.GetResource("isapproved", CultureInfo.CurrentUICulture.Name) as String;
             }
         }
-        public static string approvedby
+         public static string approvedby
         {
             get
             {
                 return resourceProvider_owin_user.GetResource("approvedby", CultureInfo.CurrentUICulture.Name) as String;
             }
         }
-        public static string approvedbyusername
+         public static string approvedbyusername
         {
             get
             {
                 return resourceProvider_owin_user.GetResource("approvedbyusername", CultureInfo.CurrentUICulture.Name) as String;
             }
         }
-        public static string approveddate
+         public static string approveddate
         {
             get
             {
                 return resourceProvider_owin_user.GetResource("approveddate", CultureInfo.CurrentUICulture.Name) as String;
             }
         }
-        public static string isemailconfirmed
+         public static string isemailconfirmed
         {
             get
             {
                 return resourceProvider_owin_user.GetResource("isemailconfirmed", CultureInfo.CurrentUICulture.Name) as String;
             }
         }
-        public static string emailconfirmationbyuserdate
+         public static string emailconfirmationbyuserdate
         {
             get
             {
                 return resourceProvider_owin_user.GetResource("emailconfirmationbyuserdate", CultureInfo.CurrentUICulture.Name) as String;
             }
         }
-        public static string twofactorenable
+         public static string twofactorenable
         {
             get
             {
                 return resourceProvider_owin_user.GetResource("twofactorenable", CultureInfo.CurrentUICulture.Name) as String;
             }
         }
-        public static string ismobilenumberconfirmed
+         public static string ismobilenumberconfirmed
         {
             get
             {
                 return resourceProvider_owin_user.GetResource("ismobilenumberconfirmed", CultureInfo.CurrentUICulture.Name) as String;
             }
         }
-        public static string mobilenumberconfirmedbyuserdate
+         public static string mobilenumberconfirmedbyuserdate
         {
             get
             {
                 return resourceProvider_owin_user.GetResource("mobilenumberconfirmedbyuserdate", CultureInfo.CurrentUICulture.Name) as String;
             }
         }
-
-
+         public static string securitystamp
+        {
+            get
+            {
+                return resourceProvider_owin_user.GetResource("securitystamp", CultureInfo.CurrentUICulture.Name) as String;
+            }
+        }
+         public static string concurrencystamp
+        {
+            get
+            {
+                return resourceProvider_owin_user.GetResource("concurrencystamp", CultureInfo.CurrentUICulture.Name) as String;
+            }
+        }
+        
+      
     }
 }

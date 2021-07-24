@@ -8,8 +8,8 @@ using DAC.Core.Base;
 using System.Threading.Tasks;
 using System.Threading;
 using BDO.DataAccessObjects.Models;
-using BDO.Base;
 using IDAC.Core.IDataAccessObjects.General;
+using BDO.Base;
 
 namespace DAC.Core.DataAccessObjects.General
 {
@@ -41,10 +41,10 @@ namespace DAC.Core.DataAccessObjects.General
 			if (gen_imagegallarycategory.imagegallarycategoryid.HasValue)
 				Database.AddInParameter(cmd, "@ImageGallaryCategoryID", DbType.Int64, gen_imagegallarycategory.imagegallarycategoryid);
             if (forDelete) return;
-			if (!(string.IsNullOrEmpty(gen_imagegallarycategory.categoryname)))
-				Database.AddInParameter(cmd, "@CategoryName", DbType.String, gen_imagegallarycategory.categoryname);
-			if (!(string.IsNullOrEmpty(gen_imagegallarycategory.categorydescription)))
-				Database.AddInParameter(cmd, "@CategoryDescription", DbType.String, gen_imagegallarycategory.categorydescription);
+			if (!(string.IsNullOrEmpty(gen_imagegallarycategory.imagegallarycategory)))
+				Database.AddInParameter(cmd, "@ImageGallaryCategory", DbType.String, gen_imagegallarycategory.imagegallarycategory);
+			if (!(string.IsNullOrEmpty(gen_imagegallarycategory.descriptions)))
+				Database.AddInParameter(cmd, "@Descriptions", DbType.String, gen_imagegallarycategory.descriptions);
 
         }
 		

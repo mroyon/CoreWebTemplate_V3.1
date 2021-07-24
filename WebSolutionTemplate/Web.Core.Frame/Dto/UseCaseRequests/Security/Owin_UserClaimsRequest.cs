@@ -1,6 +1,6 @@
 ﻿using BDO.DataAccessObjects.SecurityModule;
-using Web.Core.Frame.RequestResponse.UseCaseResponses;
 using Web.Core.Frame.Interfaces;
+using Web.Core.Frame.RequestResponse.UseCaseResponses;
 
 namespace Web.Core.Frame.RequestResponse.UseCaseRequests
 {

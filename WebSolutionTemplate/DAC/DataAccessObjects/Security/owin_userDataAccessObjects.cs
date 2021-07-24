@@ -6,9 +6,13 @@ using Microsoft.Practices.EnterpriseLibrary.Data;
 using AppConfig.ConfigDAAC;
 using DAC.Core.Base;
 using BDO.DataAccessObjects.SecurityModule;
+using BDO.Base;
+using AppConfig.HelperClasses;
 using System.Threading.Tasks;
 using System.Threading;
 using IDAC.Core.IDataAccessObjects.Security;
+
+
 
 namespace DAC.Core.DataAccessObjects.Security
 {
@@ -118,6 +122,10 @@ namespace DAC.Core.DataAccessObjects.Security
 				Database.AddInParameter(cmd, "@IsMobileNumberConfirmed", DbType.Boolean, owin_user.ismobilenumberconfirmed);
 			if ((owin_user.mobilenumberconfirmedbyuserdate.HasValue))
 				Database.AddInParameter(cmd, "@MobileNumberConfirmedByUserDate", DbType.DateTime, owin_user.mobilenumberconfirmedbyuserdate);
+			if (!(string.IsNullOrEmpty(owin_user.securitystamp)))
+				Database.AddInParameter(cmd, "@SecurityStamp", DbType.String, owin_user.securitystamp);
+			if (!(string.IsNullOrEmpty(owin_user.concurrencystamp)))
+				Database.AddInParameter(cmd, "@ConcurrencyStamp", DbType.String, owin_user.concurrencystamp);
 
         }
 		
@@ -508,9 +516,568 @@ namespace DAC.Core.DataAccessObjects.Security
         #region Save Master/Details
         
         
+        async Task<long> Iowin_userDataAccessObjects.SaveMasterDetowin_lastworkingpage(owin_userEntity masterEntity, 
+        IList<owin_lastworkingpageEntity> listAdded, 
+        IList<owin_lastworkingpageEntity> listUpdated,
+        IList<owin_lastworkingpageEntity> listDeleted, 
+        CancellationToken cancellationToken)
+        {
+			long returnCode = -99;
+            Guid PrimaryKeyMaster = new Guid();
+            
+            string SP = "";
+            const string MasterSPInsert = "owin_user_Ins";
+            const string MasterSPUpdate = "owin_user_Upd";
+            const string MasterSPDelete = "owin_user_Del";
+            
+			
+            DbConnection connection = Database.CreateConnection();
+            connection.Open();
+            DbTransaction transaction = connection.BeginTransaction();
+			
+            if (masterEntity.CurrentState == BaseEntity.EntityState.Added)
+                SP = MasterSPInsert;
+            else if (masterEntity.CurrentState == BaseEntity.EntityState.Changed)
+                SP = MasterSPUpdate;
+            else if (masterEntity.CurrentState == BaseEntity.EntityState.Deleted)
+                 SP = MasterSPDelete;
+            else
+            {
+                throw new Exception("Nothing to save.");
+            }
+            DateTime dt = DateTime.Now;
+            
+            try
+            {
+                using (DbCommand cmd = Database.GetStoredProcCommand(SP))
+				{
+                    if (masterEntity.CurrentState == BaseEntity.EntityState.Added || masterEntity.CurrentState == BaseEntity.EntityState.Changed)
+                    {
+                        FillParameters(masterEntity, cmd, Database);
+                    }
+                    else
+                    {
+                        FillParameters(masterEntity, cmd, Database, true);
+                    }
+                    FillSequrityParameters(masterEntity.BaseSecurityParam, cmd, Database);                    
+                    AddOutputParameter(cmd, Database);
+					
+					if (masterEntity.CurrentState != BaseEntity.EntityState.Deleted)
+                    {
+                        IAsyncResult result = Database.BeginExecuteNonQuery(cmd, transaction, null, null);
+                        while (!result.IsCompleted)
+                        {
+                        }
+                        returnCode = Database.EndExecuteNonQuery(result);
+                        returnCode = (Int64)(cmd.Parameters["@RETURN_KEY"].Value);
+                        masterEntity.RETURN_KEY = returnCode;
+                    }
+                    else
+                    {
+                        returnCode = 1;
+                    }
+				
+                    if (returnCode>0)
+                    {
+                        if (masterEntity.CurrentState != BaseEntity.EntityState.Deleted)
+                        {
+                            foreach (var item in listAdded)
+                            {
+                                item.userid=PrimaryKeyMaster;
+                            }
+                        }
+                        owin_lastworkingpageDataAccessObjects objowin_lastworkingpage=new owin_lastworkingpageDataAccessObjects(this.Context);
+                        objowin_lastworkingpage.SaveList(Database, transaction, listAdded, listUpdated, listDeleted, cancellationToken);
+                    }
+                    if (masterEntity.CurrentState == BaseEntity.EntityState.Deleted)
+                        returnCode = Database.ExecuteNonQuery(cmd, transaction);
+                        cmd.Dispose();
+                }
+				transaction.Commit();                
+			}
+			catch (Exception ex)
+            {
+                transaction.Rollback();
+                throw GetDataAccessException(ex, SourceOfException("Iowin_userDataAccess.SaveDsowin_user"));
+            }
+            finally
+            {
+                transaction.Dispose();
+                connection.Close();
+                connection = null;
+            }
+            return returnCode;
+		}
         
-       
-      
+        
+        async Task<long> Iowin_userDataAccessObjects.SaveMasterDetowin_userclaims(owin_userEntity masterEntity, 
+        IList<owin_userclaimsEntity> listAdded, 
+        IList<owin_userclaimsEntity> listUpdated,
+        IList<owin_userclaimsEntity> listDeleted, 
+        CancellationToken cancellationToken)
+        {
+			long returnCode = -99;
+            Guid PrimaryKeyMaster = new Guid();
+            
+            string SP = "";
+            const string MasterSPInsert = "owin_user_Ins";
+            const string MasterSPUpdate = "owin_user_Upd";
+            const string MasterSPDelete = "owin_user_Del";
+            
+			
+            DbConnection connection = Database.CreateConnection();
+            connection.Open();
+            DbTransaction transaction = connection.BeginTransaction();
+			
+            if (masterEntity.CurrentState == BaseEntity.EntityState.Added)
+                SP = MasterSPInsert;
+            else if (masterEntity.CurrentState == BaseEntity.EntityState.Changed)
+                SP = MasterSPUpdate;
+            else if (masterEntity.CurrentState == BaseEntity.EntityState.Deleted)
+                 SP = MasterSPDelete;
+            else
+            {
+                throw new Exception("Nothing to save.");
+            }
+            DateTime dt = DateTime.Now;
+            
+            try
+            {
+                using (DbCommand cmd = Database.GetStoredProcCommand(SP))
+				{
+                    if (masterEntity.CurrentState == BaseEntity.EntityState.Added || masterEntity.CurrentState == BaseEntity.EntityState.Changed)
+                    {
+                        FillParameters(masterEntity, cmd, Database);
+                    }
+                    else
+                    {
+                        FillParameters(masterEntity, cmd, Database, true);
+                    }
+                    FillSequrityParameters(masterEntity.BaseSecurityParam, cmd, Database);                    
+                    AddOutputParameter(cmd, Database);
+					
+					if (masterEntity.CurrentState != BaseEntity.EntityState.Deleted)
+                    {
+                        IAsyncResult result = Database.BeginExecuteNonQuery(cmd, transaction, null, null);
+                        while (!result.IsCompleted)
+                        {
+                        }
+                        returnCode = Database.EndExecuteNonQuery(result);
+                        returnCode = (Int64)(cmd.Parameters["@RETURN_KEY"].Value);
+                        masterEntity.RETURN_KEY = returnCode;
+                    }
+                    else
+                    {
+                        returnCode = 1;
+                    }
+				
+                    if (returnCode>0)
+                    {
+                        if (masterEntity.CurrentState != BaseEntity.EntityState.Deleted)
+                        {
+                            foreach (var item in listAdded)
+                            {
+                                item.userid=PrimaryKeyMaster;
+                            }
+                        }
+                        owin_userclaimsDataAccessObjects objowin_userclaims=new owin_userclaimsDataAccessObjects(this.Context);
+                        objowin_userclaims.SaveList(Database, transaction, listAdded, listUpdated, listDeleted, cancellationToken);
+                    }
+                    if (masterEntity.CurrentState == BaseEntity.EntityState.Deleted)
+                        returnCode = Database.ExecuteNonQuery(cmd, transaction);
+                        cmd.Dispose();
+                }
+				transaction.Commit();                
+			}
+			catch (Exception ex)
+            {
+                transaction.Rollback();
+                throw GetDataAccessException(ex, SourceOfException("Iowin_userDataAccess.SaveDsowin_user"));
+            }
+            finally
+            {
+                transaction.Dispose();
+                connection.Close();
+                connection = null;
+            }
+            return returnCode;
+		}
+        
+        
+        async Task<long> Iowin_userDataAccessObjects.SaveMasterDetowin_userlogintrail(owin_userEntity masterEntity, 
+        IList<owin_userlogintrailEntity> listAdded, 
+        IList<owin_userlogintrailEntity> listUpdated,
+        IList<owin_userlogintrailEntity> listDeleted, 
+        CancellationToken cancellationToken)
+        {
+			long returnCode = -99;
+            Guid PrimaryKeyMaster = new Guid();
+            
+            string SP = "";
+            const string MasterSPInsert = "owin_user_Ins";
+            const string MasterSPUpdate = "owin_user_Upd";
+            const string MasterSPDelete = "owin_user_Del";
+            
+			
+            DbConnection connection = Database.CreateConnection();
+            connection.Open();
+            DbTransaction transaction = connection.BeginTransaction();
+			
+            if (masterEntity.CurrentState == BaseEntity.EntityState.Added)
+                SP = MasterSPInsert;
+            else if (masterEntity.CurrentState == BaseEntity.EntityState.Changed)
+                SP = MasterSPUpdate;
+            else if (masterEntity.CurrentState == BaseEntity.EntityState.Deleted)
+                 SP = MasterSPDelete;
+            else
+            {
+                throw new Exception("Nothing to save.");
+            }
+            DateTime dt = DateTime.Now;
+            
+            try
+            {
+                using (DbCommand cmd = Database.GetStoredProcCommand(SP))
+				{
+                    if (masterEntity.CurrentState == BaseEntity.EntityState.Added || masterEntity.CurrentState == BaseEntity.EntityState.Changed)
+                    {
+                        FillParameters(masterEntity, cmd, Database);
+                    }
+                    else
+                    {
+                        FillParameters(masterEntity, cmd, Database, true);
+                    }
+                    FillSequrityParameters(masterEntity.BaseSecurityParam, cmd, Database);                    
+                    AddOutputParameter(cmd, Database);
+					
+					if (masterEntity.CurrentState != BaseEntity.EntityState.Deleted)
+                    {
+                        IAsyncResult result = Database.BeginExecuteNonQuery(cmd, transaction, null, null);
+                        while (!result.IsCompleted)
+                        {
+                        }
+                        returnCode = Database.EndExecuteNonQuery(result);
+                        returnCode = (Int64)(cmd.Parameters["@RETURN_KEY"].Value);
+                        masterEntity.RETURN_KEY = returnCode;
+                    }
+                    else
+                    {
+                        returnCode = 1;
+                    }
+				
+                    if (returnCode>0)
+                    {
+                        if (masterEntity.CurrentState != BaseEntity.EntityState.Deleted)
+                        {
+                            foreach (var item in listAdded)
+                            {
+                                item.userid=PrimaryKeyMaster;
+                            }
+                        }
+                        owin_userlogintrailDataAccessObjects objowin_userlogintrail=new owin_userlogintrailDataAccessObjects(this.Context);
+                        objowin_userlogintrail.SaveList(Database, transaction, listAdded, listUpdated, listDeleted, cancellationToken);
+                    }
+                    if (masterEntity.CurrentState == BaseEntity.EntityState.Deleted)
+                        returnCode = Database.ExecuteNonQuery(cmd, transaction);
+                        cmd.Dispose();
+                }
+				transaction.Commit();                
+			}
+			catch (Exception ex)
+            {
+                transaction.Rollback();
+                throw GetDataAccessException(ex, SourceOfException("Iowin_userDataAccess.SaveDsowin_user"));
+            }
+            finally
+            {
+                transaction.Dispose();
+                connection.Close();
+                connection = null;
+            }
+            return returnCode;
+		}
+        
+        
+        async Task<long> Iowin_userDataAccessObjects.SaveMasterDetowin_userpasswordresetinfo(owin_userEntity masterEntity, 
+        IList<owin_userpasswordresetinfoEntity> listAdded, 
+        IList<owin_userpasswordresetinfoEntity> listUpdated,
+        IList<owin_userpasswordresetinfoEntity> listDeleted, 
+        CancellationToken cancellationToken)
+        {
+			long returnCode = -99;
+            Guid PrimaryKeyMaster = new Guid();
+            
+            string SP = "";
+            const string MasterSPInsert = "owin_user_Ins";
+            const string MasterSPUpdate = "owin_user_Upd";
+            const string MasterSPDelete = "owin_user_Del";
+            
+			
+            DbConnection connection = Database.CreateConnection();
+            connection.Open();
+            DbTransaction transaction = connection.BeginTransaction();
+			
+            if (masterEntity.CurrentState == BaseEntity.EntityState.Added)
+                SP = MasterSPInsert;
+            else if (masterEntity.CurrentState == BaseEntity.EntityState.Changed)
+                SP = MasterSPUpdate;
+            else if (masterEntity.CurrentState == BaseEntity.EntityState.Deleted)
+                 SP = MasterSPDelete;
+            else
+            {
+                throw new Exception("Nothing to save.");
+            }
+            DateTime dt = DateTime.Now;
+            
+            try
+            {
+                using (DbCommand cmd = Database.GetStoredProcCommand(SP))
+				{
+                    if (masterEntity.CurrentState == BaseEntity.EntityState.Added || masterEntity.CurrentState == BaseEntity.EntityState.Changed)
+                    {
+                        FillParameters(masterEntity, cmd, Database);
+                    }
+                    else
+                    {
+                        FillParameters(masterEntity, cmd, Database, true);
+                    }
+                    FillSequrityParameters(masterEntity.BaseSecurityParam, cmd, Database);                    
+                    AddOutputParameter(cmd, Database);
+					
+					if (masterEntity.CurrentState != BaseEntity.EntityState.Deleted)
+                    {
+                        IAsyncResult result = Database.BeginExecuteNonQuery(cmd, transaction, null, null);
+                        while (!result.IsCompleted)
+                        {
+                        }
+                        returnCode = Database.EndExecuteNonQuery(result);
+                        returnCode = (Int64)(cmd.Parameters["@RETURN_KEY"].Value);
+                        masterEntity.RETURN_KEY = returnCode;
+                    }
+                    else
+                    {
+                        returnCode = 1;
+                    }
+				
+                    if (returnCode>0)
+                    {
+                        if (masterEntity.CurrentState != BaseEntity.EntityState.Deleted)
+                        {
+                            foreach (var item in listAdded)
+                            {
+                                item.userid=PrimaryKeyMaster;
+                            }
+                        }
+                        owin_userpasswordresetinfoDataAccessObjects objowin_userpasswordresetinfo=new owin_userpasswordresetinfoDataAccessObjects(this.Context);
+                        objowin_userpasswordresetinfo.SaveList(Database, transaction, listAdded, listUpdated, listDeleted, cancellationToken);
+                    }
+                    if (masterEntity.CurrentState == BaseEntity.EntityState.Deleted)
+                        returnCode = Database.ExecuteNonQuery(cmd, transaction);
+                        cmd.Dispose();
+                }
+				transaction.Commit();                
+			}
+			catch (Exception ex)
+            {
+                transaction.Rollback();
+                throw GetDataAccessException(ex, SourceOfException("Iowin_userDataAccess.SaveDsowin_user"));
+            }
+            finally
+            {
+                transaction.Dispose();
+                connection.Close();
+                connection = null;
+            }
+            return returnCode;
+		}
+        
+        
+        async Task<long> Iowin_userDataAccessObjects.SaveMasterDetowin_userprefferencessettings(owin_userEntity masterEntity, 
+        IList<owin_userprefferencessettingsEntity> listAdded, 
+        IList<owin_userprefferencessettingsEntity> listUpdated,
+        IList<owin_userprefferencessettingsEntity> listDeleted, 
+        CancellationToken cancellationToken)
+        {
+			long returnCode = -99;
+            Guid PrimaryKeyMaster = new Guid();
+            
+            string SP = "";
+            const string MasterSPInsert = "owin_user_Ins";
+            const string MasterSPUpdate = "owin_user_Upd";
+            const string MasterSPDelete = "owin_user_Del";
+            
+			
+            DbConnection connection = Database.CreateConnection();
+            connection.Open();
+            DbTransaction transaction = connection.BeginTransaction();
+			
+            if (masterEntity.CurrentState == BaseEntity.EntityState.Added)
+                SP = MasterSPInsert;
+            else if (masterEntity.CurrentState == BaseEntity.EntityState.Changed)
+                SP = MasterSPUpdate;
+            else if (masterEntity.CurrentState == BaseEntity.EntityState.Deleted)
+                 SP = MasterSPDelete;
+            else
+            {
+                throw new Exception("Nothing to save.");
+            }
+            DateTime dt = DateTime.Now;
+            
+            try
+            {
+                using (DbCommand cmd = Database.GetStoredProcCommand(SP))
+				{
+                    if (masterEntity.CurrentState == BaseEntity.EntityState.Added || masterEntity.CurrentState == BaseEntity.EntityState.Changed)
+                    {
+                        FillParameters(masterEntity, cmd, Database);
+                    }
+                    else
+                    {
+                        FillParameters(masterEntity, cmd, Database, true);
+                    }
+                    FillSequrityParameters(masterEntity.BaseSecurityParam, cmd, Database);                    
+                    AddOutputParameter(cmd, Database);
+					
+					if (masterEntity.CurrentState != BaseEntity.EntityState.Deleted)
+                    {
+                        IAsyncResult result = Database.BeginExecuteNonQuery(cmd, transaction, null, null);
+                        while (!result.IsCompleted)
+                        {
+                        }
+                        returnCode = Database.EndExecuteNonQuery(result);
+                        returnCode = (Int64)(cmd.Parameters["@RETURN_KEY"].Value);
+                        masterEntity.RETURN_KEY = returnCode;
+                    }
+                    else
+                    {
+                        returnCode = 1;
+                    }
+				
+                    if (returnCode>0)
+                    {
+                        if (masterEntity.CurrentState != BaseEntity.EntityState.Deleted)
+                        {
+                            foreach (var item in listAdded)
+                            {
+                                item.userid=PrimaryKeyMaster;
+                            }
+                        }
+                        owin_userprefferencessettingsDataAccessObjects objowin_userprefferencessettings=new owin_userprefferencessettingsDataAccessObjects(this.Context);
+                        objowin_userprefferencessettings.SaveList(Database, transaction, listAdded, listUpdated, listDeleted, cancellationToken);
+                    }
+                    if (masterEntity.CurrentState == BaseEntity.EntityState.Deleted)
+                        returnCode = Database.ExecuteNonQuery(cmd, transaction);
+                        cmd.Dispose();
+                }
+				transaction.Commit();                
+			}
+			catch (Exception ex)
+            {
+                transaction.Rollback();
+                throw GetDataAccessException(ex, SourceOfException("Iowin_userDataAccess.SaveDsowin_user"));
+            }
+            finally
+            {
+                transaction.Dispose();
+                connection.Close();
+                connection = null;
+            }
+            return returnCode;
+		}
+        
+        
+        async Task<long> Iowin_userDataAccessObjects.SaveMasterDetowin_userrole(owin_userEntity masterEntity, 
+        IList<owin_userroleEntity> listAdded, 
+        IList<owin_userroleEntity> listUpdated,
+        IList<owin_userroleEntity> listDeleted, 
+        CancellationToken cancellationToken)
+        {
+			long returnCode = -99;
+            Guid PrimaryKeyMaster = new Guid();
+            
+            string SP = "";
+            const string MasterSPInsert = "owin_user_Ins";
+            const string MasterSPUpdate = "owin_user_Upd";
+            const string MasterSPDelete = "owin_user_Del";
+            
+			
+            DbConnection connection = Database.CreateConnection();
+            connection.Open();
+            DbTransaction transaction = connection.BeginTransaction();
+			
+            if (masterEntity.CurrentState == BaseEntity.EntityState.Added)
+                SP = MasterSPInsert;
+            else if (masterEntity.CurrentState == BaseEntity.EntityState.Changed)
+                SP = MasterSPUpdate;
+            else if (masterEntity.CurrentState == BaseEntity.EntityState.Deleted)
+                 SP = MasterSPDelete;
+            else
+            {
+                throw new Exception("Nothing to save.");
+            }
+            DateTime dt = DateTime.Now;
+            
+            try
+            {
+                using (DbCommand cmd = Database.GetStoredProcCommand(SP))
+				{
+                    if (masterEntity.CurrentState == BaseEntity.EntityState.Added || masterEntity.CurrentState == BaseEntity.EntityState.Changed)
+                    {
+                        FillParameters(masterEntity, cmd, Database);
+                    }
+                    else
+                    {
+                        FillParameters(masterEntity, cmd, Database, true);
+                    }
+                    FillSequrityParameters(masterEntity.BaseSecurityParam, cmd, Database);                    
+                    AddOutputParameter(cmd, Database);
+					
+					if (masterEntity.CurrentState != BaseEntity.EntityState.Deleted)
+                    {
+                        IAsyncResult result = Database.BeginExecuteNonQuery(cmd, transaction, null, null);
+                        while (!result.IsCompleted)
+                        {
+                        }
+                        returnCode = Database.EndExecuteNonQuery(result);
+                        returnCode = (Int64)(cmd.Parameters["@RETURN_KEY"].Value);
+                        masterEntity.RETURN_KEY = returnCode;
+                    }
+                    else
+                    {
+                        returnCode = 1;
+                    }
+				
+                    if (returnCode>0)
+                    {
+                        if (masterEntity.CurrentState != BaseEntity.EntityState.Deleted)
+                        {
+                            foreach (var item in listAdded)
+                            {
+                                item.userid=PrimaryKeyMaster;
+                            }
+                        }
+                        owin_userroleDataAccessObjects objowin_userrole=new owin_userroleDataAccessObjects(this.Context);
+                        objowin_userrole.SaveList(Database, transaction, listAdded, listUpdated, listDeleted, cancellationToken);
+                    }
+                    if (masterEntity.CurrentState == BaseEntity.EntityState.Deleted)
+                        returnCode = Database.ExecuteNonQuery(cmd, transaction);
+                        cmd.Dispose();
+                }
+				transaction.Commit();                
+			}
+			catch (Exception ex)
+            {
+                transaction.Rollback();
+                throw GetDataAccessException(ex, SourceOfException("Iowin_userDataAccess.SaveDsowin_user"));
+            }
+            finally
+            {
+                transaction.Dispose();
+                connection.Close();
+                connection = null;
+            }
+            return returnCode;
+		}
         
         #endregion
         
@@ -572,7 +1139,7 @@ namespace DAC.Core.DataAccessObjects.Security
 					FillParameters(owin_user, cmd,Database);
                     
 					if (!string.IsNullOrEmpty (owin_user.strCommonSerachParam))
-                        Database.AddInParameter(cmd, "@CommonSerachParam", DbType.String, owin_user.strCommonSerachParam);
+                        Database.AddInParameter(cmd, "@CommonSerachParam", DbType.String,  "%"+owin_user.strCommonSerachParam+"%");
 
                     IList<owin_userEntity> itemList = new List<owin_userEntity>();
 					

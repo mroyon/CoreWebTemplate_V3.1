@@ -56,16 +56,13 @@ namespace WebAdmin.IntraServices
             };
 
             SecurityCapsule _securityCapsule = new SecurityCapsule();
-            _securityCapsule.updatedby = user.masteruserid.GetValueOrDefault();
             _securityCapsule.updatedbyusername = user.username;
             _securityCapsule.updateddate = dt;
-            _securityCapsule.createdby = user.masteruserid.GetValueOrDefault();
             _securityCapsule.createdbyusername = user.username;
             _securityCapsule.createddate = dt;
             _securityCapsule.transid = "NEWTRANSID";
             _securityCapsule.userid = user.userid.GetValueOrDefault();
             _securityCapsule.email = user.emailaddress;
-            _securityCapsule.userorganizationkey = 14;
             _securityCapsule.username = user.username;
             _securityCapsule.isauthenticated = true;
             // one time 

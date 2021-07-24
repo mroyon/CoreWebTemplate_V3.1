@@ -14,8 +14,8 @@ using Web.Core.Frame.RequestResponse.UseCaseResponses;
 using Web.Core.Frame.Interfaces;
 using Web.Core.Frame.Interfaces.Services;
 using Web.Core.Frame.Interfaces.UseCases;
-using BDO.DataAccessObjects.SecurityModule;
 using Web.Core.Frame.Dto;
+using BDO.DataAccessObjects.SecurityModule;
 
 namespace Web.Core.Frame.UseCases
 {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Globalization;
 using System.IO;
 using CLL.Abstract;
@@ -8,7 +9,7 @@ namespace CLL.LLClasses.Models
     
     public  class _gen_faq : _Common
     {
-         private static IResourceProvider resourceProvider_gen_faq = new XmlResourceProvider(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"LanguagesFiles/_gen_faq.xml"));//DbResourceProvider(); //  
+         private static IResourceProvider resourceProvider_gen_faq = new XmlResourceProvider(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"LanguagesFiles\_gen_faq.xml"));//DbResourceProvider(); //  
          
          
         public static string faqList
@@ -55,25 +56,32 @@ namespace CLL.LLClasses.Models
                 return resourceProvider_gen_faq.GetResource("faqcategoryidRequired", CultureInfo.CurrentUICulture.Name) as String;
             }
         }
-         public static string faqquestion
+         public static string questions
         {
             get
             {
-                return resourceProvider_gen_faq.GetResource("faqquestion", CultureInfo.CurrentUICulture.Name) as String;
+                return resourceProvider_gen_faq.GetResource("questions", CultureInfo.CurrentUICulture.Name) as String;
             }
         }
-        public static string faqquestionRequired
+         public static string answers
         {
             get
             {
-                return resourceProvider_gen_faq.GetResource("faqquestionRequired", CultureInfo.CurrentUICulture.Name) as String;
+                return resourceProvider_gen_faq.GetResource("answers", CultureInfo.CurrentUICulture.Name) as String;
             }
         }
-         public static string faqanswer
+         public static string tags
         {
             get
             {
-                return resourceProvider_gen_faq.GetResource("faqanswer", CultureInfo.CurrentUICulture.Name) as String;
+                return resourceProvider_gen_faq.GetResource("tags", CultureInfo.CurrentUICulture.Name) as String;
+            }
+        }
+         public static string urls
+        {
+            get
+            {
+                return resourceProvider_gen_faq.GetResource("urls", CultureInfo.CurrentUICulture.Name) as String;
             }
         }
         

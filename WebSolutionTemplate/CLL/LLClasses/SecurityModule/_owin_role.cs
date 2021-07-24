@@ -8,15 +8,9 @@ namespace CLL.LLClasses.SecurityModule
     
     public  class _owin_role : _Common
     {
-         private static IResourceProvider resourceProvider_owin_role = new XmlResourceProvider(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"LanguagesFiles/_owin_role.xml"));//DbResourceProvider(); //  
-
-        public static string pagetitle
-        {
-            get
-            {
-                return resourceProvider_owin_role.GetResource("pagetitle", CultureInfo.CurrentUICulture.Name) as String;
-            }
-        }
+         private static IResourceProvider resourceProvider_owin_role = new XmlResourceProvider(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"LanguagesFiles\_owin_role.xml"));//DbResourceProvider(); //  
+         
+         
         public static string roleList
         {
             get

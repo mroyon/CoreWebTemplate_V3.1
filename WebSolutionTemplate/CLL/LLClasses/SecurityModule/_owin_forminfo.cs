@@ -8,7 +8,7 @@ namespace CLL.LLClasses.SecurityModule
     
     public  class _owin_forminfo : _Common
     {
-         private static IResourceProvider resourceProvider_owin_forminfo = new XmlResourceProvider(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"LanguagesFiles/_owin_forminfo.xml"));//DbResourceProvider(); //  
+         private static IResourceProvider resourceProvider_owin_forminfo = new XmlResourceProvider(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"LanguagesFiles\_owin_forminfo.xml"));//DbResourceProvider(); //  
          
          
         public static string forminfoList
@@ -55,13 +55,6 @@ namespace CLL.LLClasses.SecurityModule
                 return resourceProvider_owin_forminfo.GetResource("formnameRequired", CultureInfo.CurrentUICulture.Name) as String;
             }
         }
-         public static string formnamear
-        {
-            get
-            {
-                return resourceProvider_owin_forminfo.GetResource("formnamear", CultureInfo.CurrentUICulture.Name) as String;
-            }
-        }
          public static string parentid
         {
             get
@@ -81,6 +74,13 @@ namespace CLL.LLClasses.SecurityModule
             get
             {
                 return resourceProvider_owin_forminfo.GetResource("menulevel", CultureInfo.CurrentUICulture.Name) as String;
+            }
+        }
+         public static string formnamear
+        {
+            get
+            {
+                return resourceProvider_owin_forminfo.GetResource("formnamear", CultureInfo.CurrentUICulture.Name) as String;
             }
         }
          public static string hasdirectchild

@@ -50,8 +50,8 @@ namespace DAC.Core.DataAccessObjects.General
 				Database.AddInParameter(cmd, "@ImageExtension", DbType.String, gen_imagegallary.imageextension);
 			if (!(string.IsNullOrEmpty(gen_imagegallary.imagename)))
 				Database.AddInParameter(cmd, "@ImageName", DbType.String, gen_imagegallary.imagename);
-			if ((gen_imagegallary.isinslider != null))
-				Database.AddInParameter(cmd, "@IsInSlider", DbType.Boolean, gen_imagegallary.isinslider);
+			if ((gen_imagegallary.isslider != null))
+				Database.AddInParameter(cmd, "@IsSlider", DbType.Boolean, gen_imagegallary.isslider);
 
         }
 		

@@ -6,9 +6,12 @@ using Microsoft.Practices.EnterpriseLibrary.Data;
 using AppConfig.ConfigDAAC;
 using DAC.Core.Base;
 using BDO.DataAccessObjects.SecurityModule;
+using BDO.Base;
+using AppConfig.HelperClasses;
 using System.Threading.Tasks;
 using System.Threading;
 using IDAC.Core.IDataAccessObjects.Security;
+
 
 namespace DAC.Core.DataAccessObjects.Security
 {
@@ -48,6 +51,7 @@ namespace DAC.Core.DataAccessObjects.Security
 				Database.AddInParameter(cmd, "@AppFormID", DbType.Int64, owin_rolepermission.appformid);
 			if ((owin_rolepermission.status != null))
 				Database.AddInParameter(cmd, "@Status", DbType.Boolean, owin_rolepermission.status);
+
         }
 		
         
@@ -496,7 +500,7 @@ namespace DAC.Core.DataAccessObjects.Security
 					FillParameters(owin_rolepermission, cmd,Database);
                     
 					if (!string.IsNullOrEmpty (owin_rolepermission.strCommonSerachParam))
-                        Database.AddInParameter(cmd, "@CommonSerachParam", DbType.String, owin_rolepermission.strCommonSerachParam);
+                        Database.AddInParameter(cmd, "@CommonSerachParam", DbType.String,  "%"+owin_rolepermission.strCommonSerachParam+"%");
 
                     IList<owin_rolepermissionEntity> itemList = new List<owin_rolepermissionEntity>();
 					

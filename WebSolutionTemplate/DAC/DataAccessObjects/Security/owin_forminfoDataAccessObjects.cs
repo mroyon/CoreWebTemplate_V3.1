@@ -6,10 +6,13 @@ using Microsoft.Practices.EnterpriseLibrary.Data;
 using AppConfig.ConfigDAAC;
 using DAC.Core.Base;
 using BDO.DataAccessObjects.SecurityModule;
+using BDO.Base;
+using AppConfig.HelperClasses;
 using System.Threading.Tasks;
 using System.Threading;
-using BDO.Base;
 using IDAC.Core.IDataAccessObjects.Security;
+
+
 
 namespace DAC.Core.DataAccessObjects.Security
 {
@@ -43,14 +46,14 @@ namespace DAC.Core.DataAccessObjects.Security
             if (forDelete) return;
 			if (!(string.IsNullOrEmpty(owin_forminfo.formname)))
 				Database.AddInParameter(cmd, "@FormName", DbType.String, owin_forminfo.formname);
-			if (!(string.IsNullOrEmpty(owin_forminfo.formnamear)))
-				Database.AddInParameter(cmd, "@FormNameAr", DbType.String, owin_forminfo.formnamear);
 			if (owin_forminfo.parentid.HasValue)
 				Database.AddInParameter(cmd, "@ParentID", DbType.Int64, owin_forminfo.parentid);
 			if (owin_forminfo.levelid.HasValue)
 				Database.AddInParameter(cmd, "@LevelID", DbType.Int32, owin_forminfo.levelid);
 			if (!(string.IsNullOrEmpty(owin_forminfo.menulevel)))
 				Database.AddInParameter(cmd, "@MenuLevel", DbType.String, owin_forminfo.menulevel);
+			if (!(string.IsNullOrEmpty(owin_forminfo.formnamear)))
+				Database.AddInParameter(cmd, "@FormNameAr", DbType.String, owin_forminfo.formnamear);
 			if ((owin_forminfo.hasdirectchild != null))
 				Database.AddInParameter(cmd, "@HasDirectChild", DbType.Boolean, owin_forminfo.hasdirectchild);
 			
