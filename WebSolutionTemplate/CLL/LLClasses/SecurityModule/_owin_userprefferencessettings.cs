@@ -8,7 +8,7 @@ namespace CLL.LLClasses.SecurityModule
     
     public  class _owin_userprefferencessettings : _Common
     {
-         private static IResourceProvider resourceProvider_owin_userprefferencessettings = new XmlResourceProvider(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"LanguagesFiles\_owin_userprefferencessettings.xml"));//DbResourceProvider(); //  
+         private static IResourceProvider resourceProvider_owin_userprefferencessettings = new XmlResourceProvider(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"LanguagesFiles/_owin_userprefferencessettings.xml"));//DbResourceProvider(); //  
          
          
         public static string userprefferencessettingsList

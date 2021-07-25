@@ -9,7 +9,7 @@ namespace CLL.LLClasses.Models
     
     public  class _gen_faq : _Common
     {
-         private static IResourceProvider resourceProvider_gen_faq = new XmlResourceProvider(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"LanguagesFiles\_gen_faq.xml"));//DbResourceProvider(); //  
+         private static IResourceProvider resourceProvider_gen_faq = new XmlResourceProvider(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"LanguagesFiles/_gen_faq.xml"));//DbResourceProvider(); //  
          
          
         public static string faqList

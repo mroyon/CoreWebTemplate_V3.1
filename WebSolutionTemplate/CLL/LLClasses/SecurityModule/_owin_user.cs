@@ -8,7 +8,7 @@ namespace CLL.LLClasses.SecurityModule
     
     public  class _owin_user : _Common
     {
-         private static IResourceProvider resourceProvider_owin_user = new XmlResourceProvider(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"LanguagesFiles\_owin_user.xml"));//DbResourceProvider(); //  
+         private static IResourceProvider resourceProvider_owin_user = new XmlResourceProvider(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"LanguagesFiles/_owin_user.xml"));//DbResourceProvider(); //  
          
          
         public static string userList

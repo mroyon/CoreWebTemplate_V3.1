@@ -8,7 +8,7 @@ namespace CLL.LLClasses.Models
     
     public  class _gen_faqcagetogy : _Common
     {
-         private static IResourceProvider resourceProvider_gen_faqcagetogy = new XmlResourceProvider(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"LanguagesFiles\_gen_faqcagetogy.xml"));//DbResourceProvider(); //  
+         private static IResourceProvider resourceProvider_gen_faqcagetogy = new XmlResourceProvider(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"LanguagesFiles/_gen_faqcagetogy.xml"));//DbResourceProvider(); //  
          
          
         public static string faqcagetogyList

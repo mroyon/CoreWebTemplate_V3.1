@@ -8,7 +8,7 @@ namespace CLL.LLClasses.Models
     
     public  class _gen_imagegallary : _Common
     {
-         private static IResourceProvider resourceProvider_gen_imagegallary = new XmlResourceProvider(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"LanguagesFiles\_gen_imagegallary.xml"));//DbResourceProvider(); //  
+         private static IResourceProvider resourceProvider_gen_imagegallary = new XmlResourceProvider(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"LanguagesFiles/_gen_imagegallary.xml"));//DbResourceProvider(); //  
          
          
         public static string imagegallaryList

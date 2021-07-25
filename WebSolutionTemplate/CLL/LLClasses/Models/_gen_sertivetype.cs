@@ -8,7 +8,7 @@ namespace CLL.LLClasses.Models
     
     public  class _gen_sertivetype : _Common
     {
-         private static IResourceProvider resourceProvider_gen_sertivetype = new XmlResourceProvider(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"LanguagesFiles\_gen_sertivetype.xml"));//DbResourceProvider(); //  
+         private static IResourceProvider resourceProvider_gen_sertivetype = new XmlResourceProvider(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"LanguagesFiles/_gen_sertivetype.xml"));//DbResourceProvider(); //  
          
          
         public static string sertivetypeList
