@@ -313,6 +313,22 @@
             <param name="headertag"></param>
             <returns></returns>
         </member>
+        <member name="T:WebAdmin.ViewComponents.ChangePasswordViewComponent">
+            <summary>
+            HeaderViewComponent
+            </summary>
+        </member>
+        <member name="M:WebAdmin.ViewComponents.ChangePasswordViewComponent.#ctor(Web.Core.Frame.CustomIdentityManagers.ApplicationUserManager{BDO.DataAccessObjects.SecurityModule.owin_userEntity},Web.Core.Frame.CustomIdentityManagers.ApplicationSignInManager{BDO.DataAccessObjects.SecurityModule.owin_userEntity},WebAdmin.IntraServices.IEmailSender,Microsoft.Extensions.Logging.ILoggerFactory,Microsoft.Extensions.Localization.IStringLocalizerFactory,Microsoft.AspNetCore.Authentication.IAuthenticationSchemeProvider)">
+            <summary>
+            ChangePasswordViewComponent
+            </summary>
+        </member>
+        <member name="M:WebAdmin.ViewComponents.ChangePasswordViewComponent.InvokeAsync">
+            <summary>
+            InvokeAsync
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:WebAdmin.ViewComponents.DashBoardRecapViewComponent">
             <summary>
             DashBoardRecapViewComponent
@@ -369,7 +385,7 @@
             HeaderViewComponent
             </summary>
         </member>
-        <member name="M:WebAdmin.ViewComponents.HeaderViewComponent.#ctor">
+        <member name="M:WebAdmin.ViewComponents.HeaderViewComponent.#ctor(Web.Core.Frame.CustomIdentityManagers.ApplicationUserManager{BDO.DataAccessObjects.SecurityModule.owin_userEntity},Web.Core.Frame.CustomIdentityManagers.ApplicationSignInManager{BDO.DataAccessObjects.SecurityModule.owin_userEntity},WebAdmin.IntraServices.IEmailSender,Microsoft.Extensions.Logging.ILoggerFactory,Microsoft.Extensions.Localization.IStringLocalizerFactory,Microsoft.AspNetCore.Authentication.IAuthenticationSchemeProvider)">
             <summary>
             AboutUsViewComponent
             </summary>

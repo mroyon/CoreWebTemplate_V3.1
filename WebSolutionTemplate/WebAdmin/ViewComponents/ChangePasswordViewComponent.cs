@@ -18,7 +18,7 @@ namespace WebAdmin.ViewComponents
     /// <summary>
     /// HeaderViewComponent
     /// </summary>
-    public class HeaderViewComponent : ViewComponent
+    public class ChangePasswordViewComponent : ViewComponent
     {
         private readonly ILogger<HeaderViewComponent> _logger;
         private readonly ApplicationUserManager<owin_userEntity> _userManager;
@@ -30,9 +30,9 @@ namespace WebAdmin.ViewComponents
         //private IPostRepository repository;
 
         /// <summary>
-        /// AboutUsViewComponent
+        /// ChangePasswordViewComponent
         /// </summary>
-        public HeaderViewComponent(
+        public ChangePasswordViewComponent(
              ApplicationUserManager<owin_userEntity> userManager,
             ApplicationSignInManager<owin_userEntity> signInManager,
             IEmailSender emailSender,
@@ -53,15 +53,11 @@ namespace WebAdmin.ViewComponents
         }
 
         /// <summary>
-        /// Invoke
+        /// InvokeAsync
         /// </summary>
-        /// <param name="headertag"></param>
         /// <returns></returns>
-        public IViewComponentResult Invoke(
-            string headertag)
+        public async Task<IViewComponentResult> InvokeAsync()
         {
-            ViewBag.headertag = headertag;
-
             return View();
         }
 

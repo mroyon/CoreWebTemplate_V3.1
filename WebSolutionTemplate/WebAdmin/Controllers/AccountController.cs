@@ -21,6 +21,8 @@ using CLL.Localization;
 
 namespace WebAdmin.Controllers
 {
+    [Authorize]
+    [AutoValidateAntiforgeryToken]
     public class AccountController : Controller
     {
         private readonly ApplicationUserManager<owin_userEntity> _userManager;
@@ -135,6 +137,18 @@ namespace WebAdmin.Controllers
                 }
             }
             return View(await BuildLoginViewModelAsync(model));
+        }
+
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> ChangePassword(string returnUrl)
+        {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Account", "Login");
+            }
+            return ViewComponent("ChangePassword");
         }
 
 

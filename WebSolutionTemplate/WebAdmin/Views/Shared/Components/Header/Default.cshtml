@@ -192,7 +192,7 @@
                     }
                     else
                     {
-                        <span class="dropdown-item active" href="#"  id="@(culture.Text)_item">@culture.Text</span>
+                        <span class="dropdown-item active" href="#" id="@(culture.Text)_item">@culture.Text</span>
 
                     }
                     <div class="dropdown-divider"></div>
@@ -206,7 +206,7 @@
             </a>
             <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                 <div class="dropdown-divider"></div>
-                <a href="#" class="dropdown-item">
+                <a href="#" class="dropdown-item" id="ahrefchange_password">
                     <i class="fas fa-key mr-2"></i>@SharedLocalizer.GetLocalizedHtmlString("CHANGE_PASSWORD")
                 </a>
                 <div class="dropdown-divider"></div>
@@ -225,4 +225,6 @@
             window.location.reload();
         });
     }
+
+
 </script>

@@ -52,7 +52,7 @@ namespace WebAdmin.Controllers
             return View();
         }
 
-
+        
         [HttpPost]
         [IgnoreAntiforgeryToken]
         public IActionResult SetLanguage(string culture, string returnUrl)

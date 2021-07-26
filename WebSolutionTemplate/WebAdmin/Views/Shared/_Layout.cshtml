@@ -66,5 +66,30 @@
     @*<script src="~/lib/admin-lte/js/adminlte.js"></script>*@
     <script src="~/lib/Chartjs/chart.js"></script>
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+
+    <div id="modal-container" class="modal fade hidden-print" tabindex="-1" role="dialog">
+        <a href="#close" title="Close" class="modal-close-btn">X</a>
+        <div class="modal-dialog">
+            <div class="modal-content" id="modal-content">
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        $(function () {
+
+            $('body').on('click', '#ahrefchange_password', function (e) {
+
+                $("#modal-container").remove();
+                $.get("/Account/ChangePassword", null, function (data) {
+
+                    $('<div id="modal-container" class="modal fade">' +
+                        '<div class="modal-content" id= "modalbody" >' +
+                        data + '</div></div>').modal();
+                });
+            });
+        });
+        
+    </script>
 </body>
 </html>
