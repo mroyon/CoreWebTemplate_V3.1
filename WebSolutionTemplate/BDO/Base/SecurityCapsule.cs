@@ -13,6 +13,7 @@ namespace BDO.Base
         protected string _updatedbyusername;
         protected Guid? _userid;
         protected long? _ts;
+        protected long? _masteruserid;
 
         protected DateTime? _createddate;
         protected DateTime? _updateddate;
@@ -34,6 +35,12 @@ namespace BDO.Base
         protected bool? _isauthenticated;
 
 
+        [DataMember]
+        public long? masteruserid
+        {
+            get { return _masteruserid; }
+            set { _masteruserid = value; }
+        }
         [DataMember]
         public bool? isauthenticated
         {

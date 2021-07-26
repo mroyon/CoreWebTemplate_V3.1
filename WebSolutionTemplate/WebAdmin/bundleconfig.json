@@ -13,6 +13,19 @@
     "minify": { "enabled": true }
   },
   {
+    "outputFileName": "wwwroot/css/vendor.rtl.min.css",
+    "inputFiles": [
+      "wwwroot/lib/font-awesome/css/all.css",
+      "wwwroot/lib/admin-lte/css/adminltertl.css",
+      "wwwroot/lib/overlayscrollbars/css/OverlayScrollbars.css",
+      "wwwroot/lib/animate.css/animate.css",
+      "wwwroot/lib/owl.carousel/dist/assets/owl.carousel.css",
+      "wwwroot/lib/bootstrap-sweetalert/sweetalert.css",
+      "wwwroot/lib/jquery.ui/jquery-ui.css"
+    ],
+    "minify": { "enabled": true }
+  },
+  {
     "outputFileName": "wwwroot/css/vendor.login.min.css",
     "inputFiles": [
       "wwwroot/css/my-login.css",
@@ -26,7 +39,7 @@
     "inputFiles": [
       "wwwroot/css/my-login.css",
       "wwwroot/lib/bootstrap/dist/css/bootstrap.css",
-      "wwwroot/lib/admin-lte/css/adminlte.css"
+      "wwwroot/lib/admin-lte/css/ .css"
     ],
     "minify": { "enabled": true }
   },
@@ -37,19 +50,6 @@
       "wwwroot/lib/popperjs/umd/popper.js",
       "wwwroot/lib/bootstrap/dist/js/bootstrap.js",
       "wwwroot/js/my-login.js"
-    ],
-    "minify": { "enabled": true }
-  },
-  {
-    "outputFileName": "wwwroot/css/vendor.rtl.min.css",
-    "inputFiles": [
-      "wwwroot/lib/font-awesome/css/all.css",
-      "wwwroot/lib/admin-lte/css/adminlte.css",
-      "wwwroot/lib/overlayscrollbars/css/OverlayScrollbars.css",
-      "wwwroot/lib/animate.css/animate.css",
-      "wwwroot/lib/owl.carousel/dist/assets/owl.carousel.css",
-      "wwwroot/lib/bootstrap-sweetalert/sweetalert.css",
-      "wwwroot/lib/jquery.ui/jquery-ui.css"
     ],
     "minify": { "enabled": true }
   },

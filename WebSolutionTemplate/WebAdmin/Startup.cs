@@ -119,6 +119,8 @@ namespace WebAdmin
             });
 
 
+           
+
             app.UseSession();
             app.UseSerilogRequestLogging();
             //app.UseHttpsRedirection();
@@ -131,6 +133,12 @@ namespace WebAdmin
                 }
                 await next();
             });
+
+            var cookiePolicyOptions = new CookiePolicyOptions
+            {
+                //Secure = Microsoft.AspNetCore.Http.CookieSecurePolicy.Always,
+            };
+            app.UseCookiePolicy(cookiePolicyOptions);
 
             app.UseAuthorization();
             app.UseCacheOutput();

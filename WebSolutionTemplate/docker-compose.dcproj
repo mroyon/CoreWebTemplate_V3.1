@@ -34,6 +34,7 @@
     <None Include="vsftp\Dockerfile" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="mssqldata\" />
     <Folder Include="sitesdata\blackportalftpfolder\gallary\" />
     <Folder Include="sitesdata\blackportalftpfolder\links\" />
     <Folder Include="sitesdata\blackportalftpfolder\news\" />

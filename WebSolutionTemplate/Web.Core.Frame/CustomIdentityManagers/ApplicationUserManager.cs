@@ -436,6 +436,7 @@ namespace Web.Core.Frame.CustomIdentityManagers
             resLoginAdd = await BFC.Core.FacadeCreatorObjects.Security.owin_userlogintrailFCC.GetFacadeCreate(_contextAccessor).Add(new owin_userlogintrailEntity()
             {
                 userid = securityCapsule.userid,
+                masteruserid = securityCapsule.masteruserid,
                 loginfrom = "Web App",
                 logindate = securityCapsule.createddate,
                 logoutdate = null,

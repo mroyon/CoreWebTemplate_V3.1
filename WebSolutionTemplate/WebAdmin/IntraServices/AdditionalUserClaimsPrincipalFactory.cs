@@ -56,7 +56,9 @@ namespace WebAdmin.IntraServices
             };
 
             SecurityCapsule _securityCapsule = new SecurityCapsule();
+            _securityCapsule.masteruserid = user.masteruserid;
             _securityCapsule.updatedbyusername = user.username;
+
             _securityCapsule.updateddate = dt;
             _securityCapsule.createdbyusername = user.username;
             _securityCapsule.createddate = dt;

@@ -115,13 +115,23 @@ namespace WebAdmin.Services
             var signingConfigurations = new JWTSigningConfigurations(JwtSettings.Secret);
             services.AddSingleton(signingConfigurations);
 
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.Cookie.HttpOnly = true;
+                options.Cookie.SameSite = SameSiteMode.Strict;
+                //options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+                //options.AccessDeniedPath = $"/account/accessDenied";
+                //options.SlidingExpiration = true;
+            });
+
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = IdentityConstants.ApplicationScheme;
                 options.DefaultChallengeScheme = IdentityConstants.ApplicationScheme;
                 options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
 
-            })
+            }).AddCookie()
                 .AddJwtBearer(options =>
                 {
                     options.SaveToken = true;
@@ -156,19 +166,15 @@ namespace WebAdmin.Services
                         }
                     };
                 })
-                .AddIdentityCookies(options =>
-                {
+                .AddIdentityCookies(options => {});
 
-                }
-                );
-
-            //services.ConfigureApplicationCookie(options =>
-            //{
-            //    options.LoginPath = $"/Login/Login";
-            //    options.LogoutPath = $"/Account/Logout";
-            //    //options.AccessDeniedPath = $"/account/accessDenied";
-            //    options.SlidingExpiration = true;
-            //});
+            services.AddAntiforgery(options =>
+            {
+                // Set Cookie properties using CookieBuilder properties†.
+                options.FormFieldName = "AntiforgeryFieldname";
+                options.HeaderName = "X-CSRF-TOKEN-HEADERNAME";
+                options.SuppressXFrameOptionsHeader = false;
+            });
 
             services.AddAuthorization(options =>
             {
@@ -182,8 +188,6 @@ namespace WebAdmin.Services
                     policy.AuthenticationSchemes = new List<string> { JwtBearerDefaults.AuthenticationScheme };
                 });
             });
-
-            
 
             //services.AddSingleton<IAuthorizationHandler, Myhandler>();
 
@@ -209,9 +213,9 @@ namespace WebAdmin.Services
             //for session enable
             services.AddSession(options =>
             {
-                options.IdleTimeout = TimeSpan.FromMinutes(2);
+                options.IdleTimeout = TimeSpan.FromMinutes(20);
                 options.Cookie.HttpOnly = true;
-                options.Cookie.SameSite = SameSiteMode.None;
+                options.Cookie.SameSite = SameSiteMode.Strict;
                 options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
             });
         }

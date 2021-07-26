@@ -19,20 +19,20 @@ services:
       context: .
       dockerfile: WebAdmin/Dockerfile
 
-  mssql_container:
-    build:
-      context: .
-      dockerfile: data/Dockerfile
-    image: mroyon/mssqlbaseblackportal:latest
-    container_name: mssqldb
-    environment:
-      ACCEPT_EULA: "Y"
-      SA_PASSWORD: Asdf@1234
-      FILE_VERSION: 1.4
-    ports:
-      - 1436:1433
-    volumes:
-     - mssqldata:/var/opt/mssql  
+  #mssql_container:
+  #  build:
+  #    context: .
+  #    dockerfile: data/Dockerfile
+  #  image: mroyon/mssqlbaseblackportal:latest
+  #  container_name: mssqldb
+  #  environment:
+  #    ACCEPT_EULA: "Y"
+  #    SA_PASSWORD: Asdf@1234
+  #    FILE_VERSION: 1.4
+  #  ports:
+  #    - 1437:1433
+  #  volumes:
+  #   - ./mssqldata:/var/opt/mssql  
 
   redisdb_container:
     image: mroyon/redisbase:latest

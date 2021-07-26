@@ -3,6 +3,39 @@
 *@
 @{
 }
+
+@using Microsoft.AspNetCore.Builder
+@using Microsoft.AspNetCore.Localization
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.Extensions.Options
+
+@using Microsoft.AspNetCore.Authorization
+@using CLL.Localization
+@inject IAuthorizationService AuthorizationService
+@inject CLL.Localization.LocalizeService SharedLocalizer
+
+
+
+@inject IViewLocalizer Localizer
+@inject IOptions<RequestLocalizationOptions> LocOptions
+@{
+    var requestCulture = Context.Features.Get<IRequestCultureFeature>();
+    var cultureItems = LocOptions.Value.SupportedUICultures
+        .Select(c => new SelectListItem { Value = c.Name, Text = c.TextInfo.ToTitleCase(c.NativeName.Contains('(') ? c.NativeName.Substring(0, c.NativeName.IndexOf('(')) : c.NativeName) })
+        .ToList();
+
+    var location = new Uri($"{Context.Request.Scheme}://{Context.Request.Host}{Context.Request.Path}{Context.Request.QueryString}");
+
+    var url = location.AbsoluteUri;
+    var returnUrlForLanguageSwitch = Context.Request.Path;
+
+    if (Context.Request.QueryString.HasValue)
+    {
+        returnUrlForLanguageSwitch = $"{Context.Request.Path}{Context.Request.QueryString.Value}";
+    }
+}
+
+
 <!-- Navbar -->
 <nav class="main-header navbar navbar-expand navbar-dark">
     <!-- Left navbar links -->
@@ -137,6 +170,59 @@
                 <i class="fas fa-th-large"></i>
             </a>
         </li>
+        <!-- Language Dropdown Menu -->
+        <li class="nav-item dropdown">
+            <a class="nav-link" data-toggle="dropdown" href="#">
+                <i class="fa fa-language"></i>
+            </a>
+            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                @foreach (var culture in cultureItems)
+                {
+                    <div class="dropdown-divider"></div>
+                    if (culture.Value != requestCulture.RequestCulture.UICulture.Name)
+                    {
+                        <form id="selectLanguage"
+                              asp-controller="Home"
+                              asp-action="SetLanguage"
+                              asp-route-returnUrl="@returnUrlForLanguageSwitch"
+                              method="post"
+                              role="form">
+                            <a class="dropdown-item " href="#" onclick="updateLanguage('@culture.Value', '/')" id="@(culture.Text)_item">@culture.Text</a>
+                        </form>
+                    }
+                    else
+                    {
+                        <span class="dropdown-item active" href="#"  id="@(culture.Text)_item">@culture.Text</span>
+
+                    }
+                    <div class="dropdown-divider"></div>
+                }
+            </div>
+        </li>
+        <!-- profile Dropdown Menu -->
+        <li class="nav-item dropdown">
+            <a class="nav-link" data-toggle="dropdown" href="#">
+                <i class="far fa-user"></i>
+            </a>
+            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                <div class="dropdown-divider"></div>
+                <a href="#" class="dropdown-item">
+                    <i class="fas fa-key mr-2"></i>@SharedLocalizer.GetLocalizedHtmlString("CHANGE_PASSWORD")
+                </a>
+                <div class="dropdown-divider"></div>
+                <a href="#" class="dropdown-item">
+                    <i class="fas fa-sign-out-alt mr-2"></i>@SharedLocalizer.GetLocalizedHtmlString("LOGOUT")
+                </a>
+                <div class="dropdown-divider"></div>
+            </div>
+        </li>
     </ul>
 </nav>
 <!-- /.navbar -->
+<script type="text/javascript">
+    function updateLanguage(culture, returnUrl) {
+        $.post("/Home/SetLanguage", { culture: culture, returnUrl: returnUrl }).then(function (result) {
+            window.location.reload();
+        });
+    }
+</script>

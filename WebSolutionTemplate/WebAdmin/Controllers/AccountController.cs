@@ -202,5 +202,13 @@ namespace WebAdmin.Controllers
             }
         }
 
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> AccessDenied()
+        {
+            return View();
+        }
+
+
     }
 }
