@@ -3,6 +3,7 @@
 
  CoreWebTemplate_V3.1 is a set of two web application and one web api
  
+ work in progress.... 
 
 ## Features
  Features
