@@ -30,10 +30,10 @@
     <div class="wrapper">
         @{
             var tokenSet = antiforgery.GetAndStoreTokens(Context);
-        } 
+        }
         <input hidden id="@tokenSet.HeaderName" value="@tokenSet.RequestToken" />
         <!-- Preloader -->
-        <div class="preloader flex-column justify-content-center align-items-center" id="divProgressBar">
+        <div class="preloader flex-column justify-content-center align-items-center">
             <img class="animation__wobble" src="lib/admin-lte/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
         </div>
 

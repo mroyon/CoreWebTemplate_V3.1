@@ -36,7 +36,6 @@
     "outputFileName": "wwwroot/css/vendor.login.min.css",
     "inputFiles": [
       "wwwroot/css/my-login.css",
-      "wwwroot/lib/bootstrap/dist/css/bootstrap.css",
       "wwwroot/lib/admin-lte/css/adminlte.css"
     ],
     "minify": { "enabled": true }
@@ -45,7 +44,6 @@
     "outputFileName": "wwwroot/css/vendor.login.rtl.min.css",
     "inputFiles": [
       "wwwroot/css/my-login.css",
-      "wwwroot/lib/bootstrap/dist/css/bootstrap.css",
       "wwwroot/lib/admin-lte/css/adminltertl.css"
     ],
     "minify": { "enabled": true }

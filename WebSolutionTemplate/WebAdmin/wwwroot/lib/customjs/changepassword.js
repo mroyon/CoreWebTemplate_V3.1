@@ -42,7 +42,7 @@ $(function () {
                     headers: {
                         'X-CSRF-TOKEN-WEBADMINHEADER': $('#X-CSRF-TOKEN-WEBADMINHEADER').val()
                     },
-                    data: { my: "data" },
+                    //data: { my: "data" },
                     success: function (response) {
                         alert("Hello: ");
                     },

@@ -155,9 +155,8 @@ namespace WebAdmin.Controllers
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> ChangePassword()
         {
-
-            System.Threading.Thread.Sleep(1000);
-            return View();
+            System.Threading.Thread.Sleep(10000);
+            return Json(new { status = "ss", title = "ss", redirectUrl = "", responsetext = "ddd" });
         }
 
         private async Task<owin_userEntity> BuildLoginViewModelAsync(string returnUrl)
