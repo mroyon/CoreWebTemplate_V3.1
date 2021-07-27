@@ -50,13 +50,14 @@ function showWarningAlert(title, text, btntext) {
 
 
 $(document).ready(function () {
+    $('#divprogress').hide();
     $.ajaxSetup({
         beforeSend: function () {
             // show gif here, eg:
-            $('#divProgressBar').show();
+            $('#divprogress').show();
         },
         complete: function () {
-            $('#divProgressBar').hide();
+            $('#divprogress').hide();
         },
         success: function (response) {
             if (response != null)
