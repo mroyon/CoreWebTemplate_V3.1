@@ -151,6 +151,14 @@ namespace WebAdmin.Controllers
             return ViewComponent("ChangePassword");
         }
 
+        [HttpPost]
+        [AutoValidateAntiforgeryToken]
+        public async Task<IActionResult> ChangePassword()
+        {
+
+            System.Threading.Thread.Sleep(1000);
+            return View();
+        }
 
         private async Task<owin_userEntity> BuildLoginViewModelAsync(string returnUrl)
         {

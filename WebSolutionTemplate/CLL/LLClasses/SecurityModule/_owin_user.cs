@@ -412,7 +412,19 @@ namespace CLL.LLClasses.SecurityModule
                 return resourceProvider_owin_user.GetResource("concurrencystamp", CultureInfo.CurrentUICulture.Name) as String;
             }
         }
-        
-      
+        public static string newpassword
+        {
+            get
+            {
+                return resourceProvider_owin_user.GetResource("newpassword", CultureInfo.CurrentUICulture.Name) as String;
+            }
+        }
+        public static string confirmpassword
+        {
+            get
+            {
+                return resourceProvider_owin_user.GetResource("confirmpassword", CultureInfo.CurrentUICulture.Name) as String;
+            }
+        }
     }
 }

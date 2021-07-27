@@ -6,8 +6,8 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+:443;http://+:80
     ports:
-      - "10.1.222.170:44380:80"
-      - "10.1.222.170:44324:443"
+      - "192.168.8.109:44380:80"
+      - "192.168.8.109:44324:443"
     volumes:
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
 
@@ -16,8 +16,8 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+:443;http://+:80
     ports:
-      - "10.1.222.170:44381:80"
-      - "10.1.222.170:44325:443"
+      - "192.168.8.109:44381:80"
+      - "192.168.8.109:44325:443"
     volumes:
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
 
@@ -26,7 +26,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+:443;http://+:80
     ports:
-      - "10.1.222.170:44382:80"
-      - "10.1.222.170:44326:443"
+      - "192.168.8.109:44382:80"
+      - "192.168.8.109:44326:443"
     volumes:
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro

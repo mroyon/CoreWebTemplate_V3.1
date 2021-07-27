@@ -13,6 +13,7 @@
     <None Include="data\Dockerfile" />
     <None Include="data\entrypoint.sh" />
     <None Include="data\scriptversion.txt" />
+    <None Include="data\setup - Copy.sql" />
     <None Include="data\setup.sql" />
     <None Include="data\setup2.sql" />
     <None Include="docker-compose.override.yml">

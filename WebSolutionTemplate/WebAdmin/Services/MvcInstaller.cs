@@ -171,8 +171,9 @@ namespace WebAdmin.Services
             services.AddAntiforgery(options =>
             {
                 // Set Cookie properties using CookieBuilder properties†.
-                options.FormFieldName = "AntiforgeryFieldname";
-                options.HeaderName = "X-CSRF-TOKEN-HEADERNAME";
+                options.Cookie.Name = "X-CSRF-TOKEN-WEBADMIN";
+                options.HeaderName = "X-CSRF-TOKEN-WEBADMINHEADER";
+                options.FormFieldName = "X-CSRF-TOKEN-WEBADMIN";
                 options.SuppressXFrameOptionsHeader = false;
             });
 

@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Antiforgery
+@inject IAntiforgery antiforgery
+<!DOCTYPE html>
 @{
 
 }
@@ -20,15 +22,18 @@
         else
         {
             <link rel="stylesheet" href="~/css/vendor.min.css" asp-append-version="true" />
-
         }
     }
+    <link rel="stylesheet" href="~/css/custom-app-lib.min.css" asp-append-version="true" />
 </head>
 <body class="hold-transition dark-mode sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
     <div class="wrapper">
-
+        @{
+            var tokenSet = antiforgery.GetAndStoreTokens(Context);
+        } 
+        <input hidden id="@tokenSet.HeaderName" value="@tokenSet.RequestToken" />
         <!-- Preloader -->
-        <div class="preloader flex-column justify-content-center align-items-center">
+        <div class="preloader flex-column justify-content-center align-items-center" id="divProgressBar">
             <img class="animation__wobble" src="lib/admin-lte/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
         </div>
 
@@ -63,33 +68,23 @@
     <script src="~/js/vendor.min.js" asp-append-version="true"></script>
 
     @RenderSection("scripts", required: false)
-    @*<script src="~/lib/admin-lte/js/adminlte.js"></script>*@
-    <script src="~/lib/Chartjs/chart.js"></script>
+    @*<script src="~/lib/admin-lte/js/adminlte.js"></script> style="width:98%!important"*@
+    <script src="~/lib/Chartjs/chart.min.js"></script>
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <script src="~/js/custom-app-lib.min.js" asp-append-version="true"></script>
 
-    <div id="modal-container" class="modal fade hidden-print" tabindex="-1" role="dialog">
-        <a href="#close" title="Close" class="modal-close-btn">X</a>
+    <div id="modal-container-common" class="modal fade hidden-print" tabindex="-1" role="dialog">
         <div class="modal-dialog">
-            <div class="modal-content" id="modal-content">
+            <div class="modal-content" id="modal-content-common">
             </div>
         </div>
     </div>
 
+
     <script type="text/javascript">
         $(function () {
 
-            $('body').on('click', '#ahrefchange_password', function (e) {
-
-                $("#modal-container").remove();
-                $.get("/Account/ChangePassword", null, function (data) {
-
-                    $('<div id="modal-container" class="modal fade">' +
-                        '<div class="modal-content" id= "modalbody" >' +
-                        data + '</div></div>').modal();
-                });
-            });
         });
-        
     </script>
 </body>
 </html>

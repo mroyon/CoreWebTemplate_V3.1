@@ -58,7 +58,8 @@ namespace WebAdmin.ViewComponents
         /// <returns></returns>
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            return View();
+            var model = new BDO.DataAccessObjects.SecurityModule.owin_userEntity();
+            return View(model);
         }
 
     }

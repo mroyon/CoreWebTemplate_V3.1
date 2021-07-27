@@ -212,24 +212,12 @@ namespace BDO.DataAccessObjects.SecurityModule
             get { return _password; }
             set { _password = value; this.OnChnaged(); }
         }
-        protected string _confirmpassword;
-        [DataMember]
-        [MaxLength(500)]
-        [DataType(DataType.Password)]
-        [Compare("newpassword", ErrorMessage = "CONFIRM_PASSWORD_NOT_MATCHING")]
-        [Display(Name = "password", ResourceType = typeof(CLL.LLClasses.SecurityModule._owin_user))]
-        [Required(ErrorMessageResourceType = typeof(CLL.LLClasses.SecurityModule._owin_user), ErrorMessageResourceName = "passwordRequired")]
-        public string confirmpassword
-        {
-            get { return _confirmpassword; }
-            set { _confirmpassword = value; this.OnChnaged(); }
-        }
-
+        
         protected string _newpassword;
         [DataMember]
         [MaxLength(500)]
         [DataType(DataType.Password)]
-        [Display(Name = "password", ResourceType = typeof(CLL.LLClasses.SecurityModule._owin_user))]
+        [Display(Name = "newpassword", ResourceType = typeof(CLL.LLClasses.SecurityModule._owin_user))]
         [Required(ErrorMessageResourceType = typeof(CLL.LLClasses.SecurityModule._owin_user), ErrorMessageResourceName = "passwordRequired")]
         public string newpassword
         {
@@ -237,6 +225,20 @@ namespace BDO.DataAccessObjects.SecurityModule
             set { _newpassword = value; this.OnChnaged(); }
         }
 
+        protected string _confirmpassword;
+        [DataMember]
+        [MaxLength(500)]
+        [DataType(DataType.Password)]
+        [Compare("newpassword", ErrorMessage = "CONFIRM_PASSWORD_NOT_MATCHING")]
+        [Display(Name = "confirmpassword", ResourceType = typeof(CLL.LLClasses.SecurityModule._owin_user))]
+        [Required(ErrorMessageResourceType = typeof(CLL.LLClasses.SecurityModule._owin_user), ErrorMessageResourceName = "passwordRequired")]
+        public string confirmpassword
+        {
+            get { return _confirmpassword; }
+            set { _confirmpassword = value; this.OnChnaged(); }
+        }
+
+       
         [DataMember]
         [MaxLength(500)]
         [DataType(DataType.Password)]

@@ -181,14 +181,7 @@
                     <div class="dropdown-divider"></div>
                     if (culture.Value != requestCulture.RequestCulture.UICulture.Name)
                     {
-                        <form id="selectLanguage"
-                              asp-controller="Home"
-                              asp-action="SetLanguage"
-                              asp-route-returnUrl="@returnUrlForLanguageSwitch"
-                              method="post"
-                              role="form">
-                            <a class="dropdown-item " href="#" onclick="updateLanguage('@culture.Value', '/')" id="@(culture.Text)_item">@culture.Text</a>
-                        </form>
+                       <a class="dropdown-item " href="#" onclick="updateLanguage('@culture.Value', '/')" id="@(culture.Text)_item">@culture.Text</a>
                     }
                     else
                     {

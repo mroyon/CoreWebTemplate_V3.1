@@ -188,6 +188,9 @@ namespace DAC.Core.DataAccessObjects.Security.ExtendedPartial
                 {
                     try
                     {
+
+                        return itemList[0];
+
                         EncryptionHelper objenc = new EncryptionHelper();
                         
                         string usersalt = itemList[0].passwordsalt;

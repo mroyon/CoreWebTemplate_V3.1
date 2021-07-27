@@ -26,6 +26,13 @@
     "minify": { "enabled": true }
   },
   {
+    "outputFileName": "wwwroot/css/custom-app-lib.min.css",
+    "inputFiles": [
+      "wwwroot/lib/customcss/customcss.css"
+    ],
+    "minify": { "enabled": true }
+  },
+  {
     "outputFileName": "wwwroot/css/vendor.login.min.css",
     "inputFiles": [
       "wwwroot/css/my-login.css",
@@ -39,7 +46,7 @@
     "inputFiles": [
       "wwwroot/css/my-login.css",
       "wwwroot/lib/bootstrap/dist/css/bootstrap.css",
-      "wwwroot/lib/admin-lte/css/ .css"
+      "wwwroot/lib/admin-lte/css/adminltertl.css"
     ],
     "minify": { "enabled": true }
   },
@@ -69,6 +76,14 @@
       "wwwroot/lib/jquery.ui/jquery-ui.js",
       "wwwroot/lib/admin-lte/js/demo.js",
       "wwwroot/lib/admin-lte/js/pages/dashboard2.js"
+    ],
+    "minify": { "enabled": true }
+  },
+  {
+    "outputFileName": "wwwroot/js/custom-app-lib.min.js",
+    "inputFiles": [
+      "wwwroot/lib/customjs/utilityfunctions.js",
+      "wwwroot/lib/customjs/changepassword.js"
     ],
     "minify": { "enabled": true }
   },
