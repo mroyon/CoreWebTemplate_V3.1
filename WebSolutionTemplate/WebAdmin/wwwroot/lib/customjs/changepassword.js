@@ -1,6 +1,6 @@
 /******************************************
  * Change Password
- * 
+ * All function related with Change Password
  ******************************************/
 
 'use strict';
@@ -9,11 +9,14 @@ $(function () {
 
     $('body').on('click', '#ahrefchange_password', function (e) {
         $("#modal-container").remove();
-        $.get("/Account/ChangePassword", null, function (data) {
+
+        ajaxGetHandler("/Account/ChangePassword", { returnUrl: "/"}, function (data) {
+
             $('#modal-content-common').html('');
-            $('#modal-content-common').html(data);
-            $('#modal-container-common').modal({ backdrop: 'static', keyboard: false });
-        });
+                $('#modal-content-common').html(data);
+                $('#modal-container-common').modal({ backdrop: 'static', keyboard: false });
+           
+        }, false, false);
     });
 
     $('body').on('click', '#btn-common-modal-close', function (event) {
@@ -27,6 +30,10 @@ $(function () {
         }
     });
 
+    function func(val) {
+        showErrorAlert("Error", val, "OK");
+        console.log(val);
+    }
 
     $('body').on('click', '#btnchangepassword', function (e) {
         try {
@@ -36,25 +43,15 @@ $(function () {
             jQuery.validator.unobtrusive.parse(form);
 
             if (form.valid()) {
-                $.ajax({
-                    type: "POST",
-                    url: "/Account/ChangePassword",
-                    headers: {
-                        'X-CSRF-TOKEN-WEBADMINHEADER': $('#X-CSRF-TOKEN-WEBADMINHEADER').val()
-                    },
-                    //data: { my: "data" },
-                    success: function (response) {
-                        alert("Hello: ");
-                    },
-                    failure: function (response) {
-                        console.log(response);
-                    },
-                    error: function (response) {
-                        console.log(response);
-                    }
-                })
-             
 
+                ajaxPostHandler("/Account/ChangePassword", null, function (data) {
+                    if (data !== "INVALID_PARAMETERS") {
+                        showSuccessAlert("Success", data.response, "OK");
+                    }
+                    else {
+                        alert("There is a problem on server side. Please try again later.");
+                    }
+                }, false);
             }
             else {
 

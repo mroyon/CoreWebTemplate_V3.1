@@ -214,9 +214,36 @@
 <!-- /.navbar -->
 <script type="text/javascript">
     function updateLanguage(culture, returnUrl) {
-        $.post("/Home/SetLanguage", { culture: culture, returnUrl: returnUrl }).then(function (result) {
-            window.location.reload();
-        });
+
+        var dataobject = {
+            culture: culture,
+            returnUrl: returnUrl,
+        };
+
+
+        //var dataobject = {};
+        //dataobject.culture = culture;
+        //dataobject.returnUrl = returnUrl;
+
+        //var dataObject = JSON.stringify({
+        //    'Email': $('#inpEmail').val(),
+        //    'Name': $('#inpName').val(),
+        //    'PhoneNumber': $('#inpPhone').val(),
+        //    'Message': $('#inpMessage').val()
+        //});
+        //console.log(dataobject);
+        ajaxPostHandler("/Home/SetLanguage", dataobject, function (data) {
+            if (data !== "INVALID_PARAMETERS") {
+                window.location.reload();
+            }
+            else {
+                alert("There is a problem on server side. Please try again later.");
+            }
+        }, false);
+
+        //$.post("/Home/SetLanguage", dataobject).then(function (result) {
+        //    window.location.reload();
+        //});
     }
 
 

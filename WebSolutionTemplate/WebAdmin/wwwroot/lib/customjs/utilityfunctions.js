@@ -51,37 +51,35 @@ function showWarningAlert(title, text, btntext) {
 
 $(document).ready(function () {
     $('#divprogress').hide();
-    $.ajaxSetup({
-        beforeSend: function () {
-            // show gif here, eg:
-            $('#divprogress').show();
-        },
-        complete: function () {
-            $('#divprogress').hide();
-        },
-        success: function (response) {
-            if (response != null)
-                if (response.status === "success") {
-                    showSuccessAlert(response.title, response.responsetext, "OK");
-                }
-                else if (response.status === "failed") {
-                    showErrorAlert(response.title, response.responsetext, "OK");
-                }
-                else if (response.status === "error") {
-                    showErrorAlert(response.title, response.responsetext, "OK");
-                }
-                else if (response.status === "Error") {
-                    showErrorAlert(response.title, response.responsetext, "OK");
-                }
-        },
-        failure: function (response) {
-            showErrorAlert(response.title, response.responseJSON.Error, "OK");
-        },
-        error: function (response) {
-            showErrorAlert(response.title, response.responseJSON.Error, "OK");
-        }
-    });
-
-
+    //$.ajaxSetup({
+    //    beforeSend: function () {
+    //        // show gif here, eg:
+    //        $('#divprogress').show();
+    //    },
+    //    complete: function () {
+    //        $('#divprogress').hide();
+    //    },
+    //    success: function (response) {
+    //        if (response != null)
+    //            if (response.status === "success") {
+    //                showSuccessAlert(response.title, response.responsetext, "OK");
+    //            }
+    //            else if (response.status === "failed") {
+    //                showErrorAlert(response.title, response.responsetext, "OK");
+    //            }
+    //            else if (response.status === "error") {
+    //                showErrorAlert(response.title, response.responsetext, "OK");
+    //            }
+    //            else if (response.status === "Error") {
+    //                showErrorAlert(response.title, response.responsetext, "OK");
+    //            }
+    //    },
+    //    failure: function (response) {
+    //        showErrorAlert(response.title, response.responseJSON.Error, "OK");
+    //    },
+    //    error: function (response) {
+    //        showErrorAlert(response.title, response.responseJSON.Error, "OK");
+    //    }
+    //});
 });
 //$("input[required]").parent("label").addClass("required");

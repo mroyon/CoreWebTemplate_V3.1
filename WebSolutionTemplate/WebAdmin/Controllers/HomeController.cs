@@ -52,17 +52,17 @@ namespace WebAdmin.Controllers
             return View();
         }
 
-        
+
         [HttpPost]
         [IgnoreAntiforgeryToken]
-        public IActionResult SetLanguage(string culture, string returnUrl)
+        public IActionResult SetLanguage(testmodel objlangmodel)
         {
             Response.Cookies.Append(
                 CookieRequestCultureProvider.DefaultCookieName,
-                CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
+                CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(objlangmodel.culture)),
                 new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1), Secure = true, SameSite = SameSiteMode.Strict }
             );
-            return LocalRedirect(returnUrl);
+            return LocalRedirect(objlangmodel.returnUrl);
         }
 
 

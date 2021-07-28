@@ -25,6 +25,7 @@ using IdentityServer4.Services;
 using BDO.DataAccessObjects.SecurityModule;
 using Web.Core.Frame.CustomIdentityManagers;
 using Web.Core.Frame.CustomStores;
+using Newtonsoft.Json.Serialization;
 
 namespace WebAdmin.Services
 {
@@ -106,6 +107,7 @@ namespace WebAdmin.Services
                     //options.Filters.Add<ValidationFilter>();
                     options.Filters.Add<SecurityFillerAttribute>();
               })
+              .AddNewtonsoftJson(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver())
               .AddFluentValidation(mvcConfiguration => mvcConfiguration.RegisterValidatorsFromAssemblyContaining<Startup>())
               .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 

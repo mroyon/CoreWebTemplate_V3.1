@@ -80,6 +80,7 @@
   {
     "outputFileName": "wwwroot/js/custom-app-lib.min.js",
     "inputFiles": [
+      "wwwroot/lib/customjs/jqajaxproxy.js",
       "wwwroot/lib/customjs/utilityfunctions.js",
       "wwwroot/lib/customjs/changepassword.js"
     ],
