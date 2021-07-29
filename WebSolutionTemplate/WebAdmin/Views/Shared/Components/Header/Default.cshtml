@@ -220,8 +220,6 @@
         // multiple params post
         ajaxPostParamsHandler("/Home/SetLanguage", dataobject, function (data) {
             if (data !== "INVALID_PARAMETERS") {
-                alert("There is a problem on server side. Please try again later.");
-
                 window.location.reload();
             }
             else {

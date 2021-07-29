@@ -153,8 +153,13 @@ namespace WebAdmin.Controllers
 
         [HttpPost]
         [AutoValidateAntiforgeryToken]
-        public async Task<IActionResult> ChangePassword()
+        public async Task<IActionResult> ChangePassword(owin_userEntity model)
         {
+            var returnUrl = model.ReturnUrl;
+            var user = await _userManager.FindByNameAsync(model.emailaddress);
+            ViewData["ReturnUrl"] = returnUrl;
+
+
             System.Threading.Thread.Sleep(10000);
             return Json(new { status = "ss", title = "ss", redirectUrl = "", responsetext = "ddd" });
         }

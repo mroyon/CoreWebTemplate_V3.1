@@ -1,4 +1,6 @@
-﻿using BDO.Base;
+﻿using AppConfig.HelperClasses;
+using BDO.Base;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
@@ -9,6 +11,7 @@ using System;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Web.Core.Frame.Interfaces.Services;
 
 namespace WebAdmin.FilterAndAttributes
 {
@@ -17,13 +20,21 @@ namespace WebAdmin.FilterAndAttributes
     /// </summary>
     public class SecurityFillerAttribute : IAsyncActionFilter
     {
+
+        private readonly IHostingEnvironment _HostingEnvironment;
+        private readonly IJwtTokenValidator _jwtTokenValidator;
+
         private readonly IHttpContextAccessor _contextAccessor;
         /// <summary>
         /// SecurityFillerAttribute
         /// </summary>
         /// <param name="contextAccessor"></param>
-        public SecurityFillerAttribute(IHttpContextAccessor contextAccessor)
+        public SecurityFillerAttribute(IHttpContextAccessor contextAccessor,
+            IHostingEnvironment HostingEnvironment,
+            IJwtTokenValidator jwtTokenValidator)
         {
+            _jwtTokenValidator = jwtTokenValidator ?? throw new ArgumentNullException(nameof(jwtTokenValidator));
+            _HostingEnvironment = HostingEnvironment;
             _contextAccessor = contextAccessor;
         }
 
@@ -43,6 +54,88 @@ namespace WebAdmin.FilterAndAttributes
             {
                 view.ViewData["Tenant"] = tenant;
             }
+        }
+
+        /// <summary>
+        /// OnActionExecutingAsync
+        /// </summary>
+        /// <param name="context"></param>
+        public async Task OnActionExecutingAsync(ActionExecutingContext context)
+        {
+            //if (context.ModelState.IsValid)
+            //{
+            var actionDescriptor = context.ActionDescriptor as ControllerActionDescriptor;
+            var actionName = actionDescriptor.ActionName;
+            var controllerName = actionDescriptor.ControllerName;
+            if (actionName == "Login")
+            {
+                return;
+            }
+
+            string Token = context.HttpContext.Request.Headers["X-CSRF-TOKEN-WEBADMINHEADER"].FirstOrDefault()?.Split(" ").Last();
+            if (context.ActionArguments.Count > 0 && Token != null)
+            {
+                var cp = _jwtTokenValidator.GetPrincipalFromToken(Token);
+                if (cp != null)
+                {
+                    var id = cp.Claims.First(c => c.Type == "id").Value;
+                    var username = cp.Claims.First(c => c.Type == "CreatedByUserName").Value;
+                    var transid = cp.Claims.First(c => c.Type == "TransID").Value;
+                    DateTime dt = DateTime.Now;
+                    SecurityCapsule objBase = ((BDO.Base.BaseEntity)context.ActionArguments["request"])?.BaseSecurityParam;
+                    if (objBase == null)
+                        objBase = new SecurityCapsule();
+                    objBase.actioname = actionName;
+                    objBase.controllername = controllerName;
+                    objBase.createdbyusername = id.ToString();
+                    objBase.updatedbyusername = id.ToString();
+                    objBase.ipaddress = context.HttpContext.Connection.RemoteIpAddress?.ToString() ?? "127.0.0.1";
+                    objBase.createddate = dt;
+                    objBase.updateddate = dt;
+                    objBase.transid = transid;
+                    ((BDO.Base.BaseEntity)context.ActionArguments["request"]).BaseSecurityParam = objBase;
+                }
+            }
+            else
+            {
+                if (_HostingEnvironment.IsDevelopment())
+                {
+                    //THIS IS MOCK, REMOVE WHEN PUBLISH. COS WITHOUT SECURITY ACCESS TOKEN IT SHOULD NOT WORK!!!
+                    DateTime dt = DateTime.Now;
+                    bool reqobject = false;
+                    SecurityCapsule objBase = null;
+                    if (objBase == null)
+                        objBase = new SecurityCapsule();
+                    if (context.ActionArguments.Count > 0)
+                    {
+                        objBase = ((BDO.Base.BaseEntity)context.ActionArguments["request"])?.BaseSecurityParam;
+                        if (objBase == null)
+                            objBase = new SecurityCapsule();
+                        reqobject = true;
+                    }
+                    else
+                    {
+                        reqobject = false;
+                    }
+
+                    if (objBase != null)
+                    {
+                        objBase.actioname = actionName;
+                        objBase.controllername = controllerName;
+                        objBase.createdbyusername = "e527c07f-de86-44c6-9f93-0000800d295a";
+                        objBase.updatedbyusername = "e527c07f-de86-44c6-9f93-0000800d295a";
+                        objBase.ipaddress = context.HttpContext.Connection.RemoteIpAddress?.ToString() ?? "127.0.0.1";
+                        objBase.createddate = dt;
+                        objBase.updateddate = dt;
+                        objBase.transid = "DUMMYTRANSID";
+                        if (reqobject)
+                            ((BDO.Base.BaseEntity)context.ActionArguments["request"]).BaseSecurityParam = objBase;
+                        else
+                            context.ActionArguments.Add("request", objBase);
+                    }
+                }
+            }
+            return;
         }
 
         /// <summary>
@@ -66,33 +159,30 @@ namespace WebAdmin.FilterAndAttributes
                     var actionName = actionDescriptor.ActionName;
                     var controllerName = actionDescriptor.ControllerName;
 
+                    BaseEntity ob = ((BaseEntity)value);
+                    ob.BaseSecurityParam = new SecurityCapsule();
 
-                    //BaseEntity ob = ((BaseEntity)value);
-                    //ob.BaseSecurityParam = new SecurityCapsule();
+                    if (claimsIdentity.Claims.Count() > 0)
+                    {
+                        var _securityCapsule = JsonConvert.DeserializeObject<SecurityCapsule>(claimsIdentity.Claims.ToList().Where(p => p.Type == "secobject").FirstOrDefault().Value);
+                        ob.BaseSecurityParam = _securityCapsule;
+                    }
+                    else
+                    {
+                        ob.BaseSecurityParam.createdbyusername = context.HttpContext.Session.Id;
+                        ob.BaseSecurityParam.createddate = dt;
+                        ob.BaseSecurityParam.updatedbyusername = context.HttpContext.Session.Id;
+                        ob.BaseSecurityParam.updateddate = dt;
 
-                    //if (claimsIdentity.Claims.Count() > 0)
-                    //{
-                    //    var _securityCapsule = JsonConvert.DeserializeObject<SecurityCapsule>(claimsIdentity.Claims.ToList().Where(p => p.Type == "secobject").FirstOrDefault().Value);
-                    //    ob.BaseSecurityParam = _securityCapsule;
-                    //}
-                    //else
-                    //{
-                    //    ob.BaseSecurityParam.createdbyusername = context.HttpContext.Session.Id;
-                    //    ob.BaseSecurityParam.createdby = -99;
-                    //    ob.BaseSecurityParam.createddate = dt;
-                    //    ob.BaseSecurityParam.updatedbyusername = context.HttpContext.Session.Id;
-                    //    ob.BaseSecurityParam.updatedby = -99;
-                    //    ob.BaseSecurityParam.updateddate = dt;
-
-                    //    transactioncodeGen objTranIDGen = new transactioncodeGen();
-                    //    ob.BaseSecurityParam.sessionid = _contextAccessor.HttpContext.Session.Id;
-                    //    ob.BaseSecurityParam.transid = objTranIDGen.GetRandomAlphaNumericStringForTransactionActivity("TRANS", dt);
-                    //    ob.BaseSecurityParam.usertoken = ob.BaseSecurityParam.transid;
-                    //}
-                    //ob.BaseSecurityParam.actioname = actionName;
-                    //ob.BaseSecurityParam.controllername = controllerName;
-                    //ob.BaseSecurityParam.pageurl = context.HttpContext.Request.GetDisplayUrl();
-                    //ob.BaseSecurityParam.ipaddress = context.HttpContext.Connection.RemoteIpAddress.ToString();
+                        transactioncodeGen objTranIDGen = new transactioncodeGen();
+                        ob.BaseSecurityParam.sessionid = _contextAccessor.HttpContext.Session.Id;
+                        ob.BaseSecurityParam.transid = objTranIDGen.GetRandomAlphaNumericStringForTransactionActivity("TRANS", dt);
+                        ob.BaseSecurityParam.usertoken = ob.BaseSecurityParam.transid;
+                    }
+                    ob.BaseSecurityParam.actioname = actionName;
+                    ob.BaseSecurityParam.controllername = controllerName;
+                    ob.BaseSecurityParam.pageurl = context.HttpContext.Request.GetDisplayUrl();
+                    ob.BaseSecurityParam.ipaddress = context.HttpContext.Connection.RemoteIpAddress.ToString();
 
                     return new SecurityCapsule(); //ob.BaseSecurityParam;
                 }

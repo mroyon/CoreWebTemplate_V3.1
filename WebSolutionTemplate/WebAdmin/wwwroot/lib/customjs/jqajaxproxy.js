@@ -138,8 +138,6 @@ var ajaxPostParamsHandler = function (url, parameters, func, isStringify) {
     }
 };
 
-
-
 function GetProxy(url, params, successCallback, isStringify = false) {
 
     if (url == "") {
