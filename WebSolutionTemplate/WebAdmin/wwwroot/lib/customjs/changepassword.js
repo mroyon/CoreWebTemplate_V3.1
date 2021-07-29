@@ -44,7 +44,7 @@ $(function () {
 
             if (form.valid()) {
 
-                ajaxPostHandler("/Account/ChangePassword", null, function (data) {
+                ajaxPostObjectHandler("/Account/ChangePassword", null, function (data) {
                     if (data !== "INVALID_PARAMETERS") {
                         showSuccessAlert("Success", data.response, "OK");
                     }
