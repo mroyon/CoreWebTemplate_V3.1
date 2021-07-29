@@ -8,35 +8,26 @@
 var methodTypePost = "POST";
 var methodTypeGet = "GET";
 
-function PostProxy(url, params, successCallback, isStringify = false) {
+function PostObjectProxy(url, params, successCallback, isStringify = false) {
 
     if (url == "") {
         return;
     }
 
-    if (params != null)
-        var jsonData = isStringify == false ? params : JSON.stringify(params);
-    else
-        var jsonData = "";
-
-    //console.log(jsonData.culture);
-    //console.log(jsonData.returnUrl);
-    //console.log(jsonData);
-
-    var dataobject = {};
-    dataobject.culture = jsonData.culture;
-    dataobject.returnUrl = jsonData.returnUrl;
-
-    console.log(dataobject);
-
-
+    if (params != null) {
+        params = isStringify == false ? params : JSON.stringify(params);
+    }
+    else {
+        var params = "";
+    }
     var tokenValue = $('#X-CSRF-TOKEN-WEBADMINHEADER').val();
 
     try {
+
         $.ajax({
-            type: "POST",
+            type: methodTypePost,
             url: url,
-            data: JSON.stringify(jsonData),
+            data: params,
             async: false,
             cache: false,
             dataType: "json",
@@ -59,12 +50,13 @@ function PostProxy(url, params, successCallback, isStringify = false) {
                 $('#divprogress').hide();
             },
         });
+
     } catch (e) {
         showErrorAlert("Error", e.message, "OK");
     }
 
 };
-var ajaxPostHandler = function (url, parameters, func, isStringify) {
+var ajaxPostObjectHandler = function (url, parameters, func, isStringify) {
 
     function onSuccess(response) {
         if (response === 'SESSION_EXPIRED') {
@@ -75,11 +67,77 @@ var ajaxPostHandler = function (url, parameters, func, isStringify) {
             func(response);
     };
     try {
-        PostProxy(url, parameters, onSuccess, isStringify);
+        PostObjectProxy(url, parameters, onSuccess, isStringify);
     } catch (e) {
         showErrorAlert("Error", e.message, "OK");
     }
 };
+
+function PostParamsProxy(url, params, successCallback, isStringify = false) {
+
+    if (url == "") {
+        return;
+    }
+
+    if (params != null) {
+        params = isStringify == false ? params : JSON.stringify(params);
+    }
+    else {
+        var params = "";
+    }
+    var tokenValue = $('#X-CSRF-TOKEN-WEBADMINHEADER').val();
+
+    try {
+
+        $.ajax({
+            type: methodTypePost,
+            url: url,
+            data: params,
+            async: false,
+            cache: false,
+            //dataType: "json",
+            //contentType: "application/json; charset=utf-8",
+            headers: {
+                'X-CSRF-TOKEN-WEBADMINHEADER': tokenValue
+            },
+            beforeSend: function () {
+                $('#divprogress').show();
+            },
+            success: successCallback,
+            error: function (xhr, textStatus, errorThrown) {
+                $('#divprogress').hide();
+                showErrorAlert("Error", errorThrown, "OK");
+            },
+            failure: function (response) {
+                showErrorAlert("Error", response, "OK");
+            },
+            complete: function () {
+                $('#divprogress').hide();
+            },
+        });
+
+    } catch (e) {
+        showErrorAlert("Error", e.message, "OK");
+    }
+
+};
+var ajaxPostParamsHandler = function (url, parameters, func, isStringify) {
+
+    function onSuccess(response) {
+        if (response === 'SESSION_EXPIRED') {
+            showInformationAlert("Error", "Your session is expired. Please login to continue.", "OK");
+            window.location.href = '/Account/login';
+        }
+        else
+            func(response);
+    };
+    try {
+        PostParamsProxy(url, parameters, onSuccess, isStringify);
+    } catch (e) {
+        showErrorAlert("Error", e.message, "OK");
+    }
+};
+
 
 
 function GetProxy(url, params, successCallback, isStringify = false) {
@@ -89,14 +147,9 @@ function GetProxy(url, params, successCallback, isStringify = false) {
     }
 
     if (params != null)
-        var jsonData = isStringify == false ? params : JSON.stringify(params);
+        params = isStringify == false ? params : JSON.stringify(params);
     else
-        var jsonData = "";
-
-    //console.log(params)
-    //console.log(jsonData);
-    //console.log(JSON.stringify(params));
-    //console.log(JSON.stringify(jsonData));
+        params = "";
 
     var tokenValue = $('#X-CSRF-TOKEN-WEBADMINHEADER').val();
 
@@ -104,7 +157,7 @@ function GetProxy(url, params, successCallback, isStringify = false) {
         $.ajax({
             type: methodTypeGet,
             url: url,
-            data: jsonData,
+            data: params,
             contentType: "application/json",
             async: false,
             cache: false,
@@ -147,3 +200,66 @@ var ajaxGetHandler = function (url, parameters, func, isStringify) {
         showErrorAlert("Error", e.message, "OK");
     }
 };
+
+
+/// CALLING PROCS
+/*
+ 
+// GET 
+ ajaxGetHandler("/Account/ChangePassword", { returnUrl: "/"}, function (data) {
+
+            $('#modal-content-common').html('');
+                $('#modal-content-common').html(data);
+                $('#modal-container-common').modal({ backdrop: 'static', keyboard: false });
+
+        }, false, false);
+
+-------------------
+
+var dataobject = { culture: culture, returnUrl: returnUrl };
+
+//// multiple params post
+//ajaxPostParamsHandler("/Home/SetLanguage", dataobject, function (data) {
+//    if (data !== "INVALID_PARAMETERS") {
+//        alert("There is a problem on server side. Please try again later.");
+
+//        window.location.reload();
+//    }
+//    else {
+//        alert("There is a problem on server side. Please try again later.");
+//    }
+//}, false);
+
+
+//single object post
+ajaxPostObjectHandler("/Home/SetLanguage2", dataobject, function (data) {
+    if (data !== "INVALID_PARAMETERS") {
+        alert("There is a problem on server side. Please try again later.");
+
+        window.location.reload();
+    }
+    else {
+        alert("There is a problem on server side. Please try again later.");
+    }
+}, true);
+
+
+        /// <summary>
+        /// SetLanguage
+        /// </summary>
+        /// <param name="objlangmodel"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult SetLanguage2([FromBody] testmodel objlangmodel)
+        {
+            Response.Cookies.Append(
+                CookieRequestCultureProvider.DefaultCookieName,
+                CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(objlangmodel.culture)),
+                new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1), Secure = true, SameSite = SameSiteMode.Strict }
+            );
+            return LocalRedirect(objlangmodel.returnUrl);
+        }
+ 
+ 
+ */

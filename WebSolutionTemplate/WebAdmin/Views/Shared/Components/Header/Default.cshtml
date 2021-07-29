@@ -215,25 +215,13 @@
 <script type="text/javascript">
     function updateLanguage(culture, returnUrl) {
 
-        var dataobject = {
-            culture: culture,
-            returnUrl: returnUrl,
-        };
+        var dataobject = { culture: culture, returnUrl: returnUrl };
 
-
-        //var dataobject = {};
-        //dataobject.culture = culture;
-        //dataobject.returnUrl = returnUrl;
-
-        //var dataObject = JSON.stringify({
-        //    'Email': $('#inpEmail').val(),
-        //    'Name': $('#inpName').val(),
-        //    'PhoneNumber': $('#inpPhone').val(),
-        //    'Message': $('#inpMessage').val()
-        //});
-        //console.log(dataobject);
-        ajaxPostHandler("/Home/SetLanguage", dataobject, function (data) {
+        // multiple params post
+        ajaxPostParamsHandler("/Home/SetLanguage", dataobject, function (data) {
             if (data !== "INVALID_PARAMETERS") {
+                alert("There is a problem on server side. Please try again later.");
+
                 window.location.reload();
             }
             else {
@@ -241,9 +229,6 @@
             }
         }, false);
 
-        //$.post("/Home/SetLanguage", dataobject).then(function (result) {
-        //    window.location.reload();
-        //});
     }
 
 

@@ -35,6 +35,48 @@
             <param name="model"></param>
             <returns></returns>
         </member>
+        <member name="T:WebAdmin.Controllers.HomeController">
+            <summary>
+            HomeController
+            </summary>
+        </member>
+        <member name="M:WebAdmin.Controllers.HomeController.#ctor(Web.Core.Frame.CustomIdentityManagers.ApplicationUserManager{BDO.DataAccessObjects.SecurityModule.owin_userEntity},Web.Core.Frame.CustomIdentityManagers.ApplicationSignInManager{BDO.DataAccessObjects.SecurityModule.owin_userEntity},WebAdmin.IntraServices.IEmailSender,Microsoft.Extensions.Logging.ILoggerFactory,Microsoft.Extensions.Localization.IStringLocalizerFactory,Microsoft.AspNetCore.Authentication.IAuthenticationSchemeProvider)">
+            <summary>
+            HomeController
+            </summary>
+            <param name="userManager"></param>
+            <param name="signInManager"></param>
+            <param name="emailSender"></param>
+            <param name="loggerFactory"></param>
+            <param name="factory"></param>
+            <param name="schemeProvider"></param>
+        </member>
+        <member name="M:WebAdmin.Controllers.HomeController.Index">
+            <summary>
+            Index
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebAdmin.Controllers.HomeController.SetLanguage(System.String,System.String)">
+            <summary>
+            SetLanguage
+            </summary>
+            <param name="culture"></param>
+            <param name="returnUrl"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebAdmin.Controllers.HomeController.Privacy">
+            <summary>
+            Privacy
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebAdmin.Controllers.HomeController.Error">
+            <summary>
+            Error
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:WebAdmin.FilterAndAttributes.SecurityFillerAttribute">
             <summary>
             SecurityFillerAttribute

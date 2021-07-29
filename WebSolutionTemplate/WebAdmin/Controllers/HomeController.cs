@@ -17,6 +17,9 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace WebAdmin.Controllers
 {
+    /// <summary>
+    /// HomeController
+    /// </summary>
     [Authorize]
     [AutoValidateAntiforgeryToken]
     public class HomeController : Controller
@@ -27,7 +30,15 @@ namespace WebAdmin.Controllers
         private readonly IEmailSender _emailSender;
         private readonly IStringLocalizer _sharedLocalizer;
         private readonly IAuthenticationSchemeProvider _schemeProvider;
-
+        /// <summary>
+        /// HomeController
+        /// </summary>
+        /// <param name="userManager"></param>
+        /// <param name="signInManager"></param>
+        /// <param name="emailSender"></param>
+        /// <param name="loggerFactory"></param>
+        /// <param name="factory"></param>
+        /// <param name="schemeProvider"></param>
         public HomeController(
             ApplicationUserManager<owin_userEntity> userManager,
             ApplicationSignInManager<owin_userEntity> signInManager,
@@ -47,30 +58,49 @@ namespace WebAdmin.Controllers
             _sharedLocalizer = factory.Create("SharedResource", assemblyName.Name);
         }
 
+        /// <summary>
+        /// Index
+        /// </summary>
+        /// <returns></returns>
+
         public IActionResult Index()
         {
             return View();
         }
 
-
+        /// <summary>
+        /// SetLanguage
+        /// </summary>
+        /// <param name="culture"></param>
+        /// <param name="returnUrl"></param>
+        /// <returns></returns>
         [HttpPost]
-        [IgnoreAntiforgeryToken]
-        public IActionResult SetLanguage(testmodel objlangmodel)
+        [ValidateAntiForgeryToken]
+        public IActionResult SetLanguage(string culture, string returnUrl)
         {
             Response.Cookies.Append(
                 CookieRequestCultureProvider.DefaultCookieName,
-                CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(objlangmodel.culture)),
+                CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
                 new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1), Secure = true, SameSite = SameSiteMode.Strict }
             );
-            return LocalRedirect(objlangmodel.returnUrl);
+            return LocalRedirect(returnUrl);
         }
 
 
+
+        /// <summary>
+        /// Privacy
+        /// </summary>
+        /// <returns></returns>
         public IActionResult Privacy()
         {
             return View();
         }
 
+        /// <summary>
+        /// Error
+        /// </summary>
+        /// <returns></returns>
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
