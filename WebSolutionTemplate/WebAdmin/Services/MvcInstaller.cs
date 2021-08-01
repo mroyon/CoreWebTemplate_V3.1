@@ -109,6 +109,7 @@ namespace WebAdmin.Services
                   options.Conventions.Add(new AddAuthorizeFiltersControllerConvention());
                     //options.Filters.Add<ValidationFilter>();
                     options.Filters.Add<SecurityFillerAttribute>();
+                  options.Filters.Add<ServiceExceptionInterceptor>();
               })
               .AddNewtonsoftJson(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver())
               .AddFluentValidation(mvcConfiguration => mvcConfiguration.RegisterValidatorsFromAssemblyContaining<Startup>())
@@ -127,14 +128,15 @@ namespace WebAdmin.Services
                 options.SigningCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
             });
 
-
             services.ConfigureApplicationCookie(options =>
             {
                 options.Cookie.HttpOnly = true;
                 options.Cookie.SameSite = SameSiteMode.Strict;
-                //options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-                //options.AccessDeniedPath = $"/account/accessDenied";
-                //options.SlidingExpiration = true;
+                options.Cookie.Name = "CustomWebIdentity.V2.90";
+                options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+                options.ExpireTimeSpan = TimeSpan.FromHours(10);
+                options.AccessDeniedPath = $"/Account/AccessDenied";
+                options.SlidingExpiration = true;
             });
 
             services.AddAuthentication(options =>
@@ -143,7 +145,7 @@ namespace WebAdmin.Services
                 options.DefaultChallengeScheme = IdentityConstants.ApplicationScheme;
                 options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
 
-            }).AddCookie()
+            })
                 .AddJwtBearer(options =>
                 {
                     options.ClaimsIssuer = jwtIssuerOptions.Issuer;
@@ -187,9 +189,12 @@ namespace WebAdmin.Services
             {
                 // Set Cookie properties using CookieBuilder properties†.
                 options.Cookie.Name = "X-CSRF-TOKEN-WEBADMIN";
+                options.Cookie.SameSite = SameSiteMode.Strict;
+                options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
                 options.HeaderName = "X-CSRF-TOKEN-WEBADMINHEADER";
                 options.FormFieldName = "X-CSRF-TOKEN-WEBADMIN";
                 options.SuppressXFrameOptionsHeader = false;
+
             });
 
             services.AddAuthorization(options =>

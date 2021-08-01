@@ -1,16 +1,20 @@
-﻿using AppConfig.HelperClasses;
+﻿using AppConfig.EncryptionHandler;
+using AppConfig.HelperClasses;
 using BDO.Base;
+using BDO.DataAccessObjects.ExtendedEntities;
 using BDO.DataAccessObjects.SecurityModule;
 using IdentityModel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using Web.Core.Frame.CustomIdentityManagers;
 
@@ -20,6 +24,9 @@ namespace WebAdmin.IntraServices
     {
         private readonly IHttpContextAccessor _contextAccessor;
         private readonly ApplicationUserManager<owin_userEntity> _userManager;
+        private readonly IConfiguration _config;
+
+
         /// <summary>
         /// AdditionalUserClaimsPrincipalFactory
         /// </summary>
@@ -31,11 +38,14 @@ namespace WebAdmin.IntraServices
             ApplicationUserManager<owin_userEntity> userManager,
             RoleManager<IdentityRole> roleManager,
             IOptions<IdentityOptions> optionsAccessor,
-                        IHttpContextAccessor contextAccessor)
+                        IHttpContextAccessor contextAccessor,
+                        IConfiguration config)
             : base(userManager, roleManager, optionsAccessor)
         {
             _contextAccessor = contextAccessor;
             _userManager = userManager;
+            _config = config;
+
         }
 
         /// <summary>
@@ -79,6 +89,10 @@ namespace WebAdmin.IntraServices
             _securityCapsule.ipaddress = _contextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
 
             string strserialize = JsonConvert.SerializeObject(_securityCapsule);
+
+            EncryptionHelper objEnc = new EncryptionHelper();
+            var authSettings = _config.GetSection(nameof(AuthSettings)).Get<AuthSettings>();
+            strserialize = objEnc.Encrypt(strserialize, true, authSettings.SecretKey);
             claims.Add(new Claim("secobject", strserialize));
 
             var resLoginSerial = await _userManager.loginowin_userlogintrail(_securityCapsule);

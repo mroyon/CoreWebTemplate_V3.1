@@ -1,13 +1,16 @@
 using AspNetCore.CacheOutput.Extensions;
 using AutoMapper;
+using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Serilog;
+using System;
 using WebAdmin.Services;
 
 namespace WebAdmin
@@ -53,18 +56,18 @@ namespace WebAdmin
         /// </summary>
         /// <param name="app"></param>
         /// <param name="env"></param>
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IMapper mapper)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IMapper mapper, IAntiforgery antiforgery)
         {
             mapper.ConfigurationProvider.AssertConfigurationIsValid();
 
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                app.UseExceptionHandler("/Error");
-            }
+            //if (env.IsDevelopment())
+            //{
+            //    app.UseDeveloperExceptionPage();
+            //}
+            //else
+            //{
+            app.UseExceptionHandler("/Home/Error");
+            //}
 
             app.UseRouting();
             app.UseResponseCaching();
@@ -118,14 +121,13 @@ namespace WebAdmin
                 }
             });
 
-
-           
-
             app.UseSession();
             app.UseSerilogRequestLogging();
+            app.UseStatusCodePages();
             //app.UseHttpsRedirection();
             app.UseAuthentication();
-            app.Use(async (context, next) => {
+            app.Use(async (context, next) =>
+            {
                 if (context.User != null && context.User.Identity.IsAuthenticated)
                 {
                     // add claims here 

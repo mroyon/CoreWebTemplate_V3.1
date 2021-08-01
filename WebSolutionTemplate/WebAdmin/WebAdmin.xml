@@ -82,7 +82,7 @@
             SecurityFillerAttribute
             </summary>
         </member>
-        <member name="M:WebAdmin.FilterAndAttributes.SecurityFillerAttribute.#ctor(Microsoft.AspNetCore.Http.IHttpContextAccessor)">
+        <member name="M:WebAdmin.FilterAndAttributes.SecurityFillerAttribute.#ctor(Microsoft.AspNetCore.Http.IHttpContextAccessor,Microsoft.AspNetCore.Hosting.IHostingEnvironment,Microsoft.Extensions.Configuration.IConfiguration)">
             <summary>
             SecurityFillerAttribute
             </summary>
@@ -95,6 +95,12 @@
             <param name="context"></param>
             <param name="next"></param>
             <returns></returns>
+        </member>
+        <member name="M:WebAdmin.FilterAndAttributes.SecurityFillerAttribute.OnActionExecutingAsync(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext)">
+            <summary>
+            OnActionExecutingAsync
+            </summary>
+            <param name="context"></param>
         </member>
         <member name="M:WebAdmin.FilterAndAttributes.SecurityFillerAttribute.FillSecurity(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext)">
             <summary>
@@ -114,7 +120,12 @@
             </summary>
             <param name="context"></param>
         </member>
-        <member name="M:WebAdmin.IntraServices.AdditionalUserClaimsPrincipalFactory.#ctor(Web.Core.Frame.CustomIdentityManagers.ApplicationUserManager{BDO.DataAccessObjects.SecurityModule.owin_userEntity},Microsoft.AspNetCore.Identity.RoleManager{Microsoft.AspNetCore.Identity.IdentityRole},Microsoft.Extensions.Options.IOptions{Microsoft.AspNetCore.Identity.IdentityOptions},Microsoft.AspNetCore.Http.IHttpContextAccessor)">
+        <member name="T:WebAdmin.FilterAndAttributes.ServiceExceptionInterceptor">
+            <summary>
+            ServiceExceptionInterceptor
+            </summary>
+        </member>
+        <member name="M:WebAdmin.IntraServices.AdditionalUserClaimsPrincipalFactory.#ctor(Web.Core.Frame.CustomIdentityManagers.ApplicationUserManager{BDO.DataAccessObjects.SecurityModule.owin_userEntity},Microsoft.AspNetCore.Identity.RoleManager{Microsoft.AspNetCore.Identity.IdentityRole},Microsoft.Extensions.Options.IOptions{Microsoft.AspNetCore.Identity.IdentityOptions},Microsoft.AspNetCore.Http.IHttpContextAccessor,Microsoft.Extensions.Configuration.IConfiguration)">
             <summary>
             AdditionalUserClaimsPrincipalFactory
             </summary>
@@ -172,27 +183,6 @@
             <param name="subject"></param>
             <param name="message"></param>
             <returns></returns>
-        </member>
-        <member name="T:WebAdmin.Providers.JWTSigningConfigurations">
-            <summary>
-            JWTSigningConfigurations
-            </summary>
-        </member>
-        <member name="P:WebAdmin.Providers.JWTSigningConfigurations.SecurityKey">
-            <summary>
-            SecurityKey
-            </summary>
-        </member>
-        <member name="P:WebAdmin.Providers.JWTSigningConfigurations.SigningCredentials">
-            <summary>
-            SigningCredentials
-            </summary>
-        </member>
-        <member name="M:WebAdmin.Providers.JWTSigningConfigurations.#ctor(System.String)">
-            <summary>
-            JWTSigningConfigurations
-            </summary>
-            <param name="key"></param>
         </member>
         <member name="T:WebAdmin.Providers.LocalizationQueryProvider">
             <summary>
@@ -331,7 +321,7 @@
             </summary>
             <param name="services"></param>
         </member>
-        <member name="M:WebAdmin.Startup.Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.AspNetCore.Hosting.IWebHostEnvironment,AutoMapper.IMapper)">
+        <member name="M:WebAdmin.Startup.Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.AspNetCore.Hosting.IWebHostEnvironment,AutoMapper.IMapper,Microsoft.AspNetCore.Antiforgery.IAntiforgery)">
             <summary>
             
             </summary>

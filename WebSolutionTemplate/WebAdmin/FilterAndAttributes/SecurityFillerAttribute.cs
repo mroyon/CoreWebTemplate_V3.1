@@ -1,11 +1,14 @@
-﻿using AppConfig.HelperClasses;
+﻿using AppConfig.EncryptionHandler;
+using AppConfig.HelperClasses;
 using BDO.Base;
+using BDO.DataAccessObjects.ExtendedEntities;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System;
 using System.Linq;
@@ -22,7 +25,7 @@ namespace WebAdmin.FilterAndAttributes
     {
 
         private readonly IHostingEnvironment _HostingEnvironment;
-        private readonly IJwtTokenValidator _jwtTokenValidator;
+        private readonly IConfiguration _config;
 
         private readonly IHttpContextAccessor _contextAccessor;
         /// <summary>
@@ -31,12 +34,13 @@ namespace WebAdmin.FilterAndAttributes
         /// <param name="contextAccessor"></param>
         public SecurityFillerAttribute(IHttpContextAccessor contextAccessor,
             IHostingEnvironment HostingEnvironment,
-            IJwtTokenValidator jwtTokenValidator)
+                        IConfiguration config)
         {
-            _jwtTokenValidator = jwtTokenValidator ?? throw new ArgumentNullException(nameof(jwtTokenValidator));
             _HostingEnvironment = HostingEnvironment;
             _contextAccessor = contextAccessor;
+            _config = config;
         }
+
 
         /// <summary>
         /// OnActionExecutionAsync
@@ -46,14 +50,31 @@ namespace WebAdmin.FilterAndAttributes
         /// <returns></returns>
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-
             var tenant = await FillSecurity(context);
-            // Execute the rest of the MVC filter pipeline
-            var resultContext = await next();
-            if (resultContext.Result is ViewResult view)
+            var actionDescriptor = context.ActionDescriptor as ControllerActionDescriptor;
+            var actionName = actionDescriptor.ActionName;
+            if (actionName != "Login")
             {
-                view.ViewData["Tenant"] = tenant;
+                var userPrincipal = context.HttpContext.User.Claims;
+                string Token = context.HttpContext.Request.Headers["X-CSRF-TOKEN-WEBADMINHEADER"].FirstOrDefault()?.Split(" ").Last();
+                string coockieToken = context.HttpContext.Request.Cookies["X-CSRF-TOKEN-WEBADMIN"].ToString();
+
+
+
+                //EncryptionHelper objEnc = new EncryptionHelper();
+                //var authSettings = _config.GetSection(nameof(AuthSettings)).Get<AuthSettings>();
+                //string strserialize = objEnc.Decrypt(Token, true, authSettings.SecretKey);
+
+                //claims.Add(new Claim("secobject", strserialize));
+
+
             }
+            var resultContext = await next();
+            
+            //if (resultContext.Result is ViewResult view)
+            //{
+            //    view.ViewData["Tenant"] = tenant;
+            //}
         }
 
         /// <summary>
@@ -71,30 +92,30 @@ namespace WebAdmin.FilterAndAttributes
             {
                 return;
             }
-
+            /*
             string Token = context.HttpContext.Request.Headers["X-CSRF-TOKEN-WEBADMINHEADER"].FirstOrDefault()?.Split(" ").Last();
             if (context.ActionArguments.Count > 0 && Token != null)
             {
-                var cp = _jwtTokenValidator.GetPrincipalFromToken(Token);
-                if (cp != null)
-                {
-                    var id = cp.Claims.First(c => c.Type == "id").Value;
-                    var username = cp.Claims.First(c => c.Type == "CreatedByUserName").Value;
-                    var transid = cp.Claims.First(c => c.Type == "TransID").Value;
-                    DateTime dt = DateTime.Now;
-                    SecurityCapsule objBase = ((BDO.Base.BaseEntity)context.ActionArguments["request"])?.BaseSecurityParam;
-                    if (objBase == null)
-                        objBase = new SecurityCapsule();
-                    objBase.actioname = actionName;
-                    objBase.controllername = controllerName;
-                    objBase.createdbyusername = id.ToString();
-                    objBase.updatedbyusername = id.ToString();
-                    objBase.ipaddress = context.HttpContext.Connection.RemoteIpAddress?.ToString() ?? "127.0.0.1";
-                    objBase.createddate = dt;
-                    objBase.updateddate = dt;
-                    objBase.transid = transid;
-                    ((BDO.Base.BaseEntity)context.ActionArguments["request"]).BaseSecurityParam = objBase;
-                }
+                //var cp;// _jwtTokenValidator.GetPrincipalFromToken(Token);
+                //if (cp != null)
+                //{
+                //    var id = cp.Claims.First(c => c.Type == "id").Value;
+                //    var username = cp.Claims.First(c => c.Type == "CreatedByUserName").Value;
+                //    var transid = cp.Claims.First(c => c.Type == "TransID").Value;
+                //    DateTime dt = DateTime.Now;
+                //    SecurityCapsule objBase = ((BDO.Base.BaseEntity)context.ActionArguments["request"])?.BaseSecurityParam;
+                //    if (objBase == null)
+                //        objBase = new SecurityCapsule();
+                //    objBase.actioname = actionName;
+                //    objBase.controllername = controllerName;
+                //    objBase.createdbyusername = id.ToString();
+                //    objBase.updatedbyusername = id.ToString();
+                //    objBase.ipaddress = context.HttpContext.Connection.RemoteIpAddress?.ToString() ?? "127.0.0.1";
+                //    objBase.createddate = dt;
+                //    objBase.updateddate = dt;
+                //    objBase.transid = transid;
+                //    ((BDO.Base.BaseEntity)context.ActionArguments["request"]).BaseSecurityParam = objBase;
+                //}
             }
             else
             {
@@ -135,6 +156,7 @@ namespace WebAdmin.FilterAndAttributes
                     }
                 }
             }
+             */
             return;
         }
 
