@@ -60,14 +60,14 @@ namespace WebAdmin
         {
             mapper.ConfigurationProvider.AssertConfigurationIsValid();
 
-            //if (env.IsDevelopment())
-            //{
-            //    app.UseDeveloperExceptionPage();
-            //}
-            //else
-            //{
-            app.UseExceptionHandler("/Home/Error");
-            //}
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                app.UseExceptionHandler("/Home/Error");
+            }
 
             app.UseRouting();
             app.UseResponseCaching();
@@ -122,7 +122,10 @@ namespace WebAdmin
             });
 
             app.UseSession();
-            app.UseSerilogRequestLogging();
+            
+            //comment out below if every request needs to be logged.
+            //app.UseSerilogRequestLogging();
+
             app.UseStatusCodePages();
             //app.UseHttpsRedirection();
             app.UseAuthentication();

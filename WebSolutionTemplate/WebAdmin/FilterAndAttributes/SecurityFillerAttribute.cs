@@ -2,19 +2,27 @@
 using AppConfig.HelperClasses;
 using BDO.Base;
 using BDO.DataAccessObjects.ExtendedEntities;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Web.Core.Frame.Interfaces.Services;
+using WebAdmin.IntraServices;
 
 namespace WebAdmin.FilterAndAttributes
 {
@@ -26,7 +34,6 @@ namespace WebAdmin.FilterAndAttributes
 
         private readonly IHostingEnvironment _HostingEnvironment;
         private readonly IConfiguration _config;
-
         private readonly IHttpContextAccessor _contextAccessor;
         /// <summary>
         /// SecurityFillerAttribute
@@ -41,7 +48,6 @@ namespace WebAdmin.FilterAndAttributes
             _config = config;
         }
 
-
         /// <summary>
         /// OnActionExecutionAsync
         /// </summary>
@@ -50,169 +56,68 @@ namespace WebAdmin.FilterAndAttributes
         /// <returns></returns>
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            var tenant = await FillSecurity(context);
             var actionDescriptor = context.ActionDescriptor as ControllerActionDescriptor;
+            var controllerName = actionDescriptor.ControllerName;
             var actionName = actionDescriptor.ActionName;
-            if (actionName != "Login")
+
+            if (!_exceptionControllerAction._exceptionControllerActionGet().Exists(p=> p.Action == actionName && p.Controller == controllerName))
             {
                 var userPrincipal = context.HttpContext.User.Claims;
                 string Token = context.HttpContext.Request.Headers["X-CSRF-TOKEN-WEBADMINHEADER"].FirstOrDefault()?.Split(" ").Last();
                 string coockieToken = context.HttpContext.Request.Cookies["X-CSRF-TOKEN-WEBADMIN"].ToString();
-
-
-
-                //EncryptionHelper objEnc = new EncryptionHelper();
-                //var authSettings = _config.GetSection(nameof(AuthSettings)).Get<AuthSettings>();
-                //string strserialize = objEnc.Decrypt(Token, true, authSettings.SecretKey);
-
-                //claims.Add(new Claim("secobject", strserialize));
-
-
-            }
-            var resultContext = await next();
-            
-            //if (resultContext.Result is ViewResult view)
-            //{
-            //    view.ViewData["Tenant"] = tenant;
-            //}
-        }
-
-        /// <summary>
-        /// OnActionExecutingAsync
-        /// </summary>
-        /// <param name="context"></param>
-        public async Task OnActionExecutingAsync(ActionExecutingContext context)
-        {
-            //if (context.ModelState.IsValid)
-            //{
-            var actionDescriptor = context.ActionDescriptor as ControllerActionDescriptor;
-            var actionName = actionDescriptor.ActionName;
-            var controllerName = actionDescriptor.ControllerName;
-            if (actionName == "Login")
-            {
-                return;
-            }
-            /*
-            string Token = context.HttpContext.Request.Headers["X-CSRF-TOKEN-WEBADMINHEADER"].FirstOrDefault()?.Split(" ").Last();
-            if (context.ActionArguments.Count > 0 && Token != null)
-            {
-                //var cp;// _jwtTokenValidator.GetPrincipalFromToken(Token);
-                //if (cp != null)
-                //{
-                //    var id = cp.Claims.First(c => c.Type == "id").Value;
-                //    var username = cp.Claims.First(c => c.Type == "CreatedByUserName").Value;
-                //    var transid = cp.Claims.First(c => c.Type == "TransID").Value;
-                //    DateTime dt = DateTime.Now;
-                //    SecurityCapsule objBase = ((BDO.Base.BaseEntity)context.ActionArguments["request"])?.BaseSecurityParam;
-                //    if (objBase == null)
-                //        objBase = new SecurityCapsule();
-                //    objBase.actioname = actionName;
-                //    objBase.controllername = controllerName;
-                //    objBase.createdbyusername = id.ToString();
-                //    objBase.updatedbyusername = id.ToString();
-                //    objBase.ipaddress = context.HttpContext.Connection.RemoteIpAddress?.ToString() ?? "127.0.0.1";
-                //    objBase.createddate = dt;
-                //    objBase.updateddate = dt;
-                //    objBase.transid = transid;
-                //    ((BDO.Base.BaseEntity)context.ActionArguments["request"]).BaseSecurityParam = objBase;
-                //}
-            }
-            else
-            {
-                if (_HostingEnvironment.IsDevelopment())
+                List<Claim> cp =  GetClaimFromCookie(context.HttpContext, "CustomWebIdentity.V2.90");
+                if (cp != null)
                 {
-                    //THIS IS MOCK, REMOVE WHEN PUBLISH. COS WITHOUT SECURITY ACCESS TOKEN IT SHOULD NOT WORK!!!
+                    var secobject = cp.Where(p => p.Type == "secobject").FirstOrDefault().Value;
+                    var transid = userPrincipal.Where(p => p.Type == "TRANS").FirstOrDefault().Value;
+                    var userid = cp.Where(p => p.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").FirstOrDefault().Value;
+
                     DateTime dt = DateTime.Now;
-                    bool reqobject = false;
-                    SecurityCapsule objBase = null;
-                    if (objBase == null)
-                        objBase = new SecurityCapsule();
-                    if (context.ActionArguments.Count > 0)
+                    EncryptionHelper objEnc = new EncryptionHelper();
+                    var authSettings = _config.GetSection(nameof(AuthSettings)).Get<AuthSettings>();
+                    string strserialize = objEnc.Decrypt(secobject, true, authSettings.SecretKey);
+                    transid = objEnc.Decrypt(transid, true, authSettings.SecretKey);
+                    SecurityCapsule _securityCapsule = JsonConvert.DeserializeObject<SecurityCapsule>(strserialize);
+                    DateTime loginDate = new DateTime(long.Parse(transid.Split('.').Last()));
+
+                    if (context.ActionArguments.Count > 0 && 
+                        _securityCapsule != null && 
+                        context.ActionArguments.ContainsKey("request"))
                     {
-                        objBase = ((BDO.Base.BaseEntity)context.ActionArguments["request"])?.BaseSecurityParam;
+                        SecurityCapsule objBase = ((BDO.Base.BaseEntity)context.ActionArguments["request"])?.BaseSecurityParam;
                         if (objBase == null)
                             objBase = new SecurityCapsule();
-                        reqobject = true;
-                    }
-                    else
-                    {
-                        reqobject = false;
-                    }
 
-                    if (objBase != null)
-                    {
                         objBase.actioname = actionName;
                         objBase.controllername = controllerName;
-                        objBase.createdbyusername = "e527c07f-de86-44c6-9f93-0000800d295a";
-                        objBase.updatedbyusername = "e527c07f-de86-44c6-9f93-0000800d295a";
+                        objBase.createdbyusername = userid.ToString();
+                        objBase.updatedbyusername = userid.ToString();
                         objBase.ipaddress = context.HttpContext.Connection.RemoteIpAddress?.ToString() ?? "127.0.0.1";
                         objBase.createddate = dt;
                         objBase.updateddate = dt;
-                        objBase.transid = "DUMMYTRANSID";
-                        if (reqobject)
-                            ((BDO.Base.BaseEntity)context.ActionArguments["request"]).BaseSecurityParam = objBase;
-                        else
-                            context.ActionArguments.Add("request", objBase);
+                        objBase.transid = transid;
+                        ((BDO.Base.BaseEntity)context.ActionArguments["request"]).BaseSecurityParam = objBase;
                     }
                 }
             }
-             */
-            return;
+            var resultContext = await next();
         }
-
-        /// <summary>
-        /// FillSecurity
-        /// </summary>
-        /// <param name="context"></param>
-        /// <returns></returns>
-        public async Task<SecurityCapsule> FillSecurity(ActionExecutingContext context)
+        private List<Claim> GetClaimFromCookie(HttpContext httpContext, string cookieName)
         {
-            if (context.ActionArguments.TryGetValue("model", out object value))
-            //&& value is SecurityCapsule BaseSecurityParam)
+            // Get the encrypted cookie value
+            var opt = httpContext.RequestServices.GetRequiredService<IOptionsMonitor<CookieAuthenticationOptions>>();
+            var cookie = opt.CurrentValue.CookieManager.GetRequestCookie(httpContext, cookieName);
+            // Decrypt if found
+            if (!string.IsNullOrEmpty(cookie))
             {
-                await Task.Delay(500);
-                if (value != null)
-                {
-                    DateTime dt = DateTime.Now;
-                    var claimsIdentity = context.HttpContext.User.Identity as ClaimsIdentity;
-
-                    var actionDescriptor = context.ActionDescriptor as ControllerActionDescriptor;
-
-                    var actionName = actionDescriptor.ActionName;
-                    var controllerName = actionDescriptor.ControllerName;
-
-                    BaseEntity ob = ((BaseEntity)value);
-                    ob.BaseSecurityParam = new SecurityCapsule();
-
-                    if (claimsIdentity.Claims.Count() > 0)
-                    {
-                        var _securityCapsule = JsonConvert.DeserializeObject<SecurityCapsule>(claimsIdentity.Claims.ToList().Where(p => p.Type == "secobject").FirstOrDefault().Value);
-                        ob.BaseSecurityParam = _securityCapsule;
-                    }
-                    else
-                    {
-                        ob.BaseSecurityParam.createdbyusername = context.HttpContext.Session.Id;
-                        ob.BaseSecurityParam.createddate = dt;
-                        ob.BaseSecurityParam.updatedbyusername = context.HttpContext.Session.Id;
-                        ob.BaseSecurityParam.updateddate = dt;
-
-                        transactioncodeGen objTranIDGen = new transactioncodeGen();
-                        ob.BaseSecurityParam.sessionid = _contextAccessor.HttpContext.Session.Id;
-                        ob.BaseSecurityParam.transid = objTranIDGen.GetRandomAlphaNumericStringForTransactionActivity("TRANS", dt);
-                        ob.BaseSecurityParam.usertoken = ob.BaseSecurityParam.transid;
-                    }
-                    ob.BaseSecurityParam.actioname = actionName;
-                    ob.BaseSecurityParam.controllername = controllerName;
-                    ob.BaseSecurityParam.pageurl = context.HttpContext.Request.GetDisplayUrl();
-                    ob.BaseSecurityParam.ipaddress = context.HttpContext.Connection.RemoteIpAddress.ToString();
-
-                    return new SecurityCapsule(); //ob.BaseSecurityParam;
-                }
-                //var authContext = await _service.GetAuthorizationContextAsync(returnUrl);
+                var dataProtector = opt.CurrentValue.DataProtectionProvider.CreateProtector("Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationMiddleware", IdentityConstants.ApplicationScheme, "v2");
+                var ticketDataFormat = new TicketDataFormat(dataProtector);
+                var ticket = ticketDataFormat.Unprotect(cookie);
+                return ticket.Principal.Claims.ToList();
             }
-
-            // no string parameter called returnUrl
             return null;
         }
+
+
     }
 }

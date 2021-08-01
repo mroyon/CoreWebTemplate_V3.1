@@ -65,8 +65,7 @@ namespace WebAdmin.Controllers
 
         public IActionResult Index()
         {
-            throw new Exception("first exception");
-
+            //throw new Exception("first exception");
             return View();
         }
 

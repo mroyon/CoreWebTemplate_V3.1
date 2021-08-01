@@ -29,6 +29,7 @@ using Newtonsoft.Json.Serialization;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Web.Api.Infrastructure.Auth;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace WebAdmin.Services
 {
@@ -53,7 +54,7 @@ namespace WebAdmin.Services
 
             services.Configure<CookiePolicyOptions>(options =>
             {
-                options.MinimumSameSitePolicy = SameSiteMode.Unspecified;
+                options.MinimumSameSitePolicy = SameSiteMode.Strict;
                 options.OnAppendCookie = cookieContext =>
                     CheckSameSite(cookieContext.Context, cookieContext.CookieOptions);
                 options.OnDeleteCookie = cookieContext =>
@@ -134,7 +135,7 @@ namespace WebAdmin.Services
                 options.Cookie.SameSite = SameSiteMode.Strict;
                 options.Cookie.Name = "CustomWebIdentity.V2.90";
                 options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-                options.ExpireTimeSpan = TimeSpan.FromHours(10);
+                options.ExpireTimeSpan = TimeSpan.FromSeconds(40);
                 options.AccessDeniedPath = $"/Account/AccessDenied";
                 options.SlidingExpiration = true;
             });
@@ -143,8 +144,7 @@ namespace WebAdmin.Services
             {
                 options.DefaultAuthenticateScheme = IdentityConstants.ApplicationScheme;
                 options.DefaultChallengeScheme = IdentityConstants.ApplicationScheme;
-                options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
-
+                options.DefaultSignInScheme = IdentityConstants.ExternalScheme;                
             })
                 .AddJwtBearer(options =>
                 {
@@ -285,7 +285,7 @@ namespace WebAdmin.Services
                 if (DisallowsSameSiteNone(userAgent))
                 {
                     // For .NET Core < 3.1 set SameSite = (SameSiteMode)(-1)
-                    options.SameSite = SameSiteMode.Unspecified;
+                    options.SameSite = SameSiteMode.Strict;
                 }
             }
         }
