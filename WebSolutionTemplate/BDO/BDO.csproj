@@ -5,27 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="DataAccessObjects\ExtendedEntities\ExchangeRefreshTokenRequest.cs" />
-    <Compile Remove="DataAccessObjects\SecurityModule\ExtendedPartial\clsUserNameAndNumberEntity.cs" />
-    <Compile Remove="DataAccessObjects\SecurityModule\ExtendedPartial\KAF_GetMenuHierarchyEntity.cs" />
-    <Compile Remove="DataAccessObjects\SecurityModule\ExtendedPartial\KAF_LoadMenuByUserIDEntity.cs" />
-    <Compile Remove="DataAccessObjects\SecurityModule\ExtendedPartial\KAF_LoadPermissionToUseEntity.cs" />
-    <Compile Remove="DataAccessObjects\SecurityModule\ExtendedPartial\KAF_OnlyUserAccWithNameEntity.cs" />
-    <Compile Remove="DataAccessObjects\SecurityModule\ExtendedPartial\Owin_ProcessGetFormActionistEntity.cs" />
-    <Compile Remove="DataAccessObjects\SecurityModule\ExtendedPartial\Owin_ProcessGetFormActionistEntity_Ext.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="3.1.7" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\CLL\CLL.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="DataAccessObjects\SecurityModule\ExtendedPartial\" />
   </ItemGroup>
 
 </Project>

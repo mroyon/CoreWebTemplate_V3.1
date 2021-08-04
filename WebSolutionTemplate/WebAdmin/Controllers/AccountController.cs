@@ -18,6 +18,9 @@ using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using Web.Core.Frame.CustomIdentityManagers;
 using CLL.Localization;
+using Web.Core.Frame.Interfaces.UseCases;
+using Web.Core.Frame.RequestResponse.UseCaseRequests;
+using Web.Core.Frame.Presenters;
 
 namespace WebAdmin.Controllers
 {
@@ -25,6 +28,9 @@ namespace WebAdmin.Controllers
     [AutoValidateAntiforgeryToken]
     public class AccountController : Controller
     {
+        private readonly IAuth_UseCase _auth_UseCase;
+        private readonly Auth_Presenter _auth_UsePresenter;
+
         private readonly ApplicationUserManager<owin_userEntity> _userManager;
         private readonly ApplicationSignInManager<owin_userEntity> _signInManager;
         private readonly IEmailSender _emailSender;
@@ -42,6 +48,9 @@ namespace WebAdmin.Controllers
         /// <param name="factory"></param>
         /// <param name="schemeProvider"></param>
         public AccountController(
+                        IAuth_UseCase auth_UseCase,
+                        Auth_Presenter auth_UsePresenter,
+
             ApplicationUserManager<owin_userEntity> userManager,
             ApplicationSignInManager<owin_userEntity> signInManager,
             IEmailSender emailSender,
@@ -50,6 +59,10 @@ namespace WebAdmin.Controllers
             IAuthenticationSchemeProvider schemeProvider)
 
         {
+
+            _auth_UseCase = auth_UseCase;
+            _auth_UsePresenter = auth_UsePresenter;
+
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
@@ -95,10 +108,10 @@ namespace WebAdmin.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(owin_userEntity model)
+        public async Task<IActionResult> Login(owin_userEntity request)
         {
-            var returnUrl = model.ReturnUrl;
-            var user = await _userManager.FindByNameAsync(model.emailaddress);
+            var returnUrl = request.ReturnUrl;
+            var user = await _userManager.FindByNameAsync(request.emailaddress);
             ViewData["ReturnUrl"] = returnUrl;
 
             ModelState.Remove("passwordquestion");
@@ -119,7 +132,7 @@ namespace WebAdmin.Controllers
 
             if (ModelState.IsValid)
             {
-                var result = await _signInManager.PasswordSignInAsync(model.emailaddress, model.password, model.AllowRememberLogin, lockoutOnFailure: false);
+                var result = await _signInManager.PasswordSignInAsync(request.emailaddress, request.password, request.AllowRememberLogin, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation(1, "User logged in.");
@@ -133,11 +146,51 @@ namespace WebAdmin.Controllers
                 else
                 {
                     ModelState.AddModelError(string.Empty, _sharedLocalizer["INVALID_LOGIN_ATTEMPT"]);
-                    return View(await BuildLoginViewModelAsync(model));
+                    return View(await BuildLoginViewModelAsync(request));
                 }
             }
-            return View(await BuildLoginViewModelAsync(model));
+            return View(await BuildLoginViewModelAsync(request));
         }
+
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> ForgetPassword(string returnUrl)
+        {
+            var vm = await BuildLoginViewModelAsync(returnUrl);
+            return View(vm);
+        }
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ForgetPassword(owin_userEntity request)
+        {
+            var returnUrl = request.ReturnUrl;
+            var user = await _userManager.FindByNameAsync(request.emailaddress);
+            ViewData["ReturnUrl"] = returnUrl;
+
+            ModelState.Remove("passwordquestion");
+            ModelState.Remove("password");
+            ModelState.Remove("passwordkey");
+            ModelState.Remove("passwordvector");
+            ModelState.Remove("locked");
+            ModelState.Remove("approved");
+            ModelState.Remove("loweredusername");
+            ModelState.Remove("applicationid");
+            ModelState.Remove("masteruserid");
+            ModelState.Remove("newpassword");
+            ModelState.Remove("username");
+            ModelState.Remove("isanonymous");
+            ModelState.Remove("masprivatekey");
+            ModelState.Remove("maspublickey");
+            ModelState.Remove("confirmpassword");
+            ModelState.Remove("passwordsalt");
+
+            if (!ModelState.IsValid) { return BadRequest(ModelState); }
+            await _auth_UseCase.ForgetPasswordRequest(new Auth_Request(new BDO.DataAccessObjects.SecurityModule.owin_userEntity()), _auth_UsePresenter);
+            return _auth_UsePresenter.ContentResult;
+        }
+
 
 
         [HttpGet]

@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Http;
 using System;
 using Microsoft.AspNetCore.Authorization;
+using BDO.DataAccessObjects.ExtendedEntities;
 
 namespace WebAdmin.Controllers
 {
@@ -65,29 +66,27 @@ namespace WebAdmin.Controllers
 
         public IActionResult Index()
         {
-            throw new Exception("first exception");
-
+            //throw new Exception("first exception");
             return View();
         }
+
 
         /// <summary>
         /// SetLanguage
         /// </summary>
-        /// <param name="culture"></param>
-        /// <param name="returnUrl"></param>
+        /// <param name="request"></param>
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult SetLanguage(string culture, string returnUrl)
+        public IActionResult SetLanguage([FromBody] LanguageSettings request)
         {
             Response.Cookies.Append(
                 CookieRequestCultureProvider.DefaultCookieName,
-                CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
+                CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(request.culture)),
                 new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1), Secure = true, SameSite = SameSiteMode.Strict }
             );
-            return LocalRedirect(returnUrl);
+            return Json(new { status = "ss", title = "ss", redirectUrl = "", responsetext = "ddd" });
         }
-
 
 
         /// <summary>

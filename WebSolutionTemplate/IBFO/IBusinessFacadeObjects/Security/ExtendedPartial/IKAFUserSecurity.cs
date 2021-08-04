@@ -39,6 +39,9 @@ namespace IBFO.Core.IBusinessFacadeObjects.Security.ExtendedPartial
         [OperationContract]
         Task<long> SetEmailAsync(owin_userEntity user, CancellationToken cancellationToken);
 
+        [OperationContract]
+        Task<long?> ForgetPasswordRequest(owin_userEntity user, CancellationToken cancellationToken);
+
         #endregion Identity Service Implementation
 
 

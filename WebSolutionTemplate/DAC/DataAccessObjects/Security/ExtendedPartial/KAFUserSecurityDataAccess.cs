@@ -11,6 +11,8 @@ using System.Threading.Tasks;
 using System.Threading;
 using BDO.DataAccessObjects.ExtendedEntities;
 using IDAC.Core.IDataAccessObjects.Security.ExtendedPartial;
+using BDO.Base;
+using AppConfig.HelperClasses;
 
 namespace DAC.Core.DataAccessObjects.Security.ExtendedPartial
 {
@@ -26,6 +28,12 @@ namespace DAC.Core.DataAccessObjects.Security.ExtendedPartial
         {
             return "Class name: " + ClassName + " and Method name: " + methodName;
         }
+
+        #region public method
+
+        #endregion
+
+
         public owin_userEntity FillParameters(owin_userEntity owin_user, DbCommand cmd, Database Database, bool? isDelete = false)
         {
             if (owin_user.userid.HasValue)
@@ -164,7 +172,7 @@ namespace DAC.Core.DataAccessObjects.Security.ExtendedPartial
             IList<owin_userEntity> itemList = new List<owin_userEntity>();
             try
             {
-                using (DbCommand cmd = Database.GetStoredProcCommand("KAF_OwinUserByUserName"))
+                using (DbCommand cmd = Database.GetStoredProcCommand("owin_user_GA"))
                 {
                     owin_user = FillParameters(owin_user, cmd, Database);
                     FillSequrityParameters(owin_user.BaseSecurityParam, cmd, Database);
@@ -183,7 +191,7 @@ namespace DAC.Core.DataAccessObjects.Security.ExtendedPartial
                     }
                     cmd.Dispose();
                 }
-                
+
                 if (itemList != null && itemList.Count > 0)
                 {
                     try
@@ -192,7 +200,7 @@ namespace DAC.Core.DataAccessObjects.Security.ExtendedPartial
                         return itemList[0];
 
                         EncryptionHelper objenc = new EncryptionHelper();
-                        
+
                         string usersalt = itemList[0].passwordsalt;
                         HashWithSaltResult ob2 = objenc.EncodePassword(owin_user.password, usersalt);
                         if (itemList[0].password.Equals(ob2.Digest) && owin_user.username == itemList[0].username)
@@ -355,7 +363,7 @@ namespace DAC.Core.DataAccessObjects.Security.ExtendedPartial
             try
             {
                 const string SP = "KAF_UserPhoneNumberConfirmed";
-            
+
                 using (DbCommand cmd = Database.GetStoredProcCommand(SP))
                 {
                     owin_user = FillParameters(owin_user, cmd, Database);
@@ -499,7 +507,44 @@ namespace DAC.Core.DataAccessObjects.Security.ExtendedPartial
             }
             return returnValue;
         }
-       
-    }
 
+
+        async Task<long?> IKAFUserSecurityDataAccess.ForgetPasswordRequest(owin_userpasswordresetinfoEntity owin_userpasswordresetinfo, CancellationToken cancellationToken)
+        {
+            long i = -99;
+            try
+            {
+                List<owin_userpasswordresetinfoEntity> listAdded = new List<owin_userpasswordresetinfoEntity>();
+                listAdded.Add(owin_userpasswordresetinfo);
+
+                DbConnection connection = Database.CreateConnection();
+                connection.Open();
+                DbTransaction transaction = connection.BeginTransaction();
+
+                try
+                {
+                    owin_userpasswordresetinfoDataAccessObjects owin_userpasswordresetinfoDA = new owin_userpasswordresetinfoDataAccessObjects(this.Context);
+                    i = await owin_userpasswordresetinfoDA.SaveList(Database, transaction, listAdded, new List<owin_userpasswordresetinfoEntity>(), new List<owin_userpasswordresetinfoEntity>(), cancellationToken);
+
+                    transaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    throw GetDataAccessException(ex, SourceOfException("Iowin_userDataAccess.ForgetPasswordRequest"));
+                }
+                finally
+                {
+                    transaction.Dispose();
+                    connection.Close();
+                    connection = null;
+                }
+                return i;
+            }
+            catch (Exception ex)
+            {
+                throw GetDataAccessException(ex, SourceOfException("IKAFUserSecurityDataAccess.ForgetPasswordRequest"));
+            }
+        }
+    }
 }

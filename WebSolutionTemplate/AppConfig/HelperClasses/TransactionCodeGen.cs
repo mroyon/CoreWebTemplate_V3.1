@@ -179,13 +179,26 @@ namespace AppConfig.HelperClasses
         }
 
         [ThreadStatic]
+        readonly object _object2 = new object();
+        public string GetTicks(string transactionTypeCode, DateTime dotFor)
+        {
+            lock (_object2)
+            {
+                DateTime dt = dotFor;
+                string trnID = TransactionID;
+                TransactionID = trnID = new string((dt.Ticks).ToString().ToCharArray());
+            }
+
+            return transactionTypeCode + "." + TransactionID;// +inst.Next().ToString(); // (12 + 2 + 2 = 16) Digits 
+        }
+        [ThreadStatic]
         readonly object _object = new object();
         public string GetRandomAlphaNumericStringForTransactionActivity(string transactionTypeCode, DateTime dotFor)
         {
             int maxSize = 3;
             char[] chars = new char[62];
             string a = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-            StringBuilder result = new StringBuilder(maxSize);
+            StringBuilder result = new StringBuilder(2);
             lock (_object)
             {
                 var random = new Random();
@@ -213,7 +226,6 @@ namespace AppConfig.HelperClasses
             }
 
             return transactionTypeCode + result.ToString() + TransactionID;// +inst.Next().ToString(); // (12 + 2 + 2 = 16) Digits 
-
         }
         /// <summary>
         /// Get Generated Code

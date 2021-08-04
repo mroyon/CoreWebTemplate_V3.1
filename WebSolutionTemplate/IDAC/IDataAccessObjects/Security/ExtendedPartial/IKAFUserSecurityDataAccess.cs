@@ -24,6 +24,11 @@ namespace IDAC.Core.IDataAccessObjects.Security.ExtendedPartial
         Task<IList<owin_userEntity>> GetUsersInRoleAsync(owin_userEntity objEntity, CancellationToken cancellationToken);
         Task<long> RemoveFromRoleAsync(owin_userEntity user, owin_roleEntity role, CancellationToken cancellationToken);
         Task<long> SetEmailAsync(owin_userEntity user, CancellationToken cancellationToken);
+
+
+        Task<long?> ForgetPasswordRequest(owin_userpasswordresetinfoEntity user, CancellationToken cancellationToken);
+
+
         #endregion Identity Service Implementation
 
     }

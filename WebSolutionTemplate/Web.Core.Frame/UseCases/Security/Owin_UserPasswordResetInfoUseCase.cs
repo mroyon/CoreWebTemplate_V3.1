@@ -16,6 +16,7 @@ using Web.Core.Frame.Interfaces.Services;
 using Web.Core.Frame.Interfaces.UseCases;
 using Web.Core.Frame.Dto;
 using BDO.DataAccessObjects.SecurityModule;
+using BDO.DataAccessObjects.ExtendedEntities;
 
 namespace Web.Core.Frame.UseCases
 {
@@ -240,9 +241,7 @@ namespace Web.Core.Frame.UseCases
             }
             catch (Exception ex)
             {
-                Owin_UserPasswordResetInfoResponse objResponse = new Owin_UserPasswordResetInfoResponse(false, _sharedLocalizer["DATA_DELETE_ERROR"], new Error(
-                         "500",
-                         ex.Message));
+                Owin_UserPasswordResetInfoResponse objResponse = new Owin_UserPasswordResetInfoResponse(false, _sharedLocalizer["DATA_DELETE_ERROR"], new Error("500",ex.Message.ToString()));
                 _logger.LogInformation(JsonConvert.SerializeObject(objResponse));
                 outputPort.Delete(objResponse);
                 return true;

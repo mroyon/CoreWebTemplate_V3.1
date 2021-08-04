@@ -80,7 +80,7 @@ namespace WebAdmin.IntraServices
             // one time 
             transactioncodeGen objTranIDGen = new transactioncodeGen();
             _securityCapsule.sessionid =  _contextAccessor.HttpContext.Session.Id;
-            _securityCapsule.transid = objTranIDGen.GetRandomAlphaNumericStringForTransactionActivity("TRANS", dt);
+            _securityCapsule.transid = objTranIDGen.GetRandomAlphaNumericStringForTransactionActivity("TRAN", dt);
             _securityCapsule.usertoken = _securityCapsule.transid;
 
             //_securityCapsule.actioname = actionName;
@@ -94,6 +94,7 @@ namespace WebAdmin.IntraServices
             var authSettings = _config.GetSection(nameof(AuthSettings)).Get<AuthSettings>();
             strserialize = objEnc.Encrypt(strserialize, true, authSettings.SecretKey);
             claims.Add(new Claim("secobject", strserialize));
+            claims.Add(new Claim("TRANS", objEnc.Encrypt(objTranIDGen.GetTicks("TRANS", dt), true, authSettings.SecretKey)));
 
             var resLoginSerial = await _userManager.loginowin_userlogintrail(_securityCapsule);
             if(resLoginSerial > 0)

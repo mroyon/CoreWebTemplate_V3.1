@@ -69,5 +69,10 @@
 		<ProjectReference Include="..\IDAC\IDAC.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Interfaces\" />
+	  <Folder Include="UseCases\" />
+	</ItemGroup>
+
 
 </Project>

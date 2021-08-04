@@ -216,17 +216,15 @@
     function updateLanguage(culture, returnUrl) {
 
         var dataobject = { culture: culture, returnUrl: returnUrl };
-
-        // multiple params post
-        ajaxPostParamsHandler("/Home/SetLanguage", dataobject, function (data) {
+        ajaxPostObjectHandler("/Home/SetLanguage", dataobject, function (data) {
             if (data !== "INVALID_PARAMETERS") {
+                alert("here as defaulr");
                 window.location.reload();
             }
             else {
                 alert("There is a problem on server side. Please try again later.");
             }
-        }, false);
-
+        }, true);
     }
 
 

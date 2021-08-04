@@ -12,14 +12,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Models\Request\ExchangeRefreshTokenRequest.cs" />
-    <Compile Remove="Models\Request\LoginRequest.cs" />
-    <Compile Remove="Models\Request\RegisterUserRequest.cs" />
-    <Compile Remove="Models\Response\ExchangeRefreshTokenResponse.cs" />
-    <Compile Remove="Models\Response\LoginResponse.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="AspNetCore.CacheOutput.Redis" Version="1.0.5.2" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.1.0" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
@@ -48,12 +40,6 @@
     <ProjectReference Include="..\CLL\CLL.csproj" />
     <ProjectReference Include="..\Web.Api.Infrastructure\Web.Api.Infrastructure.csproj" />
     <ProjectReference Include="..\Web.Core.Frame\Web.Core.Frame.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Models\Request\" />
-    <Folder Include="Models\Response\" />
-    <Folder Include="Services\" />
   </ItemGroup>
 
 

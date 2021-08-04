@@ -1,6 +1,8 @@
 ﻿
 
 using AppConfig.ConfigDAAC;
+using AppConfig.HelperClasses;
+using BDO.Base;
 using BDO.DataAccessObjects.SecurityModule;
 using BFO.Base;
 using DAC.Core.CoreFactory;
@@ -241,6 +243,51 @@ namespace BFO.Core.BusinessFacadeObjects.Security.ExtendedPartial
             }
         }
 
+        async Task<long?> IKAFUserSecurity.ForgetPasswordRequest(owin_userEntity user, CancellationToken cancellationToken)
+        {
+            try
+            {
+                owin_userEntity objGetUser = await DataAccessFactory.CreateKAFUserSecurityDataAccess().GetUserByParams(user, cancellationToken);
+                if (objGetUser != null)
+                {
+                    long i = -99;
+                    owin_userpasswordresetinfoEntity obj = new owin_userpasswordresetinfoEntity();
+                    SecurityCapsule objBase = new SecurityCapsule();
+                    transactioncodeGen ojbTransGen = new transactioncodeGen();
+
+                    objBase.actioname = user.BaseSecurityParam.actioname;
+                    objBase.controllername = user.BaseSecurityParam.controllername;
+                    objBase.createdbyusername = user.username;
+                    objBase.updatedbyusername = user.username;
+                    objBase.ipaddress = user.BaseSecurityParam.ipaddress;
+                    objBase.createddate = user.BaseSecurityParam.createddate;
+                    objBase.updateddate = user.BaseSecurityParam.createddate;
+                    objBase.transid = user.BaseSecurityParam.transid;
+
+                    obj.BaseSecurityParam = new SecurityCapsule();
+                    obj.BaseSecurityParam = objBase;
+                    obj.sessionid = objBase.sessionid;
+                    obj.userid = user.userid;
+                    obj.masteruserid = user.masteruserid;
+                    obj.sessiontoken = ojbTransGen.GetRandomAlphaNumericString(16);
+                    obj.username = user.username;
+                    obj.isactive = true;
+
+                    return await DataAccessFactory.CreateKAFUserSecurityDataAccess().ForgetPasswordRequest(obj, cancellationToken);
+                }
+                else
+                    throw new Exception("User Not Found");
+
+            }
+            catch (DataException ex)
+            {
+                throw GetFacadeException(ex, SourceOfException("IKAFUserSecurity.ForgetPasswordRequest"));
+            }
+            catch (Exception exx)
+            {
+                throw exx;
+            }
+        }
 
     }
 }

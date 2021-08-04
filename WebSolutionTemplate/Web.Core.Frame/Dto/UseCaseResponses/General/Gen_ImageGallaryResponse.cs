@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Web.Core.Frame.Dto;
 using Web.Core.Frame.Interfaces;
+using BDO.DataAccessObjects.ExtendedEntities;
 
 namespace Web.Core.Frame.RequestResponse.UseCaseResponses
 {

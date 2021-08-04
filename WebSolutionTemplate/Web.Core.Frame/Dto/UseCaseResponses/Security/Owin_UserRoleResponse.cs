@@ -3,6 +3,7 @@ using BDO.DataAccessObjects.SecurityModule;
 using Web.Core.Frame.Interfaces;
 using System.Collections.Generic;
 
+using BDO.DataAccessObjects.ExtendedEntities;
 
 namespace Web.Core.Frame.RequestResponse.UseCaseResponses
 {

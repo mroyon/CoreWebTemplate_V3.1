@@ -4,7 +4,7 @@
         <name>WebAdmin</name>
     </assembly>
     <members>
-        <member name="M:WebAdmin.Controllers.AccountController.#ctor(Web.Core.Frame.CustomIdentityManagers.ApplicationUserManager{BDO.DataAccessObjects.SecurityModule.owin_userEntity},Web.Core.Frame.CustomIdentityManagers.ApplicationSignInManager{BDO.DataAccessObjects.SecurityModule.owin_userEntity},WebAdmin.IntraServices.IEmailSender,Microsoft.Extensions.Logging.ILoggerFactory,Microsoft.Extensions.Localization.IStringLocalizerFactory,Microsoft.AspNetCore.Authentication.IAuthenticationSchemeProvider)">
+        <member name="M:WebAdmin.Controllers.AccountController.#ctor(Web.Core.Frame.Interfaces.UseCases.IAuth_UseCase,Web.Core.Frame.Presenters.Auth_Presenter,Web.Core.Frame.CustomIdentityManagers.ApplicationUserManager{BDO.DataAccessObjects.SecurityModule.owin_userEntity},Web.Core.Frame.CustomIdentityManagers.ApplicationSignInManager{BDO.DataAccessObjects.SecurityModule.owin_userEntity},WebAdmin.IntraServices.IEmailSender,Microsoft.Extensions.Logging.ILoggerFactory,Microsoft.Extensions.Localization.IStringLocalizerFactory,Microsoft.AspNetCore.Authentication.IAuthenticationSchemeProvider)">
             <summary>
             
             </summary>
@@ -57,12 +57,11 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:WebAdmin.Controllers.HomeController.SetLanguage(System.String,System.String)">
+        <member name="M:WebAdmin.Controllers.HomeController.SetLanguage(BDO.DataAccessObjects.ExtendedEntities.LanguageSettings)">
             <summary>
             SetLanguage
             </summary>
-            <param name="culture"></param>
-            <param name="returnUrl"></param>
+            <param name="request"></param>
             <returns></returns>
         </member>
         <member name="M:WebAdmin.Controllers.HomeController.Privacy">
@@ -96,19 +95,6 @@
             <param name="next"></param>
             <returns></returns>
         </member>
-        <member name="M:WebAdmin.FilterAndAttributes.SecurityFillerAttribute.OnActionExecutingAsync(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext)">
-            <summary>
-            OnActionExecutingAsync
-            </summary>
-            <param name="context"></param>
-        </member>
-        <member name="M:WebAdmin.FilterAndAttributes.SecurityFillerAttribute.FillSecurity(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext)">
-            <summary>
-            FillSecurity
-            </summary>
-            <param name="context"></param>
-            <returns></returns>
-        </member>
         <member name="T:WebAdmin.FilterAndAttributes.SecurityHeadersAttribute">
             <summary>
             SecurityHeadersAttribute
@@ -124,6 +110,21 @@
             <summary>
             ServiceExceptionInterceptor
             </summary>
+        </member>
+        <member name="M:WebAdmin.FilterAndAttributes.ServiceExceptionInterceptor.#ctor(Microsoft.AspNetCore.Http.IHttpContextAccessor,Microsoft.Extensions.Configuration.IConfiguration,Microsoft.Extensions.Logging.ILoggerFactory)">
+            <summary>
+            
+            </summary>
+            <param name="contextAccessor"></param>
+            <param name="config"></param>
+            <param name="loggerFactory"></param>
+        </member>
+        <member name="M:WebAdmin.FilterAndAttributes.ServiceExceptionInterceptor.OnExceptionAsync(Microsoft.AspNetCore.Mvc.Filters.ExceptionContext)">
+            <summary>
+            
+            </summary>
+            <param name="context"></param>
+            <returns></returns>
         </member>
         <member name="M:WebAdmin.IntraServices.AdditionalUserClaimsPrincipalFactory.#ctor(Web.Core.Frame.CustomIdentityManagers.ApplicationUserManager{BDO.DataAccessObjects.SecurityModule.owin_userEntity},Microsoft.AspNetCore.Identity.RoleManager{Microsoft.AspNetCore.Identity.IdentityRole},Microsoft.Extensions.Options.IOptions{Microsoft.AspNetCore.Identity.IdentityOptions},Microsoft.AspNetCore.Http.IHttpContextAccessor,Microsoft.Extensions.Configuration.IConfiguration)">
             <summary>
@@ -183,6 +184,57 @@
             <param name="subject"></param>
             <param name="message"></param>
             <returns></returns>
+        </member>
+        <member name="T:WebAdmin.IntraServices.ControllerAction">
+            <summary>
+            ControllerAction
+            </summary>
+        </member>
+        <member name="P:WebAdmin.IntraServices.ControllerAction.Controller">
+            <summary>
+            Controller
+            </summary>
+        </member>
+        <member name="P:WebAdmin.IntraServices.ControllerAction.Action">
+            <summary>
+            Action
+            </summary>
+        </member>
+        <member name="T:WebAdmin.IntraServices._exceptionControllerAction">
+            <summary>
+            _exceptionControllerAction
+            </summary>
+        </member>
+        <member name="P:WebAdmin.IntraServices._exceptionControllerAction._ControllerActionLists">
+            <summary>
+            exceptional _ControllerAction lists
+            </summary>
+        </member>
+        <member name="M:WebAdmin.IntraServices._exceptionControllerAction._exceptionControllerActionGet">
+            <summary>
+            _exceptionControllerAction constructer
+            </summary>
+        </member>
+        <member name="T:WebAdmin.Providers.JWTSigningConfigurations">
+            <summary>
+            JWTSigningConfigurations
+            </summary>
+        </member>
+        <member name="P:WebAdmin.Providers.JWTSigningConfigurations.SecurityKey">
+            <summary>
+            SecurityKey
+            </summary>
+        </member>
+        <member name="P:WebAdmin.Providers.JWTSigningConfigurations.SigningCredentials">
+            <summary>
+            SigningCredentials
+            </summary>
+        </member>
+        <member name="M:WebAdmin.Providers.JWTSigningConfigurations.#ctor(System.String)">
+            <summary>
+            JWTSigningConfigurations
+            </summary>
+            <param name="key"></param>
         </member>
         <member name="T:WebAdmin.Providers.LocalizationQueryProvider">
             <summary>

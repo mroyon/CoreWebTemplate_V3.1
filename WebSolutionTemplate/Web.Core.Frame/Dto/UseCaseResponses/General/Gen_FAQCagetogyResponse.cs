@@ -1,4 +1,5 @@
-﻿using BDO.DataAccessObjects.Models;
+﻿using BDO.DataAccessObjects.ExtendedEntities;
+using BDO.DataAccessObjects.Models;
 using System.Collections.Generic;
 using Web.Core.Frame.Dto;
 using Web.Core.Frame.Interfaces;

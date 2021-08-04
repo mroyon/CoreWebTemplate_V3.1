@@ -54,8 +54,8 @@ namespace Web.Api.Infrastructure.Auth
                  new Claim("UpdatedByUserName", userName),
                  new Claim("IssuedAt", _jwtOptions.IssuedAt.ToString()),
 
-                 identity.FindFirst(Helpers.Constants.Strings.JwtClaimIdentifiers.Rol),
-                 identity.FindFirst(Helpers.Constants.Strings.JwtClaimIdentifiers.Id)
+                 identity.FindFirst(Core.Frame.Helpers.Constants.Strings.JwtClaimIdentifiers.Rol),
+                 identity.FindFirst(Core.Frame.Helpers.Constants.Strings.JwtClaimIdentifiers.Id)
              };
 
             // Create the JWT security token and encode it.
@@ -76,8 +76,8 @@ namespace Web.Api.Infrastructure.Auth
         {
             return new ClaimsIdentity(new GenericIdentity(userName, "Token"), new[]
             {
-                new Claim(Helpers.Constants.Strings.JwtClaimIdentifiers.Id, id),
-                new Claim(Helpers.Constants.Strings.JwtClaimIdentifiers.Rol, Helpers.Constants.Strings.JwtClaims.ApiAccess)
+                new Claim(Core.Frame.Helpers.Constants.Strings.JwtClaimIdentifiers.Id, id),
+                new Claim(Core.Frame.Helpers.Constants.Strings.JwtClaimIdentifiers.Rol, Core.Frame.Helpers.Constants.Strings.JwtClaims.ApiAccess)
             });
         }
 

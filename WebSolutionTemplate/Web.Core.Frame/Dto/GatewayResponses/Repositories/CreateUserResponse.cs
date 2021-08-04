@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using BDO.DataAccessObjects.ExtendedEntities;
+using System.Collections.Generic;
 
 namespace Web.Core.Frame.Dto.GatewayResponses.Repositories
 {
