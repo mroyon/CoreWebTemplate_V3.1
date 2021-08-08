@@ -23,5 +23,7 @@ namespace BDO.DataAccessObjects.CommonEntities
         public String ToEmail { get; set; }
 
         public String CcEmail { get; set; }
+
+        public bool IsSSL { get; set; }
     }
 }

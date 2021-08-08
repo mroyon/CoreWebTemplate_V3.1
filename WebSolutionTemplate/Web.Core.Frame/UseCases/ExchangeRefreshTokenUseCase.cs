@@ -24,20 +24,20 @@ namespace Web.Core.Frame.UseCases
         private readonly ILogger<ExchangeRefreshTokenUseCase> _logger;
         private readonly IStringLocalizer _sharedLocalizer;
         private readonly IJwtFactory _jwtFactory;
-        private readonly IHttpClientHR _ihttpclienthr;
+        
 
 
         public ExchangeRefreshTokenUseCase(
             IJwtTokenValidator jwtTokenValidator,
             ApplicationUserManager<owin_userEntity> userManager,
             IJwtFactory jwtFactory
-            , IHttpClientHR ihttpclienthr, IStringLocalizerFactory factory,
+            ,  IStringLocalizerFactory factory,
             ILoggerFactory loggerFactory)
         {
             _jwtTokenValidator = jwtTokenValidator;
             _userManager = userManager;
             _jwtFactory = jwtFactory;
-            _ihttpclienthr = ihttpclienthr;
+            
             _logger = loggerFactory.CreateLogger<ExchangeRefreshTokenUseCase>();
             var type = typeof(SharedResource);
             var assemblyName = new AssemblyName(type.GetTypeInfo().Assembly.FullName);

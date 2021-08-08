@@ -9,6 +9,7 @@ namespace IDAC.Core.IDataAccessObjects.Security.ExtendedPartial
     {
 
         #region Identity Service Implementation
+        Task<owin_userEntity> GetUserByUserName(owin_userEntity objEntity, CancellationToken cancellationToken);
 
         Task<owin_userEntity> GetUserByParams(owin_userEntity objEntity, CancellationToken cancellationToken);
 

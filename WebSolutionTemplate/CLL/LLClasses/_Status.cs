@@ -11,6 +11,7 @@ namespace CLL.LLClasses
     {
         private static IResourceProvider resourceProviderstatus = new XmlResourceProvider(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"LanguagesFiles/_Status.xml"));//DbResourceProvider(); //  
 
+
         public static string _statusFailed
         {
             get

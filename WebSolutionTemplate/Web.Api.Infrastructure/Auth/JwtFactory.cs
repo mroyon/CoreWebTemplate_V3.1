@@ -9,6 +9,7 @@ using Web.Core.Frame.Interfaces.Services;
 using Web.Api.Infrastructure.Interfaces;
 using BDO.DataAccessObjects.ExtendedEntities;
 using System.Security.Cryptography;
+using Web.Core.Frame.Helpers;
 
 namespace Web.Api.Infrastructure.Auth
 {
@@ -54,8 +55,8 @@ namespace Web.Api.Infrastructure.Auth
                  new Claim("UpdatedByUserName", userName),
                  new Claim("IssuedAt", _jwtOptions.IssuedAt.ToString()),
 
-                 identity.FindFirst(Core.Frame.Helpers.Constants.Strings.JwtClaimIdentifiers.Rol),
-                 identity.FindFirst(Core.Frame.Helpers.Constants.Strings.JwtClaimIdentifiers.Id)
+                 identity.FindFirst(Constants.Strings.JwtClaimIdentifiers.Rol),
+                 identity.FindFirst(Constants.Strings.JwtClaimIdentifiers.Id)
              };
 
             // Create the JWT security token and encode it.
@@ -76,8 +77,8 @@ namespace Web.Api.Infrastructure.Auth
         {
             return new ClaimsIdentity(new GenericIdentity(userName, "Token"), new[]
             {
-                new Claim(Core.Frame.Helpers.Constants.Strings.JwtClaimIdentifiers.Id, id),
-                new Claim(Core.Frame.Helpers.Constants.Strings.JwtClaimIdentifiers.Rol, Core.Frame.Helpers.Constants.Strings.JwtClaims.ApiAccess)
+                new Claim(Constants.Strings.JwtClaimIdentifiers.Id, id),
+                new Claim(Constants.Strings.JwtClaimIdentifiers.Rol, Constants.Strings.JwtClaims.ApiAccess)
             });
         }
 

@@ -42,6 +42,7 @@ namespace WebApi
 
             builder.RegisterModule(new CoreModule());
             builder.RegisterModule(new InfrastructureModule());
+            builder.RegisterModule(new CorePresenter());
 
             // Presenters
             builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly()).Where(t => t.Name.EndsWith("Presenter")).SingleInstance();

@@ -9,7 +9,6 @@ namespace CLL.LLClasses
     {
         private static IResourceProvider resourceProvidercommon = new XmlResourceProvider(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"LanguagesFiles/_CommonHtml_resource.xml"));//DbResourceProvider(); //  
 
-
         public static string createddate
         {
             get

@@ -36,7 +36,9 @@
     "outputFileName": "wwwroot/css/vendor.login.min.css",
     "inputFiles": [
       "wwwroot/css/my-login.css",
-      "wwwroot/lib/admin-lte/css/adminlte.css"
+      "wwwroot/lib/admin-lte/css/adminlte.css",
+      "wwwroot/lib/bootstrap-sweetalert/sweetalert.css",
+      "wwwroot/lib/customcss/customcss.css"
     ],
     "minify": { "enabled": true }
   },
@@ -44,7 +46,9 @@
     "outputFileName": "wwwroot/css/vendor.login.rtl.min.css",
     "inputFiles": [
       "wwwroot/css/my-login.css",
-      "wwwroot/lib/admin-lte/css/adminltertl.css"
+      "wwwroot/lib/admin-lte/css/adminltertl.css",
+      "wwwroot/lib/bootstrap-sweetalert/sweetalert.css",
+      "wwwroot/lib/customcss/customcss.css"
     ],
     "minify": { "enabled": true }
   },
@@ -54,6 +58,9 @@
       "wwwroot/lib/jquery/jquery.js",
       "wwwroot/lib/popperjs/umd/popper.js",
       "wwwroot/lib/bootstrap/dist/js/bootstrap.js",
+      "wwwroot/lib/bootstrap-sweetalert/sweetalert.js",
+      "wwwroot/lib/customjs/jqajaxproxy.js",
+      "wwwroot/lib/customjs/utilityfunctions.js",
       "wwwroot/js/my-login.js"
     ],
     "minify": { "enabled": true }

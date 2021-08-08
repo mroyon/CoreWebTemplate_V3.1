@@ -1,4 +1,6 @@
 using AspNetCore.CacheOutput.Extensions;
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using AutoMapper;
 using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Builder;
@@ -11,6 +13,11 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Serilog;
 using System;
+using System.Reflection;
+using Web.Api.Infrastructure;
+using Web.Core.Frame;
+using Web.Core.Frame.Interfaces.UseCases;
+using Web.Core.Frame.UseCases;
 using WebAdmin.Services;
 
 namespace WebAdmin
@@ -28,7 +35,7 @@ namespace WebAdmin
         /// _environment 
         /// </summary>
         public IWebHostEnvironment _environment { get; }
-
+        public ILifetimeScope AutofacContainer { get; private set; }
         /// <summary>
         /// Startup
         /// </summary>
@@ -43,11 +50,30 @@ namespace WebAdmin
         /// ConfigureServices
         /// </summary>
         /// <param name="services"></param>
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider  ConfigureServices(IServiceCollection services)
         {
             services.InstallServicesInAssembly(_configuration);
 
             services.AddAutoMapper(typeof(Startup));
+            var builder = new ContainerBuilder();
+
+
+            builder.Populate(services);
+            
+            builder.RegisterModule(new CoreModule());
+            builder.RegisterModule(new CoreModuleExtended());
+            builder.RegisterModule(new InfrastructureModule());
+            builder.RegisterModule(new CorePresenter());
+            
+
+            //builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly()).Where(t => t.Name.EndsWith("Presenter")).SingleInstance();
+            AutofacContainer = builder.Build();
+            // Presenters
+            
+
+            // Create the IServiceProvider based on the container.
+            return new AutofacServiceProvider(AutofacContainer);
+
         }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 

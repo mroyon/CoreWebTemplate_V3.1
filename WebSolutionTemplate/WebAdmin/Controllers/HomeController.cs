@@ -23,12 +23,11 @@ namespace WebAdmin.Controllers
     /// </summary>
     [Authorize]
     [AutoValidateAntiforgeryToken]
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         private readonly ILogger<HomeController> _logger;
         private readonly ApplicationUserManager<owin_userEntity> _userManager;
         private readonly ApplicationSignInManager<owin_userEntity> _signInManager;
-        private readonly IEmailSender _emailSender;
         private readonly IStringLocalizer _sharedLocalizer;
         private readonly IAuthenticationSchemeProvider _schemeProvider;
         /// <summary>
@@ -43,14 +42,12 @@ namespace WebAdmin.Controllers
         public HomeController(
             ApplicationUserManager<owin_userEntity> userManager,
             ApplicationSignInManager<owin_userEntity> signInManager,
-            IEmailSender emailSender,
             ILoggerFactory loggerFactory,
             IStringLocalizerFactory factory,
             IAuthenticationSchemeProvider schemeProvider)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            _emailSender = emailSender;
             _logger = loggerFactory.CreateLogger<HomeController>();
             _schemeProvider = schemeProvider;
 

@@ -243,11 +243,14 @@ namespace BFO.Core.BusinessFacadeObjects.Security.ExtendedPartial
             }
         }
 
-        async Task<long?> IKAFUserSecurity.ForgetPasswordRequest(owin_userEntity user, CancellationToken cancellationToken)
+        async Task<string?> IKAFUserSecurity.ForgetPasswordRequest(owin_userEntity user, CancellationToken cancellationToken)
         {
+            string authCode = string.Empty;
             try
             {
-                owin_userEntity objGetUser = await DataAccessFactory.CreateKAFUserSecurityDataAccess().GetUserByParams(user, cancellationToken);
+                user.username = string.IsNullOrEmpty(user.username) == true ? user.emailaddress : user.username;
+
+                owin_userEntity objGetUser = await DataAccessFactory.CreateKAFUserSecurityDataAccess().GetUserByUserName(user, cancellationToken);
                 if (objGetUser != null)
                 {
                     long i = -99;
@@ -259,21 +262,25 @@ namespace BFO.Core.BusinessFacadeObjects.Security.ExtendedPartial
                     objBase.controllername = user.BaseSecurityParam.controllername;
                     objBase.createdbyusername = user.username;
                     objBase.updatedbyusername = user.username;
+                    objBase.sessionid = user.BaseSecurityParam.sessionid;
                     objBase.ipaddress = user.BaseSecurityParam.ipaddress;
                     objBase.createddate = user.BaseSecurityParam.createddate;
                     objBase.updateddate = user.BaseSecurityParam.createddate;
                     objBase.transid = user.BaseSecurityParam.transid;
 
+                    authCode = ojbTransGen.GetRandomAlphaNumericString(16);
                     obj.BaseSecurityParam = new SecurityCapsule();
                     obj.BaseSecurityParam = objBase;
                     obj.sessionid = objBase.sessionid;
-                    obj.userid = user.userid;
-                    obj.masteruserid = user.masteruserid;
-                    obj.sessiontoken = ojbTransGen.GetRandomAlphaNumericString(16);
-                    obj.username = user.username;
+                    obj.userid = objGetUser.userid;
+                    obj.masteruserid = objGetUser.masteruserid;
+                    obj.sessiontoken = authCode;
+                    obj.username = objGetUser.username;
                     obj.isactive = true;
 
-                    return await DataAccessFactory.CreateKAFUserSecurityDataAccess().ForgetPasswordRequest(obj, cancellationToken);
+                    await DataAccessFactory.CreateKAFUserSecurityDataAccess().ForgetPasswordRequest(obj, cancellationToken);
+
+                    return authCode;
                 }
                 else
                     throw new Exception("User Not Found");

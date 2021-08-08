@@ -22,6 +22,10 @@
 		<None Remove="InAppResources\**" />
 		<None Remove="Migrations\**" />
 	</ItemGroup>
+	
+	<ItemGroup>
+	  <Compile Remove="Interfaces\Services\IHttpClientHR.cs" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Autofac" Version="6.2.0" />
@@ -67,11 +71,6 @@
 		<ProjectReference Include="..\BFO\BFO.csproj" />
 		<ProjectReference Include="..\IBFO\IBFO.csproj" />
 		<ProjectReference Include="..\IDAC\IDAC.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Interfaces\" />
-	  <Folder Include="UseCases\" />
 	</ItemGroup>
 
 

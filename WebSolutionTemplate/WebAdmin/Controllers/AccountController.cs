@@ -24,23 +24,27 @@ using Web.Core.Frame.Presenters;
 
 namespace WebAdmin.Controllers
 {
+    /// <summary>
+    /// Account
+    /// </summary>
     [Authorize]
     [AutoValidateAntiforgeryToken]
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
         private readonly IAuth_UseCase _auth_UseCase;
         private readonly Auth_Presenter _auth_UsePresenter;
 
         private readonly ApplicationUserManager<owin_userEntity> _userManager;
         private readonly ApplicationSignInManager<owin_userEntity> _signInManager;
-        private readonly IEmailSender _emailSender;
         private readonly ILogger<AccountController> _logger;
         private readonly IStringLocalizer _sharedLocalizer;
         private readonly IAuthenticationSchemeProvider _schemeProvider;
 
         /// <summary>
-        /// 
+        /// AccountController
         /// </summary>
+        /// <param name="auth_UseCase"></param>
+        /// <param name="auth_UsePresenter"></param>
         /// <param name="userManager"></param>
         /// <param name="signInManager"></param>
         /// <param name="emailSender"></param>
@@ -53,19 +57,16 @@ namespace WebAdmin.Controllers
 
             ApplicationUserManager<owin_userEntity> userManager,
             ApplicationSignInManager<owin_userEntity> signInManager,
-            IEmailSender emailSender,
             ILoggerFactory loggerFactory,
             IStringLocalizerFactory factory,
             IAuthenticationSchemeProvider schemeProvider)
 
         {
-
             _auth_UseCase = auth_UseCase;
             _auth_UsePresenter = auth_UsePresenter;
 
             _userManager = userManager;
             _signInManager = signInManager;
-            _emailSender = emailSender;
             _logger = loggerFactory.CreateLogger<AccountController>();
             _schemeProvider = schemeProvider;
 
@@ -153,6 +154,11 @@ namespace WebAdmin.Controllers
         }
 
 
+        /// <summary>
+        /// Get View ForgetPassword
+        /// </summary>
+        /// <param name="returnUrl"></param>
+        /// <returns></returns>
         [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> ForgetPassword(string returnUrl)
@@ -160,10 +166,16 @@ namespace WebAdmin.Controllers
             var vm = await BuildLoginViewModelAsync(returnUrl);
             return View(vm);
         }
+
+        /// <summary>
+        /// Post ForgetPassword
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ForgetPassword(owin_userEntity request)
+        public async Task<IActionResult> ForgetPassword([FromBody] owin_userEntity request)
         {
             var returnUrl = request.ReturnUrl;
             var user = await _userManager.FindByNameAsync(request.emailaddress);
@@ -187,7 +199,7 @@ namespace WebAdmin.Controllers
             ModelState.Remove("passwordsalt");
 
             if (!ModelState.IsValid) { return BadRequest(ModelState); }
-            await _auth_UseCase.ForgetPasswordRequest(new Auth_Request(new BDO.DataAccessObjects.SecurityModule.owin_userEntity()), _auth_UsePresenter);
+            await _auth_UseCase.ForgetPasswordRequest(new Auth_Request(request), _auth_UsePresenter);
             return _auth_UsePresenter.ContentResult;
         }
 

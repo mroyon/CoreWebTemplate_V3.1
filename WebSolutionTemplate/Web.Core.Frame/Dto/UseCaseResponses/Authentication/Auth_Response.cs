@@ -9,6 +9,8 @@ namespace Web.Core.Frame.RequestResponse.UseCaseResponses
     public class Auth_Response : UseCaseResponseMessage
     {
         public owin_userEntity _owin_userEntity { get; }
+        public AjaxResponse _ajaxresponse { get; }
+
 
         public IEnumerable<owin_userEntity> _owin_userEntityList { get; }
 
@@ -29,6 +31,11 @@ namespace Web.Core.Frame.RequestResponse.UseCaseResponses
         public Auth_Response(owin_userEntity owin_userEntity, bool success = false, string message = null) : base(success, message)
         {
             _owin_userEntity = owin_userEntity;
+        }
+
+        public Auth_Response(AjaxResponse azaxresponse, bool success = false, string message = null) : base(success, message)
+        {
+            _ajaxresponse = azaxresponse;
         }
     }
 }

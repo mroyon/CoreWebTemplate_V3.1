@@ -48,8 +48,8 @@ namespace WebAdmin.Services
 
             services.AddResponseCaching();
 
+            services.Configure<ApplicationGlobalSettings>(_configuration.GetSection("ApplicationGlobalSettings"));
             services.Configure<EmailSettings>(_configuration.GetSection("EmailSettings"));
-            services.AddTransient<IEmailSender, EmailSender>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.Configure<CookiePolicyOptions>(options =>

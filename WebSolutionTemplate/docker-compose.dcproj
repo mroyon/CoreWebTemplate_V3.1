@@ -6,7 +6,7 @@
     <ProjectGuid>89ec0f4c-42d9-41ee-8519-0dbf96083296</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}</DockerServiceUrl>
-    <DockerServiceName>webappfront</DockerServiceName>
+    <DockerServiceName>webadmin</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>
     <None Include="data\configure-db.sh" />

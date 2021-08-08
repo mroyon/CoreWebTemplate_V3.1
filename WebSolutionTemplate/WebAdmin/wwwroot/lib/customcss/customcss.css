@@ -3,6 +3,9 @@
     color: red;
 }
 
+.error {
+    color: orangered;
+}
 
 /**===== dots5 =====*/
 #dots5 {

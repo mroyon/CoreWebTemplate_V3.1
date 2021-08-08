@@ -10,13 +10,21 @@ namespace WebApi.Controllers
     [ApiController]
     public class AccountsController : ControllerBase
     {
+
+        private readonly IAuth_UseCase _auth_UseCase;
+        private readonly Auth_Presenter _auth_UsePresenter;
+
         private readonly IRegisterUserUseCase _registerUserUseCase;
         private readonly RegisterUserPresenter _registerUserPresenter;
 
-        public AccountsController(IRegisterUserUseCase registerUserUseCase, RegisterUserPresenter registerUserPresenter)
+        public AccountsController(IRegisterUserUseCase registerUserUseCase, RegisterUserPresenter registerUserPresenter,
+            IAuth_UseCase auth_UseCase,
+                        Auth_Presenter auth_UsePresenter)
         {
             _registerUserUseCase = registerUserUseCase;
             _registerUserPresenter = registerUserPresenter;
+            _auth_UseCase = auth_UseCase;
+            _auth_UsePresenter = auth_UsePresenter;
         }
 
         // POST api/accounts

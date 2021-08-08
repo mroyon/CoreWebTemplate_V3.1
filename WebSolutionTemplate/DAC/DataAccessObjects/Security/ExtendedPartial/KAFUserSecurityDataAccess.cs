@@ -122,6 +122,50 @@ namespace DAC.Core.DataAccessObjects.Security.ExtendedPartial
             return owin_user;
         }
         #endregion
+
+        async Task<owin_userEntity> IKAFUserSecurityDataAccess.GetUserByUserName(owin_userEntity owin_user, CancellationToken cancellationToken)
+        {
+            long returnValue = -99;
+            IList<owin_userEntity> itemList = new List<owin_userEntity>();
+            try
+            {
+                #region Check if user exists
+
+                using (DbCommand cmd = Database.GetStoredProcCommand("KAF_OwinUserByUserName"))
+                {
+                    owin_user = FillParameters(owin_user, cmd, Database);
+                    FillSequrityParameters(owin_user.BaseSecurityParam, cmd, Database);
+
+                    IAsyncResult result = Database.BeginExecuteReader(cmd, null, null);
+                    while (!result.IsCompleted)
+                    {
+                    }
+                    using (IDataReader reader = Database.EndExecuteReader(result))
+                    {
+                        while (reader.Read())
+                        {
+                            itemList.Add(new owin_userEntity(reader));
+                        }
+                        reader.Close();
+                    }
+                    cmd.Dispose();
+                }
+
+                #endregion
+            }
+            catch (Exception ex)
+            {
+                throw GetDataAccessException(ex, SourceOfException("IKAFUserSecurityDataAccess.GetUserByParams"));
+            }
+            finally
+            {
+            }
+            if (itemList != null && itemList.Count > 0)
+                return itemList[0];
+            else
+                return null;
+        }
+
         async Task<owin_userEntity> IKAFUserSecurityDataAccess.GetUserByParams(owin_userEntity owin_user, CancellationToken cancellationToken)
         {
             long returnValue = -99;

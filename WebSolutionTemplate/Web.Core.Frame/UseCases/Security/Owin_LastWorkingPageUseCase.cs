@@ -26,7 +26,6 @@ namespace Web.Core.Frame.UseCases
         private readonly IJwtFactory _jwtFactory;
         private readonly IStringLocalizer _sharedLocalizer;
         private readonly ILogger<Owin_LastWorkingPageUseCase> _logger;
-        private readonly IHttpClientHR _ihttpclienthr;
 
         public Error _errors { get; set; }
 
@@ -34,8 +33,7 @@ namespace Web.Core.Frame.UseCases
             IHttpContextAccessor contextAccessor,
             IJwtFactory jwtFactory,
             IStringLocalizerFactory factory,
-            ILoggerFactory loggerFactory
-            , IHttpClientHR ihttpclienthr)
+            ILoggerFactory loggerFactory)
         {
             _contextAccessor = contextAccessor;
             _jwtFactory = jwtFactory;
@@ -44,7 +42,6 @@ namespace Web.Core.Frame.UseCases
             var type = typeof(SharedResource);
             var assemblyName = new AssemblyName(type.GetTypeInfo().Assembly.FullName);
             _sharedLocalizer = factory.Create("SharedResource", assemblyName.Name);
-            _ihttpclienthr = ihttpclienthr;
         }
 
         public Task<bool> Handle(Owin_LastWorkingPageRequest message, IOutputPort<Owin_LastWorkingPageResponse> outputPort)

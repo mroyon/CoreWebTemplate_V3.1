@@ -5,6 +5,8 @@
 
 'use strict';
 
+//const { Alert } = require("bootstrap");
+
 var methodTypePost = "POST";
 var methodTypeGet = "GET";
 
@@ -41,9 +43,11 @@ function PostObjectProxy(url, params, successCallback, isStringify = false) {
             success: successCallback,
             error: function (xhr, textStatus, errorThrown) {
                 $('#divprogress').hide();
+                //alert("error");
                 showErrorAlert("Error", errorThrown, "OK");
             },
             failure: function (response) {
+                //alert("failure");
                 showErrorAlert("Error", response, "OK");
             },
             complete: function () {
@@ -54,12 +58,22 @@ function PostObjectProxy(url, params, successCallback, isStringify = false) {
     } catch (e) {
         showErrorAlert("Error", e.message, "OK");
     }
-
 };
 var ajaxPostObjectHandler = function (url, parameters, func, isStringify) {
 
     function onSuccess(response) {
+        if (response.success == true) {
+            showInformationAlert(response._ajaxresponse.responsetitle, response._ajaxresponse.responsetext, "OK");
+        }
+        else if (response.success == false) {
+            showErrorAlert(response._ajaxresponse.responsetitle, response._ajaxresponse.responsetext, "OK");
+        }
+
         if (response === 'SESSION_EXPIRED') {
+            showInformationAlert("Error", "Your session is expired. Please login to continue.", "OK");
+            window.location.href = '/Account/login';
+        }
+        else if (response === 'SESSION_EXPIRED') {
             showInformationAlert("Error", "Your session is expired. Please login to continue.", "OK");
             window.location.href = '/Account/login';
         }
@@ -124,6 +138,14 @@ function PostParamsProxy(url, params, successCallback, isStringify = false) {
 var ajaxPostParamsHandler = function (url, parameters, func, isStringify) {
 
     function onSuccess(response) {
+
+        if (response.success == true) {
+            showInformationAlert(response._ajaxresponse.responsetitle, response._ajaxresponse.responsetext, "OK");
+        }
+        else if (response.success == false) {
+            showErrorAlert(response._ajaxresponse.responsetitle, response._ajaxresponse.responsetext, "OK");
+        }
+
         if (response === 'SESSION_EXPIRED') {
             showInformationAlert("Error", "Your session is expired. Please login to continue.", "OK");
             window.location.href = '/Account/login';
@@ -215,6 +237,16 @@ var ajaxGetHandler = function (url, parameters, func, isStringify) {
 -------------------
 
 var dataobject = { culture: culture, returnUrl: returnUrl };
+
+// multiple params post
+        ajaxPostParamsHandler("/Home/SetLanguage", dataobject, function (data) {
+            if (data !== "INVALID_PARAMETERS") {
+                window.location.reload();
+            }
+            else {
+                alert("There is a problem on server side. Please try again later.");
+            }
+        }, false);
 
 //// multiple params post
 //ajaxPostParamsHandler("/Home/SetLanguage", dataobject, function (data) {

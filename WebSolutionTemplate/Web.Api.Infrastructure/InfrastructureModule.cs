@@ -5,6 +5,7 @@ using Web.Api.Infrastructure.Auth;
 using Web.Api.Infrastructure.Interfaces;
 using Web.Api.Infrastructure.Logging;
 using Module = Autofac.Module;
+using Web.Api.Infrastructure.Services;
 
 namespace Web.Api.Infrastructure
 {
@@ -16,7 +17,7 @@ namespace Web.Api.Infrastructure
             builder.RegisterType<JwtTokenHandler>().As<IJwtTokenHandler>().SingleInstance().FindConstructorsWith(new InternalConstructorFinder());
             builder.RegisterType<TokenFactory>().As<ITokenFactory>().SingleInstance();
             builder.RegisterType<JwtTokenValidator>().As<IJwtTokenValidator>().SingleInstance().FindConstructorsWith(new InternalConstructorFinder());
-            
+            builder.RegisterType<EmailSender>().As<IEmailSender>().SingleInstance().FindConstructorsWith(new InternalConstructorFinder());
 
 
             builder.RegisterType<Logger>().As<ILogger>().SingleInstance();

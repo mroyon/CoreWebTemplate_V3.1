@@ -1,5 +1,4 @@
 ﻿
-using BDO.DataAccessObjects.ExtendedEntities;
 using Web.Core.Frame.Dto;
 
 namespace WebApi.Models.Response
