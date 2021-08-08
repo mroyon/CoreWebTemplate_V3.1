@@ -4,10 +4,17 @@
         <name>WebAdmin</name>
     </assembly>
     <members>
-        <member name="M:WebAdmin.Controllers.AccountController.#ctor(Web.Core.Frame.Interfaces.UseCases.IAuth_UseCase,Web.Core.Frame.Presenters.Auth_Presenter,Web.Core.Frame.CustomIdentityManagers.ApplicationUserManager{BDO.DataAccessObjects.SecurityModule.owin_userEntity},Web.Core.Frame.CustomIdentityManagers.ApplicationSignInManager{BDO.DataAccessObjects.SecurityModule.owin_userEntity},WebAdmin.IntraServices.IEmailSender,Microsoft.Extensions.Logging.ILoggerFactory,Microsoft.Extensions.Localization.IStringLocalizerFactory,Microsoft.AspNetCore.Authentication.IAuthenticationSchemeProvider)">
+        <member name="T:WebAdmin.Controllers.AccountController">
             <summary>
-            
+            Account
             </summary>
+        </member>
+        <member name="M:WebAdmin.Controllers.AccountController.#ctor(Web.Core.Frame.Interfaces.UseCases.IAuth_UseCase,Web.Core.Frame.Presenters.Auth_Presenter,Web.Core.Frame.CustomIdentityManagers.ApplicationUserManager{BDO.DataAccessObjects.SecurityModule.owin_userEntity},Web.Core.Frame.CustomIdentityManagers.ApplicationSignInManager{BDO.DataAccessObjects.SecurityModule.owin_userEntity},Microsoft.Extensions.Logging.ILoggerFactory,Microsoft.Extensions.Localization.IStringLocalizerFactory,Microsoft.AspNetCore.Authentication.IAuthenticationSchemeProvider)">
+            <summary>
+            AccountController
+            </summary>
+            <param name="auth_UseCase"></param>
+            <param name="auth_UsePresenter"></param>
             <param name="userManager"></param>
             <param name="signInManager"></param>
             <param name="emailSender"></param>
@@ -35,12 +42,62 @@
             <param name="model"></param>
             <returns></returns>
         </member>
+        <member name="M:WebAdmin.Controllers.AccountController.ForgetPassword(System.String)">
+            <summary>
+            Get View ForgetPassword
+            </summary>
+            <param name="returnUrl"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebAdmin.Controllers.AccountController.ForgetPassword(BDO.DataAccessObjects.SecurityModule.owin_userEntity)">
+            <summary>
+            Post ForgetPassword
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="T:WebAdmin.Controllers.BaseController">
+            <summary>
+            BaseController
+            </summary>
+        </member>
+        <member name="M:WebAdmin.Controllers.BaseController.AddBreadcrumb(System.String,System.String)">
+            <summary>
+            AddBreadcrumb
+            </summary>
+            <param name="displayName"></param>
+            <param name="urlPath"></param>
+        </member>
+        <member name="M:WebAdmin.Controllers.BaseController.AddPageHeader(System.String,System.String)">
+            <summary>
+            AddPageHeader
+            </summary>
+            <param name="pageHeader"></param>
+            <param name="pageDescription"></param>
+        </member>
+        <member name="T:WebAdmin.Controllers.BaseController.PageAlertType">
+            <summary>
+            PageAlertType
+            </summary>
+        </member>
+        <member name="M:WebAdmin.Controllers.BaseController.AddPageAlerts(WebAdmin.Controllers.BaseController.PageAlertType,System.String)">
+            <summary>
+            AddPageAlerts
+            </summary>
+            <param name="pageAlertType"></param>
+            <param name="description"></param>
+        </member>
+        <member name="F:WebAdmin.Controllers.BaseController.options">
+            <summary>
+            options
+            </summary>
+        </member>
         <member name="T:WebAdmin.Controllers.HomeController">
             <summary>
             HomeController
             </summary>
         </member>
-        <member name="M:WebAdmin.Controllers.HomeController.#ctor(Web.Core.Frame.CustomIdentityManagers.ApplicationUserManager{BDO.DataAccessObjects.SecurityModule.owin_userEntity},Web.Core.Frame.CustomIdentityManagers.ApplicationSignInManager{BDO.DataAccessObjects.SecurityModule.owin_userEntity},WebAdmin.IntraServices.IEmailSender,Microsoft.Extensions.Logging.ILoggerFactory,Microsoft.Extensions.Localization.IStringLocalizerFactory,Microsoft.AspNetCore.Authentication.IAuthenticationSchemeProvider)">
+        <member name="M:WebAdmin.Controllers.HomeController.#ctor(Web.Core.Frame.CustomIdentityManagers.ApplicationUserManager{BDO.DataAccessObjects.SecurityModule.owin_userEntity},Web.Core.Frame.CustomIdentityManagers.ApplicationSignInManager{BDO.DataAccessObjects.SecurityModule.owin_userEntity},Microsoft.Extensions.Logging.ILoggerFactory,Microsoft.Extensions.Localization.IStringLocalizerFactory,Microsoft.AspNetCore.Authentication.IAuthenticationSchemeProvider)">
             <summary>
             HomeController
             </summary>
@@ -142,49 +199,6 @@
             <param name="user"></param>
             <returns></returns>
         </member>
-        <member name="T:WebAdmin.IntraServices.EmailSender">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="M:WebAdmin.IntraServices.EmailSender.#ctor(Microsoft.Extensions.Options.IOptions{BDO.DataAccessObjects.CommonEntities.EmailSettings})">
-            <summary>
-            
-            </summary>
-            <param name="optionsEmailSettings"></param>
-        </member>
-        <member name="M:WebAdmin.IntraServices.EmailSender.SendEmailAsync(System.String,System.String,System.String)">
-            <summary>
-            
-            </summary>
-            <param name="email"></param>
-            <param name="subject"></param>
-            <param name="message"></param>
-            <returns></returns>
-        </member>
-        <member name="M:WebAdmin.IntraServices.EmailSender.Execute(System.String,System.String,System.String)">
-            <summary>
-            
-            </summary>
-            <param name="email"></param>
-            <param name="subject"></param>
-            <param name="message"></param>
-            <returns></returns>
-        </member>
-        <member name="T:WebAdmin.IntraServices.IEmailSender">
-            <summary>
-            IEmailSender
-            </summary>
-        </member>
-        <member name="M:WebAdmin.IntraServices.IEmailSender.SendEmailAsync(System.String,System.String,System.String)">
-            <summary>
-            SendEmailAsync
-            </summary>
-            <param name="email"></param>
-            <param name="subject"></param>
-            <param name="message"></param>
-            <returns></returns>
-        </member>
         <member name="T:WebAdmin.IntraServices.ControllerAction">
             <summary>
             ControllerAction
@@ -214,27 +228,6 @@
             <summary>
             _exceptionControllerAction constructer
             </summary>
-        </member>
-        <member name="T:WebAdmin.Providers.JWTSigningConfigurations">
-            <summary>
-            JWTSigningConfigurations
-            </summary>
-        </member>
-        <member name="P:WebAdmin.Providers.JWTSigningConfigurations.SecurityKey">
-            <summary>
-            SecurityKey
-            </summary>
-        </member>
-        <member name="P:WebAdmin.Providers.JWTSigningConfigurations.SigningCredentials">
-            <summary>
-            SigningCredentials
-            </summary>
-        </member>
-        <member name="M:WebAdmin.Providers.JWTSigningConfigurations.#ctor(System.String)">
-            <summary>
-            JWTSigningConfigurations
-            </summary>
-            <param name="key"></param>
         </member>
         <member name="T:WebAdmin.Providers.LocalizationQueryProvider">
             <summary>
@@ -402,7 +395,7 @@
             HeaderViewComponent
             </summary>
         </member>
-        <member name="M:WebAdmin.ViewComponents.ChangePasswordViewComponent.#ctor(Web.Core.Frame.CustomIdentityManagers.ApplicationUserManager{BDO.DataAccessObjects.SecurityModule.owin_userEntity},Web.Core.Frame.CustomIdentityManagers.ApplicationSignInManager{BDO.DataAccessObjects.SecurityModule.owin_userEntity},WebAdmin.IntraServices.IEmailSender,Microsoft.Extensions.Logging.ILoggerFactory,Microsoft.Extensions.Localization.IStringLocalizerFactory,Microsoft.AspNetCore.Authentication.IAuthenticationSchemeProvider)">
+        <member name="M:WebAdmin.ViewComponents.ChangePasswordViewComponent.#ctor(Web.Core.Frame.CustomIdentityManagers.ApplicationUserManager{BDO.DataAccessObjects.SecurityModule.owin_userEntity},Web.Core.Frame.CustomIdentityManagers.ApplicationSignInManager{BDO.DataAccessObjects.SecurityModule.owin_userEntity},Microsoft.Extensions.Logging.ILoggerFactory,Microsoft.Extensions.Localization.IStringLocalizerFactory,Microsoft.AspNetCore.Authentication.IAuthenticationSchemeProvider)">
             <summary>
             ChangePasswordViewComponent
             </summary>
@@ -469,7 +462,7 @@
             HeaderViewComponent
             </summary>
         </member>
-        <member name="M:WebAdmin.ViewComponents.HeaderViewComponent.#ctor(Web.Core.Frame.CustomIdentityManagers.ApplicationUserManager{BDO.DataAccessObjects.SecurityModule.owin_userEntity},Web.Core.Frame.CustomIdentityManagers.ApplicationSignInManager{BDO.DataAccessObjects.SecurityModule.owin_userEntity},WebAdmin.IntraServices.IEmailSender,Microsoft.Extensions.Logging.ILoggerFactory,Microsoft.Extensions.Localization.IStringLocalizerFactory,Microsoft.AspNetCore.Authentication.IAuthenticationSchemeProvider)">
+        <member name="M:WebAdmin.ViewComponents.HeaderViewComponent.#ctor(Web.Core.Frame.CustomIdentityManagers.ApplicationUserManager{BDO.DataAccessObjects.SecurityModule.owin_userEntity},Web.Core.Frame.CustomIdentityManagers.ApplicationSignInManager{BDO.DataAccessObjects.SecurityModule.owin_userEntity},Microsoft.Extensions.Logging.ILoggerFactory,Microsoft.Extensions.Localization.IStringLocalizerFactory,Microsoft.AspNetCore.Authentication.IAuthenticationSchemeProvider)">
             <summary>
             AboutUsViewComponent
             </summary>
