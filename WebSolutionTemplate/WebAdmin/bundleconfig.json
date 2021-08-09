@@ -38,8 +38,7 @@
       "wwwroot/lib/font-awesome/css/all.css",
       "wwwroot/css/my-login.css",
       "wwwroot/lib/admin-lte/css/adminlte.css",
-      "wwwroot/lib/bootstrap-sweetalert/sweetalert.css",
-      "wwwroot/lib/customcss/customcss.css"
+      "wwwroot/lib/bootstrap-sweetalert/sweetalert.css"
     ],
     "minify": { "enabled": true }
   },
@@ -49,8 +48,7 @@
       "wwwroot/lib/font-awesome/css/all.css",
       "wwwroot/css/my-login.css",
       "wwwroot/lib/admin-lte/css/adminltertl.css",
-      "wwwroot/lib/bootstrap-sweetalert/sweetalert.css",
-      "wwwroot/lib/customcss/customcss.css"
+      "wwwroot/lib/bootstrap-sweetalert/sweetalert.css"
     ],
     "minify": { "enabled": true }
   },

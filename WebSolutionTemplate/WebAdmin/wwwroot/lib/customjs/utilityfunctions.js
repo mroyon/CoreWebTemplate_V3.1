@@ -4,6 +4,11 @@
  ******************************************/
 
 'use strict';
+$(function () {
+    $("[requiredmarkup]").after($("<span>", {
+        class: "required"
+    }).html("*"));
+});
 
 function showErrorAlert(title, text, btntext) {
     swal({

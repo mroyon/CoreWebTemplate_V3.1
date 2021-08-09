@@ -7,6 +7,19 @@ body.my-login-page {
 	font-size: 14px;
 }
 
+.required {
+	color: orangered;
+}
+
+.error {
+	color: orangered;
+}
+
+.requiredmarkup label .control-label:after {
+	content: "*";
+	color: red;
+}
+
 .my-login-page .brand {
 	width: 90px;
 	height: 90px;

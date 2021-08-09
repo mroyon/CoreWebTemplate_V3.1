@@ -3,11 +3,9 @@
     color: red;
 }
 
-.required .control-label:after {
-    content: "*";
-    color: red;
+.required {
+    color: orangered;
 }
-
 .error {
     color: orangered;
 }
