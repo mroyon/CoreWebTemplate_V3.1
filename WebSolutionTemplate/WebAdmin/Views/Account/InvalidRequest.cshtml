@@ -1,0 +1,29 @@
+﻿@using CLL
+@inject CLL.Localization.LocalizeService SharedLocalizer
+@{
+    ViewData["Title"] = @SharedLocalizer.GetLocalizedHtmlString("INVALID_VERFICATION_CODE");
+}
+<div class="row">
+    <div class="col col-md-12">
+        <section class="h-100">
+            <div class="container h-100">
+                <div class="row justify-content-md-center h-100">
+                    <div class="card-wrapper">
+                        <div class="brand">
+                            <img src="~/img/logo.jpg" alt="logo">
+                        </div>
+                        <div class="card fat">
+                            <div class="card-body">
+                                <h4 class="card-title">@SharedLocalizer.GetLocalizedHtmlString("INVALID_VERFICATION_CODE")</h4>
+                                
+                                    <div class="form-group">
+                                        <label class="">  @SharedLocalizer.GetLocalizedHtmlString("INVALID_VERFICATION_CODE")</label>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>

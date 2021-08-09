@@ -53,5 +53,14 @@ namespace Web.Core.Frame.Presenters
             ContentResult.StatusCode = (int)(response.Success ? HttpStatusCode.OK : httpStatusCodeParser.SetHttpStatusCode(response.Errors));
             ContentResult.Content = response.Success ? JsonSerializer.SerializeObject(new Auth_Response(response._ajaxresponse, response.Success)) : JsonSerializer.SerializeObject(response.Errors);
         }
+        public void PasswordResetAuthTokenValidatedAjax(Auth_Response response)
+        {
+            //throw new System.NotImplementedException();
+
+            ContentResult.StatusCode = (int)(response.Success ? HttpStatusCode.OK : httpStatusCodeParser.SetHttpStatusCode(response.Errors));
+            ContentResult.Content = response.Success ? JsonSerializer.SerializeObject(new Auth_Response(response._ajaxresponse, response.Success)) : JsonSerializer.SerializeObject(response.Errors);
+        }
+
+        //
     }
 }

@@ -82,7 +82,6 @@ $(function () {
             event.preventDefault();
 
             if (_cusFormValidate('frmforgetpassword')) {
-                alert("validated.");
                 var dataobject = { emailaddress: $("#emailaddress").val() };
                 ajaxPostObjectHandler("/Account/ForgetPassword", dataobject, function (data) {
                     
@@ -93,6 +92,21 @@ $(function () {
         }
     });
 
+
+    $('body').on('click', '#btnresetpassword', function (e) {
+        try {
+            event.preventDefault();
+
+            if (_cusFormValidate('frmresetpassword')) {
+                
+                //var dataobject = { emailaddress: $("#emailaddress").val() };
+                //ajaxPostObjectHandler("/Account/ForgetPassword", dataobject, function (data) {
+                //}, true);
+            }
+        } catch (e) {
+            showErrorAlert("Error", e.message, "OK");
+        }
+    });
 
     //$(".my-forgetpass-validation").submit(function () {
 

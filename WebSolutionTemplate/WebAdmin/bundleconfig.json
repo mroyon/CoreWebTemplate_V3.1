@@ -35,6 +35,7 @@
   {
     "outputFileName": "wwwroot/css/vendor.login.min.css",
     "inputFiles": [
+      "wwwroot/lib/font-awesome/css/all.css",
       "wwwroot/css/my-login.css",
       "wwwroot/lib/admin-lte/css/adminlte.css",
       "wwwroot/lib/bootstrap-sweetalert/sweetalert.css",
@@ -45,6 +46,7 @@
   {
     "outputFileName": "wwwroot/css/vendor.login.rtl.min.css",
     "inputFiles": [
+      "wwwroot/lib/font-awesome/css/all.css",
       "wwwroot/css/my-login.css",
       "wwwroot/lib/admin-lte/css/adminltertl.css",
       "wwwroot/lib/bootstrap-sweetalert/sweetalert.css",
@@ -56,6 +58,7 @@
     "outputFileName": "wwwroot/js/vendor.login.min.js",
     "inputFiles": [
       "wwwroot/lib/jquery/jquery.js",
+      "wwwroot/lib/font-awesome/js/all.js",
       "wwwroot/lib/popperjs/umd/popper.js",
       "wwwroot/lib/bootstrap/dist/js/bootstrap.js",
       "wwwroot/lib/bootstrap-sweetalert/sweetalert.js",

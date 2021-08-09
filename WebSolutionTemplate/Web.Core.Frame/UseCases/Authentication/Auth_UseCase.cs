@@ -15,12 +15,12 @@ using Web.Core.Frame.Interfaces;
 using Web.Core.Frame.Interfaces.Services;
 using Web.Core.Frame.Interfaces.UseCases;
 using Web.Core.Frame.Dto;
-using BDO.DataAccessObjects.Models;
 using BDO.DataAccessObjects.ExtendedEntities;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
-using System.Text;
 using Microsoft.Extensions.Options;
+using BDO.DataAccessObjects.SecurityModule;
+
 
 namespace Web.Core.Frame.UseCases
 {
@@ -73,16 +73,13 @@ namespace Web.Core.Frame.UseCases
                 if (!string.IsNullOrEmpty(authcode))
                 {
                     string html = System.IO.File.ReadAllText(Path.Combine(Environment.CurrentDirectory, "EmailTemplate/forgetPasswordAuthCode" + Thread.CurrentThread.CurrentCulture.ToString().ToUpper() + ".html"));
-                    //using (StreamReader streamReader = new StreamReader(Path.Combine(Environment.CurrentDirectory, "EmailTemplate/forgetPasswordAuthCode" + cul), Encoding.UTF8))
-                    //{
-                    //    html = streamReader.ReadToEnd();
-                    //}
                     html = html.Replace("{authocode}", authcode);
-                    html = html.Replace("{resetpasswordurl}", "url");
-                    _emailSender.SendEmailAsync(message.Obj_owin_user.emailaddress, _sharedLocalizer["RESET_YOUR_PASSWORD"].Value, "asdf");
+                    html = html.Replace("{resetpasswordurl}", _applicationGlobalSettings.Value.PassResetURL + authcode);
+                    
+                    _emailSender.SendEmailAsync(message.Obj_owin_user.emailaddress, _sharedLocalizer["RESET_YOUR_PASSWORD"].Value, html);
                 }
                 outputPort.ForgetPasswordAjax(new Auth_Response(new AjaxResponse("200", _sharedLocalizer["FORGETPASSWORDEMAIL"].Value, CLL.LLClasses._Status._statusSuccess, CLL.LLClasses._Status._titleInformation, ""
-                    ),  true, null));
+                    ), true, null));
                 return true;
             }
             catch (Exception ex)
@@ -96,5 +93,34 @@ namespace Web.Core.Frame.UseCases
             }
         }
 
+
+        public async Task<bool> PasswordRequestAuthTokenValidated(Auth_Request message, IOutputPort_Auth<Auth_Response> outputPort)
+        {
+            CancellationToken cancellationToken = new CancellationToken();
+            string authcode = string.Empty;
+            IList<owin_userpasswordresetinfoEntity> objResObj = new List<owin_userpasswordresetinfoEntity>();
+            try
+            {
+                objResObj = await BFC.Core.FacadeCreatorObjects.Security.owin_userpasswordresetinfoFCC.GetFacadeCreate(_contextAccessor).GetAll(new owin_userpasswordresetinfoEntity()
+                {
+                    sessiontoken = message.Obj_owin_user.code,
+                    isactive = true
+                }, cancellationToken);
+
+                if (objResObj != null && objResObj.Count > 0)
+                    return true;
+                else
+                    return false;
+            }
+            catch (Exception ex)
+            {
+                Auth_Response objResponse = new Auth_Response(false, _sharedLocalizer["DATA_DELETE_ERROR"], new Error(
+                         "500",
+                         ex.Message));
+                _logger.LogInformation(JsonConvert.SerializeObject(objResponse));
+                outputPort.ForgetPassword(objResponse);
+                return true;
+            }
+        }
     }
 }

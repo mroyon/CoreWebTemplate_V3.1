@@ -204,6 +204,36 @@ namespace WebAdmin.Controllers
         }
 
 
+        /// <summary>
+        /// Resetpassword
+        /// </summary>
+        /// <param name="AUPIOuser"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> Resetpassword(string AUPIOuser)
+        {
+            if (string.IsNullOrEmpty(AUPIOuser))
+            {
+                ModelState.AddModelError(string.Empty, _sharedLocalizer["INVALID_VERFICATION_CODE"]);
+                return View("../Account/InvalidRequest");
+            }
+            else
+            {
+                owin_userEntity request = new owin_userEntity();
+                request.code = AUPIOuser;
+                bool flg = await _auth_UseCase.PasswordRequestAuthTokenValidated(new Auth_Request(request), _auth_UsePresenter);
+                if (flg)
+                {
+                    return View("../Account/Resetpassword", request);
+                }
+                else
+                {
+                    return View("../Account/InvalidRequest");
+                }
+            }
+        }
+
 
         [HttpGet]
         [AllowAnonymous]
