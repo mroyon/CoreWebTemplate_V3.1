@@ -135,6 +135,52 @@ namespace WebAdmin.Controllers
                 return _auth_UsePresenter.ContentResult;
         }
 
+        /// <summary>
+        /// Logout
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Logout([FromBody] owin_userEntity request)
+        {
+            var returnUrl = request.ReturnUrl;
+            ViewData["ReturnUrl"] = returnUrl;
+            ModelState.Remove("emailaddress");
+            ModelState.Remove("password");
+            ModelState.Remove("passwordquestion");
+            ModelState.Remove("passwordkey");
+            ModelState.Remove("passwordvector");
+            ModelState.Remove("locked");
+            ModelState.Remove("approved");
+            ModelState.Remove("loweredusername");
+            ModelState.Remove("applicationid");
+            ModelState.Remove("masteruserid");
+            ModelState.Remove("newpassword");
+            ModelState.Remove("username");
+            ModelState.Remove("isanonymous");
+            ModelState.Remove("masprivatekey");
+            ModelState.Remove("maspublickey");
+            ModelState.Remove("confirmpassword");
+            ModelState.Remove("passwordsalt");
+
+
+            var idp = User?.FindFirst(JwtClaimTypes.IdentityProvider)?.Value;
+            ClaimsIdentity claimsIdentity = HttpContext.User.Identity as ClaimsIdentity;
+            await _userManager.logoutowin_userlogintrail(claimsIdentity);
+            await _signInManager.SignOutAsync();
+
+            HttpContext.User = new ClaimsPrincipal(new ClaimsIdentity());
+            var vm = new owin_userEntity
+            {
+                AutomaticRedirectAfterSignOut = AccountOptions.AutomaticRedirectAfterSignOut,
+                ClientName = string.Empty,
+                SignOutIframeUrl = string.Empty,
+            };
+            return Json(new AjaxResponse("200", _sharedLocalizer["VERIFY"].Value, CLL.LLClasses._Status._statusSuccess, CLL.LLClasses._Status._titleInformation, "/"));
+        }
+
 
         /// <summary>
         /// Get View ForgetPassword
