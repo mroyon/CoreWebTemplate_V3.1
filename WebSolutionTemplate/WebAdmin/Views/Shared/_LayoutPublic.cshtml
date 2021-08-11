@@ -23,10 +23,9 @@
         else
         {
             <link rel="stylesheet" href="~/css/vendor.login.min.css" asp-append-version="true" />
-
         }
     }
-
+    <link rel="stylesheet" href="~/css/custom-app-lib.min.css" asp-append-version="true" />
 </head>
 <body class="hold-transition dark-mode sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed my-login-page">
     <div class="wrapper">
@@ -61,7 +60,7 @@
     <div id="preloader"></div>
     <a href="#" class="back-to-top"><i class="icofont-simple-up"></i></a>
     <script src="~/js/vendor.login.min.js" asp-append-version="true"></script>
+    <script src="~/js/vendor-validation.min.js" asp-append-version="true"></script>
     @RenderSection("scripts", required: false)
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 </body>
 </html>

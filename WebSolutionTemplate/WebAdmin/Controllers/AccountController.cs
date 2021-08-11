@@ -109,10 +109,9 @@ namespace WebAdmin.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(owin_userEntity request)
+        public async Task<IActionResult> Login([FromBody] owin_userEntity request)
         {
             var returnUrl = request.ReturnUrl;
-            var user = await _userManager.FindByNameAsync(request.emailaddress);
             ViewData["ReturnUrl"] = returnUrl;
 
             ModelState.Remove("passwordquestion");
@@ -133,22 +132,9 @@ namespace WebAdmin.Controllers
 
             if (ModelState.IsValid)
             {
-                var result = await _signInManager.PasswordSignInAsync(request.emailaddress, request.password, request.AllowRememberLogin, lockoutOnFailure: false);
-                if (result.Succeeded)
-                {
-                    _logger.LogInformation(1, "User logged in.");
-                    return RedirectToLocal(returnUrl);
-                }
-                if (result.IsLockedOut)
-                {
-                    _logger.LogWarning(2, "User account locked out.");
-                    return View("Lockout");
-                }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, _sharedLocalizer["INVALID_LOGIN_ATTEMPT"]);
-                    return View(await BuildLoginViewModelAsync(request));
-                }
+                if (!ModelState.IsValid) { return BadRequest(ModelState); }
+                await _auth_UseCase.LoginRequestWeb(new Auth_Request(request), _auth_UsePresenter);
+                return _auth_UsePresenter.ContentResult;
             }
             return View(await BuildLoginViewModelAsync(request));
         }

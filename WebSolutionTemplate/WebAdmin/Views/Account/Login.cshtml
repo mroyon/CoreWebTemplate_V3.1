@@ -17,23 +17,18 @@
                         <div class="card fat">
                             <div class="card-body">
                                 <h4 class="card-title">Login</h4>
-                                <form method="POST" class="my-login-validation" novalidate="">
+                                <form method="POST" id="frmlogin" class="my-login-validation" novalidate="">
                                     <div class="form-group">
-                                        <label for="emailaddress">  @SharedLocalizer.GetLocalizedHtmlString("EMAIL");</label>
-                                        <input id="emailaddress" type="email" class="form-control" name="emailaddress" value="" required autofocus>
-                                        <div class="invalid-feedback">
-                                            @SharedLocalizer.GetLocalizedHtmlString("EMAIL_INVALID");
-                                        </div>
+                                        @Html.LabelFor(model => model.emailaddress, htmlAttributes: new { @class = "labelNormal required " })
+                                        @*<input asp-for="emailaddress" type="email" class="form-control" required autofocus />*@
+                                        @Html.EditorFor(model => model.emailaddress, new { htmlAttributes = new { @type = "email", @class = "form-control" } })
+                                        <span asp-validation-for="emailaddress" class="text-danger"></span>
                                     </div>
                                     <div class="form-group">
-                                        <label for="password">
-                                            @SharedLocalizer.GetLocalizedHtmlString("PASSWORD");
-                                            
-                                        </label>
-                                        <input id="password" type="password" class="form-control" name="password" required data-eye>
-                                        <div class="invalid-feedback">
-                                            @SharedLocalizer.GetLocalizedHtmlString("PASSWORD_REQUIRED");
-                                        </div>
+                                        @Html.LabelFor(model => model.password, htmlAttributes: new { @class = "labelNormal required " })
+                                        @*@Html.EditorFor(model => model.password, new { htmlAttributes = new { @type = "password", @class = "form-control" } })*@
+                                        <input asp-for="password" class="form-control" />
+                                        <span asp-validation-for="password" class="text-danger"></span>
                                     </div>
 
                                     <div class="form-group">
@@ -45,7 +40,7 @@
                                     </div>
 
                                     <div class="form-group m-0">
-                                        <button type="submit" class="btn btn-primary btn-block">
+                                        <button type="submit" id="btnlogin" class="btn btn-primary btn-block">
                                             @SharedLocalizer.GetLocalizedHtmlString("LOGIN");
                                         </button>
                                     </div>
@@ -84,5 +79,4 @@
 </div>
 
 @section Scripts {
-    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 }

@@ -1,7 +1,7 @@
 ﻿using BDO.DataAccessObjects.ExtendedEntities;
 using System.Collections.Generic;
 using Web.Core.Frame.Interfaces;
-
+ 
 namespace Web.Core.Frame.Dto.UseCaseResponses
 {
     public class LoginResponse : UseCaseResponseMessage

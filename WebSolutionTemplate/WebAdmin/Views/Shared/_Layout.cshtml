@@ -70,7 +70,7 @@
     @RenderSection("scripts", required: false)
     @*<script src="~/lib/admin-lte/js/adminlte.js"></script> style="width:98%!important"*@
     <script src="~/lib/Chartjs/chart.min.js"></script>
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <script src="~/js/vendor-validation.min.js" asp-append-version="true"></script>
     <script src="~/js/custom-app-lib.min.js" asp-append-version="true"></script>
 
     <div id="modal-common-container" class="modal fade hidden-print" tabindex="-1" role="dialog">

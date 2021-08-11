@@ -406,7 +406,7 @@
     <value>Verification code</value>
   </data>
   <data name="VERIFY" xml:space="preserve">
-    <value>Verify</value>
+    <value>Verified</value>
   </data>
   <data name="2FA_AUTHENTICATION_ADD_AUTHENTICATOR_APP" xml:space="preserve">
     <value>Add authenticator app</value>

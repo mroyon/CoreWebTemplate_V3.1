@@ -37,7 +37,11 @@ namespace Web.Core.Frame.Presenters
             ContentResult.StatusCode = (int)(response.Success ? HttpStatusCode.OK : httpStatusCodeParser.SetHttpStatusCode(response.Errors));
             ContentResult.Content = response.Success ? JsonSerializer.SerializeObject(new Auth_Response(response._owin_userEntity, response.Success)) : JsonSerializer.SerializeObject(response.Errors);
         }
-
+        public void Login(Auth_Response response)
+        {
+            ContentResult.StatusCode = (int)(response.Success ? HttpStatusCode.OK : httpStatusCodeParser.SetHttpStatusCode(response.Errors));
+            ContentResult.Content = response.Success ? JsonSerializer.SerializeObject(new Auth_Response(response._owin_userEntity, response.Success)) : JsonSerializer.SerializeObject(response.Errors);
+        }
         public void ForgetPassword(Auth_Response response)
         {
             //throw new System.NotImplementedException();

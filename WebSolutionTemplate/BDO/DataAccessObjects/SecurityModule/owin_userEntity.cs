@@ -203,8 +203,8 @@ namespace BDO.DataAccessObjects.SecurityModule
         }
         
         [DataMember]
-        [MaxLength(500)]
         [DataType(DataType.Password)]
+        [StringLength(150, MinimumLength = 5)]
         [Display(Name = "password", ResourceType = typeof(CLL.LLClasses.SecurityModule._owin_user))]
         [Required(ErrorMessageResourceType = typeof(CLL.LLClasses.SecurityModule._owin_user), ErrorMessageResourceName = "passwordRequired")]
         public string password

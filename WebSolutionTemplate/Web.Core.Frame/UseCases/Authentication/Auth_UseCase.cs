@@ -20,7 +20,7 @@ using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Options;
 using BDO.DataAccessObjects.SecurityModule;
-
+using Web.Core.Frame.CustomIdentityManagers;
 
 namespace Web.Core.Frame.UseCases
 {
@@ -34,6 +34,8 @@ namespace Web.Core.Frame.UseCases
         private readonly IEmailSender _emailSender;
         private readonly IHostingEnvironment _environment;
 
+        private readonly ApplicationUserManager<owin_userEntity> _userManager;
+        private readonly ApplicationSignInManager<owin_userEntity> _signInManager;
 
         public Error _errors { get; set; }
 
@@ -44,6 +46,8 @@ namespace Web.Core.Frame.UseCases
             ILoggerFactory loggerFactory,
             IEmailSender emailSender,
             IHostingEnvironment environment,
+            ApplicationUserManager<owin_userEntity> userManager,
+            ApplicationSignInManager<owin_userEntity> signInManager,
             IOptions<ApplicationGlobalSettings> applicationGlobalSettings)
         {
             _contextAccessor = contextAccessor;
@@ -51,6 +55,10 @@ namespace Web.Core.Frame.UseCases
             _logger = loggerFactory.CreateLogger<Gen_FAQCagetogyUseCase>();
             _emailSender = emailSender;
             _environment = environment;
+
+            _userManager = userManager;
+            _signInManager = signInManager;
+
             _applicationGlobalSettings = applicationGlobalSettings;
 
             var type = typeof(SharedResource);
@@ -62,6 +70,57 @@ namespace Web.Core.Frame.UseCases
         {
             throw new NotImplementedException();
         }
+
+        public async Task<bool> LoginRequestWeb(Auth_Request message, IOutputPort_Auth<Auth_Response> outputPort)
+        {
+            bool state = false;
+            try
+            {
+                var returnUrl = message.Obj_owin_user.ReturnUrl;
+                var user = await _userManager.FindByNameAsync(message.Obj_owin_user.emailaddress);
+
+                var result = await _signInManager.PasswordSignInAsync(message.Obj_owin_user.emailaddress, message.Obj_owin_user.password,
+                    message.Obj_owin_user.AllowRememberLogin, lockoutOnFailure: false);
+                if (result.Succeeded)
+                {
+                    _logger.LogInformation(1, "User logged in.");
+                    state = true;
+                }
+                else if (result.IsLockedOut)
+                {
+                    _logger.LogWarning(2, "User account locked out.");
+                    state = false;
+                }
+                else
+                {
+                    //ModelState.AddModelError(string.Empty, _sharedLocalizer["INVALID_LOGIN_ATTEMPT"]);
+                    state = false;
+                }
+                if (state)
+                {
+                    outputPort.Login(new Auth_Response(new AjaxResponse("200", _sharedLocalizer["VERIFY"].Value, CLL.LLClasses._Status._statusSuccess, CLL.LLClasses._Status._titleInformation, "/"
+                        ), true, null));
+                    return state;
+                }
+                else
+                {
+                    outputPort.Login(new Auth_Response(new AjaxResponse("403", _sharedLocalizer["INVALID_LOGIN_ATTEMPT"].Value, CLL.LLClasses._Status._statusFailed, CLL.LLClasses._Status._titleInformation, ""
+                        ), false, _sharedLocalizer["INVALID_LOGIN_ATTEMPT"].Value));
+                    return state;
+                }
+            }
+            catch (Exception ex)
+            {
+                Auth_Response objResponse = new Auth_Response(false, _sharedLocalizer["DATA_DELETE_ERROR"], new Error(
+                         "500",
+                         ex.Message));
+                _logger.LogInformation(JsonConvert.SerializeObject(objResponse));
+                outputPort.ForgetPassword(objResponse);
+                return true;
+            }
+        }
+
+
 
         public async Task<bool> ForgetPasswordRequest(Auth_Request message, IOutputPort_Auth<Auth_Response> outputPort)
         {
@@ -92,7 +151,6 @@ namespace Web.Core.Frame.UseCases
                 return true;
             }
         }
-
 
         public async Task<bool> PasswordRequestAuthTokenValidated(Auth_Request message, IOutputPort_Auth<Auth_Response> outputPort)
         {
