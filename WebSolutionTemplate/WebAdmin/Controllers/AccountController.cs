@@ -170,7 +170,6 @@ namespace WebAdmin.Controllers
             ClaimsIdentity claimsIdentity = HttpContext.User.Identity as ClaimsIdentity;
             await _userManager.logoutowin_userlogintrail(claimsIdentity);
             await _signInManager.SignOutAsync();
-
             HttpContext.User = new ClaimsPrincipal(new ClaimsIdentity());
             var vm = new owin_userEntity
             {
@@ -239,7 +238,7 @@ namespace WebAdmin.Controllers
         /// <returns></returns>
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> Resetpassword(string AUPIOuser)
+        public async Task<IActionResult> PasswordReset(string AUPIOuser)
         {
             if (string.IsNullOrEmpty(AUPIOuser))
             {
@@ -253,7 +252,7 @@ namespace WebAdmin.Controllers
                 bool flg = await _auth_UseCase.PasswordRequestAuthTokenValidated(new Auth_Request(request), _auth_UsePresenter);
                 if (flg)
                 {
-                    return View("../Account/Resetpassword", request);
+                    return View("../Account/PasswordReset", request);
                 }
                 else
                 {

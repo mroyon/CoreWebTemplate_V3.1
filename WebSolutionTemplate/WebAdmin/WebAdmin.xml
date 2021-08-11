@@ -42,6 +42,13 @@
             <param name="model"></param>
             <returns></returns>
         </member>
+        <member name="M:WebAdmin.Controllers.AccountController.Logout(BDO.DataAccessObjects.SecurityModule.owin_userEntity)">
+            <summary>
+            Logout
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
         <member name="M:WebAdmin.Controllers.AccountController.ForgetPassword(System.String)">
             <summary>
             Get View ForgetPassword
@@ -56,7 +63,7 @@
             <param name="request"></param>
             <returns></returns>
         </member>
-        <member name="M:WebAdmin.Controllers.AccountController.Resetpassword(System.String)">
+        <member name="M:WebAdmin.Controllers.AccountController.PasswordReset(System.String)">
             <summary>
             Resetpassword
             </summary>

@@ -1,9 +1,11 @@
-﻿using BDO.Base;
+﻿using AppConfig.EncryptionHandler;
+using BDO.Base;
 using BDO.DataAccessObjects.ExtendedEntities;
 using BDO.DataAccessObjects.SecurityModule;
 using CLL.LLClasses.SecurityModule;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -28,7 +30,9 @@ namespace Web.Core.Frame.CustomIdentityManagers
     {
         private IServiceProvider _services;
         private readonly IHttpContextAccessor _contextAccessor;
-        private readonly ISecCapFillerFromJWTClaim _seccapfillerfromjwtclaim;
+        private readonly ISecCapFillerFromJWTClaim _seccapfillerfromjwtclaim; 
+        private readonly IConfiguration _config;
+
 
         private static readonly RandomNumberGenerator _rng = RandomNumberGenerator.Create();
         public ApplicationUserManager(
@@ -41,9 +45,12 @@ namespace Web.Core.Frame.CustomIdentityManagers
                         IdentityErrorDescriber errors,
                         IServiceProvider services,
                         ILogger<UserManager<owin_userEntity>> logger,
-                        IHttpContextAccessor contextAccessor) :
+                        IHttpContextAccessor contextAccessor,
+                        IConfiguration config) :
             base(store, optionsAccessor, passwordHasher, userValidators, passwordValidators, keyNormalizer, errors, services, logger)
         {
+            _config = config;
+
             if (store == null)
             {
                 throw new ArgumentNullException(nameof(store));
@@ -465,12 +472,18 @@ namespace Web.Core.Frame.CustomIdentityManagers
             if (claimsIdentity.Claims.Count() > 0)
             {
                 var resLoginSeriale = claimsIdentity.FindFirst("resLoginSerial").Value;
-                _securityCapsule = JsonConvert.DeserializeObject<SecurityCapsule>(claimsIdentity.Claims.ToList().Where(p => p.Type == "secobject").FirstOrDefault().Value);
+                var secobject = claimsIdentity.FindFirst("secobject").Value;
+
+                EncryptionHelper objEnc = new EncryptionHelper();
+                var authSettings = _config.GetSection(nameof(AuthSettings)).Get<AuthSettings>();
+                string strserialize = objEnc.Decrypt(secobject, true, authSettings.SecretKey);
+                _securityCapsule = JsonConvert.DeserializeObject<SecurityCapsule>(strserialize);
                 if (_securityCapsule != null)
                 {
                     CancellationToken cancellationToken = new CancellationToken();
                     resLoginUpdate = await BFC.Core.FacadeCreatorObjects.Security.owin_userlogintrailFCC.GetFacadeCreate(_contextAccessor).Update(new owin_userlogintrailEntity()
                     {
+                        masteruserid = _securityCapsule.masteruserid,
                         serialno = long.Parse(resLoginSeriale),
                         userid = _securityCapsule.userid,
                         loginfrom = "Web App",

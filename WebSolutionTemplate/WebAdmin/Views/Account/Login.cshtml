@@ -1,6 +1,5 @@
 ﻿@using CLL
 @model BDO.DataAccessObjects.SecurityModule.owin_userEntity
-@inject Web.Core.Frame.CustomIdentityManagers.ApplicationSignInManager<BDO.DataAccessObjects.SecurityModule.owin_userEntity> SignInManager
 @inject CLL.Localization.LocalizeService SharedLocalizer
 @{
     ViewData["Title"] = @SharedLocalizer.GetLocalizedHtmlString("ACCOUNT_LOGIN");
@@ -16,7 +15,7 @@
                         </div>
                         <div class="card fat">
                             <div class="card-body">
-                                <h4 class="card-title">Login</h4>
+                                <h4 class="card-title">@SharedLocalizer.GetLocalizedHtmlString("LOGIN")</h4>
                                 <form method="POST" id="frmlogin" class="my-login-validation" novalidate="">
                                     <div class="form-group">
                                         @Html.LabelFor(model => model.emailaddress, htmlAttributes: new { @class = "labelNormal required " })
@@ -56,26 +55,6 @@
         </section>
     </div>
 
-    @if (Model.ExternalProviders.Any())
-    {
-        <div class="col col-md-6">
-            <div class="panel-body">
-                <ul class="list-inline">
-                    @foreach (var provider in Model.ExternalProviders)
-                    {
-                        <li>
-                            <a class="btn btn-primary"
-                               asp-action="ExternalLogin"
-                               asp-route-provider="@provider.AuthenticationScheme"
-                               asp-route-returnUrl="@Model.ReturnUrl">
-                                @provider.DisplayName
-                            </a>
-                        </li>
-                    }
-                </ul>
-            </div>
-        </div>
-    }
 </div>
 
 @section Scripts {

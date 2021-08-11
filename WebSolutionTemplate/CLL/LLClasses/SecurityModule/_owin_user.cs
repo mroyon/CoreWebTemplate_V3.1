@@ -426,5 +426,14 @@ namespace CLL.LLClasses.SecurityModule
                 return resourceProvider_owin_user.GetResource("confirmpassword", CultureInfo.CurrentUICulture.Name) as String;
             }
         }
+
+        public static string passwordmissmatch
+        {
+            get
+            {
+                return resourceProvider_owin_user.GetResource("passwordmissmatch", CultureInfo.CurrentUICulture.Name) as String;
+            }
+        }
+        
     }
 }

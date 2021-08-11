@@ -199,11 +199,11 @@
             </a>
             <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                 <div class="dropdown-divider"></div>
-                <a href="#" class="dropdown-item" id="ahrefchange_password">
+                <a href="#" class="dropdown-item" id="ahrefchange_password" >
                     <i class="fas fa-key mr-2"></i>@SharedLocalizer.GetLocalizedHtmlString("CHANGE_PASSWORD")
                 </a>
                 <div class="dropdown-divider"></div>
-                <a href="#" class="dropdown-item">
+                <a href="#" class="dropdown-item" id="ahrefsignout" onclick="signOut()">
                     <i class="fas fa-sign-out-alt mr-2"></i>@SharedLocalizer.GetLocalizedHtmlString("LOGOUT")
                 </a>
                 <div class="dropdown-divider"></div>
@@ -213,19 +213,6 @@
 </nav>
 <!-- /.navbar -->
 <script type="text/javascript">
-    function updateLanguage(culture, returnUrl) {
-
-        var dataobject = { culture: culture, returnUrl: returnUrl };
-        ajaxPostObjectHandler("/Home/SetLanguage", dataobject, function (data) {
-            if (data !== "INVALID_PARAMETERS") {
-                alert("here as defaulr");
-                window.location.reload();
-            }
-            else {
-                alert("There is a problem on server side. Please try again later.");
-            }
-        }, true);
-    }
-
+   
 
 </script>

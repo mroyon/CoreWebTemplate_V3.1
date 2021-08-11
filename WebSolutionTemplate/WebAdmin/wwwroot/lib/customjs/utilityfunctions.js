@@ -1,8 +1,11 @@
-/******************************************
- * Utility Functions
- * 
- ******************************************/
-
+/*!
+ * Utility functions JavaScript Library v1.0
+ *
+ * Copyright Mahmudur rahman Foundation and other contributors
+ * Released under the MIT license
+ * https://jquery.org/license
+ * Date: 2021-03-02T17:08Z
+ */
 'use strict';
 $(function () {
     $("[requiredmarkup]").after($("<span>", {

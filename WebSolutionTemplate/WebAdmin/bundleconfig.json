@@ -90,7 +90,7 @@
     "inputFiles": [
       "wwwroot/lib/customjs/jqajaxproxy.js",
       "wwwroot/lib/customjs/utilityfunctions.js",
-      "wwwroot/lib/customjs/changepassword.js"
+      "wwwroot/lib/customjs/userprofilefunctions.js"
     ],
     "minify": { "enabled": true }
   },

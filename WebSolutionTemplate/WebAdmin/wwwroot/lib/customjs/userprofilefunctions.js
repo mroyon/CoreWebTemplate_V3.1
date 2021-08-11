@@ -1,9 +1,31 @@
-/******************************************
- * Change Password
- * All function related with Change Password
- ******************************************/
+/*!
+ * profile utility functions JavaScript Library v1.0 
+ *
+ * Copyright Mahmudur rahman Foundation and other contributors
+ * Released under the MIT license
+ * https://jquery.org/license
+ * Date: 2021-03-02T17:08Z
+ */
+
 
 'use strict';
+
+function updateLanguage(culture, returnUrl) {
+
+    var dataobject = { culture: culture, returnUrl: returnUrl };
+    ajaxPostObjectHandler("/Home/SetLanguage", dataobject, function (data) {
+        if (data !== "INVALID_PARAMETERS") {
+            window.location.reload();
+        }
+    }, true);
+}
+
+function signOut() {
+    var dataobject = { };
+    ajaxPostObjectHandler("/Account/Logout", dataobject, function (data) {
+            window.location.reload();
+    }, true);
+}
 
 $(function () {
 

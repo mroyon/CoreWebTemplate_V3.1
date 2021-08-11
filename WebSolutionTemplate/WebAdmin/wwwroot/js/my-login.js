@@ -16,7 +16,7 @@ $(function () {
             if (_cusFormValidate('frmlogin')) {
                 var dataobject = { emailaddress: $("#emailaddress").val(), password: $("#password").val()};
                 ajaxPostObjectHandler("/Account/Login", dataobject, function (data) {
-
+                    window.location.reload();
                 }, true);
 
             }
@@ -59,7 +59,7 @@ $(function () {
                 
                 //var dataobject = { emailaddress: $("#emailaddress").val() };
                 //ajaxPostObjectHandler("/Account/ForgetPassword", dataobject, function (data) {
-                //}, true);
+                //}, true); 
             }
         } catch (e) {
             showErrorAlert("Error", e.message, "OK");
