@@ -241,8 +241,7 @@ namespace DAC.Core.DataAccessObjects.Security.ExtendedPartial
                     try
                     {
 
-                        return itemList[0];
-
+                        //return itemList[0];
                         EncryptionHelper objenc = new EncryptionHelper();
 
                         string usersalt = itemList[0].passwordsalt;
@@ -304,7 +303,7 @@ namespace DAC.Core.DataAccessObjects.Security.ExtendedPartial
                     }
                     catch (Exception ex)
                     {
-                        throw GetDataAccessException(ex, SourceOfException("Iowin_userDataAccess.CreateUser"));
+                        throw GetDataAccessException(ex, SourceOfException("Iowin_userDataAccess.CreateUser")); 
                     }
                     cmd.Dispose();
                 }

@@ -37,9 +37,9 @@
         </member>
         <member name="M:WebAdmin.Controllers.AccountController.Login(BDO.DataAccessObjects.SecurityModule.owin_userEntity)">
             <summary>
-            
+            Login
             </summary>
-            <param name="model"></param>
+            <param name="request"></param>
             <returns></returns>
         </member>
         <member name="M:WebAdmin.Controllers.AccountController.Logout(BDO.DataAccessObjects.SecurityModule.owin_userEntity)">
@@ -65,9 +65,16 @@
         </member>
         <member name="M:WebAdmin.Controllers.AccountController.PasswordReset(System.String)">
             <summary>
-            Resetpassword
+            PasswordReset
             </summary>
             <param name="AUPIOuser"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebAdmin.Controllers.AccountController.PasswordResetPost(BDO.DataAccessObjects.SecurityModule.owin_userEntity)">
+            <summary>
+            PasswordReset
+            </summary>
+            <param name="request"></param>
             <returns></returns>
         </member>
         <member name="T:WebAdmin.Controllers.BaseController">

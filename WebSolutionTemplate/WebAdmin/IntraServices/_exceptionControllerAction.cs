@@ -38,8 +38,8 @@ namespace WebAdmin.IntraServices
         public static List<ControllerAction> _exceptionControllerActionGet()
         {
             _ControllerActionLists = new List<ControllerAction>();
-            _ControllerActionLists.Add(new ControllerAction() { Controller = "Account", Action= "Login" });
             _ControllerActionLists.Add(new ControllerAction() { Controller = "Home", Action = "Index" });
+            _ControllerActionLists.Add(new ControllerAction() { Controller = "Account", Action= "Login" });
             _ControllerActionLists.Add(new ControllerAction() { Controller = "Account", Action = "PasswordReset" });
 
             return _ControllerActionLists;

@@ -15,7 +15,7 @@ $(function () {
 
             if (_cusFormValidate('frmlogin')) {
                 var dataobject = { emailaddress: $("#emailaddress").val(), password: $("#password").val()};
-                ajaxPostObjectHandler("/Account/Login", dataobject, function (data) {
+                ajaxPostObjectHandler("/Account/Login", dataobject, function (response) {
                     window.location.reload();
                 }, true);
 
@@ -26,23 +26,13 @@ $(function () {
     });
 
 
-    //$(".my-login-validation").submit(function () {
-    //    var form = $(this);
-    //    if (form[0].checkValidity() === false) {
-    //        event.preventDefault();
-    //        event.stopPropagation();
-    //    }
-        
-    //});
-
-
     $('body').on('click', '#btnforgetpassword', function (e) {
         try {
             event.preventDefault();
 
             if (_cusFormValidate('frmforgetpassword')) {
                 var dataobject = { emailaddress: $("#emailaddress").val() };
-                ajaxPostObjectHandler("/Account/ForgetPassword", dataobject, function (data) {
+                ajaxPostObjectHandler("/Account/ForgetPassword", dataobject, function (response) {
                 }, true);
             }
         } catch (e) {
@@ -54,17 +44,23 @@ $(function () {
     $('body').on('click', '#btnresetpassword', function (e) {
         try {
             event.preventDefault();
-
             if (_cusFormValidate('frmresetpassword')) {
-                
-                //var dataobject = { emailaddress: $("#emailaddress").val() };
-                //ajaxPostObjectHandler("/Account/ForgetPassword", dataobject, function (data) {
-                //}, true); 
+                var dataobject = {
+                    emailaddress: $("#emailaddress").val(),
+                    newpassword: $("#newpassword").val(),
+                    confirmpassword: $("#confirmpassword").val(),
+                    password: $("#code").val()
+                };
+
+                ajaxPostObjectHandler("/Account/PasswordResetPost", dataobject, function (response) {
+
+                }, true); 
             }
         } catch (e) {
             showErrorAlert("Error", e.message, "OK");
         }
     });
+
 
     //$(".my-forgetpass-validation").submit(function () {
 

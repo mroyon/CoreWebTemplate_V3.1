@@ -63,7 +63,7 @@
 
   <resource culture="ar-kw" name="newpassword" value="AR:  new password"></resource>
   <resource culture="ar-kw" name="confirmpassword" value="AR:  confirm password"></resource>
-  <resource culture="ar-kw" name="passwordmissmatch" value="password miss match"></resource>
+  <resource culture="ar-kw" name="passwordmissmatch" value="AR password miss match"></resource>
   
 
   <!--  ar-kwabic (ar-kw) -->
@@ -128,8 +128,8 @@
 		<resource culture="en-us" name="userDetails" value="Detail"></resource>
 
 
-  <resource culture="en-us" name="newpassword" value="AR:  new password"></resource>
-  <resource culture="en-us" name="confirmpassword" value="AR:  confirm password"></resource>
+  <resource culture="en-us" name="newpassword" value=" new password"></resource>
+  <resource culture="en-us" name="confirmpassword" value="  confirm password"></resource>
   <resource culture="en-us" name="passwordmissmatch" value="password miss match"></resource>
   <!--  English (en-US) -->
         

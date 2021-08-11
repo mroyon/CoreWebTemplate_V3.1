@@ -217,6 +217,7 @@ namespace BDO.DataAccessObjects.SecurityModule
         [DataMember]
         [StringLength(150, MinimumLength = 5)]
         [DataType(DataType.Password)]
+        [Compare("confirmpassword", ErrorMessageResourceType = typeof(CLL.LLClasses.SecurityModule._owin_user), ErrorMessageResourceName = "passwordmissmatch")]
         [Display(Name = "newpassword", ResourceType = typeof(CLL.LLClasses.SecurityModule._owin_user))]
         [Required(ErrorMessageResourceType = typeof(CLL.LLClasses.SecurityModule._owin_user), ErrorMessageResourceName = "passwordRequired")]
         public string newpassword

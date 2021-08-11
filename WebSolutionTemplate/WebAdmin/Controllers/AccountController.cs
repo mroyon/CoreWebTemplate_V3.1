@@ -102,9 +102,9 @@ namespace WebAdmin.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Login
         /// </summary>
-        /// <param name="model"></param>
+        /// <param name="request"></param>
         /// <returns></returns>
         [HttpPost]
         [AllowAnonymous]
@@ -165,7 +165,6 @@ namespace WebAdmin.Controllers
             ModelState.Remove("confirmpassword");
             ModelState.Remove("passwordsalt");
 
-
             var idp = User?.FindFirst(JwtClaimTypes.IdentityProvider)?.Value;
             ClaimsIdentity claimsIdentity = HttpContext.User.Identity as ClaimsIdentity;
             await _userManager.logoutowin_userlogintrail(claimsIdentity);
@@ -205,7 +204,6 @@ namespace WebAdmin.Controllers
         public async Task<IActionResult> ForgetPassword([FromBody] owin_userEntity request)
         {
             var returnUrl = request.ReturnUrl;
-            var user = await _userManager.FindByNameAsync(request.emailaddress);
             ViewData["ReturnUrl"] = returnUrl;
 
             ModelState.Remove("passwordquestion");
@@ -232,7 +230,7 @@ namespace WebAdmin.Controllers
 
 
         /// <summary>
-        /// Resetpassword
+        /// PasswordReset
         /// </summary>
         /// <param name="AUPIOuser"></param>
         /// <returns></returns>
@@ -260,6 +258,43 @@ namespace WebAdmin.Controllers
                 }
             }
         }
+
+
+        /// <summary>
+        /// PasswordReset
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> PasswordResetPost([FromBody] owin_userEntity request)
+        {
+            var returnUrl = request.ReturnUrl;
+            ViewData["ReturnUrl"] = returnUrl;
+
+            ModelState.Remove("passwordquestion");
+            ModelState.Remove("passwordkey");
+            ModelState.Remove("passwordvector");
+            ModelState.Remove("locked");
+            ModelState.Remove("approved");
+            ModelState.Remove("loweredusername");
+            ModelState.Remove("applicationid");
+            ModelState.Remove("masteruserid");
+            ModelState.Remove("newpassword");
+            ModelState.Remove("username");
+            ModelState.Remove("isanonymous");
+            ModelState.Remove("masprivatekey");
+            ModelState.Remove("maspublickey");
+            ModelState.Remove("confirmpassword");
+            ModelState.Remove("passwordsalt");
+
+            if (!ModelState.IsValid) { return BadRequest(ModelState); }
+            await _auth_UseCase.ResetPassword(new Auth_Request(request), _auth_UsePresenter);
+            return _auth_UsePresenter.ContentResult;
+        }
+
+
 
 
         [HttpGet]

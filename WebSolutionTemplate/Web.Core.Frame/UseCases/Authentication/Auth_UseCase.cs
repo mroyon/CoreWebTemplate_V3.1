@@ -120,8 +120,6 @@ namespace Web.Core.Frame.UseCases
             }
         }
 
-
-
         public async Task<bool> ForgetPasswordRequest(Auth_Request message, IOutputPort_Auth<Auth_Response> outputPort)
         {
             CancellationToken cancellationToken = new CancellationToken();
@@ -169,6 +167,72 @@ namespace Web.Core.Frame.UseCases
                     return true;
                 else
                     return false;
+            }
+            catch (Exception ex)
+            {
+                Auth_Response objResponse = new Auth_Response(false, _sharedLocalizer["DATA_DELETE_ERROR"], new Error(
+                         "500",
+                         ex.Message));
+                _logger.LogInformation(JsonConvert.SerializeObject(objResponse));
+                outputPort.ForgetPassword(objResponse);
+                return true;
+            }
+        }
+
+
+        public async Task<bool> ResetPassword(Auth_Request message, IOutputPort_Auth<Auth_Response> outputPort)
+        {
+            bool state = false;
+            CancellationToken cancellationToken = new CancellationToken();
+            try
+            {
+                var returnUrl = message.Obj_owin_user.ReturnUrl;
+                var user = await _userManager.FindByNameAsync(message.Obj_owin_user.emailaddress);
+                if (user == null)
+                {
+                    outputPort.Login(new Auth_Response(new AjaxResponse("400", _sharedLocalizer["INVALID_REQUEST"].Value, CLL.LLClasses._Status._statusFailed, CLL.LLClasses._Status._titleInformation, ""
+                        ), false, _sharedLocalizer["INVALID_REQUEST"].Value));
+                    return false;
+                }
+                else
+                {
+                    IList<owin_userpasswordresetinfoEntity> objResObj = new List<owin_userpasswordresetinfoEntity>();
+
+                    objResObj = await BFC.Core.FacadeCreatorObjects.Security.owin_userpasswordresetinfoFCC.GetFacadeCreate(_contextAccessor).GetAll(new owin_userpasswordresetinfoEntity()
+                    {
+                        sessiontoken = message.Obj_owin_user.password,
+                        isactive = true
+                    }, cancellationToken);
+
+                    if (objResObj != null && objResObj.Count > 0)
+                    {
+                        message.Obj_owin_user.code = message.Obj_owin_user.password;
+                        message.Obj_owin_user.password = message.Obj_owin_user.confirmpassword;
+                        message.Obj_owin_user.masteruserid = user.masteruserid;
+                        message.Obj_owin_user.userid = user.userid;
+
+                        long? i = await BFC.Core.FacadeCreatorObjects.Security.ExtendedPartial.FCCKAFUserSecurity.
+                            GetFacadeCreate(_contextAccessor).UserResetPasswordAsync(message.Obj_owin_user, cancellationToken);
+                        if (i > 0)
+                        {
+                            outputPort.Login(new Auth_Response(new AjaxResponse("200", _sharedLocalizer["RESET_PASSWORD_CONFIRMATION"].Value, CLL.LLClasses._Status._statusSuccess, CLL.LLClasses._Status._titleInformation, "/"
+                                ), true, null));
+                            return true;
+                        }
+                        else
+                        {
+                            outputPort.Login(new Auth_Response(new AjaxResponse("500", _sharedLocalizer["DATA_PERSISTANCE_ERROR"].Value, CLL.LLClasses._Status._statusFailed, CLL.LLClasses._Status._titleInformation, ""
+                        ), false, _sharedLocalizer["DATA_PERSISTANCE_ERROR"].Value));
+                            return false;
+                        }
+                    }
+                    else
+                    {
+                        outputPort.Login(new Auth_Response(new AjaxResponse("400", _sharedLocalizer["INVALID_REQUEST"].Value, CLL.LLClasses._Status._statusFailed, CLL.LLClasses._Status._titleInformation, ""
+                          ), false, _sharedLocalizer["INVALID_REQUEST"].Value));
+                        return false;
+                    }
+                }
             }
             catch (Exception ex)
             {

@@ -243,7 +243,7 @@ namespace BFO.Core.BusinessFacadeObjects.Security.ExtendedPartial
             }
         }
 
-        async Task<string?> IKAFUserSecurity.ForgetPasswordRequest(owin_userEntity user, CancellationToken cancellationToken)
+        async Task<string?> IKAFUserSecurity.ForgetPasswordRequest(owin_userEntity user, CancellationToken cancellationToken) 
         {
             string authCode = string.Empty;
             try

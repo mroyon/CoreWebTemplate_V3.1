@@ -980,4 +980,10 @@
   <data name="FORGETPASSWORDEMAIL" xml:space="preserve">
     <value>Please check your email for reset password link.</value>
   </data>
+  <data name="INVALID_REQUEST" xml:space="preserve">
+    <value>Invalid request.</value>
+  </data>
+  <data name="DATA_PERSISTANCE_ERROR" xml:space="preserve">
+    <value>Error with data persistancy</value>
+  </data>
 </root>
