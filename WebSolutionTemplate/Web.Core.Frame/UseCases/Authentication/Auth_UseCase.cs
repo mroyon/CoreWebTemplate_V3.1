@@ -71,7 +71,7 @@ namespace Web.Core.Frame.UseCases
             throw new NotImplementedException();
         }
 
-        public async Task<bool> LoginRequestWeb(Auth_Request message, IOutputPort_Auth<Auth_Response> outputPort)
+        public async Task<bool> LoginWebRequest(Auth_Request message, IOutputPort_Auth<Auth_Response> outputPort)
         {
             bool state = false;
             try

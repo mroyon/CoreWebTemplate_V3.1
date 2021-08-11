@@ -130,13 +130,9 @@ namespace WebAdmin.Controllers
             ModelState.Remove("confirmpassword");
             ModelState.Remove("passwordsalt");
 
-            if (ModelState.IsValid)
-            {
                 if (!ModelState.IsValid) { return BadRequest(ModelState); }
-                await _auth_UseCase.LoginRequestWeb(new Auth_Request(request), _auth_UsePresenter);
+                await _auth_UseCase.LoginWebRequest(new Auth_Request(request), _auth_UsePresenter);
                 return _auth_UsePresenter.ContentResult;
-            }
-            return View(await BuildLoginViewModelAsync(request));
         }
 
 
