@@ -986,4 +986,7 @@
   <data name="DATA_PERSISTANCE_ERROR" xml:space="preserve">
     <value>Error with data persistancy</value>
   </data>
+  <data name="CANCEL_REQUEST" xml:space="preserve">
+    <value>Cancel request</value>
+  </data>
 </root>

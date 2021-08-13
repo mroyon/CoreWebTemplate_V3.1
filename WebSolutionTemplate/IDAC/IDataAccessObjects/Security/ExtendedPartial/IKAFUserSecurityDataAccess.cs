@@ -29,6 +29,8 @@ namespace IDAC.Core.IDataAccessObjects.Security.ExtendedPartial
 
         Task<long?> ForgetPasswordRequest(owin_userpasswordresetinfoEntity user, CancellationToken cancellationToken);
 
+        Task<owin_userEntity> ChangePasswordRequest(owin_userEntity user, CancellationToken cancellationToken);
+
 
         #endregion Identity Service Implementation
 

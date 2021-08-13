@@ -1,4 +1,6 @@
 using AspNetCore.CacheOutput.Extensions;
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -8,6 +10,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Serilog;
+using System;
+using Web.Api.Infrastructure;
+using Web.Core.Frame;
 using WebAppFront.Services;
 
 namespace WebAppFront
@@ -22,6 +27,7 @@ namespace WebAppFront
         /// _environment 
         /// </summary>
         public IWebHostEnvironment _environment { get; }
+        public ILifetimeScope AutofacContainer { get; private set; }
 
         /// <summary>
         /// Startup
@@ -37,11 +43,30 @@ namespace WebAppFront
         /// ConfigureServices
         /// </summary>
         /// <param name="services"></param>
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.InstallServicesInAssembly(_configuration);
 
             services.AddAutoMapper(typeof(Startup));
+            var builder = new ContainerBuilder();
+
+
+            builder.Populate(services);
+
+            builder.RegisterModule(new CoreModule());
+            builder.RegisterModule(new CoreModuleExtended());
+            builder.RegisterModule(new InfrastructureModule());
+            builder.RegisterModule(new CorePresenter());
+
+
+            //builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly()).Where(t => t.Name.EndsWith("Presenter")).SingleInstance();
+            AutofacContainer = builder.Build();
+            // Presenters
+
+
+            // Create the IServiceProvider based on the container.
+            return new AutofacServiceProvider(AutofacContainer);
+
         }
         /// <summary>
         /// Configure

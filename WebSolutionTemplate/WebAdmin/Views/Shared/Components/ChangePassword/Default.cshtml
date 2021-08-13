@@ -1,51 +1,61 @@
-﻿@model BDO.DataAccessObjects.SecurityModule.owin_userEntity
-
-@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@using CLL
+@model BDO.DataAccessObjects.SecurityModule.owin_userEntity
+@inject CLL.Localization.LocalizeService SharedLocalizer
 @{
+    ViewData["Title"] = @SharedLocalizer.GetLocalizedHtmlString("RESET_PASSWORD");
 }
+
 <div class="card">
     <div class="card-header">
         @ViewBag.Title
     </div>
     <div class="card-body">
-        <form id="frmchangepassword" autocomplete="off">
+        <form method="POST" id="frmchangepassword" class="my-login-validation" novalidate="">
             <div class="form-horizontal container">
                 <div class="row">
 
                 </div>
                 <div class="row ">
                     <div class="col-12 ">
+                        <div class="form-group">
+                            <label class="labelNormal required " asp-for="emailaddress"></label>
+                            <input asp-for="emailaddress" class="form-control" />
+                            <span asp-validation-for="emailaddress" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row ">
+                    <div class="col-12 ">
                         <div class="form-group ">
-                            @Html.LabelFor(model => model.password, htmlAttributes: new { @class = "labelNormal requried" })
-                            @Html.EditorFor(model => model.password, new { htmlAttributes = new { @class = " form-control" } })
-                            @Html.ValidationMessageFor(model => model.password, "", new { @class = "text-danger" })
+                            <label class="labelNormal required " asp-for="password"></label>
+                            <input asp-for="password" class="form-control" />
+                            <span asp-validation-for="password" class="text-danger"></span>
                         </div>
                     </div>
                 </div>
                 <div class="row ">
                     <div class="col-12 ">
                         <div class="form-group">
-                            @Html.LabelFor(model => model.newpassword, htmlAttributes: new { @class = "labelNormal requried" })
-                            @Html.EditorFor(model => model.newpassword, new { htmlAttributes = new { @class = " form-control" } })
-                            @Html.ValidationMessageFor(model => model.newpassword, "", new { @class = "text-danger" })
+                            <label class="labelNormal required " asp-for="newpassword"></label>
+                            <input asp-for="newpassword" class="form-control" />
+                            <span asp-validation-for="newpassword" class="text-danger"></span>
                         </div>
                     </div>
                 </div>
                 <div class="row ">
                     <div class="col-12 ">
                         <div class="form-group">
-                            @Html.LabelFor(model => model.confirmpassword, htmlAttributes: new { @class = "labelNormal requried" })
-                            @Html.EditorFor(model => model.confirmpassword, new { htmlAttributes = new { @class = " form-control" } })
-                            @Html.ValidationMessageFor(model => model.confirmpassword, "", new { @class = "text-danger" })
+                            <label class="labelNormal required " asp-for="confirmpassword"></label>
+                            <input asp-for="confirmpassword" class="form-control" />
+                            <span asp-validation-for="confirmpassword" class="text-danger"></span>
                         </div>
                     </div>
                 </div>
                 <div class="btn-toolbar">
                     <div class="form-group">
-                        <button type="submit" id="btnchangepassword" class="btn btn-primary btn-md btnchangepassword"><i class="fa fa-save"></i> Something</button>
-                        <button type="submit" id="btn-common-modal-close" class="btn btn-primary btn-md cancel"><i class="fa fa-arrow-circle-left"></i> Close</button>
+                        <button type="submit" id="btnchangepassword" class="btn btn-primary btn-md btnchangepassword"><i class="fa fa-save"></i> @SharedLocalizer.GetLocalizedHtmlString("SUBMIT_REQUEST")</button>
+                        <button type="submit" id="btn-common-modal-close" class="btn btn-primary btn-md cancel"><i class="fa fa-arrow-circle-left"></i> @SharedLocalizer.GetLocalizedHtmlString("CANCEL_REQUEST")</button>
                     </div>
                 </div>
             </div>

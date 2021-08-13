@@ -48,16 +48,16 @@ $(function () {
     $('body').on('click', '#btnchangepassword', function (e) {
         try {
             event.preventDefault();
-
             if (_cusFormValidate('frmchangepassword')) {
-                ajaxPostObjectHandler("/Account/ChangePassword", null, function (data) {
-                    if (data !== "INVALID_PARAMETERS") {
-                        showSuccessAlert("Success", data.response, "OK");
-                    }
-                    else {
-                        alert("There is a problem on server side. Please try again later.");
-                    }
-                }, false);
+                var dataobject = {
+                    emailaddress: $("#emailaddress").val(),
+                    password: $("#password").val(),
+                    newpassword: $("#newpassword").val(),
+                    confirmpassword: $("#confirmpassword").val()
+                };
+                ajaxPostObjectHandler("/Account/ChangePasswordPost", dataobject, function (response) {
+
+                }, true);
             }
 
         } catch (e) {

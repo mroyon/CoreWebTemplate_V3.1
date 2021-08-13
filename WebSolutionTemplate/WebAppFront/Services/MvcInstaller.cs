@@ -22,6 +22,9 @@ using WebAppFront.Providers;
 using WebAppFront.FilterAndAttributes;
 using CLL.Localization;
 using reCAPTCHA.AspNetCore;
+using Web.Api.Infrastructure.Auth;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace WebAppFront.Services
 {
@@ -35,12 +38,12 @@ namespace WebAppFront.Services
         /// </summary>
         /// <param name="services"></param>
         /// <param name="configuration"></param>
-        public void InstallServices(IServiceCollection services, IConfiguration configuration)
+        public void InstallServices(IServiceCollection services, IConfiguration _configuration)
         {
 
             services.AddResponseCaching();
 
-            services.Configure<EmailSettings>(configuration.GetSection("EmailSettings"));
+            services.Configure<EmailSettings>(_configuration.GetSection("EmailSettings"));
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
@@ -74,18 +77,26 @@ namespace WebAppFront.Services
                    {
                        options.EnableEndpointRouting = false;
                        //options.Conventions.Add(new AddAuthorizeFiltersControllerConvention());
-                        //options.Filters.Add<ValidationFilter>();
-                        options.Filters.Add<SecurityFillerAttribute>();
+                       //options.Filters.Add<ValidationFilter>();
+                       options.Filters.Add<SecurityFillerAttribute>();
                    })
                    .AddFluentValidation(mvcConfiguration => mvcConfiguration.RegisterValidatorsFromAssemblyContaining<Startup>())
                    .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
 
 
-            services.Configure <JwtSettings>(configuration.GetSection("JwtSettings"));
-            var JwtSettings = configuration.GetSection("JwtSettings").Get<JwtSettings>();
-            var signingConfigurations = new JWTSigningConfigurations(JwtSettings.Secret);
-            services.AddSingleton(signingConfigurations);
+
+            services.Configure<AuthSettings>(_configuration.GetSection(nameof(AuthSettings)));
+            var authSettings = _configuration.GetSection(nameof(AuthSettings)).Get<AuthSettings>();
+            var signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(authSettings.SecretKey));
+            var jwtIssuerOptions = _configuration.GetSection(nameof(JwtIssuerOptions)).Get<JwtIssuerOptions>();
+
+            services.Configure<JwtIssuerOptions>(options =>
+            {
+                options.Issuer = jwtIssuerOptions.Issuer;
+                options.Audience = jwtIssuerOptions.Audience;
+                options.SigningCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
+            });
 
             services.AddAuthentication(options =>
             {
@@ -96,34 +107,37 @@ namespace WebAppFront.Services
             })
                 .AddJwtBearer(options =>
                 {
+                    options.ClaimsIssuer = jwtIssuerOptions.Issuer;
                     options.SaveToken = true;
                     options.RequireHttpsMetadata = false;
-                    options.Audience = JwtSettings.Audience;
                     options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
                     {
-                        ValidateAudience = true,
+
                         ValidateIssuer = true,
+                        ValidIssuer = jwtIssuerOptions.Issuer,
+
+                        ValidateAudience = true,
+                        ValidAudience = jwtIssuerOptions.Audience,
+
                         ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = signingKey,
+
+                        RequireExpirationTime = false,
                         ValidateLifetime = true,
-                        ValidIssuer = JwtSettings.Issuer,
-                        ValidAudience = JwtSettings.Audience,
-                        IssuerSigningKey = signingConfigurations.SecurityKey,
                         ClockSkew = TimeSpan.Zero
                     };
                     options.Events = new JwtBearerEvents
                     {
+                        OnAuthenticationFailed = context =>
+                        {
+                            if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
+                            {
+                                context.Response.Headers.Add("Token-Expired", "true");
+                            }
+                            return Task.CompletedTask;
+                        },
                         OnMessageReceived = context =>
                         {
-                            var accessToken = context.Request.Query["access_token"];
-
-                            // If the request is for our hub...
-                            var path = context.HttpContext.Request.Path;
-                            if (!string.IsNullOrEmpty(accessToken) &&
-                                (path.StartsWithSegments("/hubs/chat")))
-                            {
-                                // Read the token out of the query string
-                                context.Token = accessToken;
-                            }
                             return Task.CompletedTask;
                         }
                     };
@@ -155,7 +169,7 @@ namespace WebAppFront.Services
                 });
             });
 
-            
+
 
             //services.AddSingleton<IAuthorizationHandler, Myhandler>();
 
@@ -177,15 +191,15 @@ namespace WebAppFront.Services
                 })
                 .AddNewtonsoftJson();
 
-            services.AddRecaptcha(configuration.GetSection("RecaptchaSettings"));
+            services.AddRecaptcha(_configuration.GetSection("RecaptchaSettings"));
 
             //for session enable
             services.AddSession(options =>
             {
-                options.IdleTimeout = TimeSpan.FromMinutes(2);
+                options.IdleTimeout = TimeSpan.FromMinutes(20);
                 options.Cookie.HttpOnly = true;
-                options.Cookie.SameSite = SameSiteMode.None;
-                options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+                options.Cookie.SameSite = SameSiteMode.Strict;
+                //options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
             });
         }
 

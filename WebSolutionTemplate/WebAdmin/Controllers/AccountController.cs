@@ -295,8 +295,11 @@ namespace WebAdmin.Controllers
         }
 
 
-
-
+        /// <summary>
+        /// ChangePassword
+        /// </summary>
+        /// <param name="returnUrl"></param>
+        /// <returns></returns>
         [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> ChangePassword(string returnUrl)
@@ -308,17 +311,38 @@ namespace WebAdmin.Controllers
             return ViewComponent("ChangePassword");
         }
 
+        /// <summary>
+        /// ChangePasswordPost
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [HttpPost]
         [AutoValidateAntiforgeryToken]
-        public async Task<IActionResult> ChangePassword(owin_userEntity model)
+        public async Task<IActionResult> ChangePasswordPost([FromBody] owin_userEntity request)
         {
-            var returnUrl = model.ReturnUrl;
-            var user = await _userManager.FindByNameAsync(model.emailaddress);
+            var returnUrl = request.ReturnUrl;
             ViewData["ReturnUrl"] = returnUrl;
 
+            ModelState.Remove("passwordquestion");
+            ModelState.Remove("passwordkey");
+            ModelState.Remove("passwordvector");
+            ModelState.Remove("locked");
+            ModelState.Remove("approved");
+            ModelState.Remove("loweredusername");
+            ModelState.Remove("applicationid");
+            ModelState.Remove("masteruserid");
+            ModelState.Remove("newpassword");
+            ModelState.Remove("username");
+            ModelState.Remove("isanonymous");
+            ModelState.Remove("masprivatekey");
+            ModelState.Remove("maspublickey");
+            ModelState.Remove("confirmpassword");
+            ModelState.Remove("passwordsalt");
+            ModelState.Remove("emailaddress");
 
-            System.Threading.Thread.Sleep(10000);
-            return Json(new { status = "ss", title = "ss", redirectUrl = "", responsetext = "ddd" });
+            if (!ModelState.IsValid) { return BadRequest(ModelState); }
+            await _auth_UseCase.ChangePassword(new Auth_Request(request), _auth_UsePresenter);
+            return _auth_UsePresenter.ContentResult;
         }
 
         private async Task<owin_userEntity> BuildLoginViewModelAsync(string returnUrl)

@@ -77,6 +77,20 @@
             <param name="request"></param>
             <returns></returns>
         </member>
+        <member name="M:WebAdmin.Controllers.AccountController.ChangePassword(System.String)">
+            <summary>
+            ChangePassword
+            </summary>
+            <param name="returnUrl"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebAdmin.Controllers.AccountController.ChangePasswordPost(BDO.DataAccessObjects.SecurityModule.owin_userEntity)">
+            <summary>
+            ChangePasswordPost
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
         <member name="T:WebAdmin.Controllers.BaseController">
             <summary>
             BaseController

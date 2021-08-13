@@ -215,7 +215,7 @@ namespace BFO.Core.BusinessFacadeObjects.Security.ExtendedPartial
         {
             try
             {
-                return await DataAccessFactory.CreateKAFUserSecurityDataAccess().RemoveFromRoleAsync( user,  role, cancellationToken);
+                return await DataAccessFactory.CreateKAFUserSecurityDataAccess().RemoveFromRoleAsync(user, role, cancellationToken);
             }
             catch (DataException ex)
             {
@@ -227,7 +227,7 @@ namespace BFO.Core.BusinessFacadeObjects.Security.ExtendedPartial
             }
         }
 
-        async Task<long> IKAFUserSecurity.SetEmailAsync(owin_userEntity user , CancellationToken cancellationToken)
+        async Task<long> IKAFUserSecurity.SetEmailAsync(owin_userEntity user, CancellationToken cancellationToken)
         {
             try
             {
@@ -243,7 +243,7 @@ namespace BFO.Core.BusinessFacadeObjects.Security.ExtendedPartial
             }
         }
 
-        async Task<string?> IKAFUserSecurity.ForgetPasswordRequest(owin_userEntity user, CancellationToken cancellationToken) 
+        async Task<string> IKAFUserSecurity.ForgetPasswordRequest(owin_userEntity user, CancellationToken cancellationToken)
         {
             string authCode = string.Empty;
             try
@@ -296,5 +296,22 @@ namespace BFO.Core.BusinessFacadeObjects.Security.ExtendedPartial
             }
         }
 
+        async Task<owin_userEntity> IKAFUserSecurity.ChangePasswordRequest(owin_userEntity user, CancellationToken cancellationToken)
+        {
+            try
+            {
+                return await DataAccessFactory.CreateKAFUserSecurityDataAccess().ChangePasswordRequest(user, cancellationToken);
+            }
+            catch (DataException ex)
+            {
+                throw GetFacadeException(ex, SourceOfException("IKAFUserSecurity.ChangePasswordRequest"));
+            }
+            catch (Exception exx)
+            {
+                throw exx;
+            }
+        }
+
+        //ChangePasswordRequest
     }
 }

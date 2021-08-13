@@ -209,7 +209,6 @@ namespace DAC.Core.DataAccessObjects.Security.ExtendedPartial
                 return null;
         }
 
-
         async Task<owin_userEntity> IKAFUserSecurityDataAccess.UserSignInAsync(owin_userEntity owin_user, CancellationToken cancellationToken)
         {
             owin_userEntity returnObject = new owin_userEntity();
@@ -240,10 +239,8 @@ namespace DAC.Core.DataAccessObjects.Security.ExtendedPartial
                 {
                     try
                     {
-
                         //return itemList[0];
                         EncryptionHelper objenc = new EncryptionHelper();
-
                         string usersalt = itemList[0].passwordsalt;
                         HashWithSaltResult ob2 = objenc.EncodePassword(owin_user.password, usersalt);
                         if (itemList[0].password.Equals(ob2.Digest) && owin_user.username == itemList[0].username)
@@ -265,7 +262,7 @@ namespace DAC.Core.DataAccessObjects.Security.ExtendedPartial
                     catch (Exception ex)
                     {
                         throw GetDataAccessException(ex, SourceOfException("IKAFUserSecurityDataAccess.UserSignInAsync"));
-                    }
+                    } 
                 }
                 else
                     return null;
@@ -399,7 +396,6 @@ namespace DAC.Core.DataAccessObjects.Security.ExtendedPartial
             return returnValue;
         }
 
-
         async Task<long> IKAFUserSecurityDataAccess.UserPhoneNumberConfirmed(owin_userEntity owin_user, CancellationToken cancellationToken)
         {
             long returnValue = -99;
@@ -473,7 +469,6 @@ namespace DAC.Core.DataAccessObjects.Security.ExtendedPartial
                 throw GetDataAccessException(ex, SourceOfException("IKAFUserSecurityDataAccess.GetUsersInRoleAsync"));
             }
         }
-
 
         async Task<long> IKAFUserSecurityDataAccess.RemoveFromRoleAsync(owin_userEntity user, owin_roleEntity role, CancellationToken cancellationToken)
         {
@@ -551,7 +546,6 @@ namespace DAC.Core.DataAccessObjects.Security.ExtendedPartial
             return returnValue;
         }
 
-
         async Task<long?> IKAFUserSecurityDataAccess.ForgetPasswordRequest(owin_userpasswordresetinfoEntity owin_userpasswordresetinfo, CancellationToken cancellationToken)
         {
             long i = -99;
@@ -589,5 +583,76 @@ namespace DAC.Core.DataAccessObjects.Security.ExtendedPartial
                 throw GetDataAccessException(ex, SourceOfException("IKAFUserSecurityDataAccess.ForgetPasswordRequest"));
             }
         }
+
+        async Task<owin_userEntity> IKAFUserSecurityDataAccess.ChangePasswordRequest(owin_userEntity user, CancellationToken cancellationToken)
+        {
+            owin_userEntity returnObject = new owin_userEntity();
+            IList<owin_userEntity> itemList = new List<owin_userEntity>();
+            try
+            {
+                using (DbCommand cmd = Database.GetStoredProcCommand("owin_user_GA"))
+                {
+                    user = FillParameters(user, cmd, Database);
+                    FillSequrityParameters(user.BaseSecurityParam, cmd, Database);
+
+                    IAsyncResult result = Database.BeginExecuteReader(cmd, null, null);
+                    while (!result.IsCompleted)
+                    {
+                    }
+                    using (IDataReader reader = Database.EndExecuteReader(result))
+                    {
+                        while (reader.Read())
+                        {
+                            itemList.Add(new owin_userEntity(reader));
+                        }
+                        reader.Close();
+                    }
+                    cmd.Dispose();
+                }
+                if (itemList != null && itemList.Count > 0)
+                {
+                    try
+                    {
+                        EncryptionHelper objenc = new EncryptionHelper();
+                        string usersalt = itemList[0].passwordsalt;
+                        HashWithSaltResult ob2 = objenc.EncodePassword(user.password, usersalt);
+                        if (itemList[0].password.Equals(ob2.Digest) && user.username == itemList[0].username)
+                        {
+                            itemList[0].password = "blablablabla";
+                            itemList[0].passwordquestion = "blablablabla";
+                            itemList[0].passwordanswer = "blablablabla";
+                            itemList[0].passwordkey = "blablablabla";
+                            itemList[0].passwordvector = "blablablabla";
+                            itemList[0].passwordsalt = "blablablabla";
+                            itemList[0].masprivatekey = "blablablabla";
+                            itemList[0].maspublickey = "blablablabla";
+
+                            var salt = objenc.GenerateRandomCryptographicKey(128);
+                            HashWithSaltResult ob1 = objenc.EncodePassword(user.newpassword, salt);
+                            user.password = ob1.Digest;
+                            user.passwordsalt = ob1.Salt;
+                            user.passwordkey = objenc.GenerateRandomCryptographicKey(24);
+                            user.passwordvector = objenc.GenerateRandomCryptographicKey(32);
+
+
+                        }
+                        else
+                            return null;
+                    }
+                    catch (Exception ex)
+                    {
+                        throw GetDataAccessException(ex, SourceOfException("IKAFUserSecurityDataAccess.ChangePasswordRequest"));
+                    }
+                }
+                else
+                    return null;
+            }
+            catch (Exception ex)
+            {
+                throw GetDataAccessException(ex, SourceOfException("IKAFUserSecurityDataAccess.ChangePasswordRequest"));
+            }
+            return user;
+        }
+
     }
 }

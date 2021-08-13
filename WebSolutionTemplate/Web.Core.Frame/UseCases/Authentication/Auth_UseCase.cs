@@ -244,5 +244,49 @@ namespace Web.Core.Frame.UseCases
                 return true;
             }
         }
+
+        public async Task<bool> ChangePassword(Auth_Request message, IOutputPort_Auth<Auth_Response> outputPort)
+        {
+            bool state = false;
+            CancellationToken cancellationToken = new CancellationToken();
+            try
+            {
+                var returnUrl = message.Obj_owin_user.ReturnUrl;
+                var user = await _userManager.FindByNameAsync(message.Obj_owin_user.emailaddress);
+                if (user == null)
+                {
+                    outputPort.Login(new Auth_Response(new AjaxResponse("403", _sharedLocalizer["INVALID_REQUEST"].Value, CLL.LLClasses._Status._statusFailed, CLL.LLClasses._Status._titleInformation, ""
+                        ), false, _sharedLocalizer["INVALID_REQUEST"].Value));
+                    return false;
+                }
+                else
+                {
+                    owin_userEntity i = await BFC.Core.FacadeCreatorObjects.Security.ExtendedPartial.FCCKAFUserSecurity.
+                        GetFacadeCreate(_contextAccessor).ChangePasswordRequest(message.Obj_owin_user, cancellationToken);
+                    if (i != null)
+                    {
+                        outputPort.Login(new Auth_Response(new AjaxResponse("200", _sharedLocalizer["RESET_PASSWORD_CONFIRMATION"].Value, CLL.LLClasses._Status._statusSuccess, CLL.LLClasses._Status._titleInformation, "/"
+                            ), true, null));
+                        return true;
+                    }
+                    else
+                    {
+                        outputPort.Login(new Auth_Response(new AjaxResponse("500", _sharedLocalizer["DATA_PERSISTANCE_ERROR"].Value, CLL.LLClasses._Status._statusFailed, CLL.LLClasses._Status._titleInformation, ""
+                    ), false, _sharedLocalizer["DATA_PERSISTANCE_ERROR"].Value));
+                        return false;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Auth_Response objResponse = new Auth_Response(false, _sharedLocalizer["DATA_DELETE_ERROR"], new Error(
+                         "500",
+                         ex.Message));
+                _logger.LogInformation(JsonConvert.SerializeObject(objResponse));
+                outputPort.ForgetPassword(objResponse);
+                return true;
+            }
+        }
+
     }
 }
