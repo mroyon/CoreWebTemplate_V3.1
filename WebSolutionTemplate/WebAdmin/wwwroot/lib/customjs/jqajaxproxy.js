@@ -67,6 +67,9 @@ function PostObjectProxy(url, params, successCallback, isStringify = false) {
 var ajaxPostObjectHandler = function (url, parameters, func, isStringify) {
 
     function onSuccess(response) {
+
+        console.log(response);
+
         if (response.success == true) {
             showInformationAlert(response._ajaxresponse.responsetitle, response._ajaxresponse.responsetext, "OK");
         }

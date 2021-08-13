@@ -584,16 +584,20 @@ namespace DAC.Core.DataAccessObjects.Security.ExtendedPartial
             }
         }
 
-        async Task<owin_userEntity> IKAFUserSecurityDataAccess.ChangePasswordRequest(owin_userEntity user, CancellationToken cancellationToken)
+        async Task<owin_userEntity> IKAFUserSecurityDataAccess.ChangePasswordRequest(owin_userEntity requestuser, CancellationToken cancellationToken)
         {
+            long returnValue = -99;
             owin_userEntity returnObject = new owin_userEntity();
             IList<owin_userEntity> itemList = new List<owin_userEntity>();
             try
             {
+                owin_userEntity getUser = new owin_userEntity();
+                getUser.username = requestuser.emailaddress;
+                requestuser.username = requestuser.emailaddress;
                 using (DbCommand cmd = Database.GetStoredProcCommand("owin_user_GA"))
                 {
-                    user = FillParameters(user, cmd, Database);
-                    FillSequrityParameters(user.BaseSecurityParam, cmd, Database);
+                    getUser = FillParameters(getUser, cmd, Database);
+                    FillSequrityParameters(requestuser.BaseSecurityParam, cmd, Database);
 
                     IAsyncResult result = Database.BeginExecuteReader(cmd, null, null);
                     while (!result.IsCompleted)
@@ -615,8 +619,8 @@ namespace DAC.Core.DataAccessObjects.Security.ExtendedPartial
                     {
                         EncryptionHelper objenc = new EncryptionHelper();
                         string usersalt = itemList[0].passwordsalt;
-                        HashWithSaltResult ob2 = objenc.EncodePassword(user.password, usersalt);
-                        if (itemList[0].password.Equals(ob2.Digest) && user.username == itemList[0].username)
+                        HashWithSaltResult ob2 = objenc.EncodePassword(requestuser.password, usersalt);
+                        if (itemList[0].password.Equals(ob2.Digest) && requestuser.username == itemList[0].username)
                         {
                             itemList[0].password = "blablablabla";
                             itemList[0].passwordquestion = "blablablabla";
@@ -628,13 +632,44 @@ namespace DAC.Core.DataAccessObjects.Security.ExtendedPartial
                             itemList[0].maspublickey = "blablablabla";
 
                             var salt = objenc.GenerateRandomCryptographicKey(128);
-                            HashWithSaltResult ob1 = objenc.EncodePassword(user.newpassword, salt);
-                            user.password = ob1.Digest;
-                            user.passwordsalt = ob1.Salt;
-                            user.passwordkey = objenc.GenerateRandomCryptographicKey(24);
-                            user.passwordvector = objenc.GenerateRandomCryptographicKey(32);
+                            HashWithSaltResult ob1 = objenc.EncodePassword(requestuser.newpassword, salt);
+                            requestuser.password = ob1.Digest;
+                            requestuser.passwordsalt = ob1.Salt;
+                            requestuser.passwordkey = objenc.GenerateRandomCryptographicKey(24);
+                            requestuser.passwordvector = objenc.GenerateRandomCryptographicKey(32);
 
+                            requestuser.masteruserid = itemList[0].masteruserid;
+                            requestuser.userid = itemList[0].userid;
 
+                            using (DbCommand cmd = Database.GetStoredProcCommand("KAF_Owin_UserPasswordChange"))
+                            {
+                                requestuser.lastlogindate = DateTime.Now;
+                                requestuser = FillParameters(requestuser, cmd, Database);
+
+                                Database.AddInParameter(cmd, "@SessionID", DbType.String, requestuser.BaseSecurityParam.sessionid);
+                                Database.AddInParameter(cmd, "@SessionToken", DbType.String, requestuser.BaseSecurityParam.transid);
+
+                                FillSequrityParameters(requestuser.BaseSecurityParam, cmd, Database);
+                                AddOutputParameter(cmd);
+                                try
+                                {
+                                    IAsyncResult result = Database.BeginExecuteNonQuery(cmd, null, null);
+                                    while (!result.IsCompleted)
+                                    {
+                                    }
+                                    returnValue = Database.EndExecuteNonQuery(result);
+                                    returnValue = (Int64)(cmd.Parameters["@RETURN_KEY"].Value);
+                                }
+                                catch (Exception ex)
+                                {
+                                    throw GetDataAccessException(ex, SourceOfException("Iowin_userDataAccess.ChangePasswordRequest"));
+                                }
+                                cmd.Dispose();
+                            }
+                            if(returnValue > 0)
+                                return requestuser;
+                            else
+                                return null;
                         }
                         else
                             return null;
@@ -651,7 +686,6 @@ namespace DAC.Core.DataAccessObjects.Security.ExtendedPartial
             {
                 throw GetDataAccessException(ex, SourceOfException("IKAFUserSecurityDataAccess.ChangePasswordRequest"));
             }
-            return user;
         }
 
     }

@@ -1,8 +1,6 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@using CLL
+@model BDO.DataAccessObjects.SecurityModule.owin_userEntity
+@inject CLL.Localization.LocalizeService SharedLocalizer
 
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
@@ -140,17 +138,17 @@
                 </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-chart-pie"></i>
+                        <i class="nav-icon fas fa-users-cog"></i>
                         <p>
-                            Charts
+                            @SharedLocalizer.GetLocalizedHtmlString("USER_MANAGEMENT")
                             <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="pages/charts/chartjs.html" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>ChartJS</p>
+                            <a href="#" class="nav-link" onclick="addUser()">
+                                <i class="fas fa-user-plus nav-icon"></i>
+                                <p>Add User</p>
                             </a>
                         </li>
                         <li class="nav-item">
@@ -678,3 +676,4 @@
     <!-- /.sidebar -->
 </aside>
 
+    

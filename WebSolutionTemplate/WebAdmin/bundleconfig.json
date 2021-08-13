@@ -134,5 +134,12 @@
       "renameLocals": true
     },
     "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/js/vendor.sidemenu.min.js",
+    "inputFiles": [
+      "wwwroot/lib/customjs/sidemenufunctions.js"
+    ],
+    "minify": { "enabled": true }
   }
 ]

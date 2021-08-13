@@ -56,7 +56,7 @@ $(function () {
                     confirmpassword: $("#confirmpassword").val()
                 };
                 ajaxPostObjectHandler("/Account/ChangePasswordPost", dataobject, function (response) {
-
+                    _cusCloseModal('modal-common');
                 }, true);
             }
 

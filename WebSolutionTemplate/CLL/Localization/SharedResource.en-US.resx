@@ -989,4 +989,7 @@
   <data name="CANCEL_REQUEST" xml:space="preserve">
     <value>Cancel request</value>
   </data>
+  <data name="USER_MANAGEMENT" xml:space="preserve">
+    <value>User Manage</value>
+  </data>
 </root>

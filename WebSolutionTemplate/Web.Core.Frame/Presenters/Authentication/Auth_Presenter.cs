@@ -65,6 +65,14 @@ namespace Web.Core.Frame.Presenters
             ContentResult.Content = response.Success ? JsonSerializer.SerializeObject(new Auth_Response(response._ajaxresponse, response.Success)) : JsonSerializer.SerializeObject(response.Errors);
         }
 
+        public void Error(Auth_Response response)
+        {
+            //throw new System.NotImplementedException();
+
+            ContentResult.StatusCode = int.Parse(response._ajaxresponse.responsecode);
+            ContentResult.Content = JsonSerializer.SerializeObject(new Auth_Response(response._ajaxresponse, response.Success));
+        }
+
         //
     }
 }

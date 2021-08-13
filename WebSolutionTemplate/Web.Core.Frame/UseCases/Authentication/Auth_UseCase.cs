@@ -265,14 +265,14 @@ namespace Web.Core.Frame.UseCases
                         GetFacadeCreate(_contextAccessor).ChangePasswordRequest(message.Obj_owin_user, cancellationToken);
                     if (i != null)
                     {
-                        outputPort.Login(new Auth_Response(new AjaxResponse("200", _sharedLocalizer["RESET_PASSWORD_CONFIRMATION"].Value, CLL.LLClasses._Status._statusSuccess, CLL.LLClasses._Status._titleInformation, "/"
+                        outputPort.Login(new Auth_Response(new AjaxResponse("401", _sharedLocalizer["RESET_PASSWORD_CONFIRMATION"].Value, CLL.LLClasses._Status._statusSuccess, CLL.LLClasses._Status._titleInformation, "/"
                             ), true, null));
                         return true;
                     }
                     else
                     {
-                        outputPort.Login(new Auth_Response(new AjaxResponse("500", _sharedLocalizer["DATA_PERSISTANCE_ERROR"].Value, CLL.LLClasses._Status._statusFailed, CLL.LLClasses._Status._titleInformation, ""
-                    ), false, _sharedLocalizer["DATA_PERSISTANCE_ERROR"].Value));
+                        outputPort.Error(new Auth_Response(new AjaxResponse("403", _sharedLocalizer["INVALID_REQUEST"].Value, CLL.LLClasses._Status._statusFailed, CLL.LLClasses._Status._titleInformation, ""
+                    ), false, _sharedLocalizer["INVALID_REQUEST"].Value));
                         return false;
                     }
                 }
