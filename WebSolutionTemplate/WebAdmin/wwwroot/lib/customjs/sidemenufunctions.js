@@ -13,13 +13,12 @@
 function addUser() {
 
     //var dataobject = { culture: culture, returnUrl: returnUrl };
-    showInformationAlert("info", "addUser", "OK");
+    //showInformationAlert("info", "addUser", "OK");
 
-    //ajaxPostObjectHandler("/Home/SetLanguage", dataobject, function (data) {
-    //    if (data !== "INVALID_PARAMETERS") {
-    //        window.location.reload();
-    //    }
-    //}, true);
+    ajaxGetHandler("/Account/AddUser", { returnUrl: "/" }, function (response) {
+        $("#maincontainer").html(response);
+        }, false, false);
+   
 }
 
 $(function () {
