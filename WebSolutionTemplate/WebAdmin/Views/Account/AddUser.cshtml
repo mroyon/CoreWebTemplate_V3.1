@@ -1,10 +1,88 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@using CLL
+@model BDO.DataAccessObjects.SecurityModule.owin_userEntity
+@inject CLL.Localization.LocalizeService SharedLocalizer
+
+@using Microsoft.Extensions.Options
+@{
+    ViewData["Title"] = "Add User";
 }
 
-<div class="text-center">
 
-    This is add user.
-    @*<h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>*@
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-footer">
+                <h5 class="card-title">@SharedLocalizer.GetLocalizedHtmlString("USER_MANAGEMENT")</h5>
+            </div>
+            <!-- /.card-header -->
+            <form method="POST" id="frmchangepassword" class="my-login-validation" novalidate="" autocomplete="off">
+                <div class="card-body">
+                    <div class="row ">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="labelNormal required " asp-for="emailaddress"></label>
+                                <input asp-for="emailaddress" class="form-control" />
+                                <span asp-validation-for="emailaddress" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="labelNormal required " asp-for="username"></label>
+                                <input asp-for="username" class="form-control" readonly />
+                                <span asp-validation-for="username" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row ">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="labelNormal required " asp-for="newpassword"></label>
+                                <input asp-for="newpassword" class="form-control" />
+                                <span asp-validation-for="newpassword" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="labelNormal required " asp-for="confirmpassword"></label>
+                                <input asp-for="confirmpassword" class="form-control" />
+                                <span asp-validation-for="confirmpassword" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row ">
+                        <div class="col-md-6 ">
+                            <div class="form-group">
+                                <label class="labelNormal required " asp-for="confirmpassword"></label>
+                                <input asp-for="confirmpassword" class="form-control" />
+                                <span asp-validation-for="confirmpassword" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row btn-toolbar">
+                        <div class="col-md-6 ">
+                            <div class="form-group">
+                                <button type="submit" id="btnchangepassword" class="btn btn-primary btn-md btnchangepassword"><i class="fa fa-save"></i> @SharedLocalizer.GetLocalizedHtmlString("SUBMIT_REQUEST")</button>
+                                <button type="submit" id="btn-common-modal-close" class="btn btn-primary btn-md cancel"><i class="fa fa-arrow-circle-left"></i> @SharedLocalizer.GetLocalizedHtmlString("CANCEL_REQUEST")</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <!-- ./card-body -->
+            <div class="card-footer">
+                <div class="row">
+                    <div class="col-md-12">
+
+                        <!-- /.description-block -->
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /.card-footer -->
+        </div>
+        <!-- /.card -->
+    </div>
+    <!-- /.col -->
 </div>
+

@@ -14,11 +14,9 @@ function addUser() {
 
     //var dataobject = { culture: culture, returnUrl: returnUrl };
     //showInformationAlert("info", "addUser", "OK");
-
     ajaxGetHandler("/Account/AddUser", { returnUrl: "/" }, function (response) {
-        $("#maincontainer").html(response);
+            $("#maincontainer").html(response);
         }, false, false);
-   
 }
 
 $(function () {
