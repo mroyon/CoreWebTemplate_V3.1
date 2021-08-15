@@ -14,6 +14,7 @@
     <!-- Favicons -->
     <link href="~/img/favicon.png" rel="icon">
     <link href="~/img/apple-touch-icon.png" rel="apple-touch-icon">
+    <link rel="stylesheet" href="~/css/vendor-datatables.min.css" asp-append-version="true" />
     @{
         if (System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.IsRightToLeft)
         {
@@ -76,13 +77,14 @@
     <div id="preloader"></div>
     <a href="#" class="back-to-top"><i class="icofont-simple-up"></i></a>
 
-    
+
     <script src="~/js/vendor.min.js" asp-append-version="true"></script>
 
     @RenderSection("scripts", required: false)
     @*<script src="~/lib/admin-lte/js/adminlte.js"></script> style="width:98%!important"*@
-    <script src="~/lib/Chartjs/chart.min.js"></script>
     <script src="~/js/vendor-validation.min.js" asp-append-version="true"></script>
+    <script src="~/js/vendor-datatables.min.js" asp-append-version="true"></script>
+
     <script src="~/js/custom-app-lib.min.js" asp-append-version="true"></script>
     <script src="~/js/vendor.sidemenu.min.js" asp-append-version="true"></script>
 

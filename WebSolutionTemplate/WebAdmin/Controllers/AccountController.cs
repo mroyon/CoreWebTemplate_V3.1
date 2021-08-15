@@ -359,6 +359,81 @@ namespace WebAdmin.Controllers
 
 
 
+
+        //AddUser
+        [HttpGet]
+        public async Task<IActionResult> ViewUserList(string returnUrl)
+        {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Account", "Login");
+            }
+            return View(new owin_userEntity());
+        }
+
+
+
+        /// <summary>
+        /// LoadUserData
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [AutoValidateAntiforgeryToken]
+        public async Task<IActionResult> LoadUserData()
+        {
+            try
+            {
+                var draw = Request.Form["draw"].FirstOrDefault();
+                // Skiping number of Rows count
+                var start = Request.Form["start"].FirstOrDefault();
+                // Paging Length 10,20
+                var length = Request.Form["length"].FirstOrDefault();
+                // Sort Column Name
+                var sortColumn = Request.Form["columns[" + Request.Form["order[0][column]"].FirstOrDefault() + "][name]"].FirstOrDefault();
+                // Sort Column Direction ( asc ,desc)
+                var sortColumnDirection = Request.Form["order[0][dir]"].FirstOrDefault();
+                // Search Value from (Search box)
+                var searchValue = Request.Form["search[value]"].FirstOrDefault();
+
+
+                // Getting all Customer data
+                //var UserData = await BFC.FacadeCreatorObjects.Security.owin_userFCC.GetFacadeCreate(_httpContextAccessor).GetAll(new owin_userEntity() { }, new System.Threading.CancellationToken());
+                //var tut = (from t in UserData
+                //           select new
+                //           {
+                //               t.userid,
+                //               t.username,
+                //               t.emailaddress,
+                //               t.mobilenumber
+                //           }).ToList();
+
+                //Sorting
+                //if (!(string.IsNullOrEmpty(sortColumn) && string.IsNullOrEmpty(sortColumnDirection)))
+                //{
+                //    customerData = customerData.OrderBy(sortColumn + " " + sortColumnDirection);
+                //}
+                ////Search
+                //if (!string.IsNullOrEmpty(searchValue))
+                //{
+                //    customerData = customerData.Where(m => m.Name == searchValue || m.Phoneno == searchValue || m.City == searchValue);
+                //}
+
+                //total number of rows count 
+                //recordsTotal = UserData.Count();
+                ////Paging 
+                //var data = UserData.Skip(skip).Take(pageSize).ToList();
+                //Returning Json Data
+                return Json(new { draw = draw, recordsFiltered = 0, recordsTotal = 0, data = "" });
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
+
+
         private async Task<owin_userEntity> BuildLoginViewModelAsync(string returnUrl)
         {
             var schemes = await _schemeProvider.GetAllSchemesAsync();

@@ -1,5 +1,4 @@
 ﻿@using CLL
-@model BDO.DataAccessObjects.SecurityModule.owin_userEntity
 @inject CLL.Localization.LocalizeService SharedLocalizer
 
 @using Microsoft.Extensions.Options
@@ -153,15 +152,15 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="@Url.Action("AddUser", "Account")" class="nav-link" >
+                            <a href="@Url.Action("AddUser", "Account")" class="nav-link">
                                 <i class="fas fa-user-plus nav-icon"></i>
                                 <p>Add User</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="pages/charts/flot.html" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Flot</p>
+                            <a href="@Url.Action("ViewUserList", "Account")" class="nav-link">
+                                <i class="fas fa-users nav-icon"></i>
+                                <p>View Users List</p>
                             </a>
                         </li>
                         <li class="nav-item">
@@ -182,16 +181,16 @@
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-tree"></i>
                         <p>
-                            UI Elements
+                            General Modules
                             <i class="fas fa-angle-left right"></i>
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="pages/UI/general.html" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>General</p>
-                            </a>
+                            <a href="@Url.Action("AddFAQCagetogy", "GenFAQCagetogy")" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Add FAQ Cagetogy</p>
+                                </a>
                         </li>
                         <li class="nav-item">
                             <a href="pages/UI/icons.html" class="nav-link">
