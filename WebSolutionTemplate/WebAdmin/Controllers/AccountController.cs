@@ -403,7 +403,8 @@ namespace WebAdmin.Controllers
                 objrequest.strCommonSerachParam = request.Search.Value;
                 await _owin_UserUseCase.GetListView(new Owin_UserRequest(objrequest), _owin_UserPresenter);
                 var model = JsonConvert.DeserializeObject<IEnumerable<owin_userEntity>>(_owin_UserPresenter.ContentResult.Content);
-                return Json(new { draw = draw, recordsFiltered = 0, recordsTotal = model.ToList()[0]?.RETURN_KEY , data = model });
+                //model = new List<owin_userEntity>();
+                return Json(new { draw = draw, recordsFiltered = 0, recordsTotal = model?.ToList().Count() > 0 ? model.ToList()[0]?.RETURN_KEY ?? 0 : 0, data = model });
             }
             catch (Exception ex)
             {
