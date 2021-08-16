@@ -21,6 +21,8 @@ using CLL.Localization;
 using Web.Core.Frame.Interfaces.UseCases;
 using Web.Core.Frame.RequestResponse.UseCaseRequests;
 using Web.Core.Frame.Presenters;
+using BDO.DataAccessObjects.CommonEntities;
+using Newtonsoft.Json;
 
 namespace WebAdmin.Controllers
 {
@@ -34,6 +36,9 @@ namespace WebAdmin.Controllers
         private readonly IAuth_UseCase _auth_UseCase;
         private readonly Auth_Presenter _auth_UsePresenter;
 
+        private readonly IOwin_UserUseCase _owin_UserUseCase;
+        private readonly Owin_UserPresenter _owin_UserPresenter;
+
         private readonly ApplicationUserManager<owin_userEntity> _userManager;
         private readonly ApplicationSignInManager<owin_userEntity> _signInManager;
         private readonly ILogger<AccountController> _logger;
@@ -45,15 +50,18 @@ namespace WebAdmin.Controllers
         /// </summary>
         /// <param name="auth_UseCase"></param>
         /// <param name="auth_UsePresenter"></param>
+        /// <param name="owin_UserUseCase"></param>
+        /// <param name="owin_UserPresenter"></param>
         /// <param name="userManager"></param>
         /// <param name="signInManager"></param>
-        /// <param name="emailSender"></param>
         /// <param name="loggerFactory"></param>
         /// <param name="factory"></param>
         /// <param name="schemeProvider"></param>
         public AccountController(
                         IAuth_UseCase auth_UseCase,
                         Auth_Presenter auth_UsePresenter,
+            IOwin_UserUseCase owin_UserUseCase,
+            Owin_UserPresenter owin_UserPresenter,
 
             ApplicationUserManager<owin_userEntity> userManager,
             ApplicationSignInManager<owin_userEntity> signInManager,
@@ -64,6 +72,8 @@ namespace WebAdmin.Controllers
         {
             _auth_UseCase = auth_UseCase;
             _auth_UsePresenter = auth_UsePresenter;
+            _owin_UserUseCase = owin_UserUseCase;
+            _owin_UserPresenter = owin_UserPresenter;
 
             _userManager = userManager;
             _signInManager = signInManager;
@@ -372,59 +382,28 @@ namespace WebAdmin.Controllers
         }
 
 
-
         /// <summary>
         /// LoadUserData
         /// </summary>
+        /// <param name="request"></param>
         /// <returns></returns>
         [HttpPost]
         [AutoValidateAntiforgeryToken]
-        public async Task<IActionResult> LoadUserData()
+        public async Task<IActionResult> LoadUserData(DtParameters request)
         {
             try
             {
-                var draw = Request.Form["draw"].FirstOrDefault();
-                // Skiping number of Rows count
-                var start = Request.Form["start"].FirstOrDefault();
-                // Paging Length 10,20
-                var length = Request.Form["length"].FirstOrDefault();
-                // Sort Column Name
-                var sortColumn = Request.Form["columns[" + Request.Form["order[0][column]"].FirstOrDefault() + "][name]"].FirstOrDefault();
-                // Sort Column Direction ( asc ,desc)
-                var sortColumnDirection = Request.Form["order[0][dir]"].FirstOrDefault();
-                // Search Value from (Search box)
-                var searchValue = Request.Form["search[value]"].FirstOrDefault();
-
-
-                // Getting all Customer data
-                //var UserData = await BFC.FacadeCreatorObjects.Security.owin_userFCC.GetFacadeCreate(_httpContextAccessor).GetAll(new owin_userEntity() { }, new System.Threading.CancellationToken());
-                //var tut = (from t in UserData
-                //           select new
-                //           {
-                //               t.userid,
-                //               t.username,
-                //               t.emailaddress,
-                //               t.mobilenumber
-                //           }).ToList();
-
-                //Sorting
-                //if (!(string.IsNullOrEmpty(sortColumn) && string.IsNullOrEmpty(sortColumnDirection)))
-                //{
-                //    customerData = customerData.OrderBy(sortColumn + " " + sortColumnDirection);
-                //}
-                ////Search
-                //if (!string.IsNullOrEmpty(searchValue))
-                //{
-                //    customerData = customerData.Where(m => m.Name == searchValue || m.Phoneno == searchValue || m.City == searchValue);
-                //}
-
-                //total number of rows count 
-                //recordsTotal = UserData.Count();
-                ////Paging 
-                //var data = UserData.Skip(skip).Take(pageSize).ToList();
-                //Returning Json Data
-                return Json(new { draw = draw, recordsFiltered = 0, recordsTotal = 0, data = "" });
-
+                var draw = request.Draw;
+                owin_userEntity objrequest = new owin_userEntity();
+                objrequest.BaseSecurityParam = new BDO.Base.SecurityCapsule();
+                objrequest.BaseSecurityParam = request.BaseSecurityParam;
+                objrequest.CurrentPage = request.Start == 0 ? 1 : request.Start / request.Length + 1;
+                objrequest.PageSize = request.Length;
+                objrequest.SortExpression = request.SortOrder + " " + request.Order[0].Dir;
+                objrequest.strCommonSerachParam = request.Search.Value;
+                await _owin_UserUseCase.GetListView(new Owin_UserRequest(objrequest), _owin_UserPresenter);
+                var model = JsonConvert.DeserializeObject<IEnumerable<owin_userEntity>>(_owin_UserPresenter.ContentResult.Content);
+                return Json(new { draw = draw, recordsFiltered = 0, recordsTotal = model.ToList()[0]?.RETURN_KEY , data = model });
             }
             catch (Exception ex)
             {

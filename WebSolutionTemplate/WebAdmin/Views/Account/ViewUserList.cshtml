@@ -58,10 +58,7 @@
 @section Scripts {
     <script>
 
-       
-
-        $(document).ready(function ()
-        {
+        $(document).ready(function () {
             $("#dtusers").DataTable({
                 "destroy": true,
                 "processing": true, // for show progress bar
@@ -69,12 +66,12 @@
                 "filter": true, // this is for disable filter (search box)
                 "orderMulti": false, // for disable multiple column at once
                 "responsive": true,
-                "ajax": $.fn.dataTable.json({url: "/Account/LoadUserData"}),
+                "ajax": $.fn.dataTable.json({ url: "/Account/LoadUserData" }),
                 "columnDefs":
-                [{
-                    "targets": [0],
-                    "visible": false,
-                    "searchable": false
+                    [{
+                        "targets": [0],
+                        "visible": false,
+                        "searchable": false
                     }],
                 "language":
                 {
@@ -86,12 +83,10 @@
                     { "data": "emailaddress", "name": "emailaddress", "autoWidth": true },
                     { "data": "mobilenumber", "name": "mobilenumber", "autoWidth": true },
                     {
-                        "render": function (data, type, full, meta)
-                        { return '<a class="btn btn-info" href="/Manage/EditUser/' + full.userid + '">Edit</a>'; }
+                        "render": function (data, type, full, meta) { return '<a class="btn btn-info" href="/Manage/EditUser/' + full.userid + '">Edit</a>'; }
                     },
                     {
-                        data: null, render: function (data, type, row)
-                        {
+                        data: null, render: function (data, type, row) {
                             return "<a href='#' class='btn btn-danger' onclick=DeleteData('" + row.userid + "'); >Delete</a>";
                         }
                     },

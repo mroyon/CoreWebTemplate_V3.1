@@ -49,6 +49,8 @@ $.fn.dataTable.json = function (opts) {
                 $.extend(request, conf.data);
             }
 
+            //console.log(request);
+
             settings.jqXHR = $.ajax({
                 "type": conf.method,
                 "url": conf.url,
@@ -59,7 +61,6 @@ $.fn.dataTable.json = function (opts) {
                     request.setRequestHeader("X-CSRF-TOKEN-WEBADMINHEADER", $('#X-CSRF-TOKEN-WEBADMINHEADER').val());
                 },
                 "success": function (json) {
-                    
                     drawCallback(json);
                 }
             });

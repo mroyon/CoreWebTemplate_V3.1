@@ -61,7 +61,7 @@ namespace Web.Core.Frame.Presenters
         public void GetListView(Owin_UserResponse response)
         {
             ContentResult.StatusCode = (int)(response.Success ? HttpStatusCode.OK : httpStatusCodeParser.SetHttpStatusCode(response.Errors));
-            ContentResult.Content = response.Success ? JsonSerializer.SerializeObject(new Owin_UserResponse(response._owin_UserList, response.Success)) : JsonSerializer.SerializeObject(response.Errors);
+            ContentResult.Content = response.Success ? JsonSerializer.SerializeObject(response._owin_UserList) : JsonSerializer.SerializeObject(response.Errors);
         }
 
         
