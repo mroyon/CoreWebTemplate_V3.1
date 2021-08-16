@@ -26,9 +26,9 @@
                                         <th><label class="labelNormal  " asp-for="username"></label></th>
                                         <th><label class="labelNormal  " asp-for="emailaddress"></label></th>
                                         <th><label class="labelNormal  " asp-for="mobilenumber"></label></th>
-                                        <th>Edit</th>
-                                        <th>Delete</th>
-                                        <th>Misc Actions</th>
+                                        <th>@SharedLocalizer.GetLocalizedHtmlString("EDIT")</th>
+                                        <th>@SharedLocalizer.GetLocalizedHtmlString("DELETE")</th>
+                                        <th>@SharedLocalizer.GetLocalizedHtmlString("VIEW")</th>
                                     </tr>
                                 </thead>
                             </table>
@@ -57,7 +57,7 @@
 
 @section Scripts {
     <script>
-
+        var dir = $("html").attr("dir");
         $(document).ready(function () {
             $("#dtusers").DataTable({
                 "destroy": true,
@@ -68,13 +68,22 @@
                 "responsive": true,
                 "ajax": $.fn.dataTable.json({ url: "/Account/LoadUserData" }),
                 "columnDefs":
-                    [{
-                        "targets": [0],
-                        "visible": false,
-                        "searchable": false
-                    }],
+                    [
+                        {
+                            "targets": [0],
+                            "visible": false,
+                            "searchable": false
+                        },
+                        {
+                            "targets": [4,5,6],                            
+                            "searchable": false,
+                            "className": "text-center",
+                             "width": "80"
+                        }
+                    ],
                 "language":
                 {
+                    "url": (dir == 'rtl' ? "//cdn.datatables.net/plug-ins/1.10.20/i18n/Arabic.json" : ""),
                     "processing": "<div class='overlay custom-loader-background'><i class='fa fa-cog fa-spin custom-loader-color'></i></div>"
                 },
                 "columns": [
@@ -83,24 +92,24 @@
                     { "data": "emailaddress", "name": "emailaddress", "autoWidth": true },
                     { "data": "mobilenumber", "name": "mobilenumber", "autoWidth": true },
                     {
-                        "render": function (data, type, full, meta) { return '<a class="btn btn-info" href="/Manage/EditUser/' + full.userid + '">Edit</a>'; }
+                        "render": function (data, type, full, meta) { return '<button  onclick="editrunner(' + full.userid + ')" class="btn btn-primary btn-md "><i class="fa fa-edit"></i> @SharedLocalizer.GetLocalizedHtmlString("EDIT")</button>'; }
                     },
                     {
-                        data: null, render: function (data, type, row) {
-                            return "<a href='#' class='btn btn-danger' onclick=DeleteData('" + row.userid + "'); >Delete</a>";
+                        data: null, render: function (data, type, full, row) {
+                            return '<button  onclick="deleterunner(' + full.userid + ')" class="btn btn-danger btn-md "><i class="fas fa-trash-alt"></i> @SharedLocalizer.GetLocalizedHtmlString("DELETE")</button>';
                         }
                     },
                     {
-                        data: null, render: function (data, type, row) {
-                            return "<a href='#' class='btn btn-danger' onclick=DeleteData('" + row.userid + "'); >Other Actions</a>";
+                        data: null, render: function (data, type, full, row) {
+                            return '<button  onclick="viewrunner(' + full.userid + ')" class="btn btn-info btn-md "><i class="fas fa-eye"></i> @SharedLocalizer.GetLocalizedHtmlString("VIEW")</button>';
                         }
                     },
                 ],
                 "drawCallback": function (settings) {
                     if (Math.ceil((this.fnSettings().fnRecordsDisplay()) / this.fnSettings()._iDisplayLength) > 1) {
-                        $('#GenGallaryCategoryDt_paginate').css("display", "block");
+                        $('#Dt_paginate').css("display", "block");
                     } else {
-                        $('#GenGallaryCategoryDt_paginate').css("display", "none");
+                        $('#Dt_paginate').css("display", "none");
                     }
 
                 }

@@ -890,4 +890,13 @@
   <data name="USER_MANAGEMENT" xml:space="preserve">
     <value>User Manage</value>
   </data>
+  <data name="EDIT" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="DETAILS" xml:space="preserve">
+    <value>Details</value>
+  </data>
+  <data name="VIEW" xml:space="preserve">
+    <value>View</value>
+  </data>
 </root>
