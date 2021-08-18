@@ -2,7 +2,6 @@
 @inject IAntiforgery antiforgery
 <!DOCTYPE html>
 @{
-
 }
 <html lang="en" dir="@(System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.IsRightToLeft ? "rtl" : "ltr")">
 <head>
@@ -14,7 +13,6 @@
     <!-- Favicons -->
     <link href="~/img/favicon.png" rel="icon">
     <link href="~/img/apple-touch-icon.png" rel="apple-touch-icon">
-    <link rel="stylesheet" href="~/css/vendor-datatables.min.css" asp-append-version="true" />
     @{
         if (System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.IsRightToLeft)
         {
@@ -25,6 +23,7 @@
             <link rel="stylesheet" href="~/css/vendor.min.css" asp-append-version="true" />
         }
     }
+    <link rel="stylesheet" href="~/css/vendor-datatables.min.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/custom-app-lib.min.css" asp-append-version="true" />
 </head>
 <body class="hold-transition dark-mode sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
@@ -78,15 +77,14 @@
     <a href="#" class="back-to-top"><i class="icofont-simple-up"></i></a>
 
 
+
     <script src="~/js/vendor.min.js" asp-append-version="true"></script>
 
     @RenderSection("scripts", required: false)
     @*<script src="~/lib/admin-lte/js/adminlte.js"></script> style="width:98%!important"*@
     <script src="~/js/vendor-validation.min.js" asp-append-version="true"></script>
     <script src="~/js/vendor-datatables.min.js" asp-append-version="true"></script>
-
     <script src="~/js/custom-app-lib.min.js" asp-append-version="true"></script>
-    <script src="~/js/vendor.sidemenu.min.js" asp-append-version="true"></script>
 
     <div id="modal-common-container" class="modal fade hidden-print" tabindex="-1" role="dialog">
         <div class="modal-dialog">
@@ -94,7 +92,6 @@
             </div>
         </div>
     </div>
-
 
     <script type="text/javascript">
         $(function () {

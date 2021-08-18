@@ -71,6 +71,7 @@
     "inputFiles": [
       "wwwroot/lib/jquery/jquery.js",
       "wwwroot/lib/font-awesome/js/all.js",
+      "wwwroot/lib/popper.js/umd/popper.js",
       "wwwroot/lib/bootstrap/dist/js/bootstrap.js",
       "wwwroot/lib/admin-lte/js/adminlte.js",
       "wwwroot/lib/overlayscrollbars/js/OverlayScrollbars.js",
@@ -80,8 +81,8 @@
       "wwwroot/lib/jquery-mapael/js/maps/usa_states.js",
       "wwwroot/lib/bootstrap-sweetalert/sweetalert.js",
       "wwwroot/lib/jquery.ui/jquery-ui.js",
-      "wwwroot/lib/admin-lte/js/demo.js",
-      "wwwroot/lib/admin-lte/js/pages/dashboard2.js"
+      "wwwroot/lib/admin-lte/js/demo.js"
+      //"wwwroot/lib/admin-lte/js/pages/dashboard2.js"
     ],
     "minify": { "enabled": true }
   },
@@ -90,7 +91,7 @@
     "inputFiles": [
       "wwwroot/lib/customjs/jqajaxproxy.js",
       "wwwroot/lib/customjs/utilityfunctions.js",
-      "wwwroot/lib/customjs/userprofilefunctions.js",
+      "wwwroot/lib/customjs/profileactivities.js",
       "wwwroot/lib/customjs/datatableproxy.js"
     ],
     "minify": { "enabled": true }
@@ -101,13 +102,37 @@
     ],
     "minify": { "enabled": true }
   },
+  // Vendor jquery validation JS
+  {
+    "outputFileName": "wwwroot/js/vendor-validation.min.js",
+    "inputFiles": [
+      "wwwroot/lib/jquery-validate/jquery.validate.js",
+      "wwwroot/lib/jquery-validate/additional-methods.js",
+      "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js",
+      "wwwroot/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/js/vendor.usermanagement.min.js",
+    "inputFiles": [
+      "wwwroot/lib/customjs/UserManagement/usermanagement.js"
+
+    ],
+    "minify": { "enabled": true }
+  },
   // Vendor datatables JS
   {
     "outputFileName": "wwwroot/js/vendor-datatables.min.js",
-    "inputFiles": [
-      "wwwroot/lib/datatables/js/jquery.dataTables.js",
-      "wwwroot/lib/datatables/js/dataTables.bootstrap4.js"
-      //"wwwroot/lib/datatables.net-bs4/dataTables.bootstrap4.js"
+    "inputFiles": [      
+      "wwwroot/lib/datatables.net/jquery.dataTables.js",
+      "wwwroot/lib/datatables.net-bs4/dataTables.bootstrap4.js",
+      "wwwroot/lib/datatables-responsive/dataTables.responsive.js",
+      "wwwroot/lib/datatables.net-responsive-bs4/responsive.bootstrap4.js"
     ],
     "minify": {
       "enabled": true,
@@ -119,30 +144,11 @@
   {
     "outputFileName": "wwwroot/css/vendor-datatables.min.css",
     "inputFiles": [
-      "wwwroot/lib/datatables/css/jquery.dataTables.css",
-      "wwwroot/lib/datatables/css/dataTables.bootstrap4.css"
-    ],
-    "minify": { "enabled": true }
-  },
-  // Vendor jquery validation JS
-  {
-    "outputFileName": "wwwroot/js/vendor-validation.min.js",
-    "inputFiles": [
-      "wwwroot/lib/jquery-validate/jquery.validate.js",
-      "wwwroot/lib/jquery-validate/additional-methods.js",
-      "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"
-    ],
-    "minify": {
-      "enabled": true,
-      "renameLocals": true
-    },
-    "sourceMap": false
-  },
-  {
-    "outputFileName": "wwwroot/js/vendor.sidemenu.min.js",
-    "inputFiles": [
-      "wwwroot/lib/customjs/sidemenufunctions.js"
+      "wwwroot/lib/datatables.net-bs4/dataTables.bootstrap4.css",
+      "wwwroot/lib/datatables.net-responsive-bs4/responsive.bootstrap4.css"
     ],
     "minify": { "enabled": true }
   }
+
+
 ]

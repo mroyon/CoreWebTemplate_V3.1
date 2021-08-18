@@ -92,6 +92,13 @@
             <param name="request"></param>
             <returns></returns>
         </member>
+        <member name="M:WebAdmin.Controllers.AccountController.CreateUser(BDO.DataAccessObjects.SecurityModule.owin_userEntity)">
+            <summary>
+            CreateUser
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
         <member name="M:WebAdmin.Controllers.AccountController.LoadUserData(BDO.DataAccessObjects.CommonEntities.DtParameters)">
             <summary>
             LoadUserData
@@ -134,6 +141,39 @@
             <summary>
             options
             </summary>
+        </member>
+        <member name="T:WebAdmin.Controllers.GenFAQCagetogyController">
+            <summary>
+            GenFAQCagetogyController
+            </summary>
+        </member>
+        <member name="M:WebAdmin.Controllers.GenFAQCagetogyController.ListFaqCategory(System.String)">
+            <summary>
+            Get Faq List
+            </summary>
+            <param name="returnUrl"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebAdmin.Controllers.GenFAQCagetogyController.ListFaqCategoryPost(BDO.DataAccessObjects.CommonEntities.DtParameters)">
+            <summary>
+            ListFaqCategory
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebAdmin.Controllers.GenFAQCagetogyController.AddFAQCagetogy(System.String)">
+            <summary>
+            Add FAQ Category
+            </summary>
+            <param name="returnUrl"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebAdmin.Controllers.GenFAQCagetogyController.AddFAQCagetogyPost(BDO.DataAccessObjects.Models.gen_faqcagetogyEntity)">
+            <summary>
+            Post Add FAQ Category
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
         </member>
         <member name="T:WebAdmin.Controllers.HomeController">
             <summary>
@@ -193,7 +233,7 @@
             </summary>
             <param name="context"></param>
             <param name="next"></param>
-            <returns></returns>
+            <returns></returns> 
         </member>
         <member name="T:WebAdmin.FilterAndAttributes.SecurityHeadersAttribute">
             <summary>
@@ -242,6 +282,49 @@
             <param name="user"></param>
             <returns></returns>
         </member>
+        <member name="T:WebAdmin.IntraServices.EmailSender">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:WebAdmin.IntraServices.EmailSender.#ctor(Microsoft.Extensions.Options.IOptions{BDO.DataAccessObjects.CommonEntities.EmailSettings})">
+            <summary>
+            
+            </summary>
+            <param name="optionsEmailSettings"></param>
+        </member>
+        <member name="M:WebAdmin.IntraServices.EmailSender.SendEmailAsync(System.String,System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="email"></param>
+            <param name="subject"></param>
+            <param name="message"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebAdmin.IntraServices.EmailSender.Execute(System.String,System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="email"></param>
+            <param name="subject"></param>
+            <param name="message"></param>
+            <returns></returns>
+        </member>
+        <member name="T:WebAdmin.IntraServices.IEmailSender">
+            <summary>
+            IEmailSender
+            </summary>
+        </member>
+        <member name="M:WebAdmin.IntraServices.IEmailSender.SendEmailAsync(System.String,System.String,System.String)">
+            <summary>
+            SendEmailAsync
+            </summary>
+            <param name="email"></param>
+            <param name="subject"></param>
+            <param name="message"></param>
+            <returns></returns>
+        </member>
         <member name="T:WebAdmin.IntraServices.ControllerAction">
             <summary>
             ControllerAction
@@ -259,7 +342,7 @@
         </member>
         <member name="T:WebAdmin.IntraServices._exceptionControllerAction">
             <summary>
-            _exceptionControllerAction
+            _exceptionControllerAction 
             </summary>
         </member>
         <member name="P:WebAdmin.IntraServices._exceptionControllerAction._ControllerActionLists">
@@ -271,6 +354,27 @@
             <summary>
             _exceptionControllerAction constructer
             </summary>
+        </member>
+        <member name="T:WebAdmin.Providers.JWTSigningConfigurations">
+            <summary>
+            JWTSigningConfigurations
+            </summary>
+        </member>
+        <member name="P:WebAdmin.Providers.JWTSigningConfigurations.SecurityKey">
+            <summary>
+            SecurityKey
+            </summary>
+        </member>
+        <member name="P:WebAdmin.Providers.JWTSigningConfigurations.SigningCredentials">
+            <summary>
+            SigningCredentials
+            </summary>
+        </member>
+        <member name="M:WebAdmin.Providers.JWTSigningConfigurations.#ctor(System.String)">
+            <summary>
+            JWTSigningConfigurations
+            </summary>
+            <param name="key"></param>
         </member>
         <member name="T:WebAdmin.Providers.LocalizationQueryProvider">
             <summary>
