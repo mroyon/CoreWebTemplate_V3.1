@@ -125,14 +125,24 @@
     ],
     "minify": { "enabled": true }
   },
-  // Vendor datatables JS
-  {
+  { // Vendor datatables JS
     "outputFileName": "wwwroot/js/vendor-datatables.min.js",
-    "inputFiles": [      
+    "inputFiles": [
+
       "wwwroot/lib/datatables.net/jquery.dataTables.js",
       "wwwroot/lib/datatables.net-bs4/dataTables.bootstrap4.js",
       "wwwroot/lib/datatables-responsive/dataTables.responsive.js",
-      "wwwroot/lib/datatables.net-responsive-bs4/responsive.bootstrap4.js"
+      "wwwroot/lib/datatables.net-responsive-bs4/responsive.bootstrap4.js",
+
+
+      "wwwroot/lib/datatables.net-buttons-bs4/buttons.bootstrap4.js",
+      "wwwroot/lib/datatables.net-buttons/js/dataTables.buttons.js",
+      "wwwroot/lib/jszip/jszip.js",
+      "wwwroot/lib/pdfmake/pdfmake.js",
+      "wwwroot/lib/pdfmake/vfs_fonts.js",
+      "wwwroot/lib/datatables.net-buttons/js/buttons.html5.js",
+      "wwwroot/lib/datatables.net-buttons/js/buttons.colVis.js",
+      "wwwroot/lib/datatables.net-buttons/js/buttons.print.js"
     ],
     "minify": {
       "enabled": true,
@@ -140,12 +150,13 @@
     },
     "sourceMap": false
   },
-  // Vendor datatables CSS
-  {
+  { // Vendor datatables CSS
     "outputFileName": "wwwroot/css/vendor-datatables.min.css",
     "inputFiles": [
+
       "wwwroot/lib/datatables.net-bs4/dataTables.bootstrap4.css",
       "wwwroot/lib/datatables.net-responsive-bs4/responsive.bootstrap4.css"
+      //"wwwroot/lib/datatables.net-buttons-bs4/buttons.bootstrap4.css"
     ],
     "minify": { "enabled": true }
   }

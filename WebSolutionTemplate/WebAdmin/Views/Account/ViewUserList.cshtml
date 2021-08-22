@@ -61,8 +61,9 @@
         var dir = $("html").attr("dir");
 
         $(document).ready(function () {
-       var dt =   $("#dtusers").DataTable({
-                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+
+            var dt = $("#dtusers").DataTable({
+                "lengthMenu": [[10, 25, 50, 100, 200], [10, 25, 50, 100, 200]],
                 "bDestroy": true,
                 "processing": true, // for show progress bar
                 "serverSide": true, // for process server side
@@ -71,11 +72,14 @@
                 "responsive": true,
                 "bAutoWidth": false,
                 "autoWidth": false,
-
+                //"pagingType": "full_numbers"
+                "pagingType": "simple_numbers",
                 "stripeClasses": [],
-           "ajax": $.fn.dataTable.json({ url: "/Account/LoadUserData" }),
-           "sDom": 'C<"clear">lfrtip',
-           //dom: "<'row'<'col-lg-6'l><'col-lg-6'i>>" + "<'row' style='width:100%'<'col-lg-12'tr<'actions'>>>" + "<'row style='width:100%' '<'col-lg-4'><'col-lg-8'p>>",
+                "ajax": $.fn.dataTable.json({ url: "/Account/LoadUserData" }),
+                "dom": 'C<"clear">Blfrtip<>',
+                //"dom": "<'row'<'col-lg-6'l><'col-lg-6'i>>",
+                "buttons": ['print', 'copy', 'excel', 'pdf'],
+                //"dom": "<'row'<'col-lg-6'l><'col-lg-6'i>>" + "<'row' style='width:100%'<'col-lg-12'tr<'actions'>>>" + "<'row style='width:100%' '<'col-lg-4'><'col-lg-8'p>>",
            columnDefs: [
                { targets: 0, "visible": false, searchable: false },    // Fix the column width
                { targets: 1, "visible": true },
@@ -123,8 +127,7 @@
                 }
 
        });
-
-            
+            $.fn.DataTable.ext.pager.numbers_length = 3;
         });
 
     </script>

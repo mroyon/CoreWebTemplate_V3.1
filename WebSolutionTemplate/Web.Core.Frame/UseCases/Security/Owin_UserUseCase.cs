@@ -132,11 +132,13 @@ namespace Web.Core.Frame.UseCases
                 }
                 else
                 {
-                    Owin_UserResponse objResponse = new Owin_UserResponse(false, _sharedLocalizer["NO_DATA_FOUND"], new Error(
-                     "404",
-                     _sharedLocalizer["NO_DATA_FOUND"]));
-                    _logger.LogInformation(JsonConvert.SerializeObject(objResponse));
-                    outputPort.GetListView(objResponse);
+                    List<owin_userEntity> oblist2 = new List<owin_userEntity>();
+                    outputPort.GetListView(new Owin_UserResponse(oblist2, true));
+                    //Owin_UserResponse objResponse = new Owin_UserResponse(false, _sharedLocalizer["NO_DATA_FOUND"], new Error(
+                    // "404",
+                    // _sharedLocalizer["NO_DATA_FOUND"]));
+                    //_logger.LogInformation(JsonConvert.SerializeObject(objResponse));
+                    //outputPort.GetListView(objResponse);
                 }
                 return true;
             }
