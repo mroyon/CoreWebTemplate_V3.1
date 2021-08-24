@@ -135,8 +135,8 @@
       "wwwroot/lib/datatables.net-responsive-bs4/responsive.bootstrap4.js",
 
 
-      "wwwroot/lib/datatables.net-buttons-bs4/buttons.bootstrap4.js",
       "wwwroot/lib/datatables.net-buttons/js/dataTables.buttons.js",
+      "wwwroot/lib/datatables.net-buttons-bs4/buttons.bootstrap4.js",
       "wwwroot/lib/jszip/jszip.js",
       "wwwroot/lib/pdfmake/pdfmake.js",
       "wwwroot/lib/pdfmake/vfs_fonts.js",

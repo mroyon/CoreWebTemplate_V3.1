@@ -19,7 +19,7 @@
                 <form method="POST" id="frmchangepassword" class="my-login-validation" novalidate="" autocomplete="off">
                     <div class="row">
                         <div class="col-md-12">
-                            <table id="dtusers" class="table table-striped table-bordered" style="width:100%" cellspacing="0">
+                            <table id="dtusers" class="table table-striped table-bordered" @*style="width:100%"*@ cellspacing="0">
                                 <thead>
                                     <tr>
                                         <th><label class="labelNormal  " asp-for="userid"></label></th>
@@ -35,13 +35,14 @@
                             </table>
                         </div>
                     </div>
+                    
                 </form>
             </div>
             <!-- ./card-body -->
             <div class="card-footer">
                 <div class="row">
                     <div class="col-md-12">
-
+                        
                         <!-- /.description-block -->
                     </div>
                     <!-- /.col -->
@@ -58,76 +59,42 @@
 
 @section Scripts {
     <script>
-        var dir = $("html").attr("dir");
-
         $(document).ready(function () {
-
             var dt = $("#dtusers").DataTable({
-                "lengthMenu": [[10, 25, 50, 100, 200], [10, 25, 50, 100, 200]],
-                "bDestroy": true,
-                "processing": true, // for show progress bar
-                "serverSide": true, // for process server side
-                "filter": true, // this is for disable filter (search box)
-                "orderMulti": false, // for disable multiple column at once
-                "responsive": true,
-                "bAutoWidth": false,
-                "autoWidth": false,
-                //"pagingType": "full_numbers"
-                "pagingType": "simple_numbers",
-                "stripeClasses": [],
                 "ajax": $.fn.dataTable.json({ url: "/Account/LoadUserData" }),
-                "dom": 'C<"clear">Blfrtip<>',
-                //"dom": "<'row'<'col-lg-6'l><'col-lg-6'i>>",
-                "buttons": ['print', 'copy', 'excel', 'pdf'],
-                //"dom": "<'row'<'col-lg-6'l><'col-lg-6'i>>" + "<'row' style='width:100%'<'col-lg-12'tr<'actions'>>>" + "<'row style='width:100%' '<'col-lg-4'><'col-lg-8'p>>",
-           columnDefs: [
-               { targets: 0, "visible": false, searchable: false },    // Fix the column width
-               { targets: 1, "visible": true },
-               { targets: 2, "visible": true },
-               { targets: 3, "visible": true },
-               { targets: 4, "visible": true },
-               { targets: 5, "visible": true },
-               { targets: 6, "visible": true },
-           ],
-           //fixedColumns: true,
-                "language":
-                {
-                    "url": (dir == 'rtl' ? "//cdn.datatables.net/plug-ins/1.10.20/i18n/Arabic.json" : ""),
-                    "processing": "<div class='overlay custom-loader-background'><i class='fa fa-cog fa-spin custom-loader-color'></i></div>",
-                    "infoFiltered": ""
-                },
-           "columns": [
-               { "data": "userid", "name": "userid", "autoWidth": true},
+                columnDefs: [
+                    { targets: 0, "visible": false, searchable: false },    // Fix the column width
+                    { targets: 1, "visible": true },
+                    { targets: 2, "visible": true },
+                    { targets: 3, "visible": true },
+                    { targets: 4, "visible": true },
+                    { targets: 5, "visible": true },
+                    { targets: 6, "visible": true },
+                ],
+                "columns": [
+                    { "data": "userid", "name": "userid", "autoWidth": true },
                     { "data": "username", "name": "username", "autoWidth": true },
                     { "data": "emailaddress", "name": "emailaddress", "autoWidth": true },
                     { "data": "mobilenumber", "name": "mobilenumber", "autoWidth": true },
                     {
                         data: null, render: function (data, type, full, row) {
-                            return '<button  onclick="deleterunner(' + full.userid + ')" class="btn btn-primary btn-md "><i class="fas fa-trash-alt"></i> @SharedLocalizer.GetLocalizedHtmlString("EDIT")</button>';
+                            //return '<a asp-area=""  class="btn btn-info btn-md " asp-controller="vAttendanceReports" asp-action="Index" asp-route-selectVisitor="1" asp-route-selectClass="CW">@SharedLocalizer.GetLocalizedHtmlString("EDIT")</a>';
+                            //return '<button value="'+ full.userid +'" asp-controller="Account"  asp-action="AddUser" class="btn btn-info btn-md "><i class="fas fa-trash-alt"></i>@SharedLocalizer.GetLocalizedHtmlString("EDIT")</button>';
+                            return '<button type="button" class="btn btn-info btn-md" onclick="location.href=\'@Url.Action("AddUser", "Account", new { returnUrl = "/" })\'"><i class="fas fa-edit"></i> @SharedLocalizer.GetLocalizedHtmlString("EDIT")</button>'
+                        }
+                    },
+                    {
+                        data: null, render: function (data, type, full, row) {
+                            return '<a asp-controller="Account" asp-action="AddUser" asp-route-level="3" asp-route-type="full" asp-route-id="12" class="btn btn-danger btn-md "><i class="fas fa-trash-alt"></i>@SharedLocalizer.GetLocalizedHtmlString("DELETE")</a >';
                         }
                     },
                     {
                         data: null, render: function (data, type, full, row) {
                             return '<button  onclick="deleterunner(' + full.userid + ')" class="btn btn-danger btn-md "><i class="fas fa-trash-alt"></i> @SharedLocalizer.GetLocalizedHtmlString("DELETE")</button>';
                         }
-                    },
-                    {
-                        data: null, render: function (data, type, full, row) {
-                             return '<button  onclick="deleterunner(' + full.userid + ')" class="btn btn-info btn-md "><i class="fas fa-trash-alt"></i> @SharedLocalizer.GetLocalizedHtmlString("ACTION")</button>';
-                        }
                     }
-                ],
-                "drawCallback": function (settings) {
-                    if (Math.ceil((this.fnSettings().fnRecordsDisplay()) / this.fnSettings()._iDisplayLength) > 1) {
-                        $('#Dt_paginate').css("display", "block");
-                    } else {
-                        $('#Dt_paginate').css("display", "none");
-                    }
-
-                }
-
-       });
-            $.fn.DataTable.ext.pager.numbers_length = 3;
+                ]
+            });
         });
 
     </script>

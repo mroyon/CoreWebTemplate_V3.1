@@ -7,8 +7,46 @@
  * Date: 2021-03-02T17:08Z
  */
 
-
 'use strict';
+
+
+var dir = $("html").attr("dir");
+
+$.extend(true, $.fn.dataTable.defaults, {
+    "lengthMenu": [[10, 25, 50, 100, 200], [10, 25, 50, 100, 200]],
+    "bDestroy": true,
+    "processing": true, // for show progress bar
+    "serverSide": true, // for process server side
+    "filter": true, // this is for disable filter (search box)
+    "orderMulti": false, // for disable multiple column at once
+    "responsive": true,
+    "bAutoWidth": false,
+    "autoWidth": false,
+    //"pagingType": "full_numbers"
+    "pagingType": "simple_numbers",
+    "stripeClasses": [],
+    //lengthChange:false,
+    //"dom": 'C<"clear">Blfrtip<>',
+    dom: '<"row w-100  mb-3"<"col-lg-12"B>><"row   mb-3"<"col-lg-12">><"row w-100 "<"col-lg-2"l><"col-lg-7"><"col-lg-2"f>>rt<"row w-100"<"col-lg-6"i><"col-lg-6 text-center"p>>',
+    "buttons": ['print', 'copy', 'excel', 'pdf'],
+    "language":
+    {
+        "url": (dir == 'rtl' ? "//cdn.datatables.net/plug-ins/1.10.20/i18n/Arabic.json" : ""),
+        "processing": "<div class='overlay custom-loader-background'><i class='fa fa-cog fa-spin custom-loader-color'></i></div>",
+        "infoFiltered": ""
+    },
+    "drawCallback": function (settings) {
+        if (Math.ceil((this.fnSettings().fnRecordsDisplay()) / this.fnSettings()._iDisplayLength) > 1) {
+            $('#Dt_paginate').css("display", "block");
+        } else {
+            $('#Dt_paginate').css("display", "none");
+        }
+    }
+});
+$.fn.DataTable.ext.pager.numbers_length = 4;
+
+
+
 $.fn.dataTable.json = function (opts) {
     // Configuration options
     var conf = $.extend({
@@ -23,33 +61,23 @@ $.fn.dataTable.json = function (opts) {
     return function (request, drawCallback, settings) {
         var ajax = true;
         var requestStart = request.start;
-        var drawStart = request.start;
         var requestLength = request.length;
-        var requestEnd = requestStart + requestLength;
 
 
         if (ajax) {
-            // Need data from the server
 
             request.start = requestStart;
-            request.length = requestLength * conf.pages;
+            request.length = requestLength;
 
-            // Provide the same `data` options as DataTables.
             if ($.isFunction(conf.data)) {
-                // As a function it is executed with the data object as an arg
-                // for manipulation. If an object is returned, it is used as the
-                // data object to submit
                 var d = conf.data(request);
                 if (d) {
                     $.extend(request, d);
                 }
             }
             else if ($.isPlainObject(conf.data)) {
-                // As an object, the data given extends the default
                 $.extend(request, conf.data);
             }
-
-            //console.log(request);
 
             settings.jqXHR = $.ajax({
                 "type": conf.method,
@@ -61,6 +89,7 @@ $.fn.dataTable.json = function (opts) {
                     request.setRequestHeader("X-CSRF-TOKEN-WEBADMINHEADER", $('#X-CSRF-TOKEN-WEBADMINHEADER').val());
                 },
                 "success": function (json) {
+
                     drawCallback(json);
                 }
             });
