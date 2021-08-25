@@ -140,9 +140,9 @@ namespace WebAdmin.Controllers
             ModelState.Remove("confirmpassword");
             ModelState.Remove("passwordsalt");
 
-                if (!ModelState.IsValid) { return BadRequest(ModelState); }
-                await _auth_UseCase.LoginWebRequest(new Auth_Request(request), _auth_UsePresenter);
-                return _auth_UsePresenter.ContentResult;
+            if (!ModelState.IsValid) { return BadRequest(ModelState); }
+            await _auth_UseCase.LoginWebRequest(new Auth_Request(request), _auth_UsePresenter);
+            return _auth_UsePresenter.ContentResult;
         }
 
         /// <summary>
@@ -402,7 +402,7 @@ namespace WebAdmin.Controllers
                 objrequest.SortExpression = request.SortOrder + " " + request.Order[0].Dir;
                 objrequest.strCommonSerachParam = request.Search.Value;
                 await _owin_UserUseCase.GetListView(new Owin_UserRequest(objrequest), _owin_UserPresenter);
-                var model = JsonConvert.DeserializeObject<IEnumerable<owin_userEntity>>(_owin_UserPresenter.ContentResult.Content);                
+                var model = JsonConvert.DeserializeObject<IEnumerable<owin_userEntity>>(_owin_UserPresenter.ContentResult.Content);
                 return Json(new { draw = draw, recordsFiltered = 0, recordsTotal = model?.ToList().Count() > 0 ? model.ToList()[0]?.RETURN_KEY ?? 0 : 0, data = model });
             }
             catch (Exception ex)

@@ -1001,4 +1001,7 @@
   <data name="VIEW" xml:space="preserve">
     <value>View</value>
   </data>
+  <data name="ADD" xml:space="preserve">
+    <value>Add</value>
+  </data>
 </root>

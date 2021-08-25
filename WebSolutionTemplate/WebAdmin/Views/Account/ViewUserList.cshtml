@@ -78,8 +78,6 @@
                     { "data": "mobilenumber", "name": "mobilenumber", "autoWidth": true },
                     {
                         data: null, render: function (data, type, full, row) {
-                            //return '<a asp-area=""  class="btn btn-info btn-md " asp-controller="vAttendanceReports" asp-action="Index" asp-route-selectVisitor="1" asp-route-selectClass="CW">@SharedLocalizer.GetLocalizedHtmlString("EDIT")</a>';
-                            //return '<button value="'+ full.userid +'" asp-controller="Account"  asp-action="AddUser" class="btn btn-info btn-md "><i class="fas fa-trash-alt"></i>@SharedLocalizer.GetLocalizedHtmlString("EDIT")</button>';
                             return '<button type="button" class="btn btn-info btn-md" onclick="location.href=\'@Url.Action("AddUser", "Account", new { returnUrl = "/" })\'"><i class="fas fa-edit"></i> @SharedLocalizer.GetLocalizedHtmlString("EDIT")</button>'
                         }
                     },

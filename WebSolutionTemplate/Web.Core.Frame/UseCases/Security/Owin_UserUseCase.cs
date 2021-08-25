@@ -17,6 +17,9 @@ using Web.Core.Frame.Interfaces.UseCases;
 using Web.Core.Frame.Dto;
 using BDO.DataAccessObjects.SecurityModule;
 using BDO.DataAccessObjects.ExtendedEntities;
+using AppConfig.HelperClasses;
+using static AppConfig.HelperClasses.applicationEnamNConstants;
+using System.Security.Claims;
 
 namespace Web.Core.Frame.UseCases
 {
@@ -123,11 +126,15 @@ namespace Web.Core.Frame.UseCases
             CancellationToken cancellationToken = new CancellationToken();
             try
             {
-
                 IList<owin_userEntity> oblist = await BFC.Core.FacadeCreatorObjects.Security.owin_userFCC.GetFacadeCreate(_contextAccessor)
                 .GAPgListView(message.Objowin_user, cancellationToken);
                 if (oblist != null && oblist.Count > 0)
                 {
+                    basicDataTableButtonPanel objbtn = new basicDataTableButtonPanel();
+                    var claimsidentity = _contextAccessor.HttpContext.User.Identity as ClaimsIdentity;
+                    string st = objbtn.getBasicBtnPanelForDataTable(-99, "ssss", _contextAccessor.HttpContext.User.Identity as ClaimsIdentity,
+                        new basicCRUDButtons[] { basicCRUDButtons.ADD, basicCRUDButtons.EDIT });
+                    
                     outputPort.GetListView(new Owin_UserResponse(oblist.ToList(), true));
                 }
                 else
