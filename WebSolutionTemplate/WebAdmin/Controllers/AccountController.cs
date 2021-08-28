@@ -402,8 +402,18 @@ namespace WebAdmin.Controllers
                 objrequest.SortExpression = request.SortOrder + " " + request.Order[0].Dir;
                 objrequest.strCommonSerachParam = request.Search.Value;
                 await _owin_UserUseCase.GetListView(new Owin_UserRequest(objrequest), _owin_UserPresenter);
-                var model = JsonConvert.DeserializeObject<IEnumerable<owin_userEntity>>(_owin_UserPresenter.ContentResult.Content);
-                return Json(new { draw = draw, recordsFiltered = 0, recordsTotal = model?.ToList().Count() > 0 ? model.ToList()[0]?.RETURN_KEY ?? 0 : 0, data = model });
+
+                return _owin_UserPresenter.ContentResult;
+
+                //string JsonString = .Content;
+                //Newtonsoft.Json.Linq.JObject json = string.IsNullOrEmpty(JsonString) == true ? null:  Newtonsoft.Json.Linq.JObject.Parse(JsonString);
+
+                //return Json(new { draw = draw, 
+                //    recordsFiltered = json != null ? long.Parse(json["recordsFiltered"].ToString()) : 0, 
+                //    recordsTotal = json != null ? long.Parse(json["recordsTotal"].ToString()) : 0, 
+                //    data = json });
+
+                //return Json(new { draw = draw, recordsFiltered = 0, recordsTotal = JsonString?.ToList().Count() > 0 ? JsonString.ToList()[0]?.RETURN_KEY ?? 0 : 0, data = JsonString });
             }
             catch (Exception ex)
             {

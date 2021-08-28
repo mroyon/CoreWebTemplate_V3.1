@@ -68,9 +68,9 @@ $.fn.dataTable.json = function (opts) {
 
             request.start = requestStart;
             request.length = requestLength;
-
+            console.log(request);
             if ($.isFunction(conf.data)) {
-                var d = conf.data(request);
+                var c = conf.data(request);
                 if (d) {
                     $.extend(request, d);
                 }
@@ -85,12 +85,19 @@ $.fn.dataTable.json = function (opts) {
                 "data": request,
                 "dataType": "json",
                 "cache": false,
+                //"dataSrc": "json.data",
+                "dataSrc": "",
                 'beforeSend': function (request) {
                     request.setRequestHeader("X-CSRF-TOKEN-WEBADMINHEADER", $('#X-CSRF-TOKEN-WEBADMINHEADER').val());
                 },
                 "success": function (json) {
+                    console.log(json);
+                    console.log(json.data.data);
+                    console.log(json.data);
+                    //console.log(json.data.recordsFiltered);
+                    //console.log(json.data.recordsTotal);
 
-                    drawCallback(json);
+                    drawCallback(JSON.parse(json));
                 }
             });
         }

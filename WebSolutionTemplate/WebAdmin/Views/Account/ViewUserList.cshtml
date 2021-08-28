@@ -27,8 +27,6 @@
                                         <th><label class="labelNormal  " asp-for="username"></label></th>
                                         <th><label class="labelNormal  " asp-for="emailaddress"></label></th>
                                         <th><label class="labelNormal  " asp-for="mobilenumber"></label></th>
-                                        <th>@SharedLocalizer.GetLocalizedHtmlString("EDIT")</th>
-                                        <th>@SharedLocalizer.GetLocalizedHtmlString("DELETE")</th>
                                         <th>@SharedLocalizer.GetLocalizedHtmlString("ACTIONS_BUTTONS")</th>
                                     </tr>
                                 </thead>
@@ -67,28 +65,22 @@
                     { targets: 1, "visible": true },
                     { targets: 2, "visible": true },
                     { targets: 3, "visible": true },
-                    { targets: 4, "visible": true },
-                    { targets: 5, "visible": true },
-                    { targets: 6, "visible": true },
+                    { targets: 4, "visible": true }
                 ],
                 "columns": [
+                    {
+                        data: 'userid',
+                        render: function (data, type, full, meta) {
+                            return data;
+                        }
+                    },
                     { "data": "userid", "name": "userid", "autoWidth": true },
                     { "data": "username", "name": "username", "autoWidth": true },
                     { "data": "emailaddress", "name": "emailaddress", "autoWidth": true },
                     { "data": "mobilenumber", "name": "mobilenumber", "autoWidth": true },
                     {
-                        data: null, render: function (data, type, full, row) {
-                            return '<button type="button" class="btn btn-info btn-md" onclick="location.href=\'@Url.Action("AddUser", "Account", new { returnUrl = "/" })\'"><i class="fas fa-edit"></i> @SharedLocalizer.GetLocalizedHtmlString("EDIT")</button>'
-                        }
-                    },
-                    {
-                        data: null, render: function (data, type, full, row) {
-                            return '<a asp-controller="Account" asp-action="AddUser" asp-route-level="3" asp-route-type="full" asp-route-id="12" class="btn btn-danger btn-md "><i class="fas fa-trash-alt"></i>@SharedLocalizer.GetLocalizedHtmlString("DELETE")</a >';
-                        }
-                    },
-                    {
-                        data: null, render: function (data, type, full, row) {
-                            return '<button  onclick="deleterunner(' + full.userid + ')" class="btn btn-danger btn-md "><i class="fas fa-trash-alt"></i> @SharedLocalizer.GetLocalizedHtmlString("DELETE")</button>';
+                        "data": "datatablebuttonscode", render: function (data, type, full, row) {
+                            return data;
                         }
                     }
                 ]

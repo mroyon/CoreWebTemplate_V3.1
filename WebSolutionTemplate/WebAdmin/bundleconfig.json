@@ -91,8 +91,8 @@
     "inputFiles": [
       "wwwroot/lib/customjs/jqajaxproxy.js",
       "wwwroot/lib/customjs/utilityfunctions.js",
-      "wwwroot/lib/customjs/profileactivities.js",
-      "wwwroot/lib/customjs/datatableproxy.js"
+      "wwwroot/lib/customjs/profileactivities.js"
+      //"wwwroot/lib/customjs/datatableproxy.js"
     ],
     "minify": { "enabled": true }
   },

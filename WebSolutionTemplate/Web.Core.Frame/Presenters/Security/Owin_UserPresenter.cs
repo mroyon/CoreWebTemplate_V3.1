@@ -60,8 +60,9 @@ namespace Web.Core.Frame.Presenters
         /// <param name="response"></param>
         public void GetListView(Owin_UserResponse response)
         {
+            //altered for template
             ContentResult.StatusCode = (int)(response.Success ? HttpStatusCode.OK : httpStatusCodeParser.SetHttpStatusCode(response.Errors));
-            ContentResult.Content = response.Success ? JsonSerializer.SerializeObject(response._owin_UserList) : JsonSerializer.SerializeObject(response.Errors);
+            ContentResult.Content = response.Success ? JsonSerializer.SerializeObject(response._ajaxresponse) : JsonSerializer.SerializeObject(response.Errors);
         }
 
         

@@ -9,6 +9,7 @@ namespace Web.Core.Frame.RequestResponse.UseCaseResponses
     public class Owin_UserResponse : UseCaseResponseMessage
     {
         public owin_userEntity _owin_User { get; }
+        public AjaxResponse _ajaxresponse { get; }
 
         public IEnumerable<owin_userEntity> _owin_UserList { get; }
 
@@ -29,5 +30,11 @@ namespace Web.Core.Frame.RequestResponse.UseCaseResponses
         {
             _owin_User = owin_User;
         }
+
+        public Owin_UserResponse(AjaxResponse azaxresponse, bool success = false, string message = null) : base(success, message)
+        {
+            _ajaxresponse = azaxresponse;
+        }
+
     }
 }

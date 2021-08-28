@@ -58,7 +58,7 @@ namespace BDO.Base
             get;
             set;
         }
-        
+
         [DataMember]
         public string code
         {
@@ -128,7 +128,7 @@ namespace BDO.Base
             set { _RETURN_KEY = value; }
         }
 
-       
+
 
         protected BaseEntity()
         {
@@ -173,22 +173,12 @@ namespace BDO.Base
             get;
             set;
         }
-
-
-        #region Exception Contract
-        [DataMember]
-        public string captchacode
-        {
-            get;
-            set;
-        }
-        [DataMember]
-        public string captchaanswer
+        public string datatablebuttonscode
         {
             get;
             set;
         }
 
-        #endregion
+
     }
 }

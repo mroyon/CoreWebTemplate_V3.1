@@ -6,6 +6,10 @@ namespace BDO.DataAccessObjects.ExtendedEntities
 {
     public class AjaxResponse
     {
+        public string data { get; }
+        public long recordsTotal { get; }
+        public long recordsFiltered { get; }
+
         public string responsecode { get; }
         public string responsetext { get; }
         public string responsestatus { get; }
@@ -20,7 +24,12 @@ namespace BDO.DataAccessObjects.ExtendedEntities
             responsetitle = _responsetitle;
             responseredirecturl = _responseredirecturl;
         }
-        
+        public AjaxResponse(long _recordsTotal, string _data)
+        {
+            recordsTotal = _recordsTotal;
+            recordsFiltered = _recordsTotal;
+            data = _data;
+        }
 
     }
 }

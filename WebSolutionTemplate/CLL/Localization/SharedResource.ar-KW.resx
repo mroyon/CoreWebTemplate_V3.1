@@ -444,9 +444,6 @@
   <data name="AUTHENTICATOR_APP" xml:space="preserve">
     <value>App di autenticazione</value>
   </data>
-  <data name="DELETE" xml:space="preserve">
-    <value>Elimina</value>
-  </data>
   <data name="DOWNLOAD" xml:space="preserve">
     <value>Scarica</value>
   </data>
@@ -878,28 +875,120 @@
   <data name="FORGETPASSWORDEMAIL" xml:space="preserve">
     <value>Please check your email for reset password link.</value>
   </data>
+  <data name="HomePage" xml:space="preserve">
+    <value>الصفحة الرئيسية   </value>
+  </data>
+  <data name="E-Office" xml:space="preserve">
+    <value>المكتب الإلكتروني</value>
+  </data>
+  <data name="MilitaryNationalServiceLaw" xml:space="preserve">
+    <value>
+قانون الخدمة الوطنية العسكرية </value>
+  </data>
+  <data name="AboutThelaw" xml:space="preserve">
+    <value>نبذة من القانون</value>
+  </data>
+  <data name="RequiredDocuments" xml:space="preserve">
+    <value>المستندات المطلوبة </value>
+  </data>
+  <data name="Registration" xml:space="preserve">
+    <value>التسجيل  </value>
+  </data>
+  <data name="SignIn" xml:space="preserve">
+    <value>تسجيل الدخول </value>
+  </data>
+  <data name="DirectorateOfReinforcementAndGeneralMobilization" xml:space="preserve">
+    <value>مديرية التعزيز والتعبئة العامة  </value>
+  </data>
+  <data name="DocumentsRequiredForPostponementAndExemption" xml:space="preserve">
+    <value>المستندات المطلوبة للتأجيل والإعفاء </value>
+  </data>
+  <data name="ExemptionAndPostponementRequests" xml:space="preserve">
+    <value>طلبات الإعفاء والتأجيل</value>
+  </data>
+  <data name="News" xml:space="preserve">
+    <value>الأخبار </value>
+  </data>
+  <data name="FrequentlyAskedQuestions" xml:space="preserve">
+    <value>
+الأسئلة المتكررة </value>
+  </data>
+  <data name="ContactUs" xml:space="preserve">
+    <value>للإتصال بنا </value>
+  </data>
   <data name="INVALID_REQUEST" xml:space="preserve">
     <value>Invalid request.</value>
   </data>
   <data name="DATA_PERSISTANCE_ERROR" xml:space="preserve">
     <value>Error with data persistancy</value>
   </data>
-  <data name="CANCEL_REQUEST" xml:space="preserve">
-    <value>Cancel request</value>
-  </data>
   <data name="USER_MANAGEMENT" xml:space="preserve">
-    <value>User Manage</value>
+    <value>User Management</value>
   </data>
-  <data name="EDIT" xml:space="preserve">
-    <value>Edit</value>
+  <data name="VIEW_USER_LIST" xml:space="preserve">
+    <value>View User list</value>
+  </data>
+  <data name="ADD_FAQ_CATEGORY" xml:space="preserve">
+    <value>إضافة فئة التعليمات</value>
   </data>
   <data name="DETAILS" xml:space="preserve">
     <value>Details</value>
   </data>
-  <data name="VIEW" xml:space="preserve">
+  <data name="FAQ_CATEGORY_LIST" xml:space="preserve">
+    <value>قائمة فئات الأسئلة الشائعة</value>
+  </data>
+  <data name="ACTIONS_BUTTONS" xml:space="preserve">
+    <value>Action Button</value>
+  </data>
+  <data name="ADD_FAQ" xml:space="preserve">
+    <value>أضف التعليمات</value>
+  </data>
+  <data name="FAQ_LIST" xml:space="preserve">
+    <value>قائمة التعليمات</value>
+  </data>
+  <data name="PROCESS" xml:space="preserve">
+    <value>Process</value>
+  </data>
+  <data name="SEARCH" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="Delete_GET" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="Delete_POST" xml:space="preserve">
+    <value>Delete Post</value>
+  </data>
+  <data name="Edit_GET" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="Edit_POST" xml:space="preserve">
+    <value>Update</value>
+  </data>
+  <data name="GetSingle_GET" xml:space="preserve">
     <value>View</value>
   </data>
-  <data name="ADD" xml:space="preserve">
+  <data name="GetSingle_POST" xml:space="preserve">
+    <value>View Post</value>
+  </data>
+  <data name="New_GET" xml:space="preserve">
     <value>Add</value>
+  </data>
+  <data name="New_POST" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Process_GET" xml:space="preserve">
+    <value>Process</value>
+  </data>
+  <data name="Process_POST" xml:space="preserve">
+    <value>Process Post</value>
+  </data>
+  <data name="Search_GET" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="Search_POST" xml:space="preserve">
+    <value>Search Post</value>
+  </data>
+  <data name="Submit_POST" xml:space="preserve">
+    <value>Submit</value>
   </data>
 </root>

@@ -20,6 +20,7 @@ using BDO.DataAccessObjects.ExtendedEntities;
 using AppConfig.HelperClasses;
 using static AppConfig.HelperClasses.applicationEnamNConstants;
 using System.Security.Claims;
+using Web.Core.Frame.Helpers;
 
 namespace Web.Core.Frame.UseCases
 {
@@ -29,7 +30,7 @@ namespace Web.Core.Frame.UseCases
         private readonly IJwtFactory _jwtFactory;
         private readonly IStringLocalizer _sharedLocalizer;
         private readonly ILogger<Owin_UserUseCase> _logger;
-        
+        private dataTableButtonPanel objDTBtnPanel = new dataTableButtonPanel();
 
         public Error _errors { get; set; }
 
@@ -130,22 +131,42 @@ namespace Web.Core.Frame.UseCases
                 .GAPgListView(message.Objowin_user, cancellationToken);
                 if (oblist != null && oblist.Count > 0)
                 {
-                    basicDataTableButtonPanel objbtn = new basicDataTableButtonPanel();
-                    var claimsidentity = _contextAccessor.HttpContext.User.Identity as ClaimsIdentity;
-                    string st = objbtn.getBasicBtnPanelForDataTable(-99, "ssss", _contextAccessor.HttpContext.User.Identity as ClaimsIdentity,
-                        new basicCRUDButtons[] { basicCRUDButtons.ADD, basicCRUDButtons.EDIT });
-                    
-                    outputPort.GetListView(new Owin_UserResponse(oblist.ToList(), true));
+                    List<dataTableButtonModel> btnActionList = new List<dataTableButtonModel>();
+                    btnActionList.Add(new dataTableButtonModel(basicCRUDButtons.New_GET));
+                    btnActionList.Add(new dataTableButtonModel(basicCRUDButtons.Edit_GET));
+                    btnActionList.Add(new dataTableButtonModel(basicCRUDButtons.Delete_GET));
+                    btnActionList.Add(new dataTableButtonModel(basicCRUDButtons.GetSingle_GET));
+                    btnActionList.Add(new dataTableButtonModel(basicCRUDButtons.CUSTOM, _sharedLocalizer["PROCESS"], "StpOrganizationEntity/userprocess"));
+                    btnActionList.Add(new dataTableButtonModel(basicCRUDButtons.CUSTOM, _sharedLocalizer["SEARCH"], "StpOrganizationEntity/usersearch"));
+
+                    var data = (from t in oblist
+                               select new
+                               {
+                                   t.userid,
+                                   t.masteruserid,
+                                   t.username,
+                                   t.emailaddress,
+                                   t.mobilenumber,
+                                   t.userprofilephoto,
+                                   t.locked,
+                                   t.approved,
+                                   t.RETURN_KEY,
+                                   t.TotalRecord,
+                                   t.PageSize,
+                                   t.CurrentPage,
+                                   t.SortExpression,
+                                   datatablebuttonscode = objDTBtnPanel.genDTBtnPanel("Account", t.userid, "userid", _contextAccessor.HttpContext.User.Identity as ClaimsIdentity, btnActionList)
+                               }).ToList();
+
+
+                    outputPort.GetListView(new Owin_UserResponse(new AjaxResponse(oblist[0].RETURN_KEY, JsonConvert.SerializeObject(data, Formatting.Indented)), true, null));
+
+                    //outputPort.GetListView(new Owin_UserResponse(oblist.ToList(), true));
                 }
                 else
                 {
                     List<owin_userEntity> oblist2 = new List<owin_userEntity>();
                     outputPort.GetListView(new Owin_UserResponse(oblist2, true));
-                    //Owin_UserResponse objResponse = new Owin_UserResponse(false, _sharedLocalizer["NO_DATA_FOUND"], new Error(
-                    // "404",
-                    // _sharedLocalizer["NO_DATA_FOUND"]));
-                    //_logger.LogInformation(JsonConvert.SerializeObject(objResponse));
-                    //outputPort.GetListView(objResponse);
                 }
                 return true;
             }
