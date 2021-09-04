@@ -15,6 +15,10 @@ namespace Web.Core.Frame.Presenters
         /// ContentResult
         /// </summary>
         public JsonContentResult ContentResult { get; }
+        /// <summary>
+        /// Result list of object (anynomous)
+        /// </summary>
+        public object Result { get; set; }
 
         /// <summary>
         /// Gen_PriorityPresenter
@@ -63,9 +67,10 @@ namespace Web.Core.Frame.Presenters
             //altered for template
             ContentResult.StatusCode = (int)(response.Success ? HttpStatusCode.OK : httpStatusCodeParser.SetHttpStatusCode(response.Errors));
             ContentResult.Content = response.Success ? JsonSerializer.SerializeObject(response._ajaxresponse) : JsonSerializer.SerializeObject(response.Errors);
+            Result = response.Success ? response._ajaxresponse as object : response.Errors;
         }
 
-        
+
 
         /// <summary>
         /// GetSingle

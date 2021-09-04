@@ -32,7 +32,12 @@ namespace AppConfig.HelperClasses
 
             Submit_POST = 13,
 
-            CUSTOM = 8
+            CUSTOM = 8,
+
+
+            GetListView_GET = 14,
+            GetListView_POST = 15
+
         }
 
     }

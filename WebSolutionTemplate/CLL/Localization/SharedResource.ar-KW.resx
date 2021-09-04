@@ -991,4 +991,19 @@
   <data name="Submit_POST" xml:space="preserve">
     <value>Submit</value>
   </data>
+  <data name="ADD_NEW_RECORD" xml:space="preserve">
+    <value>Add new record</value>
+  </data>
+  <data name="COPY_LIST" xml:space="preserve">
+    <value>Copy</value>
+  </data>
+  <data name="CSV_EXPORT" xml:space="preserve">
+    <value>CSV</value>
+  </data>
+  <data name="EXCEL_EXPORT" xml:space="preserve">
+    <value>Excel</value>
+  </data>
+  <data name="PRINT" xml:space="preserve">
+    <value>Print</value>
+  </data>
 </root>

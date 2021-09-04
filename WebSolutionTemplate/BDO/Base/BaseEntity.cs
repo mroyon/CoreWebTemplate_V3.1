@@ -178,7 +178,18 @@ namespace BDO.Base
             get;
             set;
         }
-
+        [DataMember]
+        public string ControllerName
+        {
+            get;
+            set;
+        }
+        [DataMember]
+        public string ActionName
+        {
+            get;
+            set;
+        }
 
     }
 }

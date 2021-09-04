@@ -13,7 +13,6 @@ namespace AppConfig.HelperClasses
 {
     public class dataTableButtonModel
     {
-
         protected basicCRUDButtons _btnid;
         protected string _btnname;
         protected string _btnmethodname;
@@ -34,6 +33,7 @@ namespace AppConfig.HelperClasses
                     _btnname = btnname;
                     _btnicon = "<i class='" + _btnicon + "'></i>";
                     _btnid = actions.Value;
+                    _btnclass = "btn btn-primary btn-md mr-1";
                     _btnmethodname = btnmethodname;
                 }
             }
@@ -51,15 +51,15 @@ namespace AppConfig.HelperClasses
             _btnmethodname = arr.Length > 0 ? (string.IsNullOrEmpty(_btnmethodname) == true ? "{controllername}/" + arr[0] + "{controllername}" : _btnmethodname) : _btnmethodname;
             switch (_btnid)
             {
-                case basicCRUDButtons.New_GET: _btnicon = "<i class='fas fa-plus-square'></i>"; _btnclass = "btn btn-primary btn-md";  break;
-                case basicCRUDButtons.Edit_GET: _btnicon = "<i class='fas fa-edit'></i>"; _btnclass = "btn btn-secondary btn-md"; break;
-                case basicCRUDButtons.Delete_GET: _btnicon = "<i class='fas fa-trash-alt'></i>"; _btnclass = "btn btn-danger btn-md"; break;
-                case basicCRUDButtons.GetSingle_GET: _btnicon = "<i class='fas fa-eye'></i>"; _btnclass = "btn btn-info btn-md"; break;
-                case basicCRUDButtons.Search_GET: _btnicon = "<i class='fas fa-search'></i>"; _btnclass = "btn btn-info btn-md"; break;
-                case basicCRUDButtons.New_POST: _btnicon = "<i class='fas fa-save'></i>"; _btnclass = "btn btn-primary btn-md"; break;
-                case basicCRUDButtons.Process_GET: _btnicon = "<i class='fas fa-cogs'></i>"; _btnclass = "btn btn-primary btn-md"; break;
-                case basicCRUDButtons.Submit_POST: _btnicon = "<i class='fas fa-sign-in-alt'></i>"; _btnclass = "btn btn-primary btn-md"; break;
-                default: _btnicon = "<i class='" + _btnicon + "'></i>"; _btnclass = "btn btn-primary btn-md"; break;
+                case basicCRUDButtons.New_GET: _btnicon = "<i class='fas fa-plus-square'></i>"; _btnclass = "btn btn-primary btn-md mr-1"; break;
+                case basicCRUDButtons.Edit_GET: _btnicon = "<i class='fas fa-edit'></i>"; _btnclass = "btn btn-secondary btn-md mr-1"; break;
+                case basicCRUDButtons.Delete_GET: _btnicon = "<i class='fas fa-trash-alt'></i>"; _btnclass = "btn btn-danger btn-md mr-1"; break;
+                case basicCRUDButtons.GetSingle_GET: _btnicon = "<i class='fas fa-eye'></i>"; _btnclass = "btn btn-info btn-md mr-1"; break;
+                case basicCRUDButtons.Search_GET: _btnicon = "<i class='fas fa-search'></i>"; _btnclass = "btn btn-info btn-md mr-1"; break;
+                case basicCRUDButtons.New_POST: _btnicon = "<i class='fas fa-save'></i>"; _btnclass = "btn btn-primary btn-md mr-1"; break;
+                case basicCRUDButtons.Process_GET: _btnicon = "<i class='fas fa-cogs'></i>"; _btnclass = "btn btn-primary btn-md mr-1"; break;
+                case basicCRUDButtons.Submit_POST: _btnicon = "<i class='fas fa-sign-in-alt'></i>"; _btnclass = "btn btn-primary btn-md mr-1"; break;
+                default: _btnicon = "<i class='" + _btnicon + "'></i>"; _btnclass = "btn btn-primary btn-md mr-1"; break;
             }
         }
 

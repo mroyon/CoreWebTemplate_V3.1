@@ -12,6 +12,7 @@
 
 var dir = $("html").attr("dir");
 
+
 $.extend(true, $.fn.dataTable.defaults, {
     "lengthMenu": [[10, 25, 50, 100, 200], [10, 25, 50, 100, 200]],
     "bDestroy": true,
@@ -28,7 +29,6 @@ $.extend(true, $.fn.dataTable.defaults, {
     //lengthChange:false,
     //"dom": 'C<"clear">Blfrtip<>',
     dom: '<"row w-100  mb-3"<"col-lg-12"B>><"row   mb-3"<"col-lg-12">><"row w-100 "<"col-lg-2"l><"col-lg-7"><"col-lg-2"f>>rt<"row w-100"<"col-lg-6"i><"col-lg-6 text-center"p>>',
-    "buttons": ['print', 'copy', 'excel', 'pdf'],
     "language":
     {
         "url": (dir == 'rtl' ? "//cdn.datatables.net/plug-ins/1.10.20/i18n/Arabic.json" : ""),
@@ -44,8 +44,30 @@ $.extend(true, $.fn.dataTable.defaults, {
     }
 });
 $.fn.DataTable.ext.pager.numbers_length = 4;
+$.fn.dataTable.Buttons.defaults.dom.button.className = 'btn';
 
-
+$.extend($.fn.dataTable.defaults, {
+    buttons: {
+        buttons: [
+            {
+                extend: 'copy',
+                className: 'btn btn-secondary mr-1',
+            },
+            {
+                extend: 'excel',
+                className: 'btn btn-secondary mr-1',
+            },
+            {
+                extend: 'csv',
+                className: 'btn btn-secondary mr-1',
+            },
+            {
+                extend: 'pdf',
+                className: 'btn btn-secondary mr-1',
+            }
+        ]
+    }
+});
 
 $.fn.dataTable.json = function (opts) {
     // Configuration options
@@ -68,7 +90,6 @@ $.fn.dataTable.json = function (opts) {
 
             request.start = requestStart;
             request.length = requestLength;
-            console.log(request);
             if ($.isFunction(conf.data)) {
                 var c = conf.data(request);
                 if (d) {
@@ -86,18 +107,12 @@ $.fn.dataTable.json = function (opts) {
                 "dataType": "json",
                 "cache": false,
                 //"dataSrc": "json.data",
-                "dataSrc": "",
+                //"dataSrc": "",
                 'beforeSend': function (request) {
                     request.setRequestHeader("X-CSRF-TOKEN-WEBADMINHEADER", $('#X-CSRF-TOKEN-WEBADMINHEADER').val());
                 },
                 "success": function (json) {
-                    console.log(json);
-                    console.log(json.data.data);
-                    console.log(json.data);
-                    //console.log(json.data.recordsFiltered);
-                    //console.log(json.data.recordsTotal);
-
-                    drawCallback(JSON.parse(json));
+                    drawCallback(json);
                 }
             });
         }

@@ -36,7 +36,7 @@ namespace Web.Core.Frame.Helpers
         {
         }
         #endregion
-
+        public clsPrivateKeys clsPrivate = new clsPrivateKeys();
         /// <summary>
         /// Basic button panel code: edit delete and view
         /// </summary>
@@ -53,13 +53,14 @@ namespace Web.Core.Frame.Helpers
             {
                 if (claimsIdentity != null)
                 {
-                    strJson += "<div class='btn-toolbar pull-right' role='toolbar'>";
+                    strJson += "<div class=' pull-right' role='toolbar'>";
                     string btnclass = string.Empty;
                     //List<Owin_ProcessGetFormActionistEntity_Ext> itemList = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Owin_ProcessGetFormActionistEntity_Ext>>(HttpContext.Current.Session["jsonList"].ToString());
                     foreach (dataTableButtonModel objsingButton in btnActionList)
                     {
-                        strJson += "<button type='button' class=\"" + objsingButton.btnclass + "\" onclick=\"location.href='/'" + objsingButton.btnmethodname.Replace("{controllername}", controllerName) + "'\">" + objsingButton.btnicon + objsingButton.btnname + "</button>";
-
+                        strJson += "<button type='button' class=\"" + objsingButton.btnclass + "\" ";
+                        strJson += " onclick =\"location.href='/" + objsingButton.btnmethodname.Replace("{controllername}", controllerName) + clsPrivate.EncodeParams(primaryKeyName, primaryKey.ToString()) + "'\">";
+                        strJson += "" + objsingButton.btnicon + "  " + objsingButton.btnname + "</button>  ";
                         //strJson += "<button class='"+ objsingButton.btnclass+ "' onclick ='" + editMethodName + "(&quot;" + objClsPrivate.BuildUrlMVCOnlyParams(menuName, menuId.ToString()) + "&quot;)'> <i class='fa fa-edit'> </i> " + KAF.MsgContainer._Common._btnUpdate + "</button> ";
                     }
                     strJson += "</div>";

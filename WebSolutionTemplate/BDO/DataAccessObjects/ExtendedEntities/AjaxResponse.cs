@@ -6,7 +6,7 @@ namespace BDO.DataAccessObjects.ExtendedEntities
 {
     public class AjaxResponse
     {
-        public string data { get; }
+        public Object data { get; }
         public long recordsTotal { get; }
         public long recordsFiltered { get; }
 
@@ -15,16 +15,16 @@ namespace BDO.DataAccessObjects.ExtendedEntities
         public string responsestatus { get; }
         public string responsetitle { get; }
         public string responseredirecturl { get; }
-        
+
         public AjaxResponse(string _responsecode, string _responsetext, string _responsestatus, string _responsetitle, string _responseredirecturl)
         {
             responsecode = _responsecode;
             responsetext = _responsetext;
-            responsestatus = string.IsNullOrEmpty(_responsestatus) == true ? CLL.LLClasses._Status._statusSuccess  : _responsestatus;
+            responsestatus = string.IsNullOrEmpty(_responsestatus) == true ? CLL.LLClasses._Status._statusSuccess : _responsestatus;
             responsetitle = _responsetitle;
             responseredirecturl = _responseredirecturl;
         }
-        public AjaxResponse(long _recordsTotal, string _data)
+        public AjaxResponse(long _recordsTotal, Object _data)
         {
             recordsTotal = _recordsTotal;
             recordsFiltered = _recordsTotal;

@@ -2,6 +2,18 @@
 .error {
     color: orangered;
 }
+.image--cover {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center;
+}
+table.dataTable tbody tr {
+    background-color: none !important;
+}
+
+
 
 /**===== dots5 =====*/
 #dots5 {
