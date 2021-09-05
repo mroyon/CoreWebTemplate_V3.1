@@ -140,6 +140,35 @@ namespace WebAdmin.Controllers
         }
 
         /// <summary>
+        /// AddOwinUser
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddOwinUser([FromBody] owin_userEntity request)
+        {
+            ModelState.Remove("applicationid");
+            ModelState.Remove("masteruserid");
+            ModelState.Remove("confirmpassword");
+            ModelState.Remove("passwordsalt");
+            ModelState.Remove("passwordkey");
+            ModelState.Remove("passwordvector");
+            ModelState.Remove("masprivatekey");
+            ModelState.Remove("maspublickey");
+            ModelState.Remove("isanonymous");
+            ModelState.Remove("loweredusername");
+            ModelState.Remove("emailaddress");
+            ModelState.Remove("username");
+            ModelState.Remove("loweredusername");
+            ModelState.Remove("newpassword");
+
+            if (!ModelState.IsValid) { return BadRequest(ModelState); }
+            await _owin_UserUseCase.Save(new Owin_UserRequest(request), _owin_UserPresenter);
+            return _owin_UserPresenter.ContentResult;
+        }
+
+        /// <summary>
         /// EditOwinUser
         /// </summary>
         /// <param name="input"></param>
@@ -154,8 +183,82 @@ namespace WebAdmin.Controllers
             await _owin_UserUseCase.GetSingle(new Owin_UserRequest(objEntity), _owin_UserPresenter);
             return View("../Account/UserManagement/EditOwinUser", _owin_UserPresenter.Result);
         }
-        
+
+        /// <summary>
+        /// EditOwinUser
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditOwinUser([FromBody] owin_userEntity request)
+        {
+            ModelState.Remove("applicationid");
+            ModelState.Remove("masteruserid");
+            ModelState.Remove("confirmpassword");
+            ModelState.Remove("passwordsalt");
+            ModelState.Remove("passwordkey");
+            ModelState.Remove("passwordvector");
+            ModelState.Remove("masprivatekey");
+            ModelState.Remove("maspublickey");
+            ModelState.Remove("isanonymous");
+            ModelState.Remove("loweredusername");
+            ModelState.Remove("emailaddress");
+            ModelState.Remove("username");
+            ModelState.Remove("loweredusername");
+            ModelState.Remove("newpassword");
+
+            if (!ModelState.IsValid) { return BadRequest(ModelState); }
+            await _owin_UserUseCase.Update(new Owin_UserRequest(request), _owin_UserPresenter);
+            return _owin_UserPresenter.ContentResult;
+        }
 
 
+        /// <summary>
+        /// ViewOwinUser
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [AutoValidateAntiforgeryToken]
+        public async Task<IActionResult> GetSingleOwinUser([FromQuery(Name = "params")] string input)
+        {
+            if (!User.Identity.IsAuthenticated) { return RedirectToAction("Account", "Login"); }
+            owin_userEntity objEntity = new owin_userEntity();
+            objEntity.userid = new Guid(objClsPrivate.DecodeUrlParamsWithoutURI("userid", input).ToString());
+            await _owin_UserUseCase.GetSingle(new Owin_UserRequest(objEntity), _owin_UserPresenter);
+            return View("../Account/UserManagement/GetSingleOwinUser", _owin_UserPresenter.Result);
+        }
+
+
+
+        /// <summary>
+        /// DeleteOwinUser
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteOwinUser([FromBody] owin_userEntity request)
+        {
+            ModelState.Remove("applicationid");
+            ModelState.Remove("masteruserid");
+            ModelState.Remove("confirmpassword");
+            ModelState.Remove("passwordsalt");
+            ModelState.Remove("passwordkey");
+            ModelState.Remove("passwordvector");
+            ModelState.Remove("masprivatekey");
+            ModelState.Remove("maspublickey");
+            ModelState.Remove("isanonymous");
+            ModelState.Remove("loweredusername");
+            ModelState.Remove("emailaddress");
+            ModelState.Remove("username");
+            ModelState.Remove("loweredusername");
+            ModelState.Remove("newpassword");
+
+            if (!ModelState.IsValid) { return BadRequest(ModelState); }
+            await _owin_UserUseCase.Delete(new Owin_UserRequest(request), _owin_UserPresenter);
+            return _owin_UserPresenter.ContentResult;
+        }
     }
 }

@@ -1,0 +1,110 @@
+﻿@using CLL
+@model BDO.DataAccessObjects.SecurityModule.owin_userEntity
+@inject CLL.Localization.LocalizeService SharedLocalizer
+
+@using Microsoft.Extensions.Options
+@{
+    ViewData["Title"] = @SharedLocalizer.GetLocalizedHtmlString("VIEW_USER_LIST");
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-footer">
+                <h5 class="card-title">@SharedLocalizer.GetLocalizedHtmlString("USER_MANAGEMENT")</h5>
+            </div>
+            <form method="POST" id="frmupdateuser" class="my-login-validation" novalidate="" autocomplete="off">
+                <div class="card-body">
+                    <div class="row">
+                        <input asp-for="masteruserid" type="hidden" />
+                        <input asp-for="applicationid" type="hidden" />
+                        <input asp-for="userid" type="hidden" />
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 text-center">
+                            <div class="form-group">
+                                <div id="profilephoto"></div>
+                                <input asp-for="userprofilephoto" type="hidden" />
+                                <hr>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="labelNormal required " asp-for="username"></label>
+                                <input asp-for="username" class="form-control" autocomplete="off" readonly="readonly" />
+                                <span asp-validation-for="username" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="labelNormal required " asp-for="loweredusername"></label>
+                                <input asp-for="loweredusername" class="form-control" />
+                                <span asp-validation-for="loweredusername" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row ">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="labelNormal required " asp-for="emailaddress"></label>
+                                <input asp-for="emailaddress" class="form-control" />
+                                <span asp-validation-for="emailaddress" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="labelNormal required " asp-for="mobilenumber"></label>
+                                <input asp-for="mobilenumber" class="form-control" />
+                                <span asp-validation-for="mobilenumber" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row ">
+
+                    </div>
+                    <div class="row btn-toolbar">
+                        <div class="col-md-6 ">
+                            <div class="form-group">
+                                <button type="submit" id="btnUpdateUser" class="btn btn-primary btn-md btnAddUser"><i class="fa fa-edit"></i> @SharedLocalizer.GetLocalizedHtmlString("SUBMIT_REQUEST")</button>
+                                <button type="submit" id="btn-common-modal-close" class="btn btn-primary btn-md cancel"><i class="fa fa-arrow-circle-left"></i> @SharedLocalizer.GetLocalizedHtmlString("CANCEL_REQUEST")</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <!-- ./card-body -->
+            <div class="card-footer">
+                <div class="row">
+                    <div class="col-md-12">
+
+                        <!-- /.description-block -->
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /.card-footer -->
+        </div>
+        <!-- /.card -->
+    </div>
+    <!-- /.col -->
+</div>
+
+@section Scripts{
+    <script src="~/lib/customjs/cusfileuploadpropic.js" asp-append-version="true"></script>
+    <script>
+        $(document).ready(function () {
+            var _filenoupld = null;
+            _filenoupld = $('#profilephoto').propicfileuploader({
+                _divid: 'profilephoto',
+                _columnname: 'userprofilephoto',
+                _removebuttontext: '@SharedLocalizer.GetLocalizedHtmlString("REMOVE_IMAGE")',
+            });
+
+            _filenoupld.preloadphoto($('#userprofilephoto').val());
+        });
+    </script>
+}
