@@ -355,21 +355,6 @@ namespace WebAdmin.Controllers
             return _auth_UsePresenter.ContentResult;
         }
 
-
-        //AddUser
-        [HttpGet]
-        public async Task<IActionResult> AddUser(string returnUrl)
-        {
-            if (!User.Identity.IsAuthenticated)
-            {
-                return RedirectToAction("Account", "Login");
-            }
-            return View();
-        }
-
-
-
-
         //AddUser
         [HttpGet]
         public async Task<IActionResult> ViewUserList(string returnUrl)
