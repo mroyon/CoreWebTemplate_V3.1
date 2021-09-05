@@ -48,7 +48,7 @@ namespace Web.Core.Frame.UseCases
             var type = typeof(SharedResource);
             var assemblyName = new AssemblyName(type.GetTypeInfo().Assembly.FullName);
             _sharedLocalizer = factory.Create("SharedResource", assemblyName.Name);
-            
+
         }
 
         public Task<bool> Handle(Owin_UserRequest message, IOutputPort<Owin_UserResponse> outputPort)
@@ -191,6 +191,15 @@ namespace Web.Core.Frame.UseCases
                 .GetSingle(message.Objowin_user, cancellationToken);
                 if (objSingle != null)
                 {
+                    objSingle.masprivatekey = string.Empty;
+                    objSingle.maspublickey = string.Empty;
+                    objSingle.password = string.Empty;
+                    objSingle.passwordkey = string.Empty;
+                    objSingle.passwordsalt = string.Empty;
+                    objSingle.PasswordHash = string.Empty;
+                    objSingle.passwordvector = string.Empty;
+                    objSingle.passwordvector = string.Empty;
+
                     outputPort.GetSingle(new Owin_UserResponse(objSingle, true));
                 }
                 else

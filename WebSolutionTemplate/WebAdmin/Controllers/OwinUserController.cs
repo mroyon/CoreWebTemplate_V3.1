@@ -127,6 +127,34 @@ namespace WebAdmin.Controllers
             }
         }
 
+        /// <summary>
+        /// AddOwinUser
+        /// </summary>
+        /// <param name="returnUrl"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> AddOwinUser(string returnUrl)
+        {
+            if (!User.Identity.IsAuthenticated){return RedirectToAction("Account", "Login");}
+            return View("../Account/UserManagement/_ViewUserList", new owin_userEntity());
+        }
+
+        /// <summary>
+        /// EditOwinUser
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [AutoValidateAntiforgeryToken]
+        public async Task<IActionResult> EditOwinUser([FromQuery(Name = "params")] string input)
+        {
+            if (!User.Identity.IsAuthenticated){return RedirectToAction("Account", "Login");}
+            owin_userEntity objEntity = new owin_userEntity();
+            objEntity.userid = new Guid(objClsPrivate.DecodeUrlParamsWithoutURI("userid", input).ToString());
+            await _owin_UserUseCase.GetSingle(new Owin_UserRequest(objEntity), _owin_UserPresenter);
+            return View("../Account/UserManagement/EditOwinUser", _owin_UserPresenter.Result);
+        }
+        
 
 
     }

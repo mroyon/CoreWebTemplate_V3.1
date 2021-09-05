@@ -1,4 +1,5 @@
-﻿using BDO.DataAccessObjects.CommonEntities;
+﻿using AppConfig.HelperClasses;
+using BDO.DataAccessObjects.CommonEntities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using System;
@@ -12,6 +13,8 @@ namespace WebAdmin.Controllers
     /// </summary>
     public class BaseController : Controller
     {
+        public clsPrivateKeys objClsPrivate = new clsPrivateKeys();
+
         /// <summary>
         /// 
         /// </summary>

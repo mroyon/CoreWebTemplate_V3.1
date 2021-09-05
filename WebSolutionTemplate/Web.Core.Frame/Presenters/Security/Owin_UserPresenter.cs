@@ -80,6 +80,7 @@ namespace Web.Core.Frame.Presenters
         {
             ContentResult.StatusCode = (int)(response.Success ? HttpStatusCode.OK : httpStatusCodeParser.SetHttpStatusCode(response.Errors));
             ContentResult.Content = response.Success ? JsonSerializer.SerializeObject(new Owin_UserResponse(response._owin_User, response.Success)) : JsonSerializer.SerializeObject(response.Errors);
+            Result = response.Success ? response._owin_User as object : response.Errors;
         }
 
         /// <summary>
