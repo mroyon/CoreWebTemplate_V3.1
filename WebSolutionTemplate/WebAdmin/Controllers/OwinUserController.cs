@@ -97,7 +97,6 @@ namespace WebAdmin.Controllers
             return View("../Account/UserManagement/LandingOwinUser", new owin_userEntity());
         }
 
-
         /// <summary>
         /// ListOwinUser
         /// </summary>
@@ -213,7 +212,6 @@ namespace WebAdmin.Controllers
             return _owin_UserPresenter.ContentResult;
         }
 
-
         /// <summary>
         /// ViewOwinUser
         /// </summary>
@@ -229,8 +227,6 @@ namespace WebAdmin.Controllers
             await _owin_UserUseCase.GetSingle(new Owin_UserRequest(objEntity), _owin_UserPresenter);
             return View("../Account/UserManagement/GetSingleOwinUser", _owin_UserPresenter.Result);
         }
-
-
 
         /// <summary>
         /// DeleteOwinUser
