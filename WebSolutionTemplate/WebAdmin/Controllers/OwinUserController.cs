@@ -23,6 +23,7 @@ using Web.Core.Frame.RequestResponse.UseCaseRequests;
 using Web.Core.Frame.Presenters;
 using BDO.DataAccessObjects.CommonEntities;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Http;
 
 namespace WebAdmin.Controllers
 {
@@ -135,7 +136,7 @@ namespace WebAdmin.Controllers
         public async Task<IActionResult> AddOwinUser(string returnUrl)
         {
             if (!User.Identity.IsAuthenticated){return RedirectToAction("Account", "Login");}
-            return View("../Account/UserManagement/_ViewUserList", new owin_userEntity());
+            return View("../Account/UserManagement/AddOwinUser", new owin_userEntity());
         }
 
         /// <summary>

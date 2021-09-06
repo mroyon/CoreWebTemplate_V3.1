@@ -7,15 +7,12 @@
  */
 
 
-
-
 (function ($) {
 
     "use strict";
 
     var methods = {
         init: function (options) {
-
         },
         show: function () { },// IS
         hide: function () { },// GOOD
@@ -24,18 +21,13 @@
 
     $.fn.propicfileuploader = function (options) {
 
-        /*
-         *  _divid: 'profilephoto',
-                _columnname: 'userprofilephoto',
-                _addbuttontext: '@SharedLocalizer.GetLocalizedHtmlString("ADD_IMAGE")',
-                _removebuttontext: '@SharedLocalizer.GetLocalizedHtmlString("REMOVE_IMAGE")',
-         */
         var defaults = {
             _divid: '_defaultdivid',
             _uploadedfileextension: 'jpg, .png, .jpeg, .bmp',
             _fileinputid: '_defaultfileinputid',
             _columnname: '_defaultcolumnname',
             _removebuttontext: '_defaultremovebuttontext',
+            _isenalbe: true
         };
 
         var options = $.extend({}, defaults, options);
@@ -46,11 +38,19 @@
             stringbuilder = '<div id="' + options._divid + '">';
             stringbuilder += '<label>';
 
-            if (options._uploadedfileextension != '') 
-                stringbuilder += '<input type="file" hidden accept="' + options._uploadedfileextension + '" ngf-select ng-model="new_files" id="' + options._fileinputid + '" ng-change="fs.uploadFiles(new_files)">';
-            else
-                stringbuilder += '<input type="file"  hidden accept=".doc, .docx, .pdf, .xls, .xlsx, jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff|image/*" ngf-select ng-model="new_files" id="' + options._fileinputid + '" ng-change="fs.uploadFiles(new_files)">';
 
+            if (options._uploadedfileextension != '') {
+                if (options._isenalbe)
+                    stringbuilder += '<input type="file" hidden accept="' + options._uploadedfileextension + '" ngf-select ng-model="new_files" id="' + options._fileinputid + '" ng-change="fs.uploadFiles(new_files)">';
+                else
+                    stringbuilder += '<input type="file" disabled hidden accept="' + options._uploadedfileextension + '" ngf-select ng-model="new_files" id="' + options._fileinputid + '" ng-change="fs.uploadFiles(new_files)">';
+            }
+            else {
+                if (options._isenalbe)
+                    stringbuilder += '<input type="file"  hidden accept=".doc, .docx, .pdf, .xls, .xlsx, jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff|image/*" ngf-select ng-model="new_files" id="' + options._fileinputid + '" ng-change="fs.uploadFiles(new_files)">';
+                else
+                    stringbuilder += '<input type="file" disabled hidden accept=".doc, .docx, .pdf, .xls, .xlsx, jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff|image/*" ngf-select ng-model="new_files" id="' + options._fileinputid + '" ng-change="fs.uploadFiles(new_files)">';
+            }
             stringbuilder += '<img src="' + blankimageurl + '" style="cursor: pointer;" id="btnuploadcls" class=" btnuploadcls image--cover" width="120px" height="131px" />';
 
             stringbuilder += '</label>';

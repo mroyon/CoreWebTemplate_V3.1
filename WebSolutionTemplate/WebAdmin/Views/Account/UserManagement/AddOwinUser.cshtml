@@ -4,14 +4,14 @@
 
 @using Microsoft.Extensions.Options
 @{
-    ViewData["Title"] = @SharedLocalizer.GetLocalizedHtmlString("VIEW_USER_LIST");
+    ViewData["Title"] = @SharedLocalizer.GetLocalizedHtmlString("ADD_USER");
 }
 
 <div class="row">
     <div class="col-md-12">
         <div class="card">
             <div class="card-footer">
-                <h5 class="card-title">@SharedLocalizer.GetLocalizedHtmlString("USER_MANAGEMENT")</h5>
+                <h5 class="card-title">@SharedLocalizer.GetLocalizedHtmlString("ADD_USER")</h5>
             </div>
             <form method="POST" id="frmupdateuser" class="my-login-validation" novalidate="" autocomplete="off">
                 <div class="card-body">
@@ -68,7 +68,7 @@
                         <div class="col-md-6 ">
                             <div class="form-group">
                                 <button type="submit" id="btnUpdateUser" class="btn btn-primary btn-md btnAddUser"><i class="fa fa-edit"></i> @SharedLocalizer.GetLocalizedHtmlString("SUBMIT_REQUEST")</button>
-                                <button type="submit" id="btnback" data="@ViewBag.refURL" class="btn btn-secondary btn-md "><i class="fas fa-arrow-circle-left"></i> @SharedLocalizer.GetLocalizedHtmlString("GO_BACK")</button>
+                                <button type="submit" id="btn-sxcommon-modal-close" class="btn btn-primary btn-md cancel"><i class="fa fa-arrow-circle-left"></i> @SharedLocalizer.GetLocalizedHtmlString("GO_BACK")</button>
                             </div>
                         </div>
                     </div>
@@ -98,7 +98,7 @@
         $(document).ready(function () {
             var _filenoupld = null;
             _filenoupld = $('#profilephoto').propicfileuploader({
-                _divid: 'profilephoto',
+                _divid: 'profilephoto', 
                 _columnname: 'userprofilephoto',
                 _removebuttontext: '@SharedLocalizer.GetLocalizedHtmlString("REMOVE_IMAGE")',
             });

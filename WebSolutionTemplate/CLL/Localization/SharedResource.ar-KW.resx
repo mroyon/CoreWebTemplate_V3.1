@@ -1006,4 +1006,7 @@
   <data name="PRINT" xml:space="preserve">
     <value>Print</value>
   </data>
+  <data name="GO_BACK" xml:space="preserve">
+    <value>Back</value>
+  </data>
 </root>

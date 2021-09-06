@@ -239,7 +239,7 @@ namespace DAC.Core.DataAccessObjects.Security.ExtendedPartial
                 {
                     try
                     {
-                        //return itemList[0];
+                        return itemList[0];
                         EncryptionHelper objenc = new EncryptionHelper();
                         string usersalt = itemList[0].passwordsalt;
                         HashWithSaltResult ob2 = objenc.EncodePassword(owin_user.password, usersalt);
