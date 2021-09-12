@@ -209,6 +209,48 @@
             <param name="request"></param>
             <returns></returns>
         </member>
+        <member name="M:WebAdmin.Controllers.OwinUserController.AddOwinUser(System.String)">
+            <summary>
+            AddOwinUser
+            </summary>
+            <param name="returnUrl"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebAdmin.Controllers.OwinUserController.AddOwinUser(BDO.DataAccessObjects.SecurityModule.owin_userEntity)">
+            <summary>
+            AddOwinUser
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebAdmin.Controllers.OwinUserController.EditOwinUser(System.String)">
+            <summary>
+            EditOwinUser
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebAdmin.Controllers.OwinUserController.EditOwinUser(BDO.DataAccessObjects.SecurityModule.owin_userEntity)">
+            <summary>
+            EditOwinUser
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebAdmin.Controllers.OwinUserController.GetSingleOwinUser(System.String)">
+            <summary>
+            ViewOwinUser
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebAdmin.Controllers.OwinUserController.DeleteOwinUser(BDO.DataAccessObjects.SecurityModule.owin_userEntity)">
+            <summary>
+            DeleteOwinUser
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
         <member name="T:WebAdmin.FilterAndAttributes.SecurityFillerAttribute">
             <summary>
             SecurityFillerAttribute
